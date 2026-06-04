@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aorta Project - Aortenaneurysma</title>
+    <link rel="stylesheet" href="css/style.css?v=11">
+</head>
+<body data-story-version="aneurysm">
+    <nav class="navbar">
+        <a href="index.html" class="nav-logo">Aorta <span>Project</span></a>
+        <div class="navbar-right">
+            <ul class="nav-links" id="nav-links">
+                <li><a href="scrollytelling-aneurysm.html" class="active">Story</a></li>
+                <li><a href="index.html">Dashboard</a></li>
+            </ul>
+            <button type="button" class="editor-toggle" aria-pressed="false">Editor</button>
+        </div>
+        <div class="nav-toggle" id="nav-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+
+    <div class="nav-menu-mobile" id="nav-menu-mobile">
+        <ul></ul>
+    </div>
+    <div id="progress-bar"></div>
+
+    <div class="scrolly-layout">
+        <div class="left-column">
+            <main id="story"></main>
+        </div>
+        <div class="right-column">
+            <div id="container3d"></div>
+            <div id="stent-placeholder">[PLATZHALTER: 3D-MODELL STENT-GRAFT]</div>
+            <div id="rainer-anatomy-placeholder" class="stent-placeholder-style">[PLATZHALTER: 3D-MODELL RAINER ANATOMIE]</div>
+            <div id="aorta-hole-placeholder" class="stent-placeholder-style">[PLATZHALTER: 3D-MODELL AORTA LOCH]</div>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="footer-grid">
+            <div class="footer-section">
+                <h4>Aorta Project</h4>
+                <p>Eine interaktive Bildungsplattform zur Visualisierung von Aortenerkrankungen. Wir nutzen modernste Web-Technologien, um komplexe medizinische Sachverhalte verständlich zu machen.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="index.html">Dashboard</a></li>
+                    <li><a href="scrollytelling.html">Story Übersicht</a></li>
+                    <li><a href="scrollytelling-dissection.html">Aortendissektion</a></li>
+                    <li><a href="scrollytelling-aneurysm.html">Aortenaneurysma</a></li>
+                    <li><a href="impressum.html">Impressum</a></li>
+                    <li><a href="datenschutz.html">Datenschutz</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Ressourcen</h4>
+                <ul>
+                    <li><a href="#">Medizinische Leitlinien</a></li>
+                    <li><a href="#">Anatomie-Guide</a></li>
+                    <li><a href="#">3D-Modell Dokumentation</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Kontakt</h4>
+                <p>Haben Sie Fragen oder Feedback?<br>support@aorta-project.de</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Aorta Scrollytelling Project. Alle Rechte vorbehalten.</p>
+            <div class="footer-legal">
+                <a href="impressum.html">Impressum</a>
+                <a href="datenschutz.html">Datenschutz</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+    <script src="js/debugConsole.js"></script>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "./vendor/three/three.module.js",
+                "three/addons/": "./vendor/three/addons/"
+            }
+        }
+    </script>
+    <script type="module" src="js/scrollytelling.js?v=11"></script>
+</body>
+</html>

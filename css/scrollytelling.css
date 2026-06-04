@@ -1,0 +1,612 @@
+/* Improved Dark/Light Mode Consistency */
+
+:root {
+    --bg-dark: #000;
+    --text-dark: rgba(255, 255, 255, 0.9);
+    --bg-light: #f5f5f7;
+    --text-light: #333;
+}
+
+/* Enhanced Input/Select Styling for Readability */
+body.light-mode .editor-nav-card select,
+body.light-mode .editor-nav-card input {
+    background: #fff !important;
+    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+    color: #000 !important;
+}
+
+body:not(.light-mode) .editor-nav-card select,
+body:not(.light-mode) .editor-nav-card input {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #fff !important;
+}
+
+.editor-nav-card select {
+    padding: 8px 12px;
+    border-radius: 4px;
+    width: 100%;
+    cursor: pointer;
+}
+
+/* Specific Scrollytelling Light Mode Overrides */
+body.light-mode .scrolly-layout .right-column {
+    background:
+        radial-gradient(circle at 56% 44%, rgba(0, 113, 227, 0.08), transparent 28%),
+        radial-gradient(circle at 76% 24%, rgba(215, 0, 21, 0.06), transparent 24%),
+        #f5f5f7;
+}
+
+body.light-mode .scrolly-layout .right-column::before {
+    background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.1) 22%, transparent 48%),
+        linear-gradient(0deg, rgba(255, 255, 255, 0.4), transparent 22%, transparent 74%, rgba(255, 255, 255, 0.2));
+}
+
+body.light-mode .text-box {
+    background: rgba(255, 255, 255, 0.95); /* Increased opacity for better readability */
+    border-color: rgba(0, 0, 0, 0.15);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .text-box p,
+body.light-mode .text-box .info-text {
+    color: #333;
+}
+
+body.light-mode .text-box .info-heading {
+    color: #000;
+}
+
+
+body.light-mode .visual-status {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(0, 0, 0, 0.05);
+}
+
+body.light-mode .visual-status-title {
+    color: #000;
+}
+
+body.light-mode .mini-chart {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .mini-chart-head strong,
+body.light-mode .mini-chart-head span,
+body.light-mode .mini-chart p {
+    color: #444;
+}
+
+body.light-mode .meter-track, 
+body.light-mode .split-track, 
+body.light-mode .bar-track {
+    background: rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .stats-box {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .stats-box strong { color: #000; }
+body.light-mode .stats-box span { color: #444; }
+
+body {
+    background-color: var(--bg-dark);
+    margin: 0;
+    overflow-x: hidden;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Layout */
+.scrolly-layout {
+    display: flex;
+    width: 100%;
+    transition: width 0.3s ease;
+
+    .left-column {
+        width: min(42%, 620px);
+        position: relative;
+        z-index: 2;
+        padding-top: var(--nav-height);
+        transition: width 0.4s ease, max-width 0.4s ease;
+    }
+
+    .right-column {
+        flex: 1;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        background:
+            radial-gradient(circle at 56% 44%, rgba(255, 68, 68, 0.14), transparent 28%),
+            radial-gradient(circle at 76% 24%, rgba(0, 212, 255, 0.12), transparent 24%),
+            #000;
+        overflow: hidden;
+        transition: opacity 0.4s ease, transform 0.4s ease;
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(90deg, rgba(5, 5, 5, 0.58) 0%, rgba(5, 5, 5, 0.08) 22%, transparent 48%),
+                linear-gradient(0deg, rgba(5, 5, 5, 0.48), transparent 22%, transparent 74%, rgba(5, 5, 5, 0.36));
+            pointer-events: none;
+            z-index: 2;
+        }
+    }
+
+    &.is-full-layout {
+        .left-column {
+            width: 100%;
+            max-width: none;
+        }
+        .right-column {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(20px);
+        }
+    }
+
+    &.has-2-cols:not(.is-full-layout) {
+        .left-column {
+            width: min(65%, 980px);
+        }
+    }
+}
+
+#container3d {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+
+    canvas {
+        display: block;
+        filter: saturate(1.12) contrast(1.08);
+    }
+}
+
+/* UI Elements */
+.visual-status {
+    position: absolute;
+    right: 28px;
+    bottom: 28px;
+    z-index: 5;
+    min-width: 220px;
+    padding: 16px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 8px;
+    background: rgba(5, 5, 5, 0.66);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.38);
+
+    .visual-status-label {
+        display: block;
+        color: var(--accent-red);
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 1.8px;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+    }
+
+    .visual-status-title {
+        display: block;
+        color: #fff;
+        font-size: 0.92rem;
+        font-weight: 700;
+        line-height: 1.35;
+    }
+}
+
+/* Widget Grid - Site Style */
+/* Moved to editor-ui.css */
+
+.editor-mode {
+    .scrolly-layout, .navbar {
+        width: calc(100% - 340px);
+    }
+}
+
+/* Story Elements & Editor Overlays */
+.element-wrapper {
+    position: relative;
+    transition: outline 0.2s ease;
+
+    .editor-mode &:hover {
+        outline: 1px solid rgba(0, 212, 255, 0.4);
+        outline-offset: 10px;
+        border-radius: 4px;
+
+        & > .editor-element-toolbar {
+            display: flex;
+        }
+    }
+
+    &.is-selected {
+        outline: 2px solid var(--accent-red);
+        outline-offset: 8px;
+        border-radius: 4px;
+        background: rgba(0, 212, 255, 0.04);
+    }
+}
+
+.editor-element-toolbar {
+    position: absolute;
+    top: -28px;
+    right: 0;
+    display: none;
+    gap: 4px;
+    background: var(--accent-red);
+    padding: 2px 4px;
+    border-radius: 4px 4px 0 0;
+    z-index: 100;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
+
+    .element-toolbar-btn {
+        width: 24px;
+        height: 24px;
+        border: 0;
+        border-radius: 3px;
+        background: transparent;
+        color: #000;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background 0.15s ease;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        &.delete:hover {
+            background: var(--accent-red);
+            color: #fff;
+        }
+    }
+}
+
+/* Drag & Drop Visuals */
+.editor-drop-indicator {
+    height: 4px;
+    background: var(--accent-red);
+    box-shadow: 0 0 10px var(--accent-red);
+    border-radius: 2px;
+    margin: 8px 0;
+    pointer-events: none;
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        left: -6px;
+        top: -4px;
+        width: 12px;
+        height: 12px;
+        background: var(--accent-red);
+        border-radius: 50%;
+    }
+}
+
+.step.editor-drop-target {
+    .text-box {
+        outline: 2px solid var(--accent-red);
+        background: rgba(0, 212, 255, 0.08);
+    }
+}
+
+/* Content Styling (The "Infocard") */
+#story {
+    padding: 0; 
+}
+
+.step {
+    min-height: 145vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    scroll-margin-top: var(--nav-height);
+    padding: 0 46px; /* Uniform left/right padding */
+
+    &:first-of-type {
+        align-items: flex-start;
+        min-height: 120vh;
+        padding-top: clamp(36px, 7vh, 72px);
+    }
+
+    &.active .text-box {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        border-color: rgba(255, 68, 68, 0.36);
+    }
+    
+    &:not(.active) .text-box {
+        opacity: 0.24;
+    }
+}
+
+.step.layout-full {
+    justify-content: flex-start; /* Ensure left-alignment is maintained */
+    width: 100%;
+    
+    .text-box {
+        width: 520px; /* Force uniform width even in full layout */
+        max-width: 100%;
+    }
+}
+
+.text-box.cols-2 {
+    width: min(1300px, 95%);
+    max-width: none;
+    
+    /* Support grid layout for elements inside */
+    & > h2 { grid-column: 1 / -1; } /* Header always spans both columns */
+    
+    /* We need to apply grid to the elements list area */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px 40px;
+    align-items: start;
+    
+    /* Default full-width for specific elements if needed */
+    .mini-chart { grid-column: span 1; }
+    .info-image { grid-column: span 1; }
+}
+
+@media (max-width: 1100px) {
+    .text-box.cols-2 {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+}
+
+/* If we are in layout-full, we want to expand the left column or at least the text box */
+.left-column:has(.step.active.layout-full) {
+    width: 100%;
+    max-width: none;
+}
+
+.right-column:has(~ .left-column .step.active.layout-full) {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Alternative approach if :has is not supported well enough or structure is different */
+.step.active.layout-full ~ .right-column {
+    opacity: 0;
+}
+/* Wait, right-column is BEFORE left-column in some layouts, or after? */
+/* Check scrollytelling.css again */
+
+
+.text-box {
+    position: relative;
+    margin-left: 0;
+    background: rgba(12, 12, 14, 0.8);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    padding: 40px;
+    border-radius: 8px;
+    max-width: 100%;
+    text-align: left;
+    box-shadow: 0 24px 70px rgba(0,0,0,0.48);
+    transition: opacity 0.45s ease, transform 0.45s ease, border-color 0.45s ease;
+    opacity: 0;
+    transform: translateY(24px) scale(0.985);
+
+
+    &.is-selected {
+        outline: 2px solid var(--accent-red);
+        outline-offset: 8px;
+        border-radius: 4px;
+        background-color: rgba(255, 68, 68, 0.08) !important;
+    }
+
+    .editor-mode &:hover:not(.is-selected) {
+        border-color: rgba(0, 212, 255, 0.4);
+        cursor: pointer;
+        
+        &::after {
+            content: 'Sektion bearbeiten';
+            position: absolute;
+            top: -24px;
+            left: 0;
+            background: var(--accent-blue);
+            color: #000;
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+    }
+
+    h2 {
+        font-size: clamp(1.32rem, 1.7vw, 1.72rem);
+        margin-bottom: 1.05rem;
+        color: var(--accent-red);
+        text-transform: uppercase;
+        letter-spacing: 0;
+        line-height: 1.2;
+    }
+
+    p {
+        font-size: clamp(1rem, 1.05vw, 1.08rem);
+        line-height: 1.72;
+        color: rgba(255, 255, 255, 0.9);
+        margin: 0 0 1rem;
+        
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .info-heading {
+        margin: 1.15rem 0 0.7rem;
+        color: #fff;
+        font-size: clamp(1.02rem, 1.18vw, 1.18rem);
+        font-weight: 800;
+        line-height: 1.28;
+    }
+
+    .info-text {
+        padding-left: 14px;
+        border-left: 3px solid rgba(0, 212, 255, 0.56);
+        color: rgba(255, 255, 255, 0.84);
+    }
+
+    .info-image {
+        margin: 1.5rem 0;
+        width: 100%;
+        overflow: hidden;
+        border-radius: 8px;
+    }
+
+    .info-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+        object-fit: cover;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+
+    .icon-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 1rem;
+    }
+
+    .icon-image {
+        width: 42px;
+        height: 42px;
+        object-fit: contain;
+        border-radius: 4px;
+        background: rgba(255,255,255,0.05);
+        padding: 4px;
+    }
+}
+
+/* Stats Box Element */
+.stats-box {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 16px;
+    margin: 22px 0 0;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+
+    &:hover {
+        border-color: var(--accent-red);
+        transform: translateY(-2px);
+    }
+
+    .icon-placeholder {
+        background: rgba(255, 68, 68, 0.15);
+        padding: 10px;
+        border-radius: 12px;
+        flex: 0 0 58px;
+    }
+
+    &.stats-box-extra {
+        border-color: rgba(0, 212, 255, 0.22);
+    }
+
+    strong {
+        color: #fff;
+        font-size: 1.1rem;
+        display: block;
+        margin-bottom: 4px;
+    }
+
+    span {
+        font-size: 0.95rem;
+        line-height: 1.4;
+        color: rgba(255, 255, 255, 0.8);
+    }
+}
+
+/* Mini Charts */
+.mini-chart {
+    margin: 18px 0 0;
+    padding: 14px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.045);
+
+    .mini-chart-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 12px;
+
+        strong {
+            color: #fff;
+            font-size: 0.9rem;
+        }
+
+        span {
+            color: rgba(255, 255, 255, 0.68);
+            font-size: 0.78rem;
+        }
+    }
+
+    p {
+        margin: 10px 0 0;
+        color: rgba(255, 255, 255, 0.68);
+        font-size: 0.78rem;
+    }
+}
+
+.meter-track, .split-track, .bar-track {
+    display: block;
+    height: 8px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+
+    span {
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--accent-red), #ffffff);
+    }
+}
+
+/* Media Queries */
+@media (max-width: 820px) {
+    .scrolly-layout {
+        flex-direction: column-reverse;
+    }
+
+    .left-column {
+        width: 100%;
+        padding-top: 0;
+    }
+
+    .right-column {
+        width: 100%;
+        height: 48vh;
+        position: sticky;
+        top: var(--nav-height);
+    }
+
+    .step {
+        min-height: 82vh;
+        align-items: flex-start;
+        padding-top: 24px;
+    }
+
+    .text-box {
+        max-width: none;
+    }
+}
