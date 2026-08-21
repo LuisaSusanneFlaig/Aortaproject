@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aorta Vergleich - Interaktive Aufklärung</title>
-    <link rel="stylesheet" href="css/style.css?v=11">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body data-story-version="aneurysm">
     <nav class="navbar">
@@ -14,7 +14,6 @@
                 <li><a href="scrollytelling.html" class="active">Story</a></li>
                 <li><a href="index.html">Dashboard</a></li>
             </ul>
-            <button type="button" class="editor-toggle" aria-pressed="false">Editor</button>
         </div>
         <div class="nav-toggle" id="nav-toggle">
             <span></span>
@@ -96,7 +95,6 @@
         </div>
     </footer>
 
-    <script src="js/debugConsole.js"></script>
     <script type="importmap">
         {
             "imports": {
@@ -105,6 +103,8 @@
             }
         }
     </script>
-    <script type="module" src="js/scrollytelling.js?v=11"></script>
+    <script src="vendor/gsap/gsap.min.js"></script>
+    <script src="vendor/gsap/ScrollTrigger.min.js"></script>
+    <script type="module" src="js/scrollytelling.js"></script>
 </body>
 </html>

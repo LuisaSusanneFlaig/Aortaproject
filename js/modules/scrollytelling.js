@@ -5,9 +5,11 @@ import { FlowSystem } from './effects/FlowSystem.js';
 import { PathlineSystem } from './effects/PathlineSystem.js';
 import { ChartManager } from './ui/ChartManager.js';
 import { ThemeManager } from './ui/ThemeManager.js';
-import { EditorState } from './editorState.js';
-import { initStoryEditor } from './editor.js';
 import { renderStoryPage, getStoryVersion } from './storyRenderer.js';
+import { storyVersions } from './storyContent.js';
+import { initInlineModelViewers } from './ui/InlineModelViewer.js';
+import { ScrollDirector } from './ui/ScrollDirector.js';
+import { GsapSectionAnimator } from './ui/GsapSectionAnimator.js';
 import * as Config from './core/Config.js';
 
 /**
@@ -17,7 +19,7 @@ import * as Config from './core/Config.js';
 class ScrollytellingApp {
     constructor() {
         this.version = getStoryVersion();
-        this.editorState = new EditorState(this.version, null);
+        this.usesEditorialScroll = ['dissection', 'aneurysm'].includes(this.version);
         this.loader = new Loader();
         this.chartManager = new ChartManager();
         this.themeManager = new ThemeManager();
@@ -47,19 +49,16 @@ class ScrollytellingApp {
 
     async init() {
         console.info('[App] Initializing Scrollytelling App...');
-        
-        // 1. Initial State & Story Config
-        import('./storyContent.js').then(module => {
-            this.editorState.baseConfig = module.storyVersions[this.version];
-            this.editorState.state = this.editorState.readState();
-            this.updateStory();
-            this._init3D();
-        });
 
-        // 2. Reactive Updates
-        this.editorState.on('change', () => this.handleStateChange());
-
-        // 3. UI & Global Listeners
+        this.updateStory();
+        this.inlineModelViewers = initInlineModelViewers();
+        if (this.usesEditorialScroll) {
+            this.scrollDirector = new ScrollDirector(document.getElementById('story'));
+            this.scrollDirector.init();
+            this.gsapSectionAnimator = new GsapSectionAnimator(document.getElementById('story'));
+            this.gsapSectionAnimator.init();
+        }
+        this._init3D();
         this.setupUI();
         window.addEventListener('scroll', () => this.requestRender(), { passive: true });
         
@@ -76,11 +75,12 @@ class ScrollytellingApp {
         const container = document.getElementById('container3d');
         this.sceneManager = new SceneManager(container, Config.settings);
         
-        // Setup Visual Status
-        this.createVisualStatus();
+        const hasScrollBoundModels = this.storyConfig.sections.some(
+            (section) => section.meshUrl || section.pathlinesUrl
+        );
+        if (hasScrollBoundModels) this.createVisualStatus();
 
-        // Load models from state
-        this.applySavedEditorModels().then(() => {
+        this.applyConfiguredSectionModels().then(() => {
             this.applyResponsiveAortaLayout();
             this.updateCameraScroll();
             this.requestRender();
@@ -88,14 +88,6 @@ class ScrollytellingApp {
         });
 
         this.chartManager.init();
-        this.initEditor();
-    }
-
-    handleStateChange() {
-        this.updateStory();
-        this.refreshFlowSystems();
-        this.update3DVisibility(this.getScrollState().currentSection);
-        this.requestRender();
     }
 
     refreshFlowSystems() {
@@ -148,7 +140,7 @@ class ScrollytellingApp {
     }
 
     updateStory() {
-        this.storyConfig = renderStoryPage(this.editorState.getEffectiveConfig(), this.version);
+        this.storyConfig = renderStoryPage(storyVersions[this.version], this.version);
         this.storySectionCount = this.storyConfig.sections.length;
     }
 
@@ -159,24 +151,6 @@ class ScrollytellingApp {
         this.sceneManager.resize(width, height);
         this.applyResponsiveAortaLayout(this.getScrollState().currentSection);
         this.requestRender();
-    }
-
-    initEditor() {
-        initStoryEditor({
-            version: this.version,
-            storyConfig: this.storyConfig,
-            editorState: this.editorState,
-            getCurrentSection: () => this.getScrollState().currentSection,
-            setSectionModel: (idx, id) => this.setSectionEditorModel(idx, id),
-            setSectionModelFile: (idx, url, label) => this.setSectionEditorModelFile(idx, url, label),
-            resetSectionModel: (idx) => this.resetSectionEditorModel(idx),
-            modelOptions: Config.editorModelOptions,
-            exportState: () => ({
-                version: this.version,
-                savedAt: new Date().toISOString(),
-                changes: this.editorState.state
-            })
-        });
     }
 
     // --- 3D Helper Methods ---
@@ -453,12 +427,14 @@ class ScrollytellingApp {
             progressBar.style.width = `${progress * 100}%`;
         }
 
-        this.posCurve.getPoint(scrollState.cameraT, this.sceneManager.camera1.position);
-        this.lookCurve.getPoint(scrollState.cameraT, this.sceneManager.controls.target);
-        
-        if (window.innerWidth <= 820) {
-            this.sceneManager.camera1.position.lerp(new THREE.Vector3(0, 70, 850), 0.65);
-            this.sceneManager.controls.target.lerp(new THREE.Vector3(0, 90, 0), 0.65);
+        if (!this.usesEditorialScroll) {
+            this.posCurve.getPoint(scrollState.cameraT, this.sceneManager.camera1.position);
+            this.lookCurve.getPoint(scrollState.cameraT, this.sceneManager.controls.target);
+
+            if (window.innerWidth <= 820) {
+                this.sceneManager.camera1.position.lerp(new THREE.Vector3(0, 70, 850), 0.65);
+                this.sceneManager.controls.target.lerp(new THREE.Vector3(0, 90, 0), 0.65);
+            }
         }
         
         this.setActiveStep(scrollState.currentSection);
@@ -472,25 +448,33 @@ class ScrollytellingApp {
         const steps = Array.from(document.querySelectorAll('#story .step'));
         if (!steps.length) return { currentSection: 0, sectionT: 0, cameraT: 0 };
 
-        const marker = window.innerHeight * (window.innerWidth <= 820 ? 0.62 : 0.5);
-        let currentSection = 0;
-        let smallestDistance = Infinity;
+        const marker = window.innerHeight * (this.usesEditorialScroll ? 0.34 : (window.innerWidth <= 820 ? 0.62 : 0.5));
+        let currentSection = steps.findIndex((step) => step.classList.contains('is-gsap-active'));
 
-        steps.forEach((step, index) => {
-            const rect = step.getBoundingClientRect();
-            const containsMarker = rect.top <= marker && rect.bottom >= marker;
-            const distance = containsMarker ? 0 : Math.min(Math.abs(rect.top - marker), Math.abs(rect.bottom - marker));
+        if (currentSection < 0) {
+            let smallestDistance = Infinity;
+            currentSection = 0;
 
-            if (distance < smallestDistance) {
-                smallestDistance = distance;
-                currentSection = index;
-            }
-        });
+            steps.forEach((step, index) => {
+                const rect = step.getBoundingClientRect();
+                const containsMarker = rect.top <= marker && rect.bottom >= marker;
+                const distance = containsMarker ? 0 : Math.min(Math.abs(rect.top - marker), Math.abs(rect.bottom - marker));
+
+                if (distance < smallestDistance) {
+                    smallestDistance = distance;
+                    currentSection = index;
+                }
+            });
+        }
 
         const activeStep = steps[currentSection];
+        const gsapProgress = Number.parseFloat(activeStep.dataset.gsapProgress);
         const start = activeStep.offsetTop;
         const range = Math.max(1, activeStep.offsetHeight - window.innerHeight * 0.4);
-        const rawSectionT = Math.max(0, Math.min(1, (window.scrollY - start + window.innerHeight * 0.28) / range));
+        const fallbackProgress = Math.max(0, Math.min(1, (window.scrollY - start + window.innerHeight * 0.28) / range));
+        const rawSectionT = Number.isFinite(gsapProgress) && activeStep.classList.contains('is-gsap-active')
+            ? gsapProgress
+            : fallbackProgress;
         const sectionT = THREE.MathUtils.smootherstep(rawSectionT, 0, 1);
         const cameraT = Math.max(0, Math.min(1, (currentSection + sectionT) / Math.max(1, this.storySectionCount - 1)));
 
@@ -506,8 +490,9 @@ class ScrollytellingApp {
         });
 
         const activeStep = steps[sectionIndex];
+        activeStep?.classList.add('is-revealed');
         const scrollyLayout = document.querySelector('.scrolly-layout');
-        if (scrollyLayout) {
+        if (scrollyLayout && !this.usesEditorialScroll) {
             const textBox = activeStep?.querySelector('.text-box');
             scrollyLayout.classList.toggle('is-full-layout', activeStep?.classList.contains('layout-full'));
             scrollyLayout.classList.toggle('has-2-cols', textBox?.classList.contains('cols-2'));
@@ -520,11 +505,9 @@ class ScrollytellingApp {
         
         navItems.forEach((item, index) => {
             if (!item.href) return;
-            const targetSectionMatch = item.href.match(/#s(\d+)/);
-            if (targetSectionMatch) {
-                const targetIndex = parseInt(targetSectionMatch[1], 10) - 1;
-                if (targetIndex <= sectionIndex) activeNavIndex = index;
-            }
+            const targetId = item.href.startsWith('#') ? item.href.slice(1) : '';
+            const targetIndex = this.storyConfig.sections.findIndex((section) => section.id === targetId);
+            if (targetIndex !== -1 && targetIndex <= sectionIndex) activeNavIndex = index;
         });
 
         const links = [...document.querySelectorAll('.nav-links a'), ...document.querySelectorAll('.nav-menu-mobile a')];
@@ -544,7 +527,7 @@ class ScrollytellingApp {
             this.visualStatusLabel.parentElement.style.opacity = '1';
             this.visualStatusLabel.parentElement.style.pointerEvents = 'auto';
             this.visualStatusLabel.textContent = `${this.storyConfig.title} · ${sectionIndex + 1}/${this.storySectionCount}`;
-            this.visualStatusTitle.textContent = Config.sectionVisualLabels[sectionIndex] || 'Interaktive 3D-Ansicht';
+            this.visualStatusTitle.textContent = sectionConfig?.meshLabel || sectionConfig?.title || Config.sectionVisualLabels[sectionIndex] || 'Interaktive 3D-Ansicht';
         }
     }
 
@@ -569,74 +552,12 @@ class ScrollytellingApp {
         if (navToggle && navMenu) navToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
     }
 
-    // --- Editor Methods ---
-
-    async setSectionEditorModel(sectionIndex, modelId) {
-        const existing = this.customSectionGroups.get(sectionIndex);
-        if (existing) this.sceneManager.scene1.remove(existing);
-
-        if (!modelId) {
-            this.customSectionGroups.delete(sectionIndex);
-            this.handleStateChange();
-            return;
-        }
-
-        if (modelId === 'none') {
-            const group = new THREE.Group();
-            group.userData.editorModelId = 'none';
-            group.visible = false;
-            this.customSectionGroups.set(sectionIndex, group);
-            this.handleStateChange();
-            return;
-        }
-
-        const option = Config.editorModelOptions.find(o => o.id === modelId);
-        if (!option) return;
-
-        const gltf = await this.loader.loadModel(option.url);
-        if (!gltf) return;
-
-        const group = new THREE.Group();
-        group.add(option.wall ? this.loader.processWall(gltf.scene, Config.settings) : gltf.scene);
-        group.userData.editorModelId = modelId;
-        group.visible = false;
-        
-        this.sceneManager.scene1.add(group);
-        this.enhanceModelMaterials(group, option.color);
-        this.customSectionGroups.set(sectionIndex, group);
-        
-        this.applyResponsiveAortaLayout();
-        this.handleStateChange();
-    }
-
-    async setSectionEditorModelFile(sectionIndex, url, label) {
-        const existing = this.customSectionGroups.get(sectionIndex);
-        if (existing) this.sceneManager.scene1.remove(existing);
-
-        const gltf = await this.loader.loadModel(url);
-        if (!gltf) return;
-
-        const group = new THREE.Group();
-        group.add(gltf.scene);
-        group.userData.editorModelId = 'uploaded';
-        group.userData.editorModelLabel = label;
-        group.visible = false;
-        group.renderOrder = 999;
-
-        this.sceneManager.scene1.add(group);
-        this.enhanceModelMaterials(group, 0xffffff);
-        this.customSectionGroups.set(sectionIndex, group);
-        
-        this.applyResponsiveAortaLayout();
-        this.handleStateChange();
-    }
-
-    async setSectionUploadedMesh(sectionIndex, url, label) {
+    async setSectionMesh(sectionIndex, url, label) {
         let group = this.customSectionGroups.get(sectionIndex);
         if (!group) {
             group = new THREE.Group();
             group.visible = false;
-            group.userData.editorModelId = 'uploaded';
+            group.userData.modelId = label || url;
             this.sceneManager.scene1.add(group);
             this.customSectionGroups.set(sectionIndex, group);
         }
@@ -675,28 +596,14 @@ class ScrollytellingApp {
         } else {
             console.warn('[App] Mesh GLB could not be loaded', { sectionIndex, label, url });
         }
-        this.handleStateChange();
     }
 
-    removeSectionUploadedMesh(sectionIndex) {
-        const group = this.customSectionGroups.get(sectionIndex);
-        if (group) {
-            const mesh = group.getObjectByName("MeshContainer");
-            if (mesh) group.remove(mesh);
-            if (group.children.length === 0) {
-                this.sceneManager.scene1.remove(group);
-                this.customSectionGroups.delete(sectionIndex);
-            }
-        }
-        this.handleStateChange();
-    }
-
-    async setSectionUploadedPathlines(sectionIndex, url, label) {
+    async setSectionPathlines(sectionIndex, url, label) {
         let group = this.customSectionGroups.get(sectionIndex);
         if (!group) {
             group = new THREE.Group();
             group.visible = false;
-            group.userData.editorModelId = 'uploaded';
+            group.userData.modelId = label || url;
             this.sceneManager.scene1.add(group);
             this.customSectionGroups.set(sectionIndex, group);
         }
@@ -730,77 +637,17 @@ class ScrollytellingApp {
                 this.applyResponsiveAortaLayout();
             }
         }
-        this.handleStateChange();
     }
 
-    removeSectionUploadedPathlines(sectionIndex) {
-        const group = this.customSectionGroups.get(sectionIndex);
-        if (group && group.userData.flow?.system) {
-            group.remove(group.userData.flow.system);
-            delete group.userData.flow;
-            if (group.children.length === 0) {
-                this.sceneManager.scene1.remove(group);
-                this.customSectionGroups.delete(sectionIndex);
+    async applyConfiguredSectionModels() {
+        await Promise.all(this.storyConfig.sections.map(async (section, index) => {
+            if (section.meshUrl) {
+                await this.setSectionMesh(index, section.meshUrl, section.meshLabel || section.title);
             }
-        }
-        this.handleStateChange();
-    }
-
-    setSectionPathlineCoupling(sectionIndex, coupled) {
-        const group = this.customSectionGroups.get(sectionIndex);
-        if (!group?.userData.flow) return;
-        this.flowSystem.setFrozen(group.userData.flow, !coupled);
-        group.userData.flow.frozen = !coupled;
-        this.handleStateChange();
-    }
-
-    setSectionMeshCoupling(sectionIndex, coupled) {
-        const group = this.customSectionGroups.get(sectionIndex);
-        if (!group) return;
-        group.userData.meshCoupled = !!coupled;
-        this.handleStateChange();
-    }
-
-    resetSectionEditorModel(sectionIndex) {
-        const existing = this.customSectionGroups.get(sectionIndex);
-        if (existing) this.sceneManager.scene1.remove(existing);
-        this.customSectionGroups.delete(sectionIndex);
-        this.handleStateChange();
-    }
-
-    async applySavedEditorModels() {
-        const uploadedEntries = await this.editorState.getUploadedModelEntries();
-        
-        // Group entries by sectionIndex
-        const entriesBySection = {};
-        for (const entry of uploadedEntries) {
-            if (!entriesBySection[entry.sectionIndex]) entriesBySection[entry.sectionIndex] = [];
-            entriesBySection[entry.sectionIndex].push(entry);
-        }
-
-        for (const [sIdxStr, entries] of Object.entries(entriesBySection)) {
-            const sIdx = Number(sIdxStr);
-            for (const entry of entries) {
-                if (entry.type === 'mesh') {
-                    const uploaded = await this.editorState.getUploadedModelUrl(sIdx, 'mesh');
-                    if (uploaded) await this.setSectionUploadedMesh(sIdx, uploaded.url, uploaded.name);
-                } else if (entry.type === 'pathlines') {
-                    const uploaded = await this.editorState.getUploadedModelUrl(sIdx, 'pathlines');
-                    if (uploaded) await this.setSectionUploadedPathlines(sIdx, uploaded.url, uploaded.name);
-                } else {
-                    const uploaded = await this.editorState.getUploadedModelUrl(sIdx);
-                    if (uploaded) await this.setSectionEditorModelFile(sIdx, uploaded.url, uploaded.name);
-                }
+            if (section.pathlinesUrl) {
+                await this.setSectionPathlines(index, section.pathlinesUrl, section.pathlinesLabel || section.title);
             }
-        }
-
-        const savedModels = this.editorState.state.models || {};
-        for (const [idx, id] of Object.entries(savedModels)) {
-            // Only apply preset models if no custom group exists for this section yet
-            if (!this.customSectionGroups.has(Number(idx))) {
-                await this.setSectionEditorModel(Number(idx), id);
-            }
-        }
+        }));
     }
 
     update3DVisibility(section, previousSection = -1) {
@@ -811,7 +658,7 @@ class ScrollytellingApp {
             const isCurrent = sIdx === section;
             const isVisible = isCurrent && 
                               sectionConfig?.layout !== 'full' && 
-                              group.userData.editorModelId !== 'none';
+                              sectionConfig?.showModel !== false;
             
             group.visible = isVisible;
 

@@ -1,7 +1,9 @@
-@import url('base.css?v=9');
-@import url('navbar.css?v=9');
-@import url('scrollytelling.css?v=11');
-@import url('sections.css?v=9');
-@import url('icons.css?v=9');
-@import url('footer.css?v=1');
-@import url('editor-ui.css?v=1');
+@layer tokens;
+@import url('tokens.css');
+@import url('base.css');
+@import url('navbar.css');
+@import url('scrollytelling.css');
+@import url('sections.css');
+@import url('icons.css');
+@import url('footer.css');
+@import url('components/chapter-opener.css');

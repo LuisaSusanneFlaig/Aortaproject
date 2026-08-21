@@ -1,23 +1,35 @@
-# Project Structure
+# Architecture
 
-## Canonical source layout
+## Data flow
 
-- `js/modules/` contains the real implementation.
-- `js/*.js` are thin compatibility entrypoints that re-export from `js/modules/`.
-- `js/modules/core/` contains reusable low-level infrastructure.
-- `js/modules/effects/` contains 3D motion and particle systems.
-- `js/modules/ui/` contains UI managers and editor panels.
-- `css/` contains global styling, with `editor-ui.css` owning the editor shell and inspector.
+```text
+js/stories/*/story.js
+        |
+        v
+js/modules/storyContent.js
+        |
+        v
+js/modules/storyRenderer.js ---> js/components/*
+        |
+        v
+chapter openers and .step sections
+        |
+        +--> GsapSectionAnimator
+        +--> InlineModelViewer
+        +--> ScrollytellingApp / Three.js
+```
 
-## Naming conventions
+## Ownership
 
-- Use `PascalCase` for classes and class-file pairings, for example `SceneManager.js`.
-- Use `camelCase` for utility modules and data modules, for example `storyContent.js`.
-- Keep one canonical implementation per feature.
-- Keep root-level files as wrappers only when an external entrypoint depends on them.
+- `js/stories/`: declarative content, navigation, configuration, and assets.
+- `js/components/`: focused HTML renderers for reusable story elements.
+- `js/modules/storyRenderer.js`: page assembly and element dispatch only.
+- `js/modules/scrollytelling.js`: application orchestration, scroll state, and 3D coordination.
+- `js/modules/ui/`: interactive behavior acting on rendered markup.
+- `css/tokens.css`: stable design controls.
+- `css/components/`: isolated component styles.
+- `tools/`: development server and deterministic validation.
 
-## Recommended next steps
+## Compatibility boundaries
 
-- Move duplicated legacy files out of the active tree or delete them after a final import audit.
-- Split `scrollytelling.js` into smaller coordinator modules for scroll, 3D, and editor wiring.
-- Add a single barrel export per domain if the codebase grows further.
+`storyVersions`, HTML entry-point names, section IDs, and `.step` indexing are compatibility boundaries. Preserve them unless a coordinated migration is intentional.

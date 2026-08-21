@@ -1,110 +1,103 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aorta Project - Dashboard</title>
-    <link rel="stylesheet" href="css/style.css?v=11">
-    <link rel="stylesheet" href="css/dashboard.css?v=8">
+    <title>The Aorta | Aorta Project</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body class="dashboard-page">
     <nav class="navbar">
         <a href="index.html" class="nav-logo">Aorta <span>Project</span></a>
-        <div class="navbar-right">
-            <ul class="nav-links" id="nav-links">
-                <li><a href="index.html" class="active">Dashboard</a></li>
-                <li><a href="scrollytelling-dissection.html">Option 1</a></li>
-                <li><a href="scrollytelling-aneurysm.html">Option 2</a></li>
-            </ul>
-            <button type="button" class="editor-toggle" aria-pressed="false">Editor</button>
-        </div>
-        <div class="nav-toggle" id="nav-toggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+        <div class="navbar-right"><ul class="nav-links"><li><a href="#overview" class="active">Overview</a></li><li><a href="#stories">Stories</a></li></ul></div>
+        <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false"><span></span><span></span><span></span></button>
     </nav>
+    <div class="nav-menu-mobile" id="nav-menu-mobile"><ul><li><a href="#overview">Overview</a></li><li><a href="#stories">Stories</a></li></ul></div>
 
-    <div class="nav-menu-mobile" id="nav-menu-mobile">
-        <ul>
-            <li><a href="index.html" class="active">Dashboard</a></li>
-            <li><a href="scrollytelling-dissection.html">Option 1</a></li>
-            <li><a href="scrollytelling-aneurysm.html">Option 2</a></li>
-        </ul>
-    </div>
-
-    <main class="dashboard-shell">
-        <section class="dashboard-heading" aria-labelledby="dashboard-title">
-            <p class="dashboard-kicker">Scrollytelling Router</p>
-            <h1 id="dashboard-title">Bitte waehlen Sie eine Story-Version</h1>
-            <p>Beide Optionen nutzen dieselbe 3D- und Scroll-Logik. Die medizinischen Inhalte sind getrennt modularisiert und koennen separat bearbeitet werden.</p>
+    <main>
+        <section class="overview-hero" id="overview" aria-labelledby="overview-title">
+            <div class="overview-copy"><h1 id="overview-title">The Aorta</h1><p>Two conditions, two journeys, one vital blood vessel.</p></div>
+            <div class="anatomy-explorer" aria-label="Interactive anatomy of the aorta">
+                <figure class="anatomy-figure">
+                    <img src="assets/story_images/aorta_body_outline_alpha_v1.png" alt="Subtle human torso outline with the heart and full aorta">
+                    <button class="anatomy-hotspot" type="button" style="--x: 51%; --y: 23%; --i: 0;" aria-label="Show aortic arch" data-title="Aortic Arch" data-copy="The aortic arch connects the ascending and descending sections. Major arteries branch from here to supply the head and arms."></button>
+                    <button class="anatomy-hotspot" type="button" style="--x: 48%; --y: 29%; --i: 1;" aria-label="Show ascending aorta" data-title="Ascending Aorta" data-copy="The ascending aorta begins directly at the heart and carries oxygen-rich blood toward the aortic arch."></button>
+                    <button class="anatomy-hotspot" type="button" style="--x: 54%; --y: 34%; --i: 2;" aria-label="Show heart" data-title="Heart" data-copy="The heart pumps blood into the aorta. The aortic root marks the transition between the left ventricle and the main artery."></button>
+                    <button class="anatomy-hotspot" type="button" style="--x: 51%; --y: 49%; --i: 3;" aria-label="Show descending thoracic aorta" data-title="Descending Thoracic Aorta" data-copy="This section runs through the chest along the spine and supplies structures including the chest wall."></button>
+                    <button class="anatomy-hotspot" type="button" style="--x: 51%; --y: 63%; --i: 4;" aria-label="Show abdominal aorta" data-title="Abdominal Aorta" data-copy="Below the diaphragm, the abdominal aorta supplies the organs of the abdomen and gives off several major side branches."></button>
+                    <button class="anatomy-hotspot" type="button" style="--x: 51%; --y: 75%; --i: 5;" aria-label="Show aortic bifurcation" data-title="Aortic Bifurcation" data-copy="In the lower abdomen, the aorta divides into the two iliac arteries, which supply blood to the pelvis and legs."></button>
+                </figure>
+                <aside class="anatomy-popover" id="anatomy-popover" hidden>
+                    <button class="popover-close" type="button" aria-label="Close information"></button>
+                    <h2></h2><p></p>
+                </aside>
+            </div>
         </section>
 
-        <section class="option-grid" aria-label="Story Auswahl">
-            <a class="option-card option-card-dissection" href="scrollytelling-dissection.html">
-                <span class="option-number">Option 1</span>
-                <h2>Aortendissektion</h2>
-                <p>Akute Wandspaltung, Symptome, Diagnose und Therapiepfad.</p>
-                <span class="option-action">Story starten</span>
-            </a>
-
-            <a class="option-card option-card-aneurysm" href="scrollytelling-aneurysm.html">
-                <span class="option-number">Option 2</span>
-                <h2>Aortenaneurysma</h2>
-                <p>Stumme Erweiterung, Risikofaktoren, Verlauf und Versorgung.</p>
-                <span class="option-action">Story starten</span>
-            </a>
+        <section class="story-index" id="stories" aria-labelledby="stories-title">
+            <header class="section-heading"><h2 id="stories-title">Two Stories</h2><p>Patient-centered narratives connect imaging, data, and medical decision-making.</p></header>
+            <article class="story-entry">
+                <img src="assets/story_images/alex_portrait_photoreal_v1.png" alt="Portrait of the fictional character Alex">
+                <div class="story-entry-copy"><h3>Alex</h3><p class="diagnosis-label">Aortic Aneurysm</p><p>A CT scan reveals that his aorta has widened. His story follows the question of when observation becomes treatment.</p><a href="scrollytelling-aneurysm.html">Start Alex's story <span aria-hidden="true">&rarr;</span></a></div>
+            </article>
+            <article class="story-entry story-entry-reverse">
+                <img src="assets/story_images/miriam_portrait_photoreal_v1.png" alt="Portrait of the fictional character Miriam">
+                <div class="story-entry-copy"><h3>Miriam</h3><p class="diagnosis-label">Aortic Dissection</p><p>An acute tear changes the path of blood through her aorta. Her story follows the vessel wall from the event into the chronic phase.</p><a href="scrollytelling-dissection.html">Start Miriam's story <span aria-hidden="true">&rarr;</span></a></div>
+            </article>
         </section>
+
     </main>
 
-    <footer class="main-footer">
-        <div class="footer-grid">
-            <div class="footer-section">
-                <h4>Aorta Project</h4>
-                <p>Eine interaktive Bildungsplattform zur Visualisierung von Aortenerkrankungen. Wir nutzen modernste Web-Technologien, um komplexe medizinische Sachverhalte verständlich zu machen.</p>
-            </div>
-            <div class="footer-section">
-                <h4>Navigation</h4>
-                <ul>
-                    <li><a href="index.html">Dashboard</a></li>
-                    <li><a href="scrollytelling.html">Story Übersicht</a></li>
-                    <li><a href="scrollytelling-dissection.html">Aortendissektion</a></li>
-                    <li><a href="scrollytelling-aneurysm.html">Aortenaneurysma</a></li>
-                    <li><a href="impressum.html">Impressum</a></li>
-                    <li><a href="datenschutz.html">Datenschutz</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Ressourcen</h4>
-                <ul>
-                    <li><a href="#">Medizinische Leitlinien</a></li>
-                    <li><a href="#">Anatomie-Guide</a></li>
-                    <li><a href="#">3D-Modell Dokumentation</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Kontakt</h4>
-                <p>Haben Sie Fragen oder Feedback?<br>support@aorta-project.de</p>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 Aorta Scrollytelling Project. Alle Rechte vorbehalten.</p>
-            <div class="footer-legal">
-                <a href="impressum.html">Impressum</a>
-                <a href="datenschutz.html">Datenschutz</a>
-            </div>
-        </div>
-    </footer>
+    <footer class="overview-footer"><span>Aorta Project</span><nav aria-label="Legal navigation"><a href="impressum.html">Imprint</a><a href="datenschutz.html">Privacy Policy</a></nav></footer>
 
     <script type="module">
-        import { ThemeManager } from './js/ui/ThemeManager.js';
+        import { ThemeManager } from './js/modules/ui/ThemeManager.js';
         new ThemeManager();
-
+        const popover = document.getElementById('anatomy-popover');
+        const hotspots = [...document.querySelectorAll('.anatomy-hotspot')];
+        const positionPopover = (hotspot) => {
+            if (window.matchMedia('(max-width: 760px)').matches) {
+                popover.style.removeProperty('--popover-y');
+                return;
+            }
+            const figure = hotspot.closest('.anatomy-figure');
+            const explorer = hotspot.closest('.anatomy-explorer');
+            const explorerRect = explorer.getBoundingClientRect();
+            const figureRect = figure.getBoundingClientRect();
+            const hotspotRect = hotspot.getBoundingClientRect();
+            const hotspotY = hotspotRect.top + (hotspotRect.height / 2) - explorerRect.top;
+            const halfHeight = popover.offsetHeight / 2;
+            const figureTop = figureRect.top - explorerRect.top;
+            const minY = figureTop + halfHeight + 8;
+            const maxY = figureTop + figureRect.height - halfHeight - 8;
+            popover.style.setProperty('--popover-y', `${Math.min(maxY, Math.max(minY, hotspotY))}px`);
+        };
+        hotspots.forEach((hotspot) => hotspot.addEventListener('click', () => {
+            const isCurrent = hotspot.classList.contains('active') && !popover.hidden;
+            hotspots.forEach((item) => { item.classList.remove('active'); item.setAttribute('aria-expanded', 'false'); });
+            if (isCurrent) { popover.hidden = true; return; }
+            hotspot.classList.add('active');
+            hotspot.setAttribute('aria-expanded', 'true');
+            popover.querySelector('h2').textContent = hotspot.dataset.title;
+            popover.querySelector('p').textContent = hotspot.dataset.copy;
+            popover.classList.toggle('is-left', Number.parseFloat(hotspot.style.getPropertyValue('--x')) > 55);
+            popover.hidden = false;
+            requestAnimationFrame(() => positionPopover(hotspot));
+            window.setTimeout(() => positionPopover(hotspot), 450);
+        }));
+        popover.querySelector('.popover-close').addEventListener('click', () => {
+            popover.hidden = true;
+            hotspots.forEach((item) => { item.classList.remove('active'); item.setAttribute('aria-expanded', 'false'); });
+        });
+        window.addEventListener('resize', () => {
+            const activeHotspot = document.querySelector('.anatomy-hotspot.active');
+            if (activeHotspot && !popover.hidden) positionPopover(activeHotspot);
+        });
         const navToggle = document.getElementById('nav-toggle');
         const navMenu = document.getElementById('nav-menu-mobile');
-        if (navToggle && navMenu) {
-            navToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
-        }
+        navToggle?.addEventListener('click', () => { const open = navMenu.classList.toggle('active'); navToggle.setAttribute('aria-expanded', String(open)); });
+        navMenu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => { navMenu.classList.remove('active'); navToggle.setAttribute('aria-expanded', 'false'); }));
     </script>
 </body>
 </html>

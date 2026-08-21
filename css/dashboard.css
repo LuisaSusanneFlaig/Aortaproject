@@ -1,162 +1,106 @@
-body.light-mode .dashboard-page {
-    background: #f5f5f7;
+.dashboard-page { background: var(--color-bg); color: var(--color-text); }
+.dashboard-page main { overflow: hidden; }
+.overview-hero, .story-index, .topic-index { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+.overview-hero { min-height: 100vh; padding: calc(var(--nav-height) + clamp(54px, 8vw, 104px)) 0 clamp(72px, 9vw, 112px); display: flex; flex-direction: column; align-items: center; }
+.overview-copy { text-align: center; max-width: 720px; }
+.overview-copy h1 { margin: 0; font-size: clamp(3rem, 7vw, 6rem); font-weight: 500; line-height: 1; }
+.overview-copy p, .section-heading p, .story-entry-copy > p:not(.diagnosis-label), .state-description p { color: color-mix(in srgb, var(--color-text) 68%, transparent); line-height: 1.65; }
+.overview-copy p { margin: 22px 0 0; font-size: clamp(1rem, 2vw, 1.25rem); }
+.anatomy-explorer { position: relative; width: min(920px, 100%); margin-top: clamp(24px, 4vw, 42px); }
+.anatomy-figure { position: relative; width: min(680px, 100%); aspect-ratio: 1 / 1; margin: 0 auto; overflow: hidden; }
+.anatomy-figure img { position: absolute; left: 0; top: 0; display: block; width: 100%; height: auto; transform: translateY(-14%); clip-path: inset(0 0 100% 0); animation: anatomy-reveal 1.15s cubic-bezier(.22,.75,.2,1) .15s forwards; }
+.anatomy-hotspot { position: absolute; left: var(--x); top: var(--y); width: 30px; height: 30px; padding: 0; border: 2px solid var(--color-accent); border-radius: 50%; background: color-mix(in srgb, var(--color-bg) 88%, transparent); color: var(--color-accent); box-shadow: none; opacity: 0; transform: translate(-50%, -42%) scale(.72); animation: hotspot-enter .4s ease calc(.9s + var(--i) * .1s) forwards; cursor: pointer; z-index: 2; }
+.anatomy-hotspot::before, .anatomy-hotspot::after { content: ''; position: absolute; left: 50%; top: 50%; width: 11px; height: 2px; border-radius: 2px; background: currentColor; transform: translate(-50%, -50%); }
+.anatomy-hotspot::after { transform: translate(-50%, -50%) rotate(90deg); transition: transform .2s ease; }
+.anatomy-hotspot:hover, .anatomy-hotspot:focus-visible { background: color-mix(in srgb, var(--color-accent) 12%, var(--color-bg)); outline: 3px solid color-mix(in srgb, var(--color-accent) 22%, transparent); outline-offset: 3px; }
+.anatomy-hotspot.active { background: var(--color-accent); color: #fff; outline: 4px solid color-mix(in srgb, var(--color-accent) 24%, transparent); outline-offset: 3px; animation: hotspot-enter .4s ease forwards, hotspot-pulse 2.1s ease-in-out .25s infinite; }
+.anatomy-hotspot.active::after { transform: translate(-50%, -50%) rotate(0); }
+.anatomy-popover { position: absolute; right: 0; top: var(--popover-y, 34%); width: min(300px, 36%); padding: 24px 48px 24px 24px; border: 1px solid color-mix(in srgb, var(--color-text) 16%, transparent); border-radius: 6px; background: color-mix(in srgb, var(--color-bg) 94%, transparent); backdrop-filter: blur(18px); box-shadow: 0 18px 50px color-mix(in srgb, #000 18%, transparent); transform: translateY(-50%); z-index: 4; }
+.anatomy-popover.is-left { left: 0; right: auto; }
+.anatomy-popover::before { content: ''; position: absolute; left: -36px; top: 50%; width: 36px; height: 1px; background: var(--color-accent); }
+.anatomy-popover.is-left::before { left: auto; right: -36px; }
+.anatomy-popover[hidden] { display: none; }
+.anatomy-popover h2 { margin: 0 0 10px; font-size: 1.25rem; font-weight: 500; }
+.anatomy-popover p { margin: 0; color: color-mix(in srgb, var(--color-text) 68%, transparent); font-size: .95rem; line-height: 1.55; }
+.popover-close { position: absolute; top: 12px; right: 12px; width: 30px; height: 30px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--color-text); cursor: pointer; }
+.popover-close::before, .popover-close::after { content: ''; position: absolute; left: 50%; top: 50%; width: 14px; height: 1.5px; background: currentColor; transform: translate(-50%, -50%) rotate(45deg); }
+.popover-close::after { transform: translate(-50%, -50%) rotate(-45deg); }
+@keyframes anatomy-reveal { to { clip-path: inset(0 0 0 0); } }
+@keyframes hotspot-enter { to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+@keyframes hotspot-pulse { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-accent) 26%, transparent); } 50% { box-shadow: 0 0 0 8px color-mix(in srgb, var(--color-accent) 0%, transparent); } }
+.aorta-switcher { width: min(880px, 100%); margin-top: clamp(38px, 6vw, 68px); }
+.state-control { width: fit-content; margin: 0 auto 22px; padding: 4px; display: flex; gap: 2px; border: 1px solid color-mix(in srgb, var(--color-text) 16%, transparent); border-radius: 8px; }
+.state-button { min-height: 38px; padding: 0 18px; border: 0; border-radius: 5px; background: transparent; color: color-mix(in srgb, var(--color-text) 62%, transparent); font: inherit; cursor: pointer; }
+.state-button.active { background: var(--color-text); color: var(--color-bg); }
+.aorta-stage { position: relative; width: 100%; height: clamp(350px, 48vw, 520px); border-block: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent); overflow: hidden; }
+.aorta-state-panel { position: absolute; inset: 0; margin: 0; display: grid; place-items: center; opacity: 0; visibility: hidden; transform: scale(.985); transition: opacity .4s ease, transform .4s ease, visibility .4s; }
+.aorta-state-panel.active { opacity: 1; visibility: visible; transform: scale(1); }
+.aorta-state-panel > img { width: min(680px, 86%); height: 88%; object-fit: contain; }
+.aorta-state-panel.medical-state > img { width: min(540px, 78%); height: 82%; }
+.overview-model { width: 100%; height: 100%; min-height: 0; background: transparent; }
+.aorta-state-panel[data-state-panel="healthy"] .overview-model { width: min(520px, 100%); }
+.overview-model canvas { width: 100% !important; height: 100% !important; }
+.state-descriptions { min-height: 104px; margin-top: 24px; text-align: center; }
+.state-description { display: none; max-width: 660px; margin: 0 auto; }
+.state-description.active { display: block; }
+.state-description strong { font-size: clamp(1.1rem, 2.2vw, 1.4rem); font-weight: 500; }
+.state-description p { margin: 8px 0 0; }
+.story-index, .topic-index { padding: clamp(72px, 10vw, 128px) 0; border-top: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent); }
+.section-heading { max-width: 720px; margin-bottom: clamp(44px, 7vw, 80px); }
+.section-heading h2 { margin: 0; font-size: clamp(2rem, 5vw, 4rem); font-weight: 500; }
+.section-heading p { margin: 16px 0 0; font-size: 1.05rem; }
+.story-entry { display: grid; grid-template-columns: minmax(240px, .72fr) minmax(0, 1.28fr); align-items: center; gap: clamp(36px, 8vw, 104px); padding: clamp(36px, 6vw, 72px) 0; border-top: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent); }
+.story-entry-reverse img { grid-column: 2; }
+.story-entry-reverse .story-entry-copy { grid-column: 1; grid-row: 1; }
+.story-entry img { width: min(330px, 100%); aspect-ratio: 4 / 5; object-fit: cover; object-position: center 30%; border-radius: 6px; }
+.story-entry-copy h3 { margin: 0; font-size: clamp(2.2rem, 5vw, 4.5rem); font-weight: 500; }
+.diagnosis-label { margin: 8px 0 28px; color: var(--color-accent); font-weight: 500; }
+.story-entry-copy > p:not(.diagnosis-label) { max-width: 58ch; margin: 0 0 28px; font-size: 1.05rem; }
+.story-entry-copy a, .topic-links a, .overview-footer a { color: var(--color-text); text-decoration: none; }
+.story-entry-copy a { display: inline-flex; gap: 12px; align-items: center; padding-bottom: 7px; border-bottom: 1px solid var(--color-accent); font-weight: 500; }
+.topic-index { padding-bottom: clamp(96px, 12vw, 160px); }
+.topic-links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid color-mix(in srgb, var(--color-text) 16%, transparent); }
+.topic-links a { padding: 24px 4px; border-bottom: 1px solid color-mix(in srgb, var(--color-text) 16%, transparent); font-size: clamp(1.1rem, 2vw, 1.35rem); transition: color .2s ease, padding-left .2s ease; }
+.topic-links a:hover { color: var(--color-accent); padding-left: 10px; }
+.overview-footer { min-height: 90px; padding: 28px max(20px, calc((100vw - 1120px) / 2)); display: flex; justify-content: space-between; gap: 24px; border-top: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent); color: color-mix(in srgb, var(--color-text) 62%, transparent); }
+.overview-footer nav { display: flex; gap: 24px; }
+.dashboard-page .nav-toggle { padding: 8px; border: 0; background: transparent; color: var(--color-text); }
+@media (max-width: 760px) {
+  .overview-hero, .story-index, .topic-index { width: min(calc(100% - 32px), 1120px); }
+  .overview-hero { align-items: stretch; } .overview-copy { text-align: left; }
+  .anatomy-figure { width: min(100%, 480px); }
+  .anatomy-hotspot { width: 32px; height: 32px; }
+  .anatomy-popover { position: relative; top: auto; right: auto; width: 100%; margin-top: 16px; transform: none; }
+  .anatomy-popover::before { display: none; }
+  .state-control { width: 100%; } .state-button { flex: 1; min-width: 0; padding: 0 8px; font-size: .875rem; }
+  .aorta-stage { height: 360px; } .state-descriptions { text-align: left; }
+  .story-entry, .story-entry-reverse { grid-template-columns: 1fr; gap: 28px; }
+  .story-entry img, .story-entry-reverse img { grid-column: 1; grid-row: auto; width: min(240px, 78vw); }
+  .story-entry-copy, .story-entry-reverse .story-entry-copy { grid-column: 1; grid-row: auto; }
+  .topic-links { grid-template-columns: 1fr; } .overview-footer { flex-direction: column; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aorta-state-panel, .topic-links a { transition: none; }
+  .anatomy-figure img { clip-path: none; animation: none; }
+  .anatomy-hotspot, .anatomy-hotspot.active { opacity: 1; transform: translate(-50%, -50%) scale(1); animation: none; }
 }
 
-body.light-mode .option-card {
-    background: rgba(255, 255, 255, 0.8);
-    border-color: rgba(0, 0, 0, 0.08);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-}
+/* Larger content hierarchy for the overview page. */
+.overview-copy h1 { font-size: 6.5rem; }
+.overview-copy p { font-size: 1.35rem; }
+.anatomy-popover h2 { font-size: 1.4rem; }
+.anatomy-popover p { font-size: 1.05rem; }
+.state-description strong { font-size: 1.55rem; }
+.state-description p, .section-heading p, .story-entry-copy > p:not(.diagnosis-label) { font-size: 1.15rem; }
+.section-heading h2 { font-size: 4.4rem; }
+.story-entry-copy h3 { font-size: 4.8rem; }
+.diagnosis-label { font-size: 1.1rem; }
+.topic-links a { font-size: 1.45rem; }
 
-body.light-mode .option-card::before {
-    background: repeating-linear-gradient(90deg, rgba(0,0,0,0.02) 0 1px, transparent 1px 42px);
-}
-
-body.light-mode .option-card:hover {
-    background: #fff;
-    border-color: var(--accent-red);
-}
-
-body.light-mode .option-action {
-    color: #000;
-}
-
-.dashboard-page {
-    min-height: 100vh;
-    background:
-        radial-gradient(circle at 18% 18%, rgba(255, 68, 68, 0.18), transparent 28%),
-        radial-gradient(circle at 82% 22%, rgba(0, 212, 255, 0.16), transparent 30%),
-        linear-gradient(135deg, #050505 0%, #101012 45%, #050505 100%);
-}
-
-.dashboard-shell {
-    min-height: 100vh;
-    padding: calc(var(--nav-height) + 48px) 6vw 56px;
-    display: grid;
-    grid-template-columns: minmax(280px, 0.8fr) minmax(360px, 1.2fr);
-    gap: 48px;
-    align-items: center;
-}
-
-.dashboard-heading {
-    max-width: 620px;
-}
-
-.dashboard-kicker,
-.option-number {
-    color: var(--accent-red);
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-}
-
-.dashboard-heading h1 {
-    margin: 14px 0 20px;
-    font-size: clamp(2.4rem, 5vw, 5rem);
-    line-height: 1;
-    letter-spacing: 0;
-}
-
-.dashboard-heading p {
-    color: var(--text-dim);
-    font-size: 1.08rem;
-    line-height: 1.7;
-    max-width: 560px;
-}
-
-.option-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px;
-}
-
-.option-card {
-    min-height: 360px;
-    padding: 28px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 8px;
-    background: rgba(15, 15, 15, 0.78);
-    color: var(--text-main);
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
-}
-
-.option-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-        linear-gradient(160deg, rgba(255, 255, 255, 0.08), transparent 38%),
-        repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 42px);
-    opacity: 0.55;
-    pointer-events: none;
-}
-
-.option-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(255, 255, 255, 0.32);
-    background: rgba(25, 25, 25, 0.88);
-}
-
-.option-card h2,
-.option-card p,
-.option-card span {
-    position: relative;
-    z-index: 1;
-}
-
-.option-card h2 {
-    margin: auto 0 16px;
-    font-size: clamp(1.45rem, 2.2vw, 2rem);
-    line-height: 1.08;
-    letter-spacing: 0;
-    overflow-wrap: anywhere;
-}
-
-.option-card p {
-    margin: 0 0 28px;
-    color: var(--text-dim);
-    line-height: 1.6;
-}
-
-.option-action {
-    align-self: flex-start;
-    padding-top: 16px;
-    border-top: 2px solid currentColor;
-    color: #ffffff;
-    font-size: 0.86rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-}
-
-.option-card-aneurysm .option-number {
-    color: var(--accent-blue);
-}
-
-@media (max-width: 980px) {
-    .dashboard-shell {
-        grid-template-columns: 1fr;
-        align-items: start;
-    }
-}
-
-@media (max-width: 680px) {
-    .dashboard-shell {
-        padding: calc(var(--nav-height) + 32px) 20px 36px;
-    }
-
-    .option-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .option-card {
-        min-height: 260px;
-    }
+@media (max-width: 760px) {
+  .overview-copy h1 { font-size: 3.75rem; }
+  .overview-copy p { font-size: 1.2rem; }
+  .section-heading h2 { font-size: 2.65rem; }
+  .story-entry-copy h3 { font-size: 2.9rem; }
+  .topic-links a { font-size: 1.3rem; }
 }

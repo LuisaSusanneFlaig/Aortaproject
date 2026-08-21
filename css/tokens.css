@@ -1,0 +1,19 @@
+@layer tokens {
+    :root {
+        /* Safe first-stop controls for humans and coding models. */
+        --story-content-max: 980px;
+        --chapter-opener-min-height: clamp(380px, 62svh, 680px);
+        --chapter-opener-icon-size: 4.75rem;
+        --chapter-opener-title-size: clamp(4rem, 9vw, 7.5rem);
+        --chapter-opener-glow-size: min(72vw, 760px);
+        --chapter-opener-rule-width: clamp(100px, 18vw, 210px);
+    }
+
+    @media (max-width: 820px) {
+        :root {
+            --chapter-opener-min-height: clamp(300px, 48svh, 460px);
+            --chapter-opener-icon-size: 4rem;
+            --chapter-opener-title-size: clamp(3rem, 15vw, 5rem);
+        }
+    }
+}

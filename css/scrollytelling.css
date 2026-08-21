@@ -31,22 +31,11 @@ body:not(.light-mode) .editor-nav-card input {
 
 /* Specific Scrollytelling Light Mode Overrides */
 body.light-mode .scrolly-layout .right-column {
-    background:
-        radial-gradient(circle at 56% 44%, rgba(0, 113, 227, 0.08), transparent 28%),
-        radial-gradient(circle at 76% 24%, rgba(215, 0, 21, 0.06), transparent 24%),
-        #f5f5f7;
+    background: #f5f5f7;
 }
 
 body.light-mode .scrolly-layout .right-column::before {
-    background:
-        linear-gradient(90deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.1) 22%, transparent 48%),
-        linear-gradient(0deg, rgba(255, 255, 255, 0.4), transparent 22%, transparent 74%, rgba(255, 255, 255, 0.2));
-}
-
-body.light-mode .text-box {
-    background: rgba(255, 255, 255, 0.95); /* Increased opacity for better readability */
-    border-color: rgba(0, 0, 0, 0.15);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    background: rgba(245, 245, 247, 0.68);
 }
 
 body.light-mode .text-box p,
@@ -58,19 +47,17 @@ body.light-mode .text-box .info-heading {
     color: #000;
 }
 
+body.light-mode .text-box h2,
+body.light-mode .text-box .story-pull-quote {
+    color: #111;
+}
 
-body.light-mode .visual-status {
-    background: rgba(255, 255, 255, 0.7);
-    border-color: rgba(0, 0, 0, 0.05);
+body.light-mode .text-box {
+    box-shadow: none;
 }
 
 body.light-mode .visual-status-title {
     color: #000;
-}
-
-body.light-mode .mini-chart {
-    background: rgba(0, 0, 0, 0.03);
-    border-color: rgba(0, 0, 0, 0.08);
 }
 
 body.light-mode .mini-chart-head strong,
@@ -85,29 +72,27 @@ body.light-mode .bar-track {
     background: rgba(0, 0, 0, 0.08);
 }
 
-body.light-mode .stats-box {
-    background: rgba(0, 0, 0, 0.03);
-    border-color: rgba(0, 0, 0, 0.08);
-}
-
 body.light-mode .stats-box strong { color: #000; }
 body.light-mode .stats-box span { color: #444; }
+body.light-mode .stats-box .stats-kicker { color: #a22b2b; }
 
 body {
     background-color: var(--bg-dark);
     margin: 0;
     overflow-x: hidden;
-    font-family: system-ui, -apple-system, sans-serif;
+    font-family: 'Roboto', Arial, sans-serif;
 }
 
 /* Layout */
 .scrolly-layout {
-    display: flex;
+    display: block;
     width: 100%;
-    transition: width 0.3s ease;
+    position: relative;
+    min-height: 100vh;
 
     .left-column {
-        width: min(42%, 620px);
+        width: min(100%, 980px);
+        margin: 0 auto;
         position: relative;
         z-index: 2;
         padding-top: var(--nav-height);
@@ -115,15 +100,12 @@ body {
     }
 
     .right-column {
-        flex: 1;
+        position: fixed;
+        inset: 0;
+        width: 100%;
         height: 100vh;
-        position: sticky;
-        top: 0;
-        z-index: 1;
-        background:
-            radial-gradient(circle at 56% 44%, rgba(255, 68, 68, 0.14), transparent 28%),
-            radial-gradient(circle at 76% 24%, rgba(0, 212, 255, 0.12), transparent 24%),
-            #000;
+        z-index: 0;
+        background: #080708;
         overflow: hidden;
         transition: opacity 0.4s ease, transform 0.4s ease;
 
@@ -131,9 +113,7 @@ body {
             content: '';
             position: absolute;
             inset: 0;
-            background:
-                linear-gradient(90deg, rgba(5, 5, 5, 0.58) 0%, rgba(5, 5, 5, 0.08) 22%, transparent 48%),
-                linear-gradient(0deg, rgba(5, 5, 5, 0.48), transparent 22%, transparent 74%, rgba(5, 5, 5, 0.36));
+            background: rgba(8, 7, 8, 0.38);
             pointer-events: none;
             z-index: 2;
         }
@@ -141,19 +121,16 @@ body {
 
     &.is-full-layout {
         .left-column {
-            width: 100%;
-            max-width: none;
+            width: min(100%, 1180px);
         }
         .right-column {
-            opacity: 0;
-            pointer-events: none;
-            transform: translateX(20px);
+            opacity: 0.22;
         }
     }
 
     &.has-2-cols:not(.is-full-layout) {
         .left-column {
-            width: min(65%, 980px);
+            width: min(100%, 1180px);
         }
     }
 }
@@ -203,160 +180,217 @@ body {
     }
 }
 
-/* Widget Grid - Site Style */
-/* Moved to editor-ui.css */
-
-.editor-mode {
-    .scrolly-layout, .navbar {
-        width: calc(100% - 340px);
-    }
-}
-
-/* Story Elements & Editor Overlays */
-.element-wrapper {
-    position: relative;
-    transition: outline 0.2s ease;
-
-    .editor-mode &:hover {
-        outline: 1px solid rgba(0, 212, 255, 0.4);
-        outline-offset: 10px;
-        border-radius: 4px;
-
-        & > .editor-element-toolbar {
-            display: flex;
-        }
-    }
-
-    &.is-selected {
-        outline: 2px solid var(--accent-red);
-        outline-offset: 8px;
-        border-radius: 4px;
-        background: rgba(0, 212, 255, 0.04);
-    }
-}
-
-.editor-element-toolbar {
-    position: absolute;
-    top: -28px;
-    right: 0;
-    display: none;
-    gap: 4px;
-    background: var(--accent-red);
-    padding: 2px 4px;
-    border-radius: 4px 4px 0 0;
-    z-index: 100;
-    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
-
-    .element-toolbar-btn {
-        width: 24px;
-        height: 24px;
-        border: 0;
-        border-radius: 3px;
-        background: transparent;
-        color: #000;
-        font-size: 0.9rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: background 0.15s ease;
-
-        &:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        &.delete:hover {
-            background: var(--accent-red);
-            color: #fff;
-        }
-    }
-}
-
-/* Drag & Drop Visuals */
-.editor-drop-indicator {
-    height: 4px;
-    background: var(--accent-red);
-    box-shadow: 0 0 10px var(--accent-red);
-    border-radius: 2px;
-    margin: 8px 0;
-    pointer-events: none;
-    position: relative;
-
-    &::before {
-        content: '';
-        position: absolute;
-        left: -6px;
-        top: -4px;
-        width: 12px;
-        height: 12px;
-        background: var(--accent-red);
-        border-radius: 50%;
-    }
-}
-
-.step.editor-drop-target {
-    .text-box {
-        outline: 2px solid var(--accent-red);
-        background: rgba(0, 212, 255, 0.08);
-    }
-}
-
 /* Content Styling (The "Infocard") */
 #story {
     padding: 0; 
 }
 
 .step {
-    min-height: 145vh;
+    min-height: 78vh;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     scroll-margin-top: var(--nav-height);
-    padding: 0 46px; /* Uniform left/right padding */
+    padding: clamp(28px, 4vh, 44px) clamp(18px, 4vw, 56px);
 
     &:first-of-type {
-        align-items: flex-start;
-        min-height: 120vh;
-        padding-top: clamp(36px, 7vh, 72px);
+        align-items: center;
+        min-height: 100vh;
+        padding-top: clamp(36px, 6vh, 64px);
     }
 
     &.active .text-box {
         opacity: 1;
-        transform: translateY(0) scale(1);
-        border-color: rgba(255, 68, 68, 0.36);
+        transform: translateY(0);
     }
     
     &:not(.active) .text-box {
-        opacity: 0.24;
+        opacity: 0.8;
+        transform: translateY(6px);
     }
 }
 
 .step.layout-full {
-    justify-content: flex-start; /* Ensure left-alignment is maintained */
+    justify-content: center;
     width: 100%;
-    
+
     .text-box {
-        width: 520px; /* Force uniform width even in full layout */
+        width: min(900px, 100%);
         max-width: 100%;
     }
+}
+
+.step.model-section {
+    min-height: auto;
+    padding-block: clamp(52px, 7vh, 88px);
+
+    .text-box,
+    &.active .text-box,
+    &:not(.active) .text-box {
+        width: min(1000px, 100%);
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.inline-model-figure {
+    margin: 0 0 30px;
+}
+
+.inline-model-viewer {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 6px;
+    background: radial-gradient(circle at 52% 45%, rgba(255, 80, 88, 0.12), transparent 48%), #070708;
+    cursor: grab;
+    touch-action: pan-y;
+
+    &:active {
+        cursor: grabbing;
+    }
+
+    canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.inline-model-loading {
+    position: absolute;
+    inset: 50% auto auto 50%;
+    width: 34px;
+    height: 34px;
+    margin: -17px 0 0 -17px;
+    border: 2px solid rgba(255, 255, 255, 0.14);
+    border-top-color: var(--accent-red);
+    border-radius: 50%;
+    animation: inline-model-spin 0.8s linear infinite;
+    pointer-events: none;
+}
+
+.inline-model-viewer.is-loaded .inline-model-loading,
+.inline-model-viewer.has-error .inline-model-loading {
+    display: none;
+}
+
+.inline-model-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 22px;
+    margin-top: 10px;
+}
+
+.inline-model-figure figcaption {
+    color: rgba(255, 255, 255, 0.56);
+    font-size: 0.78rem;
+}
+
+.wall-layer-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px 14px;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.75rem;
+
+    span {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        white-space: nowrap;
+    }
+
+    i {
+        width: 10px;
+        height: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        border-radius: 2px;
+    }
+
+    .intima { background: #69c8dc; }
+    .media { background: #cf3550; }
+    .adventitia { background: #e3b357; }
+}
+
+body.light-mode .inline-model-viewer {
+    border-color: rgba(0, 0, 0, 0.12);
+}
+
+body.light-mode .inline-model-figure figcaption {
+    color: rgba(0, 0, 0, 0.58);
+}
+
+body.light-mode .wall-layer-legend {
+    color: rgba(0, 0, 0, 0.68);
+}
+
+@media (max-width: 560px) {
+    .inline-model-meta {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .wall-layer-legend {
+        justify-content: flex-start;
+    }
+}
+
+@keyframes inline-model-spin {
+    to { transform: rotate(360deg); }
 }
 
 .text-box.cols-2 {
     width: min(1300px, 95%);
     max-width: none;
-    
-    /* Support grid layout for elements inside */
-    & > h2 { grid-column: 1 / -1; } /* Header always spans both columns */
-    
-    /* We need to apply grid to the elements list area */
+
+    & > h2 { grid-column: 1 / -1; }
+
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px 40px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 18px 36px;
+    grid-auto-flow: dense;
     align-items: start;
-    
-    /* Default full-width for specific elements if needed */
-    .mini-chart { grid-column: span 1; }
-    .info-image { grid-column: span 1; }
+}
+
+/* Generic 2-col placement: image left, text right, wide components full-width */
+:where(.text-box.cols-2) .element-image {
+    grid-column: 1;
+    align-self: start;
+}
+
+:where(.text-box.cols-2) .element-text,
+:where(.text-box.cols-2) .element-pullQuote {
+    grid-column: 2;
+    align-self: start;
+    max-width: 54ch;
+}
+
+:where(.text-box.cols-2) .element-stat,
+:where(.text-box.cols-2) .element-chart,
+:where(.text-box.cols-2) .element-symptomBars,
+:where(.text-box.cols-2) .element-diagnosticPath,
+:where(.text-box.cols-2) .element-treatmentDecision,
+:where(.text-box.cols-2) .element-treatmentSteps,
+:where(.text-box.cols-2) .element-treatmentBalance,
+:where(.text-box.cols-2) .element-preventionTimeline,
+:where(.text-box.cols-2) .element-imagingComparison,
+:where(.text-box.cols-2) .element-aorticStat,
+:where(.text-box.cols-2) .element-aneurysmBurden,
+:where(.text-box.cols-2) .element-aneurysmGrowth,
+:where(.text-box.cols-2) .element-aneurysmSexRisk,
+:where(.text-box.cols-2) .element-aneurysmRiskDrivers,
+:where(.text-box.cols-2) .element-pairedPrognosis,
+:where(.text-box.cols-2) .element-closingStatement,
+:where(.text-box.cols-2) .element-reference,
+:where(.text-box.cols-2) .element-video,
+:where(.text-box.cols-2) .element-inlineModel,
+:where(.text-box.cols-2) .element-modelPlaceholder {
+    grid-column: 1 / -1;
 }
 
 @media (max-width: 1100px) {
@@ -366,78 +400,47 @@ body {
     }
 }
 
-/* If we are in layout-full, we want to expand the left column or at least the text box */
-.left-column:has(.step.active.layout-full) {
-    width: 100%;
-    max-width: none;
-}
-
-.right-column:has(~ .left-column .step.active.layout-full) {
-    opacity: 0;
-    pointer-events: none;
-}
-
-/* Alternative approach if :has is not supported well enough or structure is different */
-.step.active.layout-full ~ .right-column {
-    opacity: 0;
-}
-/* Wait, right-column is BEFORE left-column in some layouts, or after? */
-/* Check scrollytelling.css again */
-
-
 .text-box {
     position: relative;
-    margin-left: 0;
-    background: rgba(12, 12, 14, 0.8);
-    backdrop-filter: blur(18px);
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    padding: 40px;
+    width: min(860px, 100%);
+    margin: 0 auto;
+    background: color-mix(in srgb, var(--color-bg) 55%, transparent);
+    backdrop-filter: blur(12px);
     border-radius: 8px;
+    padding: clamp(28px, 4vw, 46px);
     max-width: 100%;
     text-align: left;
-    box-shadow: 0 24px 70px rgba(0,0,0,0.48);
+    box-shadow: 0 20px 50px color-mix(in srgb, #000 22%, transparent);
     transition: opacity 0.45s ease, transform 0.45s ease, border-color 0.45s ease;
-    opacity: 0;
-    transform: translateY(24px) scale(0.985);
+    opacity: 0.8;
+    transform: translateY(6px);
 
-
-    &.is-selected {
-        outline: 2px solid var(--accent-red);
-        outline-offset: 8px;
-        border-radius: 4px;
-        background-color: rgba(255, 68, 68, 0.08) !important;
+    &.content-text {
+        width: min(860px, 100%);
     }
 
-    .editor-mode &:hover:not(.is-selected) {
-        border-color: rgba(0, 212, 255, 0.4);
-        cursor: pointer;
-        
-        &::after {
-            content: 'Sektion bearbeiten';
-            position: absolute;
-            top: -24px;
-            left: 0;
-            background: var(--accent-blue);
-            color: #000;
-            font-size: 0.65rem;
-            font-weight: 800;
-            padding: 2px 8px;
-            border-radius: 4px;
-            text-transform: uppercase;
-        }
+    &.content-data {
+        width: min(880px, 100%);
+    }
+
+    &.content-media,
+    &.cols-2 {
+        width: min(1000px, 100%);
     }
 
     h2 {
-        font-size: clamp(1.32rem, 1.7vw, 1.72rem);
-        margin-bottom: 1.05rem;
-        color: var(--accent-red);
-        text-transform: uppercase;
+        font-size: clamp(2.25rem, 3.3vw, 3rem);
+        margin: 0 0 1.5rem;
+        color: #fff;
+        text-transform: none;
         letter-spacing: 0;
-        line-height: 1.2;
+        line-height: 1.12;
+        border-left: 3px solid var(--color-accent);
+        padding-left: 18px;
     }
 
     p {
-        font-size: clamp(1rem, 1.05vw, 1.08rem);
+        font-size: clamp(1.05rem, 1.15vw, 1.16rem);
         line-height: 1.72;
         color: rgba(255, 255, 255, 0.9);
         margin: 0 0 1rem;
@@ -448,16 +451,17 @@ body {
     }
 
     .info-heading {
-        margin: 1.15rem 0 0.7rem;
+        margin: 1.4rem 0 0.75rem;
         color: #fff;
-        font-size: clamp(1.02rem, 1.18vw, 1.18rem);
+        font-size: clamp(1.12rem, 1.35vw, 1.28rem);
         font-weight: 800;
         line-height: 1.28;
     }
 
     .info-text {
-        padding-left: 14px;
-        border-left: 3px solid rgba(0, 212, 255, 0.56);
+        max-width: 72ch;
+        padding-left: 0;
+        border-left: 0;
         color: rgba(255, 255, 255, 0.84);
     }
 
@@ -465,15 +469,24 @@ body {
         margin: 1.5rem 0;
         width: 100%;
         overflow: hidden;
-        border-radius: 8px;
+        border-radius: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: #08090a;
     }
 
     .info-image img {
         width: 100%;
         height: auto;
         display: block;
-        object-fit: cover;
-        box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+        object-fit: contain;
+        background: #08090a;
+    }
+
+    .info-image figcaption {
+        padding: 10px 12px 12px;
+        color: rgba(255, 255, 255, 0.58);
+        font-size: 0.74rem;
+        line-height: 1.35;
     }
 
     .icon-list {
@@ -493,55 +506,1332 @@ body {
     }
 }
 
-/* Stats Box Element */
-.stats-box {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 8px;
+.text-box .story-pull-quote {
+    margin: 4px 0 24px;
+    padding: 0;
+    border: 0;
+    color: #f4f1f1;
+    font-size: clamp(1.75rem, 3vw, 2.55rem);
+    font-weight: 720;
+    line-height: 1.18;
+}
+
+.story-intro .text-box.cols-2 {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 16px 48px;
+}
+
+.story-intro .element-wrapper {
+    grid-column: 2;
+}
+
+.story-intro .element-image {
+    grid-column: 1;
+    grid-row: 2 / span 6;
+    align-self: start;
+}
+
+.info-image img,
+.imaging-panel img {
+    transform: scale(0.985);
+    transition: transform 0.42s ease;
+}
+
+.step.active .info-image img,
+.step.active .imaging-panel img {
+    transform: scale(1);
+}
+
+@media (max-width: 1100px) {
+    .text-box.cols-2,
+    .story-intro .text-box.cols-2 {
+        grid-template-columns: 1fr;
+    }
+
+    .text-box.cols-2 > h2,
+    .story-intro .element-wrapper,
+    .story-intro .element-image {
+        grid-column: 1;
+        grid-row: auto;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .text-box,
+    .right-column,
+    .info-image img,
+    .imaging-panel img {
+        transition: none !important;
+        transform: none !important;
+    }
+}
+
+@media (max-width: 820px) {
+    body[data-story-version="aneurysm"] .alex-consultation-section .text-box.cols-2,
+    body[data-story-version="dissection"] .miriam-consultation-section .text-box.cols-2,
+    body[data-story-version="aneurysm"] .alex-aorta-model-section[data-scroll-mode="sticky"] .text-box,
+    body[data-story-version="aneurysm"] .alex-flow-section[data-scroll-mode="sticky"] .text-box,
+    body[data-story-version="aneurysm"] .alex-imaging-section[data-scroll-mode="comparison"] .text-box,
+    body[data-story-version="dissection"] .evidence-section[data-scroll-mode="comparison"] .text-box {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+
+    body[data-story-version="aneurysm"] .alex-consultation-section .text-box > *,
+    body[data-story-version="dissection"] .miriam-consultation-section .text-box > *,
+    body[data-story-version="aneurysm"] .alex-aorta-model-section .text-box > *,
+    body[data-story-version="aneurysm"] .alex-flow-section .text-box > *,
+    body[data-story-version="aneurysm"] .alex-imaging-section[data-scroll-mode="comparison"] .text-box > *,
+    body[data-story-version="dissection"] .evidence-section[data-scroll-mode="comparison"] .text-box > * {
+        grid-column: 1 !important;
+        grid-row: auto !important;
+        min-width: 0;
+    }
+
+    body[data-story-version="dissection"] .evidence-section[data-scroll-mode="comparison"] .element-imagingComparison {
+        position: relative;
+        top: auto;
+    }
+}
+
+@media (max-width: 820px) {
+    .right-column {
+        display: none;
+    }
+}
+
+/* Self-hosted Material Symbols subset for plain-language visual cues. */
+@font-face {
+    font-family: 'Material Symbols Rounded';
+    font-style: normal;
+    font-weight: 400;
+    font-display: block;
+    src: url('../vendor/material-symbols/story-icons.ttf') format('truetype');
+}
+
+.material-symbols-rounded.story-material-icon {
+    display: inline-block;
+    width: 1em;
+    overflow: hidden;
+    font-family: 'Material Symbols Rounded';
+    font-size: 1.4rem;
+    font-style: normal;
+    font-weight: 400;
+    font-feature-settings: 'liga';
+    line-height: 1;
+    letter-spacing: 0;
+    text-transform: none;
+    white-space: nowrap;
+}
+
+body[data-story-version] .step .stats-box {
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
+}
+
+body[data-story-version] .step .stats-icon {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    color: var(--color-accent);
+}
+
+body[data-story-version] .step .stats-icon .story-material-icon {
+    font-size: 2.65rem;
+}
+
+body[data-story-version] .step .stat-icon-svg {
+    width: 42px;
+    height: 42px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+body[data-story-version] .step .story-inline-icon {
+    margin-right: 0.55rem;
+    color: var(--color-accent);
+    font-size: 1.6rem;
+    vertical-align: -0.27em;
+}
+
+body[data-story-version] .step .treatment-decision-row small {
     display: flex;
     align-items: center;
+}
+
+body[data-story-version] .step .treatment-decision-row small .story-inline-icon {
+    font-size: 1.4rem;
+}
+
+@media (max-width: 560px) {
+    body[data-story-version] .step .stats-box {
+        grid-template-columns: 46px minmax(0, 1fr);
+        gap: 13px;
+    }
+
+    body[data-story-version] .step .stats-icon {
+        width: 46px;
+        height: 46px;
+    }
+
+    body[data-story-version] .step .stats-icon .story-material-icon {
+        font-size: 2.3rem;
+    }
+
+    body[data-story-version] .step .stat-icon-svg {
+        width: 37px;
+        height: 37px;
+    }
+
+    body[data-story-version] .step .story-inline-icon {
+        font-size: 1.45rem;
+    }
+}
+
+body.light-mode .story-material-icon,
+body.light-mode .stats-icon,
+body.light-mode .story-inline-icon {
+    color: var(--color-accent);
+}
+
+/* Editorial accents: chapter stamps, pull quotes, and story motifs. */
+@font-face {
+    font-family: 'Source Serif 4';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('../vendor/source-serif-4/source-serif-4-500.ttf') format('truetype');
+}
+
+body[data-story-version] .text-box .story-pull-quote {
+    font-family: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+    font-weight: 500;
+    line-height: 1.24;
+    text-wrap: balance;
+}
+
+body[data-story-version] .text-box {
+    position: relative;
+}
+
+/* Aneurysm story: an editorial column with a dedicated evidence graphic. */
+body[data-story-version="aneurysm"] .right-column {
+    opacity: 0;
+    pointer-events: none;
+}
+
+body[data-story-version="aneurysm"] .scrolly-layout {
+    background: var(--color-bg);
+}
+
+body[data-story-version="aneurysm"] .left-column {
+    width: min(100%, 1120px);
+    margin: 0 auto;
+}
+
+body[data-story-version="aneurysm"] #story {
+    padding: 0 0 clamp(72px, 9vw, 120px);
+}
+
+body[data-story-version="aneurysm"] .step,
+body[data-story-version="aneurysm"] .step:first-of-type {
+    display: block;
+    min-height: 0;
+    padding: 0 clamp(20px, 5vw, 64px);
+    scroll-margin-top: calc(var(--nav-height) + 22px);
+}
+
+body[data-story-version="aneurysm"] .step .text-box,
+body[data-story-version="aneurysm"] .step.active .text-box,
+body[data-story-version="aneurysm"] .step:not(.active) .text-box {
+    width: min(980px, 100%);
+    padding: clamp(38px, 5vw, 64px) 0;
+    opacity: 1;
+    transform: none;
+}
+
+body[data-story-version="aneurysm"] .step.chapter-start .text-box {
+}
+
+body[data-story-version="aneurysm"] .step.chapter-start {
+    scroll-margin-top: calc(var(--nav-height) - clamp(76px, 10vw, 128px));
+    display: block;
+}
+
+body[data-story-version="aneurysm"] .aneurysm-intro .text-box {
+    width: min(1040px, 100%);
+    padding-top: clamp(82px, 12vw, 150px);
+    padding-bottom: clamp(70px, 10vw, 120px);
+}
+
+body[data-story-version="aneurysm"] .aneurysm-intro[data-scroll-mode="sticky"] {
+    min-height: 132vh;
+}
+
+body[data-story-version="aneurysm"] .aneurysm-intro[data-scroll-mode="sticky"] .text-box {
+    display: grid;
+    grid-template-columns: minmax(240px, 0.78fr) minmax(0, 1.22fr);
+    gap: 16px 52px;
+    align-items: start;
+    min-height: 118vh;
+}
+
+body[data-story-version="aneurysm"] .aneurysm-intro .element-image {
+    position: sticky;
+    top: calc(var(--nav-height) + 28px);
+    width: min(300px, 100%);
+    justify-self: start;
+}
+
+body[data-story-version="aneurysm"] .aneurysm-intro .element-wrapper {
+    grid-column: 2;
+}
+
+body[data-story-version="aneurysm"] .aneurysm-intro .element-image {
+    grid-column: 1;
+    grid-row: 2 / span 8;
+}
+
+body[data-story-version="aneurysm"] .aneurysm-intro .info-image img {
+    max-height: 520px;
+    object-fit: cover;
+    object-position: center 32%;
+    transform: scale(calc(0.99 + var(--sticky-progress) * 0.015));
+    transform-origin: center 35%;
+}
+
+body[data-story-version="aneurysm"] .alex-consultation-section .text-box.cols-2 {
+    width: min(1040px, 100%);
+    grid-template-columns: minmax(0, 1.16fr) minmax(280px, 0.84fr);
+    gap: 16px 46px;
+}
+
+body[data-story-version="aneurysm"] .alex-consultation-section .element-image {
+    grid-column: 1;
+    align-self: start;
+}
+
+body[data-story-version="aneurysm"] .alex-consultation-section .element-text,
+body[data-story-version="aneurysm"] .alex-consultation-section .element-pullQuote {
+    grid-column: 2;
+}
+
+body[data-story-version="aneurysm"] .alex-consultation-section .element-stat,
+body[data-story-version="aneurysm"] .alex-consultation-section .element-reference,
+body[data-story-version="aneurysm"] .alex-consultation-section .element-closingStatement {
+    grid-column: 1 / -1;
+}
+
+body[data-story-version="aneurysm"] .alex-consultation-section .info-image img {
+    width: 100%;
+    max-height: 430px;
+    object-fit: cover;
+}
+
+body[data-story-version="dissection"] .miriam-consultation-section .text-box.cols-2 {
+    width: min(1040px, 100%);
+    grid-template-columns: minmax(0, 1.16fr) minmax(280px, 0.84fr);
+    gap: 16px 46px;
+}
+
+body[data-story-version="dissection"] .miriam-consultation-section .element-image {
+    grid-column: 1;
+    align-self: start;
+}
+
+body[data-story-version="dissection"] .miriam-consultation-section .element-text {
+    grid-column: 2;
+}
+
+body[data-story-version="dissection"] .miriam-consultation-section .info-image img {
+    width: 100%;
+    max-height: 430px;
+    object-fit: cover;
+}
+
+body[data-story-version="aneurysm"] .alex-flow-section[data-scroll-mode="sticky"] {
+    min-height: 142vh;
+}
+
+body[data-story-version="aneurysm"] .alex-flow-section[data-scroll-mode="sticky"] .text-box {
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(290px, 0.92fr);
+    gap: 18px 48px;
+    width: min(1080px, 100%);
+    min-height: 126vh;
+    align-items: start;
+}
+
+body[data-story-version="aneurysm"] .alex-flow-section .text-box > h2 {
+    grid-column: 1 / -1;
+}
+
+body[data-story-version="aneurysm"] .alex-flow-section .element-modelPlaceholder {
+    position: sticky;
+    top: calc(var(--nav-height) + 34px);
+    grid-column: 1;
+    grid-row: 2 / span 12;
+    align-self: start;
+}
+
+body[data-story-version="aneurysm"] .alex-flow-section .element-wrapper:not(.element-modelPlaceholder) {
+    grid-column: 2;
+}
+
+body[data-story-version="aneurysm"] .alex-flow-section .model-placeholder-stage {
+    border-color: color-mix(in srgb, var(--color-accent) calc(28% + var(--sticky-progress) * 52%), transparent);
+}
+
+body[data-story-version="aneurysm"] .alex-aorta-model-section[data-scroll-mode="sticky"] {
+    min-height: 142vh;
+}
+
+body[data-story-version="aneurysm"] .alex-aorta-model-section[data-scroll-mode="sticky"] .text-box {
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(290px, 0.92fr);
+    gap: 18px 48px;
+    width: min(1080px, 100%);
+    min-height: 126vh;
+    align-items: start;
+}
+
+body[data-story-version="aneurysm"] .alex-aorta-model-section .text-box > h2 {
+    grid-column: 1 / -1;
+}
+
+body[data-story-version="aneurysm"] .alex-aorta-model-section .inline-model-figure {
+    position: sticky;
+    top: calc(var(--nav-height) + 34px);
+    grid-column: 1;
+    grid-row: 2 / span 12;
+    align-self: start;
+}
+
+body[data-story-version="aneurysm"] .alex-aorta-model-section .element-wrapper {
+    grid-column: 2;
+}
+
+body[data-story-version="aneurysm"] .alex-aorta-model-section .inline-model-viewer {
+    min-height: clamp(420px, 58vh, 620px);
+}
+
+body[data-story-version="aneurysm"] .alex-imaging-section[data-scroll-mode="comparison"] {
+    min-height: 154vh;
+}
+
+body[data-story-version="aneurysm"] .alex-imaging-section[data-scroll-mode="comparison"] .text-box {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(290px, 0.95fr);
+    gap: 18px 48px;
+    width: min(1080px, 100%);
+    min-height: 138vh;
+    align-items: start;
+}
+
+body[data-story-version="aneurysm"] .alex-imaging-section .text-box > h2 {
+    grid-column: 1 / -1;
+}
+
+body[data-story-version="aneurysm"] .alex-imaging-section .element-imagingComparison {
+    position: sticky;
+    top: calc(var(--nav-height) + 34px);
+    grid-column: 1;
+    grid-row: 2 / span 12;
+    align-self: start;
+}
+
+body[data-story-version="aneurysm"] .alex-imaging-section .element-wrapper:not(.element-imagingComparison) {
+    grid-column: 2;
+}
+
+body[data-story-version="aneurysm"] .alex-imaging-section .imaging-comparison {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin: 0;
+}
+
+body[data-story-version="aneurysm"] .alex-imaging-section .imaging-panel {
+    grid-area: 1 / 1;
+}
+
+body[data-story-version="aneurysm"] .alex-imaging-section .imaging-panel:first-child {
+    opacity: calc(1 - var(--comparison-progress));
+}
+
+body[data-story-version="aneurysm"] .alex-imaging-section .imaging-panel:last-child {
+    opacity: var(--comparison-progress);
+}
+
+body[data-story-version="aneurysm"].story-ready .step .text-box {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.42s ease, transform 0.42s ease;
+}
+
+body[data-story-version="aneurysm"].story-ready .step.is-revealed .text-box {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+body[data-story-version="aneurysm"] .aneurysm-burden-section .text-box {
+    width: min(1040px, 100%);
+}
+
+body[data-story-version="aneurysm"] .aneurysm-burden-section .element-text {
+    max-width: 72ch;
+}
+
+.aneurysm-burden {
+    margin: clamp(32px, 5vw, 58px) 0 22px;
+    padding: 0;
+}
+
+.aneurysm-burden-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
     gap: 20px;
-    padding: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text) 16%, transparent);
+}
+
+.aneurysm-burden-heading strong {
+    color: var(--color-text);
+    font-size: clamp(1.1rem, 2vw, 1.35rem);
+    font-weight: 500;
+    line-height: 1.35;
+}
+
+.aneurysm-burden-heading span,
+.aneurysm-burden figcaption,
+.aneurysm-burden-legend {
+    color: color-mix(in srgb, var(--color-text) 62%, transparent);
+    font-size: 0.875rem;
+}
+
+.aneurysm-burden svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-top: 12px;
+    overflow: visible;
+    font-family: 'Roboto', Arial, sans-serif;
+}
+
+.burden-panel-title {
+    fill: var(--color-text);
+    font-size: 19px;
+    font-weight: 500;
+}
+
+.burden-panel-change {
+    fill: var(--color-accent);
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.burden-axis,
+.burden-grid,
+.burden-divider {
+    fill: none;
+    stroke: color-mix(in srgb, var(--color-text) 18%, transparent);
+    stroke-width: 1;
+}
+
+.burden-grid {
+    stroke-dasharray: 3 7;
+}
+
+.burden-divider {
+    stroke: color-mix(in srgb, var(--color-text) 11%, transparent);
+}
+
+.burden-line {
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.burden-line-projection {
+    stroke-dasharray: 10 11;
+    opacity: 0.68;
+}
+
+.burden-point {
+    fill: var(--color-bg);
+    stroke: var(--color-accent);
+    stroke-width: 5;
+}
+
+.burden-point-projection {
+    stroke-width: 3;
+}
+
+.burden-value {
+    fill: var(--color-text);
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.burden-year {
+    fill: color-mix(in srgb, var(--color-text) 62%, transparent);
+    font-size: 14px;
+}
+
+.aneurysm-burden-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+    margin-top: -4px;
+}
+
+.aneurysm-burden-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.aneurysm-burden-legend i {
+    display: inline-block;
+    width: 34px;
+    height: 3px;
+    background: var(--color-accent);
+}
+
+.aneurysm-burden-legend .burden-legend-projection {
+    background: repeating-linear-gradient(90deg, var(--color-accent) 0 7px, transparent 7px 12px);
+}
+
+.aneurysm-burden figcaption {
+    margin-top: 14px;
+    line-height: 1.5;
+}
+
+.aneurysm-growth {
+    margin: clamp(34px, 5vw, 60px) 0 28px;
+}
+
+.aneurysm-growth-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text) 16%, transparent);
+}
+
+.aneurysm-growth-heading strong {
+    color: var(--color-text);
+    font-size: clamp(1.1rem, 2vw, 1.35rem);
+    font-weight: 500;
+    line-height: 1.35;
+}
+
+.aneurysm-growth-heading > span,
+.aneurysm-growth figcaption,
+.aneurysm-growth-legend {
+    color: color-mix(in srgb, var(--color-text) 62%, transparent);
+    font-size: 0.875rem;
+}
+
+.growth-profile-list {
+    display: grid;
+}
+
+.growth-profile-row {
+    display: grid;
+    grid-template-columns: minmax(130px, 0.72fr) minmax(320px, 2fr) minmax(130px, 0.66fr);
+    gap: 22px;
+    align-items: center;
+    min-height: 150px;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text) 11%, transparent);
+}
+
+.growth-profile-label,
+.growth-profile-outcome {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.growth-profile-label strong,
+.growth-profile-outcome strong {
+    color: var(--color-text);
+    font-weight: 500;
+}
+
+.growth-profile-label span,
+.growth-profile-outcome span {
+    color: color-mix(in srgb, var(--color-text) 62%, transparent);
+    font-size: 0.8rem;
+    line-height: 1.35;
+}
+
+.growth-profile-outcome {
+    align-items: flex-end;
+    text-align: right;
+}
+
+.growth-profile-outcome strong {
+    color: var(--color-accent);
+    font-size: clamp(1.7rem, 3vw, 2.4rem);
+    font-weight: 700;
+}
+
+.growth-profile-vessel svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+}
+
+.growth-vessel-shape {
+    fill: color-mix(in srgb, var(--color-accent) 13%, transparent);
+    stroke: var(--color-accent);
+    stroke-width: 2.5;
+    vector-effect: non-scaling-stroke;
+}
+
+.growth-measurement {
+    fill: color-mix(in srgb, var(--color-text) 70%, transparent);
+}
+
+.growth-maximum-line {
+    stroke: color-mix(in srgb, var(--color-text) 52%, transparent);
+    stroke-width: 1.5;
+    stroke-dasharray: 4 5;
+    vector-effect: non-scaling-stroke;
+}
+
+.growth-hotspot {
+    fill: var(--color-bg);
+    stroke: var(--color-text);
+    stroke-width: 4;
+    vector-effect: non-scaling-stroke;
+}
+
+.growth-slow-highlight {
+    fill: none;
+    stroke: var(--color-text);
+    stroke-width: 5;
+    stroke-linecap: round;
+    opacity: 0.28;
+    vector-effect: non-scaling-stroke;
+}
+
+.aneurysm-growth-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+    margin-top: 20px;
+}
+
+.aneurysm-growth-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.aneurysm-growth-legend i {
+    display: inline-block;
+    flex: 0 0 auto;
+}
+
+.growth-legend-maximum {
+    width: 22px;
+    height: 18px;
+    border-left: 1px dashed color-mix(in srgb, var(--color-text) 62%, transparent);
+}
+
+.growth-legend-hotspot {
+    width: 13px;
+    height: 13px;
+    border: 3px solid var(--color-text);
+    border-radius: 50%;
+}
+
+.growth-legend-points {
+    width: 28px;
+    height: 5px;
+    background: radial-gradient(circle, color-mix(in srgb, var(--color-text) 70%, transparent) 0 2px, transparent 2px) 0 0 / 9px 5px;
+}
+
+.aneurysm-growth figcaption {
+    max-width: 76ch;
+    margin-top: 14px;
+    line-height: 1.5;
+}
+
+body[data-story-version="aneurysm"] .aneurysm-growth-section.step[data-scroll-mode="sequence"] .element-aneurysmGrowth {
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+body[data-story-version="aneurysm"] .aneurysm-growth-section .growth-profile-row {
+    --row-progress: clamp(0, calc(var(--item-progress) * 2 - var(--profile-index) * 0.28), 1);
+    opacity: calc(0.72 + var(--row-progress) * 0.28);
+    transform: translateY(calc((1 - var(--row-progress)) * 12px));
+}
+
+body[data-story-version="aneurysm"] .aneurysm-prognosis-section .text-box {
+    width: min(1180px, 100%);
+}
+
+.paired-prognosis {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
+    align-items: stretch;
+}
+
+.paired-prognosis-panel {
+    min-width: 0;
+    padding-right: clamp(22px, 3vw, 40px);
+}
+
+.paired-prognosis-panel + .paired-prognosis-panel {
+    padding-right: 0;
+    padding-left: clamp(22px, 3vw, 40px);
+    border-left: 1px solid color-mix(in srgb, var(--color-text) 16%, transparent);
+}
+
+.paired-prognosis-panel > .info-text {
+    min-height: 8.2em;
+}
+
+.paired-prognosis-panel .aneurysm-growth,
+.paired-prognosis-panel .aneurysm-sex-risk {
+    min-width: 0;
+    margin: clamp(20px, 2.5vw, 30px) 0 20px;
+}
+
+.paired-prognosis-panel .aneurysm-growth-heading,
+.paired-prognosis-panel .aneurysm-sex-heading {
+    min-height: 4.6em;
+    align-items: flex-start;
+}
+
+.paired-prognosis-panel .aneurysm-growth-heading strong,
+.paired-prognosis-panel .aneurysm-sex-heading strong {
+    font-size: clamp(1rem, 1.35vw, 1.18rem);
+}
+
+.paired-prognosis-panel .growth-profile-row {
+    grid-template-columns: minmax(88px, 0.72fr) minmax(0, 1.45fr) minmax(68px, 0.58fr);
+    gap: 12px;
+    min-height: 128px;
+}
+
+.paired-prognosis-panel .growth-profile-outcome strong {
+    font-size: clamp(1.35rem, 2.2vw, 1.9rem);
+}
+
+.paired-prognosis-panel .aneurysm-growth-legend {
+    gap: 10px 16px;
+}
+
+.paired-prognosis-panel .sex-risk-scale {
+    margin-left: 82px;
+    margin-right: 62px;
+}
+
+.paired-prognosis-panel .sex-risk-row {
+    grid-template-columns: 68px minmax(0, 1fr) 56px;
+    gap: 14px;
+}
+
+.paired-prognosis-panel .sex-risk-comparison {
+    margin-left: 82px;
+}
+
+@media (max-width: 980px) {
+    .paired-prognosis {
+        grid-template-columns: 1fr;
+    }
+
+    .paired-prognosis-panel,
+    .paired-prognosis-panel + .paired-prognosis-panel {
+        padding: 0;
+        border-left: 0;
+    }
+
+    .paired-prognosis-panel + .paired-prognosis-panel {
+        margin-top: 38px;
+        padding-top: 38px;
+        border-top: 1px solid color-mix(in srgb, var(--color-text) 16%, transparent);
+    }
+
+    .paired-prognosis-panel > .info-text,
+    .paired-prognosis-panel .aneurysm-growth-heading,
+    .paired-prognosis-panel .aneurysm-sex-heading {
+        min-height: 0;
+    }
+}
+
+.aneurysm-sex-risk,
+.aneurysm-risk-drivers {
+    margin: clamp(34px, 5vw, 60px) 0 26px;
+}
+
+.aneurysm-sex-heading,
+.aneurysm-drivers-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text) 16%, transparent);
+}
+
+.aneurysm-sex-heading strong,
+.aneurysm-drivers-heading strong {
+    color: var(--color-text);
+    font-size: clamp(1.1rem, 2vw, 1.35rem);
+    font-weight: 500;
+    line-height: 1.35;
+}
+
+.aneurysm-sex-heading span,
+.aneurysm-drivers-heading span,
+.aneurysm-sex-risk figcaption,
+.aneurysm-risk-drivers figcaption,
+.aneurysm-drivers-legend {
+    color: color-mix(in srgb, var(--color-text) 62%, transparent);
+    font-size: 0.875rem;
+}
+
+.sex-risk-scale {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin: 28px 88px 8px 116px;
+    color: color-mix(in srgb, var(--color-text) 45%, transparent);
+    font-size: 0.75rem;
+}
+
+.sex-risk-scale span:not(:first-child) {
+    text-align: right;
+}
+
+.sex-risk-bars {
+    display: grid;
+    gap: 18px;
+}
+
+.sex-risk-row {
+    display: grid;
+    grid-template-columns: 94px minmax(0, 1fr) 72px;
+    gap: 22px;
+    align-items: center;
+}
+
+.sex-risk-row > strong,
+.sex-risk-row > b {
+    color: var(--color-text);
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.sex-risk-row > b {
+    color: var(--color-accent);
+    font-size: 1.35rem;
+    font-weight: 700;
+    text-align: right;
+}
+
+.sex-risk-track {
+    height: 22px;
+    background: repeating-linear-gradient(90deg, color-mix(in srgb, var(--color-text) 9%, transparent) 0 1px, transparent 1px 33.333%);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text) 20%, transparent);
+}
+
+.sex-risk-track span {
+    display: block;
+    width: var(--risk-width);
+    height: 100%;
+    background: var(--color-accent);
+    transform-origin: left;
+}
+
+.sex-risk-row:nth-child(2) .sex-risk-track span {
+    opacity: 0.52;
+}
+
+.sex-risk-comparison {
+    margin: 28px 0 0 116px;
+    color: color-mix(in srgb, var(--color-text) 72%, transparent);
+    font-size: 0.9rem;
+}
+
+.text-box .sex-risk-comparison strong {
+    color: var(--color-accent);
+    font-size: 1.2rem;
+}
+
+.aneurysm-sex-risk figcaption,
+.aneurysm-risk-drivers figcaption {
+    max-width: 76ch;
+    margin-top: 14px;
+    line-height: 1.5;
+}
+
+.aneurysm-risk-drivers svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-top: 14px;
+    overflow: visible;
+    font-family: 'Roboto', Arial, sans-serif;
+}
+
+.drivers-year-axis {
+    stroke: color-mix(in srgb, var(--color-text) 20%, transparent);
+    stroke-width: 1;
+}
+
+.drivers-line {
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 5;
+    stroke-linecap: round;
+}
+
+.drivers-pressure {
+    stroke-dasharray: 12 10;
+    opacity: 0.55;
+}
+
+.drivers-point {
+    fill: var(--color-bg);
+    stroke: var(--color-accent);
+    stroke-width: 4;
+}
+
+.drivers-pressure-point {
+    opacity: 0.72;
+}
+
+.drivers-year,
+.drivers-label,
+.drivers-value {
+    fill: var(--color-text);
+}
+
+.drivers-year {
+    font-size: 15px;
+    opacity: 0.62;
+}
+
+.drivers-label {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.drivers-value {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.aneurysm-drivers-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+}
+
+.aneurysm-drivers-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.aneurysm-drivers-legend i {
+    display: inline-block;
+    width: 34px;
+    height: 3px;
+    background: var(--color-accent);
+}
+
+.aneurysm-drivers-legend .drivers-legend-pressure {
+    background: repeating-linear-gradient(90deg, color-mix(in srgb, var(--color-accent) 55%, transparent) 0 8px, transparent 8px 13px);
+}
+
+.drivers-mobile-list {
+    display: none;
+}
+
+body[data-story-version="aneurysm"] .aneurysm-prognosis-section.step[data-scroll-mode="sequence"] .element-pairedPrognosis,
+body[data-story-version="aneurysm"] .aneurysm-sex-section.step[data-scroll-mode="sequence"] .element-aneurysmSexRisk,
+body[data-story-version="aneurysm"] .aneurysm-risk-section.step[data-scroll-mode="sequence"] .element-aneurysmRiskDrivers {
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+body[data-story-version="aneurysm"] .aneurysm-sex-section .sex-risk-track span {
+    transform: scaleX(var(--item-progress));
+}
+
+body[data-story-version="aneurysm"] .step[data-scroll-mode="sequence"] [data-scroll-item] {
+    --item-progress: 0;
+    opacity: calc(0.18 + var(--item-progress) * 0.82);
+    transform: translateY(calc((1 - var(--item-progress)) * 16px));
+}
+
+body[data-story-version="aneurysm"] .step[data-scroll-mode="sequence"] .burden-line-solid {
+    stroke-dasharray: 400;
+    stroke-dashoffset: calc(400 * (1 - var(--item-progress)));
+}
+
+@media (max-width: 700px) {
+    .aneurysm-burden-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .aneurysm-burden svg {
+        min-width: 720px;
+    }
+
+    .aneurysm-burden {
+        overflow-x: auto;
+        overscroll-behavior-inline: contain;
+    }
+
+    body[data-story-version="aneurysm"] .step[data-scroll-mode="sequence"] [data-scroll-item] {
+        opacity: 1;
+        transform: none;
+    }
+
+    body[data-story-version="aneurysm"] .step[data-scroll-mode="sequence"] .burden-line-solid {
+        stroke-dashoffset: 0;
+    }
+
+    .aneurysm-growth-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .growth-profile-row {
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 8px 16px;
+        padding: 20px 0;
+    }
+
+    .growth-profile-vessel {
+        grid-column: 1 / -1;
+        grid-row: 2;
+    }
+
+    .growth-profile-outcome {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    body[data-story-version="aneurysm"] .aneurysm-growth-section .growth-profile-row {
+        opacity: 1;
+        transform: none;
+    }
+
+    body[data-story-version="aneurysm"] .aneurysm-intro[data-scroll-mode="sticky"],
+    body[data-story-version="aneurysm"] .alex-aorta-model-section[data-scroll-mode="sticky"],
+    body[data-story-version="aneurysm"] .alex-flow-section[data-scroll-mode="sticky"],
+    body[data-story-version="aneurysm"] .alex-imaging-section[data-scroll-mode="comparison"] {
+        min-height: 0;
+    }
+
+    body[data-story-version="aneurysm"] .aneurysm-intro[data-scroll-mode="sticky"] .text-box,
+    body[data-story-version="aneurysm"] .alex-consultation-section .text-box.cols-2,
+    body[data-story-version="dissection"] .miriam-consultation-section .text-box.cols-2,
+    body[data-story-version="aneurysm"] .alex-aorta-model-section[data-scroll-mode="sticky"] .text-box,
+    body[data-story-version="aneurysm"] .alex-flow-section[data-scroll-mode="sticky"] .text-box,
+    body[data-story-version="aneurysm"] .alex-imaging-section[data-scroll-mode="comparison"] .text-box {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        min-height: 0;
+    }
+
+    body[data-story-version="aneurysm"] .aneurysm-intro .element-image {
+        position: relative;
+        top: auto;
+        width: min(230px, 100%);
+    }
+
+    body[data-story-version="aneurysm"] .aneurysm-intro .element-wrapper,
+    body[data-story-version="aneurysm"] .alex-consultation-section .element-wrapper,
+    body[data-story-version="dissection"] .miriam-consultation-section .element-wrapper,
+    body[data-story-version="aneurysm"] .alex-aorta-model-section .element-wrapper,
+    body[data-story-version="aneurysm"] .alex-flow-section .element-wrapper,
+    body[data-story-version="aneurysm"] .alex-imaging-section .element-wrapper {
+        grid-column: 1;
+        grid-row: auto;
+    }
+
+    body[data-story-version="aneurysm"] .alex-flow-section .element-modelPlaceholder {
+        position: relative;
+        top: auto;
+    }
+
+    body[data-story-version="aneurysm"] .alex-imaging-section .element-imagingComparison {
+        position: relative;
+        top: auto;
+    }
+
+    body[data-story-version="aneurysm"] .alex-aorta-model-section .inline-model-figure {
+        position: relative;
+        top: auto;
+        grid-column: 1;
+        grid-row: auto;
+    }
+
+    body[data-story-version="aneurysm"] .alex-aorta-model-section .inline-model-viewer {
+        min-height: 420px;
+    }
+
+    body[data-story-version="aneurysm"] .aneurysm-intro .info-image img {
+        max-height: none;
+        transform: none;
+    }
+
+    .aneurysm-sex-heading,
+    .aneurysm-drivers-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .sex-risk-scale {
+        display: flex;
+        justify-content: space-between;
+        margin: 24px 58px 8px 68px;
+    }
+
+    .sex-risk-scale span:nth-child(2),
+    .sex-risk-scale span:nth-child(3) {
+        display: none;
+    }
+
+    .sex-risk-row {
+        grid-template-columns: 48px minmax(0, 1fr) 58px;
+        gap: 10px;
+    }
+
+    .sex-risk-row > b {
+        font-size: 1.1rem;
+        white-space: nowrap;
+    }
+
+    .sex-risk-comparison {
+        margin-left: 72px;
+    }
+
+    .aneurysm-risk-drivers svg {
+        display: none;
+    }
+
+    .drivers-mobile-list {
+        display: grid;
+        gap: 22px;
+        margin: 28px 0 22px;
+    }
+
+    .drivers-mobile-list > div {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto 38px auto;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .drivers-mobile-list strong,
+    .drivers-mobile-list span {
+        color: var(--color-text);
+        font-size: 0.82rem;
+        font-style: normal;
+        font-weight: 500;
+    }
+
+    .drivers-mobile-list i {
+        height: 2px;
+        background: var(--color-accent);
+    }
+
+    .drivers-mobile-list > div:nth-child(2) i {
+        background: repeating-linear-gradient(90deg, color-mix(in srgb, var(--color-accent) 55%, transparent) 0 6px, transparent 6px 10px);
+    }
+
+    .drivers-mobile-list small {
+        display: flex;
+        justify-content: flex-end;
+        gap: 43px;
+        color: color-mix(in srgb, var(--color-text) 55%, transparent);
+        font-size: 0.72rem;
+    }
+
+    body[data-story-version="aneurysm"] .aneurysm-sex-section .sex-risk-track span {
+        transform: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body[data-story-version="aneurysm"].story-ready .step .text-box,
+    body[data-story-version="aneurysm"] .step[data-scroll-mode="sequence"] [data-scroll-item] {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    body[data-story-version="aneurysm"] .step[data-scroll-mode="sequence"] .burden-line-solid {
+        stroke-dashoffset: 0;
+    }
+}
+
+/* Stats Box Element */
+.stats-box {
+    background: color-mix(in srgb, var(--color-bg) 40%, transparent);
+    border-radius: 8px;
+    display: block;
+    padding: 17px 18px;
     margin: 22px 0 0;
-    transition: transform 0.3s ease, border-color 0.3s ease;
-
-    &:hover {
-        border-color: var(--accent-red);
-        transform: translateY(-2px);
-    }
-
-    .icon-placeholder {
-        background: rgba(255, 68, 68, 0.15);
-        padding: 10px;
-        border-radius: 12px;
-        flex: 0 0 58px;
-    }
 
     &.stats-box-extra {
-        border-color: rgba(0, 212, 255, 0.22);
+        border-radius: 8px;
+    }
+
+    .stats-copy {
+        min-width: 0;
     }
 
     strong {
         color: #fff;
-        font-size: 1.1rem;
+        font-size: 1rem;
         display: block;
-        margin-bottom: 4px;
+        margin-bottom: 5px;
     }
 
     span {
-        font-size: 0.95rem;
-        line-height: 1.4;
-        color: rgba(255, 255, 255, 0.8);
+        display: block;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        color: rgba(255, 255, 255, 0.76);
     }
 }
 
 /* Mini Charts */
 .mini-chart {
     margin: 18px 0 0;
-    padding: 14px 16px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 16px 18px;
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.045);
+    background: color-mix(in srgb, var(--color-bg) 40%, transparent);
 
     .mini-chart-head {
         display: flex;
@@ -582,31 +1872,2190 @@ body {
     }
 }
 
+/* Diagnosis chapter */
+.symptom-stat-card {
+    margin: 24px 0 0;
+    padding: 22px 0;
+    border: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 0;
+    background: transparent;
+}
+
+.diagnosis-card-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 20px;
+}
+
+.diagnosis-card-head strong {
+    color: #fff;
+    font-size: 1rem;
+}
+
+.diagnosis-card-head span {
+    color: rgba(255, 255, 255, 0.58);
+    font-size: 0.76rem;
+    text-align: right;
+}
+
+.symptom-bars {
+    display: grid;
+    gap: 15px;
+}
+
+.symptom-row-label {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 7px;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.84rem;
+}
+
+.symptom-row-label strong {
+    color: #fff;
+    flex: 0 0 auto;
+}
+
+.symptom-track {
+    display: block;
+    width: 100%;
+    height: 12px;
+    overflow: hidden;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.symptom-track span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+}
+
+.text-box .symptom-note {
+    margin: 18px 0 0;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.64);
+    font-size: 0.82rem;
+    line-height: 1.55;
+}
+
+.diagnostic-path {
+    position: relative;
+    display: grid;
+    gap: 0;
+    margin: 26px 0;
+    padding: 0;
+    list-style: none;
+}
+
+.diagnostic-path::before {
+    content: '';
+    position: absolute;
+    top: 23px;
+    bottom: 23px;
+    left: 19px;
+    width: 2px;
+    background: linear-gradient(#ffb0b5, #df4b57 50%, #8f2630);
+}
+
+.diagnostic-path li {
+    position: relative;
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 16px;
+    padding: 0 0 22px;
+}
+
+.diagnostic-path li:last-child {
+    padding-bottom: 0;
+}
+
+.diagnostic-step-index {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba(223, 75, 87, 0.78);
+    border-radius: 50%;
+    background: #151518;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 800;
+}
+
+.diagnostic-path strong {
+    display: block;
+    margin: 2px 0 3px;
+    color: #fff;
+    font-size: 0.96rem;
+}
+
+.text-box .diagnostic-path p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+.treatment-decision {
+    margin: 24px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.treatment-decision-row {
+    display: grid;
+    grid-template-columns: minmax(210px, 0.8fr) minmax(0, 1.4fr);
+    gap: 28px;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.treatment-decision-row small,
+.treatment-decision-row strong {
+    display: block;
+}
+
+.treatment-decision-row small {
+    margin-bottom: 6px;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.treatment-decision-row strong {
+    color: #fff;
+    font-size: 0.95rem;
+}
+
+.text-box .treatment-decision-row p {
+    margin: 7px 0 0;
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 0.86rem;
+    line-height: 1.5;
+}
+
+.treatment-steps {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+    margin: 28px 0;
+    padding: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+    list-style: none;
+}
+
+.treatment-steps li {
+    min-width: 0;
+    padding: 18px 16px 20px;
+    border-right: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.treatment-steps li:first-child {
+    padding-left: 0;
+}
+
+.treatment-steps li:last-child {
+    padding-right: 0;
+    border-right: 0;
+}
+
+.treatment-steps li > span {
+    display: block;
+    margin-bottom: 20px;
+    color: #f08a92;
+    font-size: 0.72rem;
+    font-weight: 800;
+}
+
+.treatment-steps strong {
+    display: block;
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+.text-box .treatment-steps p {
+    margin: 7px 0 0;
+    color: rgba(255, 255, 255, 0.64);
+    font-size: 0.78rem;
+    line-height: 1.5;
+}
+
+.treatment-balance {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 36px;
+    margin: 26px 0;
+    padding: 22px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.treatment-balance-column h3 {
+    margin: 0 0 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    color: #fff;
+    font-size: 0.96rem;
+}
+
+.treatment-balance-column.is-risk h3 {
+    border-bottom-color: rgba(255, 255, 255, 0.14);
+}
+
+.treatment-balance-column ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.treatment-balance-column li {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.84rem;
+    line-height: 1.45;
+}
+
+.treatment-balance-column li:last-child {
+    border-bottom: 0;
+}
+
+.prevention-timeline {
+    position: relative;
+    display: grid;
+    gap: 28px;
+    margin: 34px 0;
+    padding: 0;
+    list-style: none;
+}
+
+.prevention-timeline::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    bottom: 8px;
+    left: 50%;
+    width: 2px;
+    transform: translateX(-50%);
+    background: linear-gradient(#ffb0b5, #df4b57 55%, #8f2630);
+}
+
+.prevention-timeline li {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 42px minmax(0, 1fr);
+    align-items: start;
+}
+
+.prevention-node {
+    z-index: 1;
+    grid-column: 2;
+    justify-self: center;
+    width: 14px;
+    height: 14px;
+    margin-top: 6px;
+    border: 3px solid #151518;
+    border-radius: 50%;
+    background: #f08a92;
+    box-shadow: 0 0 0 2px rgba(240, 138, 146, 0.42);
+}
+
+.prevention-timeline li:last-child .prevention-node {
+    background: #8f2630;
+    box-shadow: 0 0 0 2px rgba(143, 38, 48, 0.46);
+}
+
+.prevention-copy {
+    grid-column: 1;
+    grid-row: 1;
+    padding-right: 24px;
+    text-align: right;
+}
+
+.prevention-timeline li:nth-child(even) .prevention-copy {
+    grid-column: 3;
+    padding-right: 0;
+    padding-left: 24px;
+    text-align: left;
+}
+
+.prevention-copy small,
+.prevention-copy strong {
+    display: block;
+}
+
+.prevention-copy small {
+    margin-bottom: 5px;
+    color: #f08a92;
+    font-size: 0.66rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.prevention-copy strong {
+    color: #fff;
+    font-size: 0.94rem;
+}
+
+.text-box .prevention-copy p {
+    margin: 6px 0 0;
+    color: rgba(255, 255, 255, 0.67);
+    font-size: 0.82rem;
+    line-height: 1.5;
+}
+
+.text-box .closing-statement {
+    max-width: 720px;
+    margin: 38px auto 0;
+    padding: 22px 0 0;
+    border: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    color: #fff;
+    font-size: 1.22rem;
+    font-weight: 650;
+    line-height: 1.45;
+    text-align: center;
+}
+
+.text-box .section-reference {
+    max-width: 86ch;
+    margin: 24px 0 0;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.74rem;
+    line-height: 1.55;
+}
+
+.text-box .section-reference a {
+    color: rgba(240, 138, 146, 0.88);
+    text-decoration: underline;
+    text-decoration-color: rgba(240, 138, 146, 0.38);
+    text-underline-offset: 3px;
+}
+
+.text-box .section-reference a:hover,
+.text-box .section-reference a:focus-visible {
+    color: #ffc1c6;
+    text-decoration-color: currentColor;
+}
+
+.evidence-section .info-image img {
+    background: #fff;
+    object-fit: contain;
+}
+
+.imaging-comparison {
+    display: grid;
+    grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+    gap: 14px;
+    margin: 24px 0;
+}
+
+.imaging-panel {
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 6px;
+    background: #08090a;
+}
+
+.imaging-panel-media {
+    position: relative;
+    display: grid;
+    place-items: center;
+    height: 350px;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    background: #050607;
+}
+
+.imaging-panel img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.imaging-modality {
+    position: absolute;
+    z-index: 1;
+    top: 10px;
+    left: 10px;
+    padding: 5px 8px;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 4px;
+    background: rgba(8, 9, 10, 0.82);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 800;
+}
+
+.imaging-panel figcaption {
+    min-height: 66px;
+    padding: 11px 12px 13px;
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 0.73rem;
+    line-height: 1.45;
+}
+
+.model-placeholder {
+    margin: 22px 0 0;
+}
+
+.model-placeholder-stage {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 1px dashed rgba(255, 255, 255, 0.22);
+    border-radius: 6px;
+    background:
+        linear-gradient(rgba(223, 75, 87, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(223, 75, 87, 0.04) 1px, transparent 1px),
+        #08090a;
+    background-size: 32px 32px;
+}
+
+.model-placeholder-stage span {
+    padding: 7px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 4px;
+    background: rgba(8, 9, 10, 0.8);
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 0.68rem;
+    font-weight: 800;
+}
+
+.model-placeholder figcaption {
+    padding-top: 13px;
+}
+
+.model-placeholder figcaption small,
+.model-placeholder figcaption strong {
+    display: block;
+}
+
+.model-placeholder figcaption small {
+    margin-bottom: 5px;
+    color: #f08a92;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.model-placeholder figcaption strong {
+    color: #fff;
+    font-size: 1rem;
+}
+
+.text-box .model-placeholder figcaption p {
+    margin: 5px 0 0;
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 0.82rem;
+    line-height: 1.5;
+}
+
+body.light-mode .model-placeholder figcaption strong {
+    color: #111;
+}
+
+body.light-mode .text-box .model-placeholder figcaption p {
+    color: rgba(0, 0, 0, 0.62);
+}
+
+body.light-mode .diagnosis-card-head strong,
+body.light-mode .symptom-row-label strong,
+body.light-mode .diagnostic-path strong {
+    color: #111;
+}
+
+body.light-mode .prevention-node {
+    border-color: #fff;
+}
+
+body.light-mode .prevention-copy strong,
+body.light-mode .text-box .closing-statement {
+    color: #111;
+}
+
+body.light-mode .text-box .prevention-copy p {
+    color: rgba(0, 0, 0, 0.66);
+}
+
+body.light-mode .diagnosis-card-head span,
+body.light-mode .symptom-row-label,
+body.light-mode .text-box .symptom-note,
+body.light-mode .text-box .diagnostic-path p,
+body.light-mode .text-box .section-reference {
+    color: rgba(0, 0, 0, 0.64);
+}
+
+body.light-mode .text-box .section-reference a {
+    color: #8f2630;
+}
+
+body.light-mode .diagnostic-step-index {
+    color: #111;
+}
+
+body.light-mode .imaging-panel {
+    border-color: rgba(0, 0, 0, 0.12);
+}
+
+body.light-mode .text-box .info-image,
+body.light-mode .text-box .info-image img {
+}
+
+
+body.light-mode .imaging-panel figcaption {
+    color: rgba(0, 0, 0, 0.65);
+}
+
+/* Aortic dissection statistics */
+.aortic-stat-card {
+    margin: 22px 0 0;
+    padding: 18px 0;
+    border: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 0;
+    background: transparent;
+}
+
+.aortic-stat-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 14px;
+}
+
+.aortic-stat-head strong {
+    color: #fff;
+    font-size: 0.95rem;
+}
+
+.aortic-stat-head span {
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 0.78rem;
+}
+
+.aortic-stat-card p {
+    margin: 12px 0 0;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.86rem;
+    line-height: 1.45;
+}
+
+.aortic-stat-card small {
+    display: block;
+    margin-top: 10px;
+    color: rgba(255, 255, 255, 0.48);
+    font-size: 0.72rem;
+    line-height: 1.35;
+}
+
+.aortic-dot-field {
+    display: grid;
+    grid-template-columns: repeat(20, minmax(0, 1fr));
+    gap: 7px;
+    align-items: center;
+    margin: 2px auto 14px;
+    max-width: 440px;
+}
+
+.aortic-dot {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.16);
+}
+
+.aortic-case-routine {
+    max-width: 24px;
+    justify-self: center;
+    background: #f08a92;
+    outline: 2px solid rgba(255, 255, 255, 0.78);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(240, 138, 146, 0.18), 0 0 18px rgba(240, 138, 146, 0.58);
+}
+
+.aortic-case-hidden {
+    max-width: 24px;
+    justify-self: center;
+    border-radius: 22%;
+    background: #8f2630;
+    transform: rotate(45deg) scale(0.9);
+    box-shadow: 0 0 0 4px rgba(143, 38, 48, 0.2), 0 0 18px rgba(143, 38, 48, 0.66);
+}
+
+.aortic-stat-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px 14px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.76rem;
+}
+
+.aortic-stat-legend span {
+    display: inline-flex;
+    gap: 7px;
+    align-items: center;
+}
+
+.aortic-legend-dot,
+.aortic-swatch {
+    width: 12px;
+    height: 12px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.16);
+}
+
+.legend-routine {
+    background: #f08a92;
+}
+
+.legend-hidden {
+    border-radius: 22%;
+    background: #8f2630;
+    transform: rotate(45deg) scale(0.9);
+}
+
+.clock-early {
+    background: #ffb0b5;
+}
+
+.clock-middle {
+    background: #df4b57;
+}
+
+.clock-late,
+.legend-type-a {
+    background: #8f2630;
+}
+
+.legend-type-b {
+    background: #f08a92;
+}
+
+.legend-mortality {
+    background: #b93242;
+}
+
+.aortic-line {
+    width: 26px;
+    height: 6px;
+    flex: 0 0 auto;
+    border-radius: 999px;
+}
+
+.aortic-stat-card svg {
+    display: block;
+    width: min(100%, 420px);
+    height: auto;
+    margin: 0 auto 14px;
+    overflow: visible;
+}
+
+.aortic-stat-split svg {
+    width: min(100%, 560px);
+}
+
+.aortic-clock-slice {
+    fill-opacity: var(--slice-opacity);
+    stroke: rgba(12, 12, 14, 0.78);
+    stroke-width: 1;
+}
+
+.aortic-clock-early {
+    fill: #ffb0b5;
+}
+
+.aortic-clock-middle {
+    fill: #df4b57;
+}
+
+.aortic-clock-late {
+    fill: #8f2630;
+}
+
+.aortic-clock-center {
+    fill: rgba(12, 12, 14, 0.92);
+    stroke: rgba(255, 255, 255, 0.14);
+}
+
+.aortic-clock-tick {
+    stroke: rgba(255, 255, 255, 0.72);
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
+.aortic-clock-value {
+    fill: #fff;
+    font-size: 34px;
+    font-weight: 700;
+}
+
+.aortic-clock-caption {
+    fill: rgba(255, 255, 255, 0.62);
+    font-size: 13px;
+}
+
+.aortic-vessel {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.aortic-vessel-main {
+    stroke: #f08a92;
+    stroke-width: 32;
+    opacity: 0.86;
+}
+
+.aortic-vessel-a {
+    stroke: #8f2630;
+    stroke-width: 46;
+}
+
+.aortic-vessel-b {
+    stroke: #f08a92;
+    stroke-width: 28;
+}
+
+.aortic-tear-marker {
+    fill: #b93242;
+    stroke: #0c0c0e;
+    stroke-width: 4;
+}
+
+.aortic-branch-title,
+.aortic-branch-percent,
+.aortic-mortality-label {
+    fill: #fff;
+}
+
+.aortic-branch-title {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.aortic-branch-percent {
+    font-size: 34px;
+    font-weight: 700;
+}
+
+.aortic-mortality-track {
+    fill: rgba(255, 255, 255, 0.16);
+}
+
+.aortic-mortality-fill {
+    fill: #b93242;
+}
+
+.aortic-mortality-label {
+    font-size: 16px;
+}
+
+body.light-mode .aortic-stat-card {
+    background: transparent;
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .aortic-stat-head strong,
+body.light-mode .aortic-clock-value,
+body.light-mode .aortic-branch-title,
+body.light-mode .aortic-branch-percent,
+body.light-mode .aortic-mortality-label {
+    color: #111;
+    fill: #111;
+}
+
+body.light-mode .aortic-stat-head span,
+body.light-mode .aortic-stat-card p,
+body.light-mode .aortic-stat-card small,
+body.light-mode .aortic-stat-legend {
+    color: #555;
+}
+
+body.light-mode .aortic-clock-center {
+    fill: rgba(255, 255, 255, 0.92);
+    stroke: rgba(0, 0, 0, 0.12);
+}
+
+body.light-mode .aortic-clock-tick {
+    stroke: rgba(0, 0, 0, 0.52);
+}
+
 /* Media Queries */
 @media (max-width: 820px) {
     .scrolly-layout {
-        flex-direction: column-reverse;
+        display: block;
     }
 
     .left-column {
         width: 100%;
-        padding-top: 0;
+        padding-top: var(--nav-height);
     }
 
     .right-column {
         width: 100%;
-        height: 48vh;
-        position: sticky;
-        top: var(--nav-height);
+        height: 100vh;
+        position: fixed;
+        inset: 0;
     }
 
     .step {
-        min-height: 82vh;
-        align-items: flex-start;
-        padding-top: 24px;
+        min-height: 76vh;
+        align-items: center;
+        padding: 32px 16px;
     }
 
     .text-box {
+        width: 100%;
         max-width: none;
+    }
+
+    .diagnosis-card-head {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .diagnosis-card-head span {
+        text-align: left;
+    }
+
+    .symptom-row-label {
+        align-items: flex-start;
+    }
+
+    .imaging-comparison {
+        grid-template-columns: 1fr;
+    }
+
+    .treatment-decision-row,
+    .treatment-balance {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .treatment-steps {
+        grid-template-columns: 1fr;
+    }
+
+    .treatment-steps li,
+    .treatment-steps li:first-child,
+    .treatment-steps li:last-child {
+        padding: 16px 0;
+        border-right: 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .treatment-steps li:last-child {
+        border-bottom: 0;
+    }
+
+    .treatment-steps li > span {
+        margin-bottom: 6px;
+    }
+
+    .prevention-timeline {
+        gap: 24px;
+        margin: 28px 0;
+    }
+
+    .prevention-timeline::before {
+        left: 7px;
+        transform: none;
+    }
+
+    .prevention-timeline li {
+        grid-template-columns: 24px minmax(0, 1fr);
+    }
+
+    .prevention-node {
+        grid-column: 1;
+        justify-self: start;
+    }
+
+    .prevention-copy,
+    .prevention-timeline li:nth-child(even) .prevention-copy {
+        grid-column: 2;
+        padding: 0;
+        text-align: left;
+    }
+
+    .text-box .closing-statement {
+        font-size: 1.05rem;
+    }
+
+    .imaging-panel-media {
+        height: min(88vw, 410px);
+    }
+
+    .imaging-panel figcaption {
+        min-height: 0;
+    }
+}
+
+/*
+ * Minimal story style guide
+ * Color: background, text, accent
+ * Type: section title, body, metadata
+ */
+.scrolly-layout .right-column {
+    background: var(--color-bg);
+}
+
+.scrolly-layout .right-column::before {
+    background: color-mix(in srgb, var(--color-bg) 62%, transparent);
+}
+
+.text-box {
+    color: var(--color-text);
+}
+
+.text-box h2 {
+    margin-bottom: 1.25rem;
+    color: var(--color-text);
+    font-size: clamp(2.15rem, 3vw, 2.75rem);
+    font-weight: 700;
+    line-height: 1.15;
+    order: -1;
+}
+
+.text-box p,
+.text-box .info-text {
+    color: color-mix(in srgb, var(--color-text) 86%, transparent);
+    font-size: 1.05rem;
+    font-weight: 400;
+    line-height: 1.65;
+}
+
+.text-box p {
+    margin-bottom: 0.65rem;
+}
+
+.text-box.cols-2 {
+    row-gap: 10px;
+}
+
+.text-box .info-heading,
+.stats-box strong,
+.mini-chart-head strong,
+.diagnosis-card-head strong,
+.diagnostic-path strong,
+.treatment-decision-row strong,
+.treatment-steps strong,
+.treatment-balance-column h3,
+.prevention-copy strong,
+.aortic-stat-head strong,
+.model-placeholder figcaption strong {
+    color: var(--color-text);
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1.45;
+    text-transform: none;
+}
+
+.text-box .info-heading {
+    margin: 1.3rem 0 0.45rem;
+}
+
+.text-box .story-pull-quote {
+    margin-bottom: 1.4rem;
+    color: var(--color-text);
+    font-size: clamp(1.35rem, 2vw, 1.65rem);
+    font-weight: 500;
+    line-height: 1.35;
+}
+
+.visual-status-label,
+.treatment-decision-row small,
+.prevention-copy small,
+.model-placeholder figcaption small,
+.imaging-modality,
+.diagnostic-step-index,
+.treatment-steps li > span {
+    color: var(--color-accent);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.stats-box span,
+.mini-chart-head span,
+.mini-chart p,
+.diagnosis-card-head span,
+.symptom-row-label,
+.text-box .symptom-note,
+.text-box .diagnostic-path p,
+.text-box .treatment-decision-row p,
+.text-box .treatment-steps p,
+.treatment-balance-column li,
+.text-box .prevention-copy p,
+.text-box .section-reference,
+.info-image figcaption,
+.imaging-panel figcaption,
+.aortic-stat-head span,
+.aortic-stat-card small,
+.aortic-stat-legend,
+.model-placeholder-stage span {
+    color: color-mix(in srgb, var(--color-text) 62%, transparent);
+    font-size: 0.875rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.5;
+    text-transform: none;
+}
+
+.text-box .closing-statement {
+    color: var(--color-text);
+    font-size: 1.05rem;
+    font-weight: 500;
+}
+
+.stats-box,
+.mini-chart,
+.symptom-stat-card,
+.aortic-stat-card,
+.treatment-decision,
+.treatment-decision-row,
+.treatment-steps,
+.treatment-balance,
+.text-box .closing-statement,
+.text-box .section-reference {
+    border-color: color-mix(in srgb, var(--color-text) 14%, transparent);
+}
+
+.meter-track,
+.split-track,
+.bar-track,
+.symptom-track,
+.aortic-dot,
+.aortic-legend-dot,
+.aortic-swatch {
+    background: color-mix(in srgb, var(--color-text) 14%, transparent);
+}
+
+.aortic-mortality-track {
+    fill: color-mix(in srgb, var(--color-text) 14%, transparent);
+}
+
+.meter-track span,
+.split-track span,
+.bar-track span,
+.symptom-track span,
+.legend-routine,
+.legend-hidden,
+.clock-early,
+.clock-middle,
+.clock-late,
+.legend-type-a,
+.legend-type-b,
+.legend-mortality,
+.aortic-case-routine,
+.aortic-case-hidden,
+.prevention-node {
+    background: var(--color-accent);
+}
+
+.diagnostic-path::before,
+.prevention-timeline::before {
+    background: var(--color-accent);
+}
+
+.diagnostic-step-index {
+    border-color: var(--color-accent);
+    background: var(--color-bg);
+}
+
+.aortic-clock-early,
+.aortic-clock-middle,
+.aortic-clock-late,
+.aortic-mortality-fill,
+.aortic-tear-marker {
+    fill: var(--color-accent);
+}
+
+.aortic-vessel-main,
+.aortic-vessel-a,
+.aortic-vessel-b {
+    stroke: var(--color-accent);
+}
+
+.aortic-clock-early { fill-opacity: 0.42; }
+.aortic-clock-middle { fill-opacity: 0.7; }
+.aortic-clock-late { fill-opacity: 1; }
+.aortic-vessel-main { opacity: 0.52; }
+.aortic-vessel-b { opacity: 0.7; }
+
+.aortic-clock-center {
+    fill: var(--color-bg);
+}
+
+.imaging-panel,
+.imaging-panel-media,
+.text-box .info-image,
+.text-box .info-image img,
+.model-placeholder-stage,
+.model-placeholder-stage span {
+    background: var(--color-bg);
+}
+
+.model-placeholder-stage {
+    background-image: none;
+    border-color: color-mix(in srgb, var(--color-text) 22%, transparent);
+}
+
+.text-box .section-reference a {
+    color: var(--color-accent);
+    text-decoration-color: currentColor;
+}
+
+.aortic-case-routine,
+.aortic-case-hidden,
+.prevention-node {
+    box-shadow: none;
+}
+
+.aortic-case-routine {
+    outline-color: var(--color-text);
+}
+
+.wall-layer-legend .intima,
+.wall-layer-legend .media,
+.wall-layer-legend .adventitia {
+    background: var(--color-accent);
+}
+
+.wall-layer-legend .intima { opacity: 0.42; }
+.wall-layer-legend .media { opacity: 0.72; }
+.wall-layer-legend .adventitia { opacity: 1; }
+
+.aortic-stat-card svg text {
+    font-family: 'Roboto', Arial, sans-serif;
+}
+
+@media (max-width: 600px) {
+    .text-box h2 {
+        font-size: 2rem;
+    }
+
+    .text-box p,
+    .text-box .info-text {
+        font-size: 1rem;
+    }
+}
+
+/* Continuous editorial scrolling for the dissection story. */
+body[data-story-version="dissection"] .right-column {
+    opacity: 0;
+    pointer-events: none;
+}
+
+body[data-story-version="dissection"] .scrolly-layout {
+    background: var(--color-bg);
+}
+
+body[data-story-version="dissection"] .left-column {
+    width: min(100%, 1120px);
+    margin: 0 auto;
+}
+
+body[data-story-version="dissection"] #story {
+    padding: 0 0 clamp(64px, 8vw, 104px);
+}
+
+body[data-story-version="dissection"] .step,
+body[data-story-version="dissection"] .step:first-of-type,
+body[data-story-version="dissection"] .step.model-section {
+    display: block;
+    min-height: 0;
+    padding: 0 clamp(18px, 4vw, 56px);
+    scroll-margin-top: calc(var(--nav-height) + 22px);
+}
+
+body[data-story-version="dissection"] .step .text-box,
+body[data-story-version="dissection"] .step.active .text-box,
+body[data-story-version="dissection"] .step:not(.active) .text-box,
+body[data-story-version="dissection"] .step.model-section .text-box {
+    width: min(1000px, 100%);
+    padding-top: clamp(24px, 3.5vw, 40px);
+    padding-bottom: clamp(24px, 3.5vw, 40px);
+    opacity: 1;
+    transform: none;
+}
+
+body[data-story-version="dissection"] .text-box.content-text,
+body[data-story-version="dissection"] .text-box.content-data,
+body[data-story-version="dissection"] .text-box.content-media,
+body[data-story-version="dissection"] .text-box.cols-2 {
+    width: min(1000px, 100%);
+}
+
+body[data-story-version="dissection"] .step.chapter-start {
+    display: block;
+}
+
+body[data-story-version="dissection"] .step:first-of-type .text-box {
+    padding-top: clamp(52px, 7vw, 80px);
+}
+
+body[data-story-version="dissection"].story-ready .step .text-box {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.42s ease, transform 0.42s ease;
+}
+
+body[data-story-version="dissection"].story-ready .step.is-revealed .text-box {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+body[data-story-version="dissection"] .info-image img,
+body[data-story-version="dissection"] .imaging-panel img,
+body[data-story-version="dissection"] .step.active .info-image img,
+body[data-story-version="dissection"] .step.active .imaging-panel img {
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body[data-story-version="dissection"].story-ready .step .text-box {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
+
+/* ScrollDirector choreography */
+body[data-story-version="dissection"].scroll-directed .step {
+    --scroll-progress: 0;
+    --chapter-progress: 0;
+    --sticky-progress: 0;
+    --comparison-progress: 0;
+}
+
+body[data-story-version="dissection"] .step[data-scroll-mode="sequence"] [data-scroll-item] {
+    --item-progress: 0;
+    opacity: calc(0.16 + var(--item-progress) * 0.84);
+    transform: translateY(calc((1 - var(--item-progress)) * 18px));
+}
+
+body[data-story-version="dissection"] .step[data-scroll-mode="comparison"] [data-scroll-item]:not(.element-imagingComparison) {
+    --item-progress: 0;
+    opacity: calc(0.24 + var(--item-progress) * 0.76);
+    transform: translateY(calc((1 - var(--item-progress)) * 14px));
+}
+
+body[data-story-version="dissection"] .step[data-scroll-mode="sequence"] [data-scroll-item],
+body[data-story-version="dissection"] .step[data-scroll-mode="comparison"] [data-scroll-item] {
+    will-change: opacity, transform;
+}
+
+/* Miriam follows the same portrait-led intro composition as Alex. */
+body[data-story-version="dissection"] .story-intro[data-scroll-mode="sticky"] {
+    min-height: 132vh;
+    padding: 0 clamp(20px, 5vw, 64px);
+    scroll-margin-top: calc(var(--nav-height) - clamp(76px, 10vw, 128px));
+}
+
+body[data-story-version="dissection"] .story-intro[data-scroll-mode="sticky"] .text-box {
+    display: grid;
+    grid-template-columns: minmax(240px, 0.78fr) minmax(0, 1.22fr);
+    gap: 16px 52px;
+    align-items: start;
+    width: min(980px, 100%);
+    padding: clamp(76px, 10vw, 128px) 0 clamp(38px, 5vw, 64px);
+    min-height: 118vh;
+}
+
+body[data-story-version="dissection"] .story-intro .element-wrapper {
+    grid-column: 2;
+}
+
+body[data-story-version="dissection"] .story-intro .element-image {
+    position: sticky;
+    top: calc(var(--nav-height) + 28px);
+    align-self: start;
+    justify-self: start;
+    width: min(300px, 100%);
+    grid-column: 1;
+    grid-row: 2 / span 8;
+}
+
+body[data-story-version="dissection"] .story-intro .info-image img {
+    max-height: 520px;
+    object-fit: cover;
+    object-position: center 32%;
+    transform: scale(calc(0.99 + var(--sticky-progress) * 0.015));
+    transform-origin: center 35%;
+}
+
+/* Anatomy: the model is stable and interactive while its labels enter in sequence. */
+body[data-story-version="dissection"] .model-section[data-scroll-mode="sticky"] {
+    min-height: 148vh;
+}
+
+body[data-story-version="dissection"] .model-section[data-scroll-mode="sticky"] .text-box {
+    display: grid;
+    grid-template-columns: minmax(0, 1.12fr) minmax(280px, 0.88fr);
+    gap: 18px 48px;
+    width: min(1080px, 100%);
+    align-items: start;
+    min-height: 132vh;
+}
+
+body[data-story-version="dissection"] .model-section[data-scroll-mode="sticky"] .text-box > h2 {
+    grid-column: 1 / -1;
+}
+
+body[data-story-version="dissection"] .model-section[data-scroll-mode="sticky"] .inline-model-figure {
+    position: sticky;
+    top: calc(var(--nav-height) + 34px);
+    grid-column: 1;
+    grid-row: 2 / span 8;
+    align-self: start;
+}
+
+body[data-story-version="dissection"] .model-section[data-scroll-mode="sticky"] .element-wrapper {
+    grid-column: 2;
+}
+
+body[data-story-version="dissection"] .model-section .wall-layer-legend span {
+    opacity: 0.34;
+}
+
+body[data-story-version="dissection"] .model-section .wall-layer-legend span:nth-child(1) {
+    opacity: clamp(0.34, calc(var(--sticky-progress) * 4), 1);
+}
+
+body[data-story-version="dissection"] .model-section .wall-layer-legend span:nth-child(2) {
+    opacity: clamp(0.34, calc((var(--sticky-progress) - 0.22) * 4), 1);
+}
+
+body[data-story-version="dissection"] .model-section .wall-layer-legend span:nth-child(3) {
+    opacity: clamp(0.34, calc((var(--sticky-progress) - 0.48) * 4), 1);
+}
+
+/* Statistics and clinical sequences progressively assemble once. */
+body[data-story-version="dissection"] .step[data-scroll-mode="sequence"] .aortic-dot {
+    opacity: clamp(0.12, calc(var(--item-progress) * 2.4 - var(--dot-index) * 0.006), 1);
+    transform: scale(clamp(0.45, calc(var(--item-progress) * 2.2 - var(--dot-index) * 0.005), 1));
+}
+
+/* Definition statistics: one compact editorial spread instead of a long stack. */
+body[data-story-version="dissection"] .statistics-overview .text-box {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 34px;
+    align-items: stretch;
+}
+
+body[data-story-version="dissection"] .statistics-overview .text-box > h2,
+body[data-story-version="dissection"] .statistics-overview .element-text {
+    grid-column: 1 / -1;
+}
+
+body[data-story-version="dissection"] .statistics-overview .element-text {
+    max-width: 70ch;
+    margin-bottom: 4px;
+}
+
+body[data-story-version="dissection"] .statistics-overview .element-aorticStat {
+    min-width: 0;
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-stat-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 500px;
+    margin-top: 0;
+    padding: 20px 0 18px;
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-stat-head {
+    min-height: 44px;
+    align-items: flex-start;
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-dot-field {
+    width: 100%;
+    gap: 6px;
+    margin: 18px auto 22px;
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-stat-card svg {
+    width: 100%;
+    margin: 2px auto 16px;
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-stat-split svg {
+    transform: scale(1.06);
+    transform-origin: center;
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-stat-legend {
+    min-height: 46px;
+    align-content: flex-start;
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-stat-card > p {
+    margin-top: auto;
+    padding-top: 18px;
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-stat-card > small {
+    padding-top: 4px;
+}
+
+body[data-story-version="dissection"] .step[data-scroll-mode="sequence"] .symptom-track span {
+    transform: scaleX(var(--item-progress));
+    transform-origin: left;
+}
+
+body[data-story-version="dissection"] .step[data-scroll-mode="sequence"] .diagnostic-path::before,
+body[data-story-version="dissection"] .step[data-scroll-mode="sequence"] .prevention-timeline::before {
+    transform: scaleY(var(--item-progress));
+    transform-origin: top;
+}
+
+body[data-story-version="dissection"] .step[data-scroll-mode="sequence"] .diagnostic-path li,
+body[data-story-version="dissection"] .step[data-scroll-mode="sequence"] .treatment-decision-row,
+body[data-story-version="dissection"] .step[data-scroll-mode="sequence"] .treatment-steps li,
+body[data-story-version="dissection"] .step[data-scroll-mode="sequence"] .prevention-timeline li {
+    --row-progress: clamp(0, calc(var(--item-progress) * 2 - var(--row-index) * 0.22), 1);
+    opacity: calc(0.18 + var(--row-progress) * 0.82);
+    transform: translateY(calc((1 - var(--row-progress)) * 12px));
+}
+
+/* Diagnosis: the image pair becomes one sticky comparison stage. */
+body[data-story-version="dissection"] .evidence-section[data-scroll-mode="comparison"] {
+    min-height: 154vh;
+}
+
+body[data-story-version="dissection"] .evidence-section[data-scroll-mode="comparison"] .text-box {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(290px, 0.95fr);
+    gap: 18px 48px;
+    width: min(1080px, 100%);
+    align-items: start;
+    min-height: 138vh;
+}
+
+body[data-story-version="dissection"] .evidence-section[data-scroll-mode="comparison"] .text-box > h2 {
+    grid-column: 1 / -1;
+}
+
+body[data-story-version="dissection"] .evidence-section[data-scroll-mode="comparison"] .element-imagingComparison {
+    position: sticky;
+    top: calc(var(--nav-height) + 34px);
+    grid-column: 1;
+    grid-row: 2 / span 12;
+    align-self: start;
+}
+
+body[data-story-version="dissection"] .evidence-section[data-scroll-mode="comparison"] .element-wrapper:not(.element-imagingComparison) {
+    grid-column: 2;
+}
+
+body[data-story-version="dissection"] .evidence-section .imaging-comparison {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin: 0;
+}
+
+body[data-story-version="dissection"] .evidence-section .imaging-panel {
+    grid-area: 1 / 1;
+}
+
+body[data-story-version="dissection"] .evidence-section .imaging-panel:first-child {
+    opacity: calc(1 - var(--comparison-progress));
+}
+
+body[data-story-version="dissection"] .evidence-section .imaging-panel:last-child {
+    opacity: var(--comparison-progress);
+}
+
+/* Prognosis: flow stages stay in view while their interpretation passes beside them. */
+body[data-story-version="dissection"] #s11[data-scroll-mode="sticky"],
+body[data-story-version="dissection"] #s12[data-scroll-mode="sticky"] {
+    min-height: 142vh;
+}
+
+body[data-story-version="dissection"] #s11[data-scroll-mode="sticky"] .text-box,
+body[data-story-version="dissection"] #s12[data-scroll-mode="sticky"] .text-box {
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(290px, 0.92fr);
+    gap: 18px 48px;
+    width: min(1080px, 100%);
+    align-items: start;
+    min-height: 126vh;
+}
+
+body[data-story-version="dissection"] #s11 .text-box > h2,
+body[data-story-version="dissection"] #s12 .text-box > h2 {
+    grid-column: 1 / -1;
+}
+
+body[data-story-version="dissection"] #s11 .element-modelPlaceholder,
+body[data-story-version="dissection"] #s12 .element-modelPlaceholder {
+    position: sticky;
+    top: calc(var(--nav-height) + 34px);
+    grid-column: 1;
+    grid-row: 2 / span 16;
+    align-self: start;
+}
+
+body[data-story-version="dissection"] #s11 .element-wrapper:not(.element-modelPlaceholder),
+body[data-story-version="dissection"] #s12 .element-wrapper:not(.element-modelPlaceholder) {
+    grid-column: 2;
+}
+
+body[data-story-version="dissection"] #s11 .model-placeholder-stage,
+body[data-story-version="dissection"] #s12 .model-placeholder-stage {
+    border-color: color-mix(in srgb, var(--color-accent) calc(28% + var(--sticky-progress) * 52%), transparent);
+}
+
+body[data-story-version="dissection"] .inline-model-figure,
+body[data-story-version="dissection"] .element-imagingComparison,
+body[data-story-version="dissection"] .element-modelPlaceholder {
+    max-height: calc(100vh - var(--nav-height) - 48px);
+}
+
+@media (max-width: 820px) {
+    body[data-story-version="dissection"] .story-intro[data-scroll-mode="sticky"],
+    body[data-story-version="dissection"] .model-section[data-scroll-mode="sticky"],
+    body[data-story-version="dissection"] .evidence-section[data-scroll-mode="comparison"],
+    body[data-story-version="dissection"] #s11[data-scroll-mode="sticky"],
+    body[data-story-version="dissection"] #s12[data-scroll-mode="sticky"] {
+        min-height: 0;
+    }
+
+    body[data-story-version="dissection"] .story-intro[data-scroll-mode="sticky"] .text-box {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 32px 0 38px;
+        min-height: 0;
+    }
+
+    body[data-story-version="dissection"] .story-intro[data-scroll-mode="sticky"] {
+        scroll-margin-top: calc(var(--nav-height) + 16px);
+    }
+
+    body[data-story-version="dissection"] .story-intro .element-image {
+        width: min(230px, 100%);
+        grid-column: 1;
+        grid-row: auto;
+    }
+
+    body[data-story-version="dissection"] .story-intro .element-wrapper {
+        grid-column: 1;
+        grid-row: auto;
+    }
+
+    body[data-story-version="dissection"] .story-intro .info-image img {
+        max-height: none;
+        transform: none;
+    }
+
+    body[data-story-version="dissection"] .story-intro .element-image,
+    body[data-story-version="dissection"] .model-section[data-scroll-mode="sticky"] .inline-model-figure,
+    body[data-story-version="dissection"] .evidence-section[data-scroll-mode="comparison"] .element-imagingComparison,
+    body[data-story-version="dissection"] #s11 .element-modelPlaceholder,
+    body[data-story-version="dissection"] #s12 .element-modelPlaceholder {
+        position: relative;
+        top: auto;
+    }
+
+    body[data-story-version="dissection"] .model-section[data-scroll-mode="sticky"] .text-box,
+    body[data-story-version="dissection"] .evidence-section[data-scroll-mode="comparison"] .text-box,
+    body[data-story-version="dissection"] #s11[data-scroll-mode="sticky"] .text-box,
+    body[data-story-version="dissection"] #s12[data-scroll-mode="sticky"] .text-box {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 15px;
+        min-height: 0;
+    }
+
+    body[data-story-version="dissection"] .model-section[data-scroll-mode="sticky"] .text-box > *,
+    body[data-story-version="dissection"] .evidence-section[data-scroll-mode="comparison"] .text-box > *,
+    body[data-story-version="dissection"] #s11 .text-box > *,
+    body[data-story-version="dissection"] #s12 .text-box > * {
+        grid-column: 1;
+        grid-row: auto;
+    }
+
+    body[data-story-version="dissection"] .evidence-section .imaging-panel {
+        grid-area: 1 / 1;
+    }
+
+    body[data-story-version="dissection"] .statistics-overview .text-box {
+        grid-template-columns: 1fr;
+    }
+
+    body[data-story-version="dissection"] .statistics-overview .text-box > h2,
+    body[data-story-version="dissection"] .statistics-overview .element-text,
+    body[data-story-version="dissection"] .statistics-overview .element-aorticStat {
+        grid-column: 1;
+    }
+
+    body[data-story-version="dissection"] .statistics-overview .aortic-stat-card {
+        min-height: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body[data-story-version="dissection"] [data-scroll-item],
+    body[data-story-version="dissection"] .aortic-dot,
+    body[data-story-version="dissection"] .symptom-track span,
+    body[data-story-version="dissection"] .diagnostic-path li,
+    body[data-story-version="dissection"] .treatment-decision-row,
+    body[data-story-version="dissection"] .treatment-steps li,
+    body[data-story-version="dissection"] .prevention-timeline li,
+    body[data-story-version="dissection"] .story-intro .info-image img {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+    }
+}
+
+/* Keep consecutive body-copy blocks compact without changing section spacing. */
+.text-box,
+.text-box.cols-2 {
+    row-gap: 6px;
+    align-content: start;
+}
+
+.text-box .element-text,
+.text-box .element-text .info-text {
+    margin: 0;
+    padding: 0;
+}
+
+/* Larger editorial type hierarchy. */
+.text-box h2 { font-size: 3rem; }
+
+.text-box p,
+.text-box .info-text { font-size: 1.2rem; }
+
+.text-box .info-heading,
+.stats-box strong,
+.mini-chart-head strong,
+.diagnosis-card-head strong,
+.diagnostic-path strong,
+.treatment-decision-row strong,
+.treatment-steps strong,
+.treatment-balance-column h3,
+.prevention-copy strong,
+.aortic-stat-head strong,
+.model-placeholder figcaption strong { font-size: 1.15rem; }
+
+.text-box .story-pull-quote { font-size: 1.85rem; }
+
+.stats-box span,
+.mini-chart-head span,
+.mini-chart p,
+.diagnosis-card-head span,
+.symptom-row-label,
+.text-box .symptom-note,
+.text-box .diagnostic-path p,
+.text-box .treatment-decision-row p,
+.text-box .treatment-steps p,
+.treatment-balance-column li,
+.text-box .prevention-copy p,
+.text-box .section-reference,
+.info-image figcaption,
+.imaging-panel figcaption,
+.aortic-stat-head span,
+.aortic-stat-card small,
+.aortic-stat-legend,
+.model-placeholder-stage span { font-size: 0.95rem; }
+
+.text-box .closing-statement { font-size: 1.2rem; }
+
+@media (max-width: 820px) {
+    .text-box h2 { font-size: 2.35rem; }
+
+    .text-box p,
+    .text-box .info-text { font-size: 1.1rem; }
+
+    .text-box .story-pull-quote { font-size: 1.55rem; }
+}
+
+/* Viewport sections: each story beat enters and leaves as one complete unit. */
+body[data-story-version] #story {
+    padding-bottom: 0;
+}
+
+body[data-story-version] .step,
+body[data-story-version] .step:first-of-type,
+body[data-story-version] .step.model-section,
+body[data-story-version] .step[data-scroll-mode="sticky"],
+body[data-story-version] .step[data-scroll-mode="comparison"] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100svh - var(--nav-height)) !important;
+    padding: clamp(24px, 4vh, 44px) clamp(18px, 4vw, 56px);
+    scroll-margin-top: var(--nav-height);
+    scroll-snap-align: start;
+}
+
+body[data-story-version] .step .text-box,
+body[data-story-version] .step:first-of-type .text-box,
+body[data-story-version] .step.model-section .text-box,
+body[data-story-version] .step[data-scroll-mode="sticky"] .text-box,
+body[data-story-version] .step[data-scroll-mode="comparison"] .text-box,
+body[data-story-version] .step.chapter-start .text-box {
+    min-height: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+body[data-story-version] .step [data-scroll-item],
+body[data-story-version] .step [data-scroll-item] *,
+body[data-story-version] .step .aortic-dot,
+body[data-story-version] .step .symptom-track span,
+body[data-story-version] .step .diagnostic-path::before,
+body[data-story-version] .step .prevention-timeline::before,
+body[data-story-version] .step .diagnostic-path li,
+body[data-story-version] .step .treatment-decision-row,
+body[data-story-version] .step .treatment-steps li,
+body[data-story-version] .step .prevention-timeline li {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+}
+
+body[data-story-version] .step .element-image,
+body[data-story-version] .step .inline-model-figure,
+body[data-story-version] .step .element-imagingComparison,
+body[data-story-version] .step .element-modelPlaceholder {
+    position: relative !important;
+    top: auto !important;
+}
+
+body[data-story-version] .evidence-section .imaging-comparison {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+body[data-story-version] .evidence-section .imaging-panel,
+body[data-story-version] .evidence-section .imaging-panel:first-child,
+body[data-story-version] .evidence-section .imaging-panel:last-child {
+    grid-area: auto;
+    opacity: 1;
+}
+
+@media (max-width: 820px), (max-height: 760px) {
+    body[data-story-version] .step,
+    body[data-story-version] .step:first-of-type,
+    body[data-story-version] .step.model-section,
+    body[data-story-version] .step[data-scroll-mode="sticky"],
+    body[data-story-version] .step[data-scroll-mode="comparison"] {
+        min-height: calc(100svh - var(--nav-height)) !important;
+        height: auto;
+    }
+}
+
+@media (max-width: 700px) {
+    body[data-story-version="aneurysm"] .aneurysm-burden {
+        overflow-x: visible;
+        overscroll-behavior-inline: auto;
+    }
+
+    body[data-story-version="aneurysm"] .aneurysm-burden svg {
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+@media (max-width: 560px) {
+    body[data-story-version] .evidence-section .imaging-comparison {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Readable microcopy tier for captions, references, legends, and labels. */
+body[data-story-version] .step figcaption,
+body[data-story-version] .step small,
+body[data-story-version] .step .inline-model-figure figcaption,
+body[data-story-version] .step .wall-layer-legend,
+body[data-story-version] .step .info-image figcaption,
+body[data-story-version] .step .imaging-panel figcaption,
+body[data-story-version] .step .imaging-modality,
+body[data-story-version] .step .stats-box span,
+body[data-story-version] .step .mini-chart-head span,
+body[data-story-version] .step .mini-chart p,
+body[data-story-version] .step .diagnosis-card-head span,
+body[data-story-version] .step .symptom-row-label,
+body[data-story-version] .step .symptom-note,
+body[data-story-version] .step .diagnostic-step-index,
+body[data-story-version] .step .diagnostic-path p,
+body[data-story-version] .step .treatment-decision-row small,
+body[data-story-version] .step .treatment-decision-row p,
+body[data-story-version] .step .treatment-steps li > span,
+body[data-story-version] .step .treatment-steps p,
+body[data-story-version] .step .treatment-balance-column li,
+body[data-story-version] .step .prevention-copy small,
+body[data-story-version] .step .prevention-copy p,
+body[data-story-version] .step .section-reference,
+body[data-story-version] .step .model-placeholder-stage span,
+body[data-story-version] .step .model-placeholder figcaption small,
+body[data-story-version] .step .model-placeholder figcaption p,
+body[data-story-version] .step .aortic-stat-head span,
+body[data-story-version] .step .aortic-stat-card p,
+body[data-story-version] .step .aortic-stat-card small,
+body[data-story-version] .step .aortic-stat-legend,
+body[data-story-version] .step .aneurysm-burden-heading span,
+body[data-story-version] .step .aneurysm-burden figcaption,
+body[data-story-version] .step .aneurysm-burden-legend,
+body[data-story-version] .step .aneurysm-growth-legend,
+body[data-story-version] .step .growth-profile-outcome span,
+body[data-story-version] .step .aneurysm-sex-heading span,
+body[data-story-version] .step .aneurysm-drivers-heading span,
+body[data-story-version] .step .aneurysm-sex-risk figcaption,
+body[data-story-version] .step .aneurysm-risk-drivers figcaption,
+body[data-story-version] .step .aneurysm-drivers-legend,
+body[data-story-version] .step .sex-risk-scale,
+body[data-story-version] .step .drivers-mobile-list strong,
+body[data-story-version] .step .drivers-mobile-list span,
+body[data-story-version] .step .drivers-mobile-list small {
+    font-size: 1.05rem;
+    line-height: 1.5;
+}
+
+body[data-story-version] .step .burden-year,
+body[data-story-version] .step .drivers-year,
+body[data-story-version] .step .aortic-clock-caption {
+    font-size: 17px;
+}
+
+@media (max-width: 820px) {
+    body[data-story-version] .step .inline-model-figure figcaption,
+    body[data-story-version] .step .wall-layer-legend,
+    body[data-story-version] .step .info-image figcaption,
+    body[data-story-version] .step .imaging-panel figcaption,
+    body[data-story-version] .step .imaging-modality,
+    body[data-story-version] .step small,
+    body[data-story-version] .step .section-reference,
+    body[data-story-version] .step .aortic-stat-card p,
+    body[data-story-version] .step .aortic-stat-legend,
+    body[data-story-version] .step .sex-risk-scale,
+    body[data-story-version] .step .drivers-mobile-list span {
+        font-size: 1rem;
+    }
+
+    body[data-story-version] .step .burden-year,
+    body[data-story-version] .step .drivers-year,
+    body[data-story-version] .step .aortic-clock-caption {
+        font-size: 16px;
+    }
+}
+
+/* Compact viewports keep the story fluid while preserving viewport-sized beats. */
+@media (max-width: 820px) {
+    .scrolly-layout .right-column {
+        height: 100svh;
+        height: 100dvh;
+    }
+
+    body[data-story-version] .step,
+    body[data-story-version] .step:first-of-type,
+    body[data-story-version] .step.model-section,
+    body[data-story-version] .step[data-scroll-mode="sticky"],
+    body[data-story-version] .step[data-scroll-mode="comparison"] {
+        box-sizing: border-box;
+        width: 100%;
+        min-width: 0;
+        min-height: calc(100svh - var(--nav-height)) !important;
+        height: auto !important;
+        padding: 28px 16px;
+        overflow: visible;
+    }
+
+    body[data-story-version] .step .text-box,
+    body[data-story-version] .step .text-box.cols-2,
+    body[data-story-version] .story-intro .text-box.cols-2,
+    body[data-story-version] .statistics-overview .text-box,
+    body[data-story-version] .model-section[data-scroll-mode="sticky"] .text-box,
+    body[data-story-version] .evidence-section[data-scroll-mode="comparison"] .text-box,
+    body[data-story-version="aneurysm"] .aneurysm-prognosis-section .text-box {
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+
+    body[data-story-version] .step .text-box > * {
+        min-width: 0;
+        max-width: 100%;
+        grid-column: 1 !important;
+        grid-row: auto !important;
+    }
+
+    body[data-story-version] .step img,
+    body[data-story-version] .step svg,
+    body[data-story-version] .step canvas,
+    body[data-story-version] .step video {
+        max-width: 100%;
+    }
+
+    body[data-story-version] .step figure,
+    body[data-story-version] .step .element-wrapper,
+    body[data-story-version] .step .element-image,
+    body[data-story-version] .step .element-imagingComparison,
+    body[data-story-version] .step .element-modelPlaceholder,
+    body[data-story-version] .step .inline-model-figure {
+        width: 100%;
+        min-width: 0;
+        margin-inline: 0;
+    }
+
+    body[data-story-version] .imaging-panel-media {
+        height: auto;
+        min-height: min(64vw, 300px);
+        aspect-ratio: 4 / 3;
+    }
+}
+
+@media (max-width: 560px) {
+    body[data-story-version] .step,
+    body[data-story-version] .step:first-of-type,
+    body[data-story-version] .step.model-section,
+    body[data-story-version] .step[data-scroll-mode="sticky"],
+    body[data-story-version] .step[data-scroll-mode="comparison"] {
+        padding-inline: 14px;
+    }
+
+}
+
+/* Flow research fills the viewport; narrative copy sits at the visual edge. */
+body[data-story-version] .scrolly-layout .left-column {
+    width: 100%;
+    max-width: none;
+}
+
+body[data-story-version] .pin-spacer:has(> .flow-research-section) {
+    box-sizing: border-box !important;
+    width: 100vw !important;
+    max-width: none !important;
+}
+
+body[data-story-version] .flow-research-section,
+body[data-story-version] .flow-research-section[data-scroll-mode="sticky"] {
+    box-sizing: border-box;
+    width: 100vw;
+    min-height: 100svh !important;
+    min-height: 100dvh !important;
+    height: 100svh !important;
+    height: 100dvh !important;
+    margin-inline: 0;
+    padding: 0 !important;
+}
+
+body[data-story-version] .flow-research-section .text-box,
+body[data-story-version="aneurysm"] .flow-research-section .text-box,
+body[data-story-version="dissection"] .flow-research-section .text-box {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 390px) !important;
+    grid-auto-rows: min-content;
+    gap: 12px !important;
+    width: 100vw !important;
+    max-width: none;
+    min-height: 100svh !important;
+    min-height: 100dvh !important;
+    height: 100svh !important;
+    height: 100dvh !important;
+    margin: 0;
+    padding: clamp(28px, 4vh, 48px) clamp(24px, 4vw, 68px) !important;
+    align-content: center;
+    overflow: hidden;
+}
+
+body[data-story-version] .flow-research-section .element-modelPlaceholder {
+    position: absolute !important;
+    z-index: 0;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    grid-column: auto !important;
+    grid-row: auto !important;
+}
+
+body[data-story-version] .flow-research-section .model-placeholder {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+body[data-story-version] .flow-research-section .model-placeholder-stage {
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    aspect-ratio: auto;
+    border: 0;
+    border-radius: 0;
+    background-color: color-mix(in srgb, var(--color-bg) 78%, #000);
+}
+
+body[data-story-version] .flow-research-section .model-placeholder-stage span {
+    font-size: 1.05rem;
+}
+
+.inline-model-error {
+    display: none;
+}
+
+.inline-model-viewer.has-error .inline-model-error {
+    display: block;
+}
+
+body[data-story-version] .flow-research-section .model-placeholder figcaption {
+    position: absolute;
+    z-index: 2;
+    left: clamp(24px, 4vw, 68px);
+    bottom: clamp(20px, 3vh, 36px);
+    width: min(48ch, calc(100vw - 48px));
+    padding: 0;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.92);
+}
+
+body[data-story-version] .flow-research-section h2,
+body[data-story-version] .flow-research-section .element-wrapper:not(.element-modelPlaceholder) {
+    position: relative;
+    z-index: 2;
+    grid-column: 2 !important;
+    grid-row: auto !important;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.92);
+}
+
+body[data-story-version] .flow-research-section h2 {
+    margin: 0 0 10px;
+    font-size: 2.5rem;
+}
+
+body[data-story-version] .flow-research-section .element-text .info-text {
+    max-width: 32ch;
+}
+
+@media (max-width: 820px) {
+    body[data-story-version] .flow-research-section,
+    body[data-story-version] .flow-research-section[data-scroll-mode="sticky"] {
+        min-height: 0 !important;
+        height: auto !important;
+        margin-inline: 0;
+    }
+
+    body[data-story-version] .flow-research-section .text-box,
+    body[data-story-version="aneurysm"] .flow-research-section .text-box,
+    body[data-story-version="dissection"] .flow-research-section .text-box {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) !important;
+        width: 100vw !important;
+        min-height: 0 !important;
+        padding: 0 16px 40px !important;
+        align-content: start;
+        overflow: visible;
+    }
+
+    body[data-story-version] .flow-research-section .element-modelPlaceholder {
+        position: relative !important;
+        inset: auto;
+        order: -4;
+        width: 100vw;
+        height: 100svh;
+        height: 100dvh;
+        margin-left: -16px;
+        grid-column: 1 !important;
+        grid-row: auto !important;
+    }
+
+    body[data-story-version] .flow-research-section h2,
+    body[data-story-version] .flow-research-section .element-wrapper:not(.element-modelPlaceholder) {
+        grid-column: 1 !important;
+        margin-inline: 0;
+        text-shadow: none;
+    }
+
+    body[data-story-version] .flow-research-section h2 {
+        order: -2;
+        margin-top: 28px;
+        font-size: 2.35rem;
+    }
+
+    body[data-story-version] .flow-research-section .model-placeholder figcaption {
+        left: 16px;
+        bottom: 20px;
+        width: calc(100vw - 32px);
+    }
+
+    body[data-story-version] .flow-research-section .element-text .info-text {
+        max-width: 46ch;
+    }
+}
+
+@media (max-width: 560px) {
+    body[data-story-version] .flow-research-section .text-box,
+    body[data-story-version="aneurysm"] .flow-research-section .text-box,
+    body[data-story-version="dissection"] .flow-research-section .text-box {
+        padding-inline: 14px !important;
+    }
+
+    body[data-story-version] .flow-research-section .element-modelPlaceholder {
+        margin-left: -14px;
+    }
+
+    body[data-story-version] .flow-research-section h2 {
+        font-size: 2rem;
+    }
+}
+
+/* Main story compositions use balanced columns; data graphics keep their own geometry. */
+@media (min-width: 821px) {
+    body[data-story-version] .text-box.cols-2,
+    body[data-story-version] .story-intro .text-box.cols-2,
+    body[data-story-version="aneurysm"] .aneurysm-intro[data-scroll-mode="sticky"] .text-box,
+    body[data-story-version="aneurysm"] .alex-aorta-model-section[data-scroll-mode="sticky"] .text-box,
+    body[data-story-version="aneurysm"] .alex-imaging-section[data-scroll-mode="comparison"] .text-box,
+    body[data-story-version="dissection"] .story-intro[data-scroll-mode="sticky"] .text-box,
+    body[data-story-version="dissection"] .model-section[data-scroll-mode="sticky"] .text-box,
+    body[data-story-version="dissection"] .evidence-section[data-scroll-mode="comparison"] .text-box,
+    body[data-story-version] .flow-research-section .text-box {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+
+    body[data-story-version] .imaging-comparison,
+    body[data-story-version] .evidence-section .imaging-comparison {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     }
 }
