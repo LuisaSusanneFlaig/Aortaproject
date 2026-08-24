@@ -451,6 +451,7 @@ class ScrollytellingApp {
         }
         
         this.setActiveStep(scrollState.currentSection);
+        this.updateChapterTransitionState();
         this.updateNavLinks(scrollState.currentSection);
         this.updateVisualStatus(scrollState.currentSection);
 
@@ -462,7 +463,11 @@ class ScrollytellingApp {
         if (!steps.length) return { currentSection: 0, sectionT: 0, cameraT: 0 };
 
         const marker = window.innerHeight * (this.usesEditorialScroll ? 0.34 : (window.innerWidth <= 820 ? 0.62 : 0.5));
-        let currentSection = steps.findIndex((step) => step.classList.contains('is-gsap-active'));
+        const activeGsapSection = steps.findIndex((step) => {
+            const rect = step.getBoundingClientRect();
+            return step.classList.contains('is-gsap-active') && rect.top <= marker && rect.bottom >= marker;
+        });
+        let currentSection = activeGsapSection;
 
         if (currentSection < 0) {
             let smallestDistance = Infinity;
@@ -495,6 +500,16 @@ class ScrollytellingApp {
     }
 
     // --- UI Helpers ---
+
+    updateChapterTransitionState() {
+        const marker = window.innerHeight * 0.5;
+        const hasChapterAtMarker = Array.from(document.querySelectorAll('.chapter-opener')).some((opener) => {
+            const rect = opener.getBoundingClientRect();
+            return rect.top <= marker && rect.bottom >= marker;
+        });
+
+        document.body.classList.toggle('is-chapter-transition-active', hasChapterAtMarker);
+    }
 
     setActiveStep(sectionIndex) {
         const steps = document.querySelectorAll('#story .step');

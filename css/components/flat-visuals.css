@@ -1056,13 +1056,14 @@ body.light-mode[data-story-version] :where(
         visibility: hidden;
         pointer-events: none;
         transform: none !important;
+        transition: none !important;
     }
 
-    body[data-story-version] .step.active .story-visual-column,
-    body[data-story-version] .step.is-gsap-active .story-visual-column {
+    body[data-story-version] .step.active .story-visual-column {
         opacity: 1 !important;
         visibility: visible !important;
         pointer-events: auto !important;
+        transition: opacity 0.18s ease !important;
     }
 
     body[data-story-version] .story-visual-column-inner {
@@ -1142,5 +1143,27 @@ body.light-mode[data-story-version] :where(
 
     body[data-story-version] .evidence-section .story-visual-column .imaging-modality {
         display: none !important;
+    }
+}
+
+/* Soft edge fade for scroll handoff without changing section pacing. */
+@media (min-width: 760px) {
+    body[data-story-version] .chapter-opener {
+        -webkit-mask-image: linear-gradient(
+            to bottom,
+            transparent 0,
+            #000 clamp(44px, 9vh, 104px),
+            #000 calc(100% - clamp(44px, 9vh, 104px)),
+            transparent 100%
+        );
+        mask-image: linear-gradient(
+            to bottom,
+            transparent 0,
+            #000 clamp(44px, 9vh, 104px),
+            #000 calc(100% - clamp(44px, 9vh, 104px)),
+            transparent 100%
+        );
+        -webkit-mask-size: 100% 100%;
+        mask-size: 100% 100%;
     }
 }

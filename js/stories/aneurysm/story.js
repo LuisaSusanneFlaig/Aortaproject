@@ -23,8 +23,7 @@ export const aneurysmStory = {
                     type: 'image',
                     src: 'assets/story_images/alex_portrait_photoreal_v1.png',
                     aspect: '4 / 5',
-                    alt: 'Portrait of Alex',
-                    caption: 'Alex is a fictional character based on an open aortic dataset on Marfan syndrome.'
+                    alt: 'Portrait of Alex'
                 },
                 {
                     type: 'pullQuote',
@@ -36,7 +35,7 @@ export const aneurysmStory = {
                 },
                 {
                     type: 'text',
-                    text: 'The portrait is fictional, but the anatomy now comes from the open VMR 0021_H_AO_MFS dataset. It documents case 0129_0000, an 18-year-old male Marfan patient with CT imaging and simulation data. The visuals use that case to ask a beginner-friendly question: what does the enlarged vessel look like, how does blood move through it, and when might doctors keep watching versus treating?'
+                    text: 'His story begins before an emergency. A planned scan turns an invisible risk into a shape doctors can measure, compare, and follow. From there, the central question is simple: when is careful observation enough, and when should treatment be discussed before the vessel becomes unstable?'
                 }
             ]
         },
@@ -48,7 +47,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'This chart gives context before Alex\'s individual anatomy appears. The left plot shows that the absolute number of deaths linked to aortic aneurysm has increased globally. The right plot shows that the age-standardized death rate has gone down, meaning the risk after adjusting for age has decreased. The 2030 values are projections, not measurements. The chart is background: the rest of the story focuses on how one person\'s aortic shape changes blood flow.'
+                    text: 'Before Alex\'s scan becomes personal, the statistics set the wider scene. More people worldwide are dying with aortic aneurysm than in earlier decades, partly because populations are growing and aging. At the same time, the age-standardized death rate has fallen, which means the risk after adjusting for age has improved. The values for 2030 are projections, not measurements. Alex\'s story then narrows this global picture to one vessel, one body, and one set of decisions.'
                 },
                 {
                     type: 'aneurysmBurden',
@@ -74,7 +73,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'The 3D model shows Alex\'s aorta as a patient-specific surface. Instead of looking at a textbook vessel, the viewer sees the actual shape reconstructed from CT data. In Marfan syndrome, doctors watch the aorta over time because a weakened wall can enlarge gradually. Shape and diameter are therefore compared across follow-up visits, not judged from one view alone.'
+                    text: 'Alex\'s aorta is not a textbook diagram. Its shape comes from CT imaging, where the vessel wall can be reconstructed as a three-dimensional surface. In Marfan syndrome, doctors follow that shape over time because a weakened wall can widen gradually. A single scan matters, but the trend matters even more: diameter, growth, and location are compared across follow-up visits.'
                 },
                 {
                     type: 'reference',
@@ -90,7 +89,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'The symptom infographic explains why thoracic aortic aneurysms can be hard to notice. External clinical sources describe most people with thoracic aneurysm as having no symptoms; one review states that only about 5% have symptoms before an acute event, while the other 95% may first become aware of the disease when a serious complication happens. If an aneurysm does press on nearby structures, it can cause chest or back pain, hoarseness, swallowing difficulty, or shortness of breath. Sudden severe pain, fainting, shortness of breath, or neurological symptoms can warn of dissection or rupture. No symptoms are documented for Alex, so imaging is the main clue in his dataset.'
+                    text: 'The difficult part of a thoracic aortic aneurysm is that it can stay quiet for a long time. Clinical sources describe most people as having no symptoms before an acute event; one review gives roughly 95% without warning signs and about 5% with symptoms beforehand. If the widened vessel presses on nearby structures, it may cause chest or back pain, hoarseness, trouble swallowing, or shortness of breath. Sudden severe pain, fainting, breathlessness, or neurological symptoms can signal dissection or rupture. For Alex, the important clue is imaging rather than pain.'
                 },
                 {
                     type: 'symptomBars',
@@ -161,7 +160,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'The two CT images show the same body from different directions. CT, or computed tomography, creates cross-sectional X-ray images. Contrast dye makes the blood-filled aorta appear bright. The axial view is like looking at a horizontal slice through the chest; the aorta appears as a round bright structure in front of the spine. The coronal view is like looking from the front; it shows the heart, the ascending aorta, the arch, and the branches that supply the head and arms.'
+                    text: 'The CT images let doctors look at Alex\'s chest from more than one direction. CT, or computed tomography, creates cross-sectional X-ray images, and contrast dye makes the blood-filled aorta appear bright. In the axial view, the body is seen as a horizontal slice, with the aorta appearing as a round bright structure in front of the spine. In the coronal view, the body is seen from the front, so the heart, ascending aorta, arch, and head-and-arm branches can be followed together.'
                 },
                 {
                     type: 'imagingComparison',
@@ -216,8 +215,11 @@ export const aneurysmStory = {
                             label: 'Treatment threshold reached',
                             treatment: 'Elective replacement'
                         }
-                    ],
-                    caption: 'The arrow shows clinical urgency at the current assessment, not progression through time.'
+                    ]
+                },
+                {
+                    type: 'reference',
+                    text: 'Source: 2022 ACC/AHA Guideline for the Diagnosis and Management of Aortic Disease, recommendations on Marfan syndrome, prophylactic aortic surgery thresholds, surveillance, and risk modifiers. DOI: 10.1161/CIR.0000000000001106. Alex case: VMR dataset 0021_H_AO_MFS, case 0129_0000.'
                 }
             ]
         },
@@ -229,7 +231,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'After the clinical decision frame, the flow visualization shows why Alex\'s vessel shape matters mechanically. The simulation uses Alex\'s CT-based aortic shape as the container for moving streamlines. These lines represent the path blood may take through the enlarged vessel. Color and motion help show where flow speeds up, slows down, or changes direction. This is not a scan of blood inside Alex in real time; it is a model built from his anatomy.'
+                    text: 'In the enlarged aorta, shape and movement belong together. The streamlines trace how blood may travel through Alex\'s CT-based vessel geometry. Color and motion make changes in speed and direction easier to see, especially where the vessel widens or curves. This is not a real-time scan of blood inside Alex, but a model built from his anatomy.'
                 },
                 {
                     type: 'modelPlaceholder',
@@ -243,7 +245,7 @@ export const aneurysmStory = {
                 },
                 {
                     type: 'text',
-                    text: 'As you follow the animation, the important point is not only where the aorta is wide, but how the wider shape reorganizes movement. Blood can accelerate through curved regions and then spread or swirl inside the enlargement. That mechanical environment is what the application wants the viewer to inspect.'
+                    text: 'The important point is not only where the aorta is wide, but how the wider shape reorganizes movement. Blood can accelerate through curved regions and then spread or swirl inside the enlargement. Those patterns matter because the vessel wall is exposed to the flow with every heartbeat.'
                 },
                 {
                     type: 'reference',
@@ -273,7 +275,7 @@ export const aneurysmStory = {
                 },
                 {
                     type: 'text',
-                    text: 'These patterns help describe the forces acting inside the enlarged segment. They do not predict Alex\'s future by themselves. Doctors still need measurements, symptoms, family history, and follow-up imaging before deciding whether observation is enough or treatment should be discussed.'
+                    text: 'These patterns help describe the forces acting inside the enlarged segment, but they are not a diagnosis on their own. Alex\'s care still depends on measurements, symptoms, family history, and follow-up imaging. The flow view adds another way to understand why a widened vessel needs attention even when a person feels well.'
                 },
                 {
                     type: 'reference',
@@ -289,7 +291,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'The prevention infographic keeps the focus on Alex rather than returning to population statistics. Marfan syndrome itself cannot be prevented, but stress on the aortic wall can be reduced and dangerous changes can be caught earlier. The main goals are blood pressure control, medication when prescribed, adapted activity, regular imaging, and family or genetic care because inherited aortic risk can affect relatives too.'
+                    text: 'Alex cannot prevent Marfan syndrome itself, but he can reduce stress on the aortic wall and keep dangerous changes from going unnoticed. Long-term care means controlling blood pressure, taking medication when prescribed, adapting intense physical activity, returning for regular imaging, and including family or genetic care because inherited aortic risk can affect relatives too.'
                 },
                 {
                     type: 'preventionTimeline',
@@ -337,7 +339,7 @@ export const aneurysmStory = {
                 },
                 {
                     type: 'text',
-                    text: 'The final image returns from the simulation to the patient conversation. Alex\'s future is not contained in the dataset. What remains is the practical outlook: regular imaging, attention to warning signs, and decisions made early enough to avoid an emergency. The flow visual does not predict his future, but it gives a clearer way to see why the enlarged vessel needs careful follow-up.'
+                    text: 'Alex leaves the scan with a plan rather than a final answer. His future depends on regular imaging, attention to warning signs, and decisions made early enough to avoid an emergency. The flow view cannot predict what will happen to him, but it makes the need for careful follow-up easier to understand.'
                 },
                 {
                     type: 'closingStatement',

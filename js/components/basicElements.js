@@ -26,8 +26,8 @@ export function renderBasicElement(element) {
         case 'heading': return `<h3 class="info-heading">${element.text || 'New heading'}</h3>`;
         case 'text': return `<p class="info-text">${element.text || 'New text'}</p>`;
         case 'pullQuote': return `<blockquote class="story-pull-quote">${element.text || ''}</blockquote>`;
-        case 'image': return `<figure class="info-image"><img src="${element.src}" alt="${element.alt || ''}" style="aspect-ratio: ${element.aspect || '16 / 9'}">${element.caption ? `<figcaption>${element.caption}</figcaption>` : ''}</figure>`;
-        case 'video': return `<div class="info-video"><div class="video-container"><iframe src="${element.url}" frameborder="0" allowfullscreen></iframe></div>${element.caption ? `<p class="video-caption">${element.caption}</p>` : ''}</div>`;
+        case 'image': return `<figure class="info-image"><img src="${element.src}" alt="${element.alt || ''}" style="aspect-ratio: ${element.aspect || '16 / 9'}"></figure>`;
+        case 'video': return `<div class="info-video"><div class="video-container"><iframe src="${element.url}" frameborder="0" allowfullscreen></iframe></div></div>`;
         case 'stat': {
             const legends = collectAbbreviations(`${element.icon} ${element.label} ${element.text}`);
             return `<div class="stats-box stats-box-extra"><div class="stats-icon">${renderIcon(element.icon)}</div><div class="stats-copy"><strong>${element.label || 'Info:'}</strong><span>${element.text || 'New information'}</span>${legends.length ? `<small class="abbr-legend">${legends.join(' - ')}</small>` : ''}</div></div>`;

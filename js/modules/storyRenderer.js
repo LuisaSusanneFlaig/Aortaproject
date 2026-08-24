@@ -138,7 +138,6 @@ function renderInlineModel(model) {
                 <div class="inline-model-loading" aria-hidden="true"></div>
             </div>
             <div class="inline-model-meta">
-                <figcaption>${label}</figcaption>
                 ${legend}
             </div>
         </figure>

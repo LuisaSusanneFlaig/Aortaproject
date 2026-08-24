@@ -13,7 +13,7 @@ const viewports = [
 function storyUrl(version) {
     if (version === 'aneurysm') return `${baseUrl}/scrollytelling-aneurysm.html`;
     if (version === 'dissection') return `${baseUrl}/scrollytelling-dissection.html`;
-    return `${baseUrl}/scrollytelling.html`;
+    throw new Error(`Unknown story version: ${version}`);
 }
 
 function safeName(value) {
