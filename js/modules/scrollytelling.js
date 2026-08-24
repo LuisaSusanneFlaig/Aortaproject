@@ -51,6 +51,7 @@ class ScrollytellingApp {
         console.info('[App] Initializing Scrollytelling App...');
 
         this.updateStory();
+        this.usesSplitLayout = Boolean(document.querySelector('.story-split-shell'));
         this.inlineModelViewers = initInlineModelViewers();
         if (this.usesEditorialScroll) {
             this.scrollDirector = new ScrollDirector(document.getElementById('story'));
@@ -58,7 +59,12 @@ class ScrollytellingApp {
             this.gsapSectionAnimator = new GsapSectionAnimator(document.getElementById('story'));
             this.gsapSectionAnimator.init();
         }
-        this._init3D();
+        if (this.usesSplitLayout) {
+            this.chartManager.init();
+            this.updateCameraScroll();
+        } else {
+            this._init3D();
+        }
         this.setupUI();
         window.addEventListener('scroll', () => this.requestRender(), { passive: true });
         
@@ -246,7 +252,14 @@ class ScrollytellingApp {
     }
 
     animate() {
-        if (!this.isRendering || !this.sceneManager) {
+        if (!this.isRendering) {
+            this.isAnimating = false;
+            return;
+        }
+
+        if (!this.sceneManager) {
+            const { currentSection } = this.updateCameraScroll();
+            this.currentSectionIdx = currentSection;
             this.isAnimating = false;
             return;
         }

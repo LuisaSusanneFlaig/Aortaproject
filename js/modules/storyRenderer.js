@@ -42,12 +42,17 @@ function getPresentationType(section = {}) {
     return 'text';
 }
 
-function renderElements(elements = []) {
-    if (!elements?.length) return '';
+const narrativeElementTypes = new Set([
+    'heading', 'text', 'pullQuote', 'closingStatement', 'reference'
+]);
 
-    return elements.map((element, index) => {
-        let content = renderBasicElement(element);
-        if (content === null) switch (element.type) {
+function isNarrativeElement(element = {}) {
+    return narrativeElementTypes.has(element.type);
+}
+
+function renderElement(element, index) {
+    let content = renderBasicElement(element);
+    if (content === null) switch (element.type) {
             case 'chart':
                 content = renderChart(element);
                 break;
@@ -95,10 +100,17 @@ function renderElements(elements = []) {
                 break;
             default:
                 content = '';
-        }
+    }
 
-        return `<div class="element-wrapper element-${element.type}" data-scroll-item data-scroll-index="${index}">${content}</div>`;
-    }).join('');
+    return `<div class="element-wrapper element-${element.type}" data-scroll-item data-scroll-index="${index}">${content}</div>`;
+}
+
+function renderElements(elements = [], predicate = () => true) {
+    return elements
+        .map((element, index) => ({ element, index }))
+        .filter(({ element }) => predicate(element))
+        .map(({ element, index }) => renderElement(element, index))
+        .join('');
 }
 
 function renderPlaceholder(section) {
@@ -133,6 +145,16 @@ function renderInlineModel(model) {
     `;
 }
 
+function renderVisualFallback(section, sectionIndex) {
+    const number = String(sectionIndex + 1).padStart(2, '0');
+    return `
+        <div class="story-visual-fallback" aria-hidden="true">
+            <span>${number}</span>
+            <strong>${section.title}</strong>
+        </div>
+    `;
+}
+
 function renderSections(sections = [], navItems = []) {
     const chapters = new Map(
         navItems
@@ -145,13 +167,19 @@ function renderSections(sections = [], navItems = []) {
 
     return sections.map((section, index) => {
         const layoutClass = section.layout === 'full' ? ' layout-full' : '';
-        const columnsClass = section.columns === '2' ? ' cols-2' : '';
         const customClass = section.className ? ` ${section.className}` : '';
         const chapterClass = chapterIds.has(section.id) ? ' chapter-start' : ' chapter-continuation';
         const chapter = chapters.get(section.id);
         const scrollMode = section.scrollMode || 'flow';
         const presentationClass = ` content-${getPresentationType(section)}`;
         const style = section.style || {};
+        const visualElements = renderElements(section.elements, (element) => !isNarrativeElement(element));
+        const visualContent = [
+            section.layout !== 'full' ? renderPlaceholder(section) : '',
+            renderInlineModel(section.inlineModel),
+            visualElements
+        ].filter(Boolean).join('');
+        const narrativeContent = renderElements(section.elements, isNarrativeElement);
         
         const customStyle = [
             style.opacity !== undefined ? `background-color: rgba(12, 12, 14, ${style.opacity / 100});` : '',
@@ -163,11 +191,16 @@ function renderSections(sections = [], navItems = []) {
         return `
             ${chapter ? renderChapterOpener(chapter, section.id || `s${index + 1}`) : ''}
             <section class="step${layoutClass}${customClass}${chapterClass}" id="${section.id || `s${index + 1}`}" data-section-index="${index}" data-scroll-mode="${scrollMode}">
-                <div class="text-box${columnsClass}${presentationClass}" style="${customStyle}">
-                    <h2>${section.title}</h2>
-                    ${section.layout !== 'full' ? renderPlaceholder(section) : ''}
-                    ${renderInlineModel(section.inlineModel)}
-                    ${renderElements(section.elements)}
+                <div class="text-box story-split-shell${presentationClass}" style="${customStyle}">
+                    <aside class="story-visual-column" aria-label="Visual for ${section.title}">
+                        <div class="story-visual-column-inner">
+                            ${visualContent || renderVisualFallback(section, index)}
+                        </div>
+                    </aside>
+                    <div class="story-copy-column">
+                        <h2>${section.title}</h2>
+                        ${narrativeContent}
+                    </div>
                 </div>
             </section>
         `;

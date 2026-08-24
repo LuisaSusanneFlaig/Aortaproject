@@ -74,7 +74,7 @@ body.light-mode .bar-track {
 
 body.light-mode .stats-box strong { color: #000; }
 body.light-mode .stats-box span { color: #444; }
-body.light-mode .stats-box .stats-kicker { color: #a22b2b; }
+body.light-mode .stats-box .stats-kicker { color: var(--color-accent); }
 
 body {
     background-color: var(--bg-dark);
@@ -312,9 +312,9 @@ body {
         border-radius: 2px;
     }
 
-    .intima { background: #69c8dc; }
-    .media { background: #cf3550; }
-    .adventitia { background: #e3b357; }
+    .intima { background: var(--color-accent); }
+    .media { background: var(--color-accent); }
+    .adventitia { background: var(--color-accent); }
 }
 
 body.light-mode .inline-model-viewer {
@@ -703,17 +703,8 @@ body.light-mode .story-inline-icon {
     color: var(--color-accent);
 }
 
-/* Editorial accents: chapter stamps, pull quotes, and story motifs. */
-@font-face {
-    font-family: 'Source Serif 4';
-    font-style: normal;
-    font-weight: 500;
-    font-display: swap;
-    src: url('../vendor/source-serif-4/source-serif-4-500.ttf') format('truetype');
-}
-
 body[data-story-version] .text-box .story-pull-quote {
-    font-family: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+    font-family: 'Roboto', Arial, sans-serif;
     font-weight: 500;
     line-height: 1.24;
     text-wrap: balance;
@@ -846,6 +837,10 @@ body[data-story-version="dissection"] .miriam-consultation-section .text-box.col
 body[data-story-version="dissection"] .miriam-consultation-section .element-image {
     grid-column: 1;
     align-self: start;
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.035);
 }
 
 body[data-story-version="dissection"] .miriam-consultation-section .element-text {
@@ -855,6 +850,7 @@ body[data-story-version="dissection"] .miriam-consultation-section .element-text
 body[data-story-version="dissection"] .miriam-consultation-section .info-image img {
     width: 100%;
     max-height: 430px;
+    border-radius: 6px;
     object-fit: cover;
 }
 
@@ -971,6 +967,10 @@ body[data-story-version="aneurysm"] .alex-imaging-section .imaging-panel:last-ch
     opacity: var(--comparison-progress);
 }
 
+body[data-story-version="aneurysm"] .alex-outlook-section .closing-statement {
+    margin-top: 18px;
+}
+
 body[data-story-version="aneurysm"].story-ready .step .text-box {
     opacity: 0;
     transform: translateY(12px);
@@ -983,7 +983,7 @@ body[data-story-version="aneurysm"].story-ready .step.is-revealed .text-box {
 }
 
 body[data-story-version="aneurysm"] .aneurysm-burden-section .text-box {
-    width: min(1040px, 100%);
+    width: min(900px, 100%);
 }
 
 body[data-story-version="aneurysm"] .aneurysm-burden-section .element-text {
@@ -991,8 +991,9 @@ body[data-story-version="aneurysm"] .aneurysm-burden-section .element-text {
 }
 
 .aneurysm-burden {
-    margin: clamp(32px, 5vw, 58px) 0 22px;
+    margin: clamp(24px, 4vw, 42px) auto 18px;
     padding: 0;
+    max-width: 820px;
 }
 
 .aneurysm-burden-heading {
@@ -1020,9 +1021,9 @@ body[data-story-version="aneurysm"] .aneurysm-burden-section .element-text {
 
 .aneurysm-burden svg {
     display: block;
-    width: 100%;
+    width: min(100%, 780px);
     height: auto;
-    margin-top: 12px;
+    margin: 10px auto 0;
     overflow: visible;
     font-family: 'Roboto', Arial, sans-serif;
 }
@@ -1961,7 +1962,7 @@ body[data-story-version="aneurysm"] .step[data-scroll-mode="sequence"] .burden-l
     bottom: 23px;
     left: 19px;
     width: 2px;
-    background: linear-gradient(#ffb0b5, #df4b57 50%, #8f2630);
+    background: linear-gradient(var(--color-accent), var(--color-accent) 50%, var(--color-accent));
 }
 
 .diagnostic-path li {
@@ -2005,6 +2006,398 @@ body[data-story-version="aneurysm"] .step[data-scroll-mode="sequence"] .burden-l
     line-height: 1.5;
 }
 
+body[data-story-version="aneurysm"] .alex-symptoms-section .diagnostic-path {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin: 26px 0 18px;
+}
+
+body[data-story-version="aneurysm"] .alex-symptoms-section .diagnostic-path::before {
+    display: none;
+}
+
+body[data-story-version="aneurysm"] .alex-symptoms-section .diagnostic-path li {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    min-height: 230px;
+    padding: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-radius: 8px;
+    background:
+        radial-gradient(circle at 20% 16%, rgba(223, 75, 87, 0.2), transparent 36%),
+        rgba(255, 255, 255, 0.035);
+}
+
+body[data-story-version="aneurysm"] .alex-symptoms-section .diagnostic-step-index {
+    display: none;
+}
+
+body[data-story-version="aneurysm"] .alex-symptoms-section .diagnostic-path strong {
+    display: grid;
+    gap: 14px;
+    margin: 0 0 10px;
+    font-size: 1rem;
+    line-height: 1.2;
+}
+
+body[data-story-version="aneurysm"] .alex-symptoms-section .diagnostic-path .story-inline-icon {
+    display: grid;
+    width: 68px;
+    height: 68px;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(223, 75, 87, 0.17);
+    color: var(--color-accent);
+    font-family: 'Material Symbols Rounded';
+    font-size: 3.25rem;
+    font-weight: normal;
+    line-height: 1;
+    margin-right: 0;
+    text-transform: none;
+    letter-spacing: 0;
+    white-space: nowrap;
+}
+
+body[data-story-version="aneurysm"] .alex-symptoms-section .diagnostic-path p {
+    font-size: 0.84rem;
+}
+
+body[data-story-version="aneurysm"] .aneurysm-prognosis-section .diagnostic-path {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+    margin: 30px 0 18px;
+    padding: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 8px;
+    background:
+        linear-gradient(180deg, rgba(223, 75, 87, 0.1), rgba(255, 255, 255, 0.03)),
+        rgba(255, 255, 255, 0.025);
+}
+
+body[data-story-version="aneurysm"] .aneurysm-prognosis-section .diagnostic-path::before {
+    top: 64px;
+    bottom: auto;
+    left: 12%;
+    right: 12%;
+    width: auto;
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-accent), var(--color-accent), var(--color-accent));
+}
+
+body[data-story-version="aneurysm"] .aneurysm-prognosis-section .diagnostic-path li {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 0 14px 2px;
+}
+
+body[data-story-version="aneurysm"] .aneurysm-prognosis-section .diagnostic-step-index {
+    width: 58px;
+    height: 58px;
+    margin: 18px auto 0;
+    border: 3px solid #111416;
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent));
+    font-size: 0.86rem;
+}
+
+body[data-story-version="aneurysm"] .aneurysm-prognosis-section .diagnostic-path li > div {
+    display: grid;
+    gap: 10px;
+    padding: 18px 14px 16px;
+    border-radius: 8px;
+    background: rgba(10, 12, 14, 0.38);
+}
+
+body[data-story-version="aneurysm"] .aneurysm-prognosis-section .diagnostic-path strong {
+    display: grid;
+    justify-items: center;
+    gap: 10px;
+    margin: 0;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+body[data-story-version="aneurysm"] .aneurysm-prognosis-section .diagnostic-path .story-inline-icon {
+    display: grid;
+    width: 50px;
+    height: 50px;
+    place-items: center;
+    margin-right: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--color-accent);
+    font-family: 'Material Symbols Rounded';
+    font-size: 2.35rem;
+    line-height: 1;
+}
+
+body[data-story-version="aneurysm"] .aneurysm-prognosis-section .diagnostic-path li:nth-child(2) .story-inline-icon {
+    color: var(--color-accent);
+}
+
+body[data-story-version="aneurysm"] .aneurysm-prognosis-section .diagnostic-path li:nth-child(3) .story-inline-icon,
+body[data-story-version="aneurysm"] .aneurysm-prognosis-section .diagnostic-path li:nth-child(4) .story-inline-icon {
+    color: var(--color-accent);
+}
+
+body[data-story-version="aneurysm"] .aneurysm-prognosis-section .diagnostic-path p {
+    text-align: center;
+    font-size: 0.8rem;
+}
+
+body[data-story-version="dissection"] .miriam-symptoms-section .symptom-stat-card {
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.035);
+}
+
+body[data-story-version="dissection"] .miriam-symptoms-section .symptom-bars {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+}
+
+body[data-story-version="dissection"] .miriam-symptoms-section .symptom-row {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 12px;
+    min-height: 168px;
+    padding: 14px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    background: linear-gradient(180deg, rgba(200, 60, 72, 0.14), rgba(255, 255, 255, 0.025));
+}
+
+body[data-story-version="dissection"] .miriam-symptoms-section .symptom-row-icon {
+    display: grid;
+    width: 54px;
+    height: 54px;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(200, 60, 72, 0.18);
+    color: var(--color-accent);
+}
+
+body[data-story-version="dissection"] .miriam-symptoms-section .symptom-row-icon .story-inline-icon {
+    margin-right: 0;
+    font-family: 'Material Symbols Rounded';
+    font-size: 2.5rem;
+    line-height: 1;
+}
+
+body[data-story-version="dissection"] .miriam-symptoms-section .symptom-row-label {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 0;
+}
+
+body[data-story-version="dissection"] .miriam-symptoms-section .symptom-row-label strong {
+    font-size: 1.55rem;
+    line-height: 1;
+}
+
+body[data-story-version="dissection"] .miriam-symptoms-section .symptom-track {
+    height: 6px;
+    border-radius: 999px;
+}
+
+body[data-story-version="dissection"] .miriam-diagnosis-infographic-section .diagnostic-path {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin: 30px 0 18px;
+    padding: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 8px;
+    background:
+        linear-gradient(135deg, rgba(223, 75, 87, 0.1), transparent 40%),
+        rgba(255, 255, 255, 0.03);
+}
+
+body[data-story-version="dissection"] .miriam-diagnosis-infographic-section .diagnostic-path::before {
+    top: 64px;
+    bottom: auto;
+    left: 12%;
+    right: 12%;
+    width: auto;
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-accent), var(--color-accent), var(--color-accent));
+}
+
+body[data-story-version="dissection"] .miriam-diagnosis-infographic-section .diagnostic-path li {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    min-height: 240px;
+    padding: 0;
+}
+
+body[data-story-version="dissection"] .miriam-diagnosis-infographic-section .diagnostic-step-index {
+    width: 58px;
+    height: 58px;
+    margin: 18px auto 0;
+    border: 3px solid #111416;
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent));
+}
+
+body[data-story-version="dissection"] .miriam-diagnosis-infographic-section .diagnostic-path li > div {
+    display: grid;
+    gap: 10px;
+    padding: 18px 14px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background: rgba(10, 12, 14, 0.42);
+}
+
+body[data-story-version="dissection"] .miriam-diagnosis-infographic-section .diagnostic-path strong {
+    display: grid;
+    justify-items: center;
+    gap: 10px;
+    margin: 0;
+    text-align: center;
+    font-size: 0.92rem;
+}
+
+body[data-story-version="dissection"] .miriam-diagnosis-infographic-section .diagnostic-path .story-inline-icon {
+    display: grid;
+    width: 50px;
+    height: 50px;
+    place-items: center;
+    margin-right: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--color-accent);
+    font-family: 'Material Symbols Rounded';
+    font-size: 2.35rem;
+    line-height: 1;
+}
+
+body[data-story-version="dissection"] .miriam-diagnosis-infographic-section .diagnostic-path li:nth-child(3) .story-inline-icon,
+body[data-story-version="dissection"] .miriam-diagnosis-infographic-section .diagnostic-path li:nth-child(4) .story-inline-icon {
+    color: var(--color-accent);
+}
+
+body[data-story-version="dissection"] .miriam-diagnosis-infographic-section .diagnostic-path p {
+    text-align: center;
+    font-size: 0.78rem;
+}
+
+body[data-story-version="dissection"] .miriam-diagnosis-infographic-section .element-stat {
+    display: inline-grid;
+    width: min(100%, 360px);
+    margin-right: 12px;
+    vertical-align: top;
+}
+
+body[data-story-version="dissection"] .miriam-diagnosis-infographic-section .stats-box {
+    min-height: 124px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.035);
+}
+
+body[data-story-version="dissection"] .miriam-diagnosis-infographic-section .section-reference {
+    clear: both;
+}
+
+@media (max-width: 900px) {
+    body[data-story-version="aneurysm"] .alex-symptoms-section .diagnostic-path {
+        grid-template-columns: 1fr;
+    }
+
+    body[data-story-version="aneurysm"] .alex-symptoms-section .diagnostic-path li {
+        min-height: 0;
+        grid-template-columns: 1fr;
+    }
+
+    body[data-story-version="aneurysm"] .alex-symptoms-section .diagnostic-path .story-inline-icon {
+        width: 58px;
+        height: 58px;
+        font-size: 2.75rem;
+    }
+
+    body[data-story-version="aneurysm"] .aneurysm-prognosis-section .diagnostic-path {
+        grid-template-columns: 1fr;
+    }
+
+    body[data-story-version="aneurysm"] .aneurysm-prognosis-section .diagnostic-path::before {
+        top: 42px;
+        bottom: 42px;
+        left: 47px;
+        right: auto;
+        width: 3px;
+        height: auto;
+        background: linear-gradient(180deg, var(--color-accent), var(--color-accent), var(--color-accent));
+    }
+
+    body[data-story-version="aneurysm"] .aneurysm-prognosis-section .diagnostic-path li {
+        grid-template-columns: 66px minmax(0, 1fr);
+        align-items: start;
+        padding: 0 0 16px;
+    }
+
+    body[data-story-version="aneurysm"] .aneurysm-prognosis-section .diagnostic-step-index {
+        margin: 0 auto;
+    }
+
+    body[data-story-version="aneurysm"] .aneurysm-prognosis-section .diagnostic-path strong,
+    body[data-story-version="aneurysm"] .aneurysm-prognosis-section .diagnostic-path p {
+        justify-items: start;
+        text-align: left;
+    }
+
+    body[data-story-version="dissection"] .miriam-symptoms-section .symptom-bars {
+        grid-template-columns: 1fr;
+    }
+
+    body[data-story-version="dissection"] .miriam-symptoms-section .symptom-row {
+        min-height: 0;
+        grid-template-columns: auto minmax(0, 1fr);
+        grid-template-rows: auto auto;
+        align-items: start;
+    }
+
+    body[data-story-version="dissection"] .miriam-symptoms-section .symptom-row-icon {
+        grid-row: 1 / span 2;
+        width: 50px;
+        height: 50px;
+    }
+
+    body[data-story-version="dissection"] .miriam-diagnosis-infographic-section .diagnostic-path {
+        grid-template-columns: 1fr;
+    }
+
+    body[data-story-version="dissection"] .miriam-diagnosis-infographic-section .diagnostic-path::before {
+        top: 42px;
+        bottom: 42px;
+        left: 47px;
+        right: auto;
+        width: 3px;
+        height: auto;
+        background: linear-gradient(180deg, var(--color-accent), var(--color-accent), var(--color-accent));
+    }
+
+    body[data-story-version="dissection"] .miriam-diagnosis-infographic-section .diagnostic-path li {
+        min-height: 0;
+        grid-template-columns: 66px minmax(0, 1fr);
+        align-items: start;
+        padding: 0 0 16px;
+    }
+
+    body[data-story-version="dissection"] .miriam-diagnosis-infographic-section .diagnostic-step-index {
+        margin: 0 auto;
+    }
+
+    body[data-story-version="dissection"] .miriam-diagnosis-infographic-section .diagnostic-path strong,
+    body[data-story-version="dissection"] .miriam-diagnosis-infographic-section .diagnostic-path p {
+        justify-items: start;
+        text-align: left;
+    }
+
+    body[data-story-version="dissection"] .miriam-diagnosis-infographic-section .element-stat {
+        display: block;
+        width: 100%;
+        margin-right: 0;
+    }
+}
+
 .treatment-decision {
     margin: 24px 0;
     border-top: 1px solid rgba(255, 255, 255, 0.16);
@@ -2043,6 +2436,386 @@ body[data-story-version="aneurysm"] .step[data-scroll-mode="sequence"] .burden-l
     line-height: 1.5;
 }
 
+.treatment-decision-badge {
+    display: none;
+}
+
+body[data-story-version="aneurysm"] .alex-treatment-infographic-section .treatment-decision-map {
+    display: grid;
+    gap: 20px;
+    margin: 30px 0 18px;
+    padding: 22px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 8px;
+    background:
+        linear-gradient(135deg, rgba(143, 38, 48, 0.12), transparent 38%),
+        linear-gradient(315deg, rgba(223, 75, 87, 0.12), transparent 42%),
+        rgba(255, 255, 255, 0.035);
+}
+
+body[data-story-version="aneurysm"] .alex-treatment-infographic-section .decision-map-inputs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+body[data-story-version="aneurysm"] .alex-treatment-infographic-section .decision-map-inputs > span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 8px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.07);
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.76rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+body[data-story-version="aneurysm"] .alex-treatment-infographic-section .decision-map-inputs .story-inline-icon {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    margin-right: 0;
+    font-family: 'Material Symbols Rounded';
+    font-size: 1.35rem;
+    font-weight: normal;
+    line-height: 1;
+    letter-spacing: 0;
+    text-transform: none;
+    white-space: nowrap;
+}
+
+body[data-story-version="aneurysm"] .alex-treatment-infographic-section .decision-map-axis {
+    display: grid;
+    grid-template-columns: auto minmax(140px, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+}
+
+body[data-story-version="aneurysm"] .alex-treatment-infographic-section .axis-label {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+body[data-story-version="aneurysm"] .alex-treatment-infographic-section .axis-line {
+    position: relative;
+    display: block;
+    height: 12px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-accent) 50%, var(--color-accent) 100%);
+}
+
+body[data-story-version="aneurysm"] .alex-treatment-infographic-section .axis-line::before,
+body[data-story-version="aneurysm"] .alex-treatment-infographic-section .axis-line::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    width: 2px;
+    height: 22px;
+    background: rgba(255, 255, 255, 0.56);
+}
+
+body[data-story-version="aneurysm"] .alex-treatment-infographic-section .axis-line::before {
+    left: 33%;
+}
+
+body[data-story-version="aneurysm"] .alex-treatment-infographic-section .axis-line::after {
+    left: 66%;
+}
+
+body[data-story-version="aneurysm"] .alex-treatment-infographic-section .decision-map-zones {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+body[data-story-version="aneurysm"] .alex-treatment-infographic-section .decision-map-zone {
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    gap: 12px;
+    min-height: 260px;
+    padding: 18px;
+    background: rgba(10, 12, 14, 0.48);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body[data-story-version="aneurysm"] .alex-treatment-infographic-section .decision-map-zone:last-child {
+    border-right: 0;
+}
+
+body[data-story-version="aneurysm"] .alex-treatment-infographic-section .decision-map-marker {
+    display: grid;
+    width: 62px;
+    height: 62px;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--color-accent);
+}
+
+body[data-story-version="aneurysm"] .alex-treatment-infographic-section .decision-map-zone:nth-child(2) .decision-map-marker {
+    color: var(--color-accent);
+}
+
+body[data-story-version="aneurysm"] .alex-treatment-infographic-section .decision-map-zone:nth-child(3) .decision-map-marker {
+    color: var(--color-accent);
+}
+
+body[data-story-version="aneurysm"] .alex-treatment-infographic-section .decision-map-marker .story-inline-icon {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    margin-right: 0;
+    font-family: 'Material Symbols Rounded';
+    font-size: 2.9rem;
+    font-weight: normal;
+    line-height: 1;
+    letter-spacing: 0;
+    text-transform: none;
+    white-space: nowrap;
+}
+
+body[data-story-version="aneurysm"] .alex-treatment-infographic-section .decision-map-finding small,
+body[data-story-version="aneurysm"] .alex-treatment-infographic-section .treatment-decision-map figcaption {
+    color: rgba(255, 255, 255, 0.58);
+    font-size: 0.72rem;
+    font-weight: 800;
+    line-height: 1.35;
+    text-transform: uppercase;
+}
+
+body[data-story-version="aneurysm"] .alex-treatment-infographic-section .decision-map-finding strong {
+    display: block;
+    margin-top: 6px;
+    color: #fff;
+    font-size: 1.05rem;
+    line-height: 1.22;
+}
+
+body[data-story-version="aneurysm"] .alex-treatment-infographic-section .decision-map-zone p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 0.82rem;
+    line-height: 1.5;
+}
+
+body[data-story-version="aneurysm"] .alex-treatment-infographic-section .treatment-decision-map figcaption {
+    text-transform: none;
+    font-weight: 500;
+}
+
+@media (max-width: 900px) {
+    body[data-story-version="aneurysm"] .alex-treatment-infographic-section .treatment-decision-map {
+        padding: 18px;
+    }
+
+    body[data-story-version="aneurysm"] .alex-treatment-infographic-section .decision-map-inputs,
+    body[data-story-version="aneurysm"] .alex-treatment-infographic-section .decision-map-zones {
+        grid-template-columns: 1fr;
+    }
+
+    body[data-story-version="aneurysm"] .alex-treatment-infographic-section .decision-map-axis {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    body[data-story-version="aneurysm"] .alex-treatment-infographic-section .axis-label-right {
+        justify-self: end;
+    }
+
+    body[data-story-version="aneurysm"] .alex-treatment-infographic-section .decision-map-zone {
+        min-height: 0;
+        border-right: 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    body[data-story-version="aneurysm"] .alex-treatment-infographic-section .decision-map-zone:last-child {
+        border-bottom: 0;
+    }
+}
+
+body[data-story-version="dissection"] .miriam-treatment-infographic-section .treatment-decision-map {
+    display: grid;
+    gap: 20px;
+    margin: 30px 0 18px;
+    padding: 22px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 8px;
+    background:
+        linear-gradient(135deg, rgba(223, 75, 87, 0.12), transparent 40%),
+        linear-gradient(315deg, rgba(143, 38, 48, 0.12), transparent 42%),
+        rgba(255, 255, 255, 0.035);
+}
+
+body[data-story-version="dissection"] .miriam-treatment-infographic-section .decision-map-inputs,
+body[data-story-version="dissection"] .miriam-treatment-infographic-section .decision-map-zones {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+body[data-story-version="dissection"] .miriam-treatment-infographic-section .decision-map-inputs > span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 8px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.07);
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.76rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+body[data-story-version="dissection"] .miriam-treatment-infographic-section .decision-map-inputs .story-inline-icon {
+    margin-right: 0;
+    font-family: 'Material Symbols Rounded';
+    font-size: 1.35rem;
+    line-height: 1;
+}
+
+body[data-story-version="dissection"] .miriam-treatment-infographic-section .decision-map-axis {
+    display: grid;
+    grid-template-columns: auto minmax(140px, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+}
+
+body[data-story-version="dissection"] .miriam-treatment-infographic-section .axis-label {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+body[data-story-version="dissection"] .miriam-treatment-infographic-section .axis-line {
+    position: relative;
+    display: block;
+    height: 12px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-accent) 48%, var(--color-accent) 100%);
+}
+
+body[data-story-version="dissection"] .miriam-treatment-infographic-section .axis-line::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    width: 2px;
+    height: 22px;
+    background: rgba(255, 255, 255, 0.56);
+}
+
+body[data-story-version="dissection"] .miriam-treatment-infographic-section .decision-map-zones {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+body[data-story-version="dissection"] .miriam-treatment-infographic-section .decision-map-zone {
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    gap: 12px;
+    min-height: 240px;
+    padding: 18px;
+    background: rgba(10, 12, 14, 0.48);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body[data-story-version="dissection"] .miriam-treatment-infographic-section .decision-map-zone:last-child {
+    border-right: 0;
+}
+
+body[data-story-version="dissection"] .miriam-treatment-infographic-section .decision-map-marker {
+    display: grid;
+    width: 62px;
+    height: 62px;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--color-accent);
+}
+
+body[data-story-version="dissection"] .miriam-treatment-infographic-section .decision-map-zone:nth-child(2) .decision-map-marker {
+    color: var(--color-accent);
+}
+
+body[data-story-version="dissection"] .miriam-treatment-infographic-section .decision-map-marker .story-inline-icon {
+    margin-right: 0;
+    font-family: 'Material Symbols Rounded';
+    font-size: 2.9rem;
+    line-height: 1;
+}
+
+body[data-story-version="dissection"] .miriam-treatment-infographic-section .decision-map-finding small,
+body[data-story-version="dissection"] .miriam-treatment-infographic-section .treatment-decision-map figcaption {
+    color: rgba(255, 255, 255, 0.58);
+    font-size: 0.72rem;
+    font-weight: 800;
+    line-height: 1.35;
+    text-transform: uppercase;
+}
+
+body[data-story-version="dissection"] .miriam-treatment-infographic-section .decision-map-finding strong {
+    display: block;
+    margin-top: 6px;
+    color: #fff;
+    font-size: 1.05rem;
+    line-height: 1.22;
+}
+
+body[data-story-version="dissection"] .miriam-treatment-infographic-section .decision-map-zone p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 0.82rem;
+    line-height: 1.5;
+}
+
+body[data-story-version="dissection"] .miriam-treatment-infographic-section .treatment-decision-map figcaption {
+    text-transform: none;
+    font-weight: 500;
+}
+
+@media (max-width: 900px) {
+    body[data-story-version="dissection"] .miriam-treatment-infographic-section .treatment-decision-map {
+        padding: 18px;
+    }
+
+    body[data-story-version="dissection"] .miriam-treatment-infographic-section .decision-map-inputs,
+    body[data-story-version="dissection"] .miriam-treatment-infographic-section .decision-map-zones,
+    body[data-story-version="dissection"] .miriam-treatment-infographic-section .decision-map-axis {
+        grid-template-columns: 1fr;
+    }
+
+    body[data-story-version="dissection"] .miriam-treatment-infographic-section .axis-label-right {
+        justify-self: end;
+    }
+
+    body[data-story-version="dissection"] .miriam-treatment-infographic-section .decision-map-zone {
+        min-height: 0;
+        border-right: 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    body[data-story-version="dissection"] .miriam-treatment-infographic-section .decision-map-zone:last-child {
+        border-bottom: 0;
+    }
+}
+
 .treatment-steps {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -2072,7 +2845,7 @@ body[data-story-version="aneurysm"] .step[data-scroll-mode="sequence"] .burden-l
 .treatment-steps li > span {
     display: block;
     margin-bottom: 20px;
-    color: #f08a92;
+    color: var(--color-accent);
     font-size: 0.72rem;
     font-weight: 800;
 }
@@ -2147,7 +2920,7 @@ body[data-story-version="aneurysm"] .step[data-scroll-mode="sequence"] .burden-l
     left: 50%;
     width: 2px;
     transform: translateX(-50%);
-    background: linear-gradient(#ffb0b5, #df4b57 55%, #8f2630);
+    background: linear-gradient(var(--color-accent), var(--color-accent) 55%, var(--color-accent));
 }
 
 .prevention-timeline li {
@@ -2166,12 +2939,12 @@ body[data-story-version="aneurysm"] .step[data-scroll-mode="sequence"] .burden-l
     margin-top: 6px;
     border: 3px solid #151518;
     border-radius: 50%;
-    background: #f08a92;
+    background: var(--color-accent);
     box-shadow: 0 0 0 2px rgba(240, 138, 146, 0.42);
 }
 
 .prevention-timeline li:last-child .prevention-node {
-    background: #8f2630;
+    background: var(--color-accent);
     box-shadow: 0 0 0 2px rgba(143, 38, 48, 0.46);
 }
 
@@ -2196,7 +2969,7 @@ body[data-story-version="aneurysm"] .step[data-scroll-mode="sequence"] .burden-l
 
 .prevention-copy small {
     margin-bottom: 5px;
-    color: #f08a92;
+    color: var(--color-accent);
     font-size: 0.66rem;
     font-weight: 800;
     text-transform: uppercase;
@@ -2212,6 +2985,103 @@ body[data-story-version="aneurysm"] .step[data-scroll-mode="sequence"] .burden-l
     color: rgba(255, 255, 255, 0.67);
     font-size: 0.82rem;
     line-height: 1.5;
+}
+
+body[data-story-version="dissection"] .miriam-prevention-infographic-section .prevention-timeline {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+    margin: 30px 0 18px;
+    padding: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 8px;
+    background:
+        linear-gradient(135deg, rgba(143, 38, 48, 0.12), transparent 40%),
+        linear-gradient(315deg, rgba(223, 75, 87, 0.1), transparent 42%),
+        rgba(255, 255, 255, 0.03);
+}
+
+body[data-story-version="dissection"] .miriam-prevention-infographic-section .prevention-timeline::before {
+    display: none;
+}
+
+body[data-story-version="dissection"] .miriam-prevention-infographic-section .prevention-timeline li {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    min-height: 250px;
+    padding: 16px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    background: rgba(10, 12, 14, 0.42);
+}
+
+body[data-story-version="dissection"] .miriam-prevention-infographic-section .prevention-node {
+    display: none;
+}
+
+body[data-story-version="dissection"] .miriam-prevention-infographic-section .prevention-copy,
+body[data-story-version="dissection"] .miriam-prevention-infographic-section .prevention-timeline li:nth-child(even) .prevention-copy {
+    display: grid;
+    grid-column: auto;
+    grid-row: auto;
+    grid-template-rows: auto auto 1fr;
+    gap: 10px;
+    padding: 0;
+    text-align: left;
+}
+
+body[data-story-version="dissection"] .miriam-prevention-infographic-section .prevention-copy small {
+    margin-bottom: 0;
+    color: rgba(255, 255, 255, 0.58);
+    font-size: 0.64rem;
+}
+
+body[data-story-version="dissection"] .miriam-prevention-infographic-section .prevention-copy strong {
+    display: grid;
+    gap: 12px;
+    color: #fff;
+    font-size: 0.92rem;
+    line-height: 1.25;
+}
+
+body[data-story-version="dissection"] .miriam-prevention-infographic-section .prevention-copy strong .story-inline-icon {
+    display: grid;
+    width: 58px;
+    height: 58px;
+    place-items: center;
+    margin-right: 0;
+    border-radius: 50%;
+    background: rgba(255, 176, 181, 0.14);
+    color: var(--color-accent);
+    font-family: 'Material Symbols Rounded';
+    font-size: 2.7rem;
+    line-height: 1;
+}
+
+body[data-story-version="dissection"] .miriam-prevention-infographic-section .prevention-timeline li:nth-child(2) .story-inline-icon,
+body[data-story-version="dissection"] .miriam-prevention-infographic-section .prevention-timeline li:nth-child(3) .story-inline-icon {
+    color: var(--color-accent);
+    background: rgba(240, 138, 146, 0.14);
+}
+
+body[data-story-version="dissection"] .miriam-prevention-infographic-section .prevention-timeline li:nth-child(4) .story-inline-icon,
+body[data-story-version="dissection"] .miriam-prevention-infographic-section .prevention-timeline li:nth-child(5) .story-inline-icon {
+    color: var(--color-accent);
+    background: rgba(223, 75, 87, 0.15);
+}
+
+body[data-story-version="dissection"] .miriam-prevention-infographic-section .prevention-copy p {
+    font-size: 0.78rem;
+}
+
+@media (max-width: 900px) {
+    body[data-story-version="dissection"] .miriam-prevention-infographic-section .prevention-timeline {
+        grid-template-columns: 1fr;
+    }
+
+    body[data-story-version="dissection"] .miriam-prevention-infographic-section .prevention-timeline li {
+        min-height: 0;
+    }
 }
 
 .text-box .closing-statement {
@@ -2354,7 +3224,7 @@ body[data-story-version="aneurysm"] .step[data-scroll-mode="sequence"] .burden-l
 
 .model-placeholder figcaption small {
     margin-bottom: 5px;
-    color: #f08a92;
+    color: var(--color-accent);
     font-size: 0.68rem;
     font-weight: 800;
     text-transform: uppercase;
@@ -2408,7 +3278,7 @@ body.light-mode .text-box .section-reference {
 }
 
 body.light-mode .text-box .section-reference a {
-    color: #8f2630;
+    color: var(--color-accent);
 }
 
 body.light-mode .diagnostic-step-index {
@@ -2491,7 +3361,7 @@ body.light-mode .imaging-panel figcaption {
 .aortic-case-routine {
     max-width: 24px;
     justify-self: center;
-    background: #f08a92;
+    background: var(--color-accent);
     outline: 2px solid rgba(255, 255, 255, 0.78);
     outline-offset: 2px;
     box-shadow: 0 0 0 4px rgba(240, 138, 146, 0.18), 0 0 18px rgba(240, 138, 146, 0.58);
@@ -2501,7 +3371,7 @@ body.light-mode .imaging-panel figcaption {
     max-width: 24px;
     justify-self: center;
     border-radius: 22%;
-    background: #8f2630;
+    background: var(--color-accent);
     transform: rotate(45deg) scale(0.9);
     box-shadow: 0 0 0 4px rgba(143, 38, 48, 0.2), 0 0 18px rgba(143, 38, 48, 0.66);
 }
@@ -2530,34 +3400,34 @@ body.light-mode .imaging-panel figcaption {
 }
 
 .legend-routine {
-    background: #f08a92;
+    background: var(--color-accent);
 }
 
 .legend-hidden {
     border-radius: 22%;
-    background: #8f2630;
+    background: var(--color-accent);
     transform: rotate(45deg) scale(0.9);
 }
 
 .clock-early {
-    background: #ffb0b5;
+    background: var(--color-accent);
 }
 
 .clock-middle {
-    background: #df4b57;
+    background: var(--color-accent);
 }
 
 .clock-late,
 .legend-type-a {
-    background: #8f2630;
+    background: var(--color-accent);
 }
 
 .legend-type-b {
-    background: #f08a92;
+    background: var(--color-accent);
 }
 
 .legend-mortality {
-    background: #b93242;
+    background: var(--color-accent);
 }
 
 .aortic-line {
@@ -2586,15 +3456,15 @@ body.light-mode .imaging-panel figcaption {
 }
 
 .aortic-clock-early {
-    fill: #ffb0b5;
+    fill: var(--color-accent);
 }
 
 .aortic-clock-middle {
-    fill: #df4b57;
+    fill: var(--color-accent);
 }
 
 .aortic-clock-late {
-    fill: #8f2630;
+    fill: var(--color-accent);
 }
 
 .aortic-clock-center {
@@ -2626,23 +3496,23 @@ body.light-mode .imaging-panel figcaption {
 }
 
 .aortic-vessel-main {
-    stroke: #f08a92;
+    stroke: var(--color-accent);
     stroke-width: 32;
     opacity: 0.86;
 }
 
 .aortic-vessel-a {
-    stroke: #8f2630;
+    stroke: var(--color-accent);
     stroke-width: 46;
 }
 
 .aortic-vessel-b {
-    stroke: #f08a92;
+    stroke: var(--color-accent);
     stroke-width: 28;
 }
 
 .aortic-tear-marker {
-    fill: #b93242;
+    fill: var(--color-accent);
     stroke: #0c0c0e;
     stroke-width: 4;
 }
@@ -2668,7 +3538,7 @@ body.light-mode .imaging-panel figcaption {
 }
 
 .aortic-mortality-fill {
-    fill: #b93242;
+    fill: var(--color-accent);
 }
 
 .aortic-mortality-label {
@@ -3269,8 +4139,9 @@ body[data-story-version="dissection"] .step[data-scroll-mode="sequence"] .aortic
 body[data-story-version="dissection"] .statistics-overview .text-box {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px 34px;
+    gap: 16px 26px;
     align-items: stretch;
+    width: min(960px, 100%);
 }
 
 body[data-story-version="dissection"] .statistics-overview .text-box > h2,
@@ -3293,40 +4164,41 @@ body[data-story-version="dissection"] .statistics-overview .aortic-stat-card {
     display: flex;
     flex-direction: column;
     height: 100%;
-    min-height: 500px;
+    min-height: 380px;
     margin-top: 0;
-    padding: 20px 0 18px;
+    padding: 16px 0 14px;
 }
 
 body[data-story-version="dissection"] .statistics-overview .aortic-stat-head {
-    min-height: 44px;
+    min-height: 36px;
     align-items: flex-start;
 }
 
 body[data-story-version="dissection"] .statistics-overview .aortic-dot-field {
     width: 100%;
-    gap: 6px;
-    margin: 18px auto 22px;
+    max-width: 330px;
+    gap: 4px;
+    margin: 12px auto 16px;
 }
 
 body[data-story-version="dissection"] .statistics-overview .aortic-stat-card svg {
-    width: 100%;
-    margin: 2px auto 16px;
+    width: min(100%, 390px);
+    margin: 0 auto 12px;
 }
 
 body[data-story-version="dissection"] .statistics-overview .aortic-stat-split svg {
-    transform: scale(1.06);
+    transform: scale(0.92);
     transform-origin: center;
 }
 
 body[data-story-version="dissection"] .statistics-overview .aortic-stat-legend {
-    min-height: 46px;
+    min-height: 38px;
     align-content: flex-start;
 }
 
 body[data-story-version="dissection"] .statistics-overview .aortic-stat-card > p {
     margin-top: auto;
-    padding-top: 18px;
+    padding-top: 12px;
 }
 
 body[data-story-version="dissection"] .statistics-overview .aortic-stat-card > small {
@@ -3391,6 +4263,20 @@ body[data-story-version="dissection"] .evidence-section .imaging-comparison {
 
 body[data-story-version="dissection"] .evidence-section .imaging-panel {
     grid-area: 1 / 1;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.035);
+    box-shadow: 0 18px 38px rgba(0, 0, 0, 0.18);
+}
+
+body[data-story-version="dissection"] .evidence-section .imaging-panel-media {
+    border-radius: 7px 7px 0 0;
+}
+
+body[data-story-version="dissection"] .evidence-section .imaging-modality {
+    background: rgba(10, 12, 14, 0.78);
+    color: #fff;
+    letter-spacing: 0.08em;
 }
 
 body[data-story-version="dissection"] .evidence-section .imaging-panel:first-child {

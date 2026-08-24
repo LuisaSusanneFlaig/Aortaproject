@@ -121,7 +121,6 @@ export function renderAorticStatGraphic(element = {}) {
                     <span><i class="aortic-swatch clock-late"></i>late hours</span>
                 </div>
                 ${caption ? `<p>${caption}</p>` : ''}
-                <small>References: Ince & Akin; POSTPRINT Review; clinical guideline summaries.</small>
             </div>
         `;
     }
@@ -159,7 +158,6 @@ export function renderAorticStatGraphic(element = {}) {
                     <span><i class="aortic-swatch legend-mortality"></i>early mortality</span>
                 </div>
                 ${caption ? `<p>${caption}</p>` : ''}
-                <small>References: Obel et al.; Smedberg et al.; Gouveia e Melo et al.</small>
             </div>
         `;
     }
@@ -186,7 +184,6 @@ export function renderAorticStatGraphic(element = {}) {
                 <span><i class="aortic-legend-dot legend-background"></i>200 dots = 100,000 people</span>
             </div>
             ${caption ? `<p>${caption}</p>` : ''}
-            <small>References: Gouveia e Melo et al.; Kurz et al.; Wundram et al.</small>
         </div>
     `;
 }
@@ -204,6 +201,8 @@ export function renderAneurysmBurden(element = {}) {
                     <text x="48" y="78" class="burden-panel-change">+74.2%</text>
                     <line x1="48" y1="360" x2="420" y2="360" class="burden-axis"></line>
                     <line x1="48" y1="140" x2="48" y2="360" class="burden-axis"></line>
+                    <text x="234" y="428" text-anchor="middle" class="burden-axis-label">Year</text>
+                    <text x="30" y="250" text-anchor="middle" class="burden-axis-label burden-axis-label-y" transform="rotate(-90 30 250)">Deaths</text>
                     <line x1="48" y1="286" x2="420" y2="286" class="burden-grid"></line>
                     <line x1="48" y1="212" x2="420" y2="212" class="burden-grid"></line>
                     <path d="M74 305 L318 192" class="burden-line burden-line-solid"></path>
@@ -224,6 +223,8 @@ export function renderAneurysmBurden(element = {}) {
                     <text x="500" y="78" class="burden-panel-change">-26.8%</text>
                     <line x1="500" y1="360" x2="872" y2="360" class="burden-axis"></line>
                     <line x1="500" y1="140" x2="500" y2="360" class="burden-axis"></line>
+                    <text x="686" y="428" text-anchor="middle" class="burden-axis-label">Year</text>
+                    <text x="482" y="250" text-anchor="middle" class="burden-axis-label burden-axis-label-y" transform="rotate(-90 482 250)">Rate per 100,000</text>
                     <line x1="500" y1="286" x2="872" y2="286" class="burden-grid"></line>
                     <line x1="500" y1="212" x2="872" y2="212" class="burden-grid"></line>
                     <path d="M526 166 L770 286" class="burden-line burden-line-solid"></path>
@@ -357,6 +358,8 @@ export function renderAneurysmRiskDrivers(element = {}) {
             <svg viewBox="0 0 820 430" role="img" aria-label="The share of aortic aneurysm deaths attributed to smoking fell from 45.6 percent in 1990 to 34.6 percent in 2019. The share attributed to high systolic blood pressure fell from 38.7 to 34.7 percent.">
                 <line x1="154" y1="88" x2="154" y2="342" class="drivers-year-axis"></line>
                 <line x1="666" y1="88" x2="666" y2="342" class="drivers-year-axis"></line>
+                <text x="410" y="414" text-anchor="middle" class="drivers-axis-label">Year</text>
+                <text x="66" y="216" text-anchor="middle" class="drivers-axis-label drivers-axis-label-y" transform="rotate(-90 66 216)">Attributed deaths (%)</text>
                 <text x="154" y="382" text-anchor="middle" class="drivers-year">1990</text>
                 <text x="666" y="382" text-anchor="middle" class="drivers-year">2019</text>
                 <path d="M154 116 L666 267" class="drivers-line drivers-smoking"></path>
@@ -370,7 +373,7 @@ export function renderAneurysmRiskDrivers(element = {}) {
                 <text x="132" y="235" text-anchor="end" class="drivers-value">38.7%</text>
                 <text x="688" y="254" class="drivers-value">34.7%</text>
                 <text x="180" y="105" class="drivers-label">Smoking</text>
-                <text x="180" y="231" class="drivers-label">High systolic blood pressure</text>
+                <text x="180" y="270" class="drivers-label">High systolic blood pressure</text>
             </svg>
             <div class="drivers-mobile-list" aria-hidden="true">
                 <div><strong>Smoking</strong><span>45.6%</span><i></i><span>34.6%</span></div>

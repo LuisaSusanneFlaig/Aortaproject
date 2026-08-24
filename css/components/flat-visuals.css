@@ -1,0 +1,1146 @@
+/* Final visual simplification: no framed boxes, gradients, shadows, or glass panels. */
+body[data-story-version] {
+    --color-text: #ffffff;
+    --text-main: #ffffff;
+    --text-dim: #ffffff;
+    --color-accent: #c83c48;
+    --accent-red: #c83c48;
+    --accent-blue: #c83c48;
+    color: #ffffff;
+}
+
+body.light-mode[data-story-version] {
+    --color-text: #1d1d1f;
+    --text-main: #1d1d1f;
+    --text-dim: #1d1d1f;
+    --color-accent: #a62535;
+    --accent-red: #a62535;
+    --accent-blue: #a62535;
+    color: #1d1d1f;
+}
+
+body[data-story-version] *,
+body[data-story-version] *::before,
+body[data-story-version] *::after {
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    background-image: none !important;
+}
+
+body[data-story-version] *::before,
+body[data-story-version] *::after {
+    display: none !important;
+    content: none !important;
+}
+
+body[data-story-version] :where(
+    .text-box,
+    .story-split-shell,
+    .story-visual-column,
+    .story-visual-fallback,
+    .info-image,
+    .info-image img,
+    .stats-box,
+    .model-placeholder-stage,
+    .model-placeholder figcaption,
+    .inline-model-viewer,
+    .inline-model-loading,
+    .wall-layer-legend i,
+    .chapter-opener-icon,
+    .chapter-opener-rule,
+    .aortic-stat-card,
+    .aortic-dot,
+    .aortic-case-routine,
+    .aortic-case-hidden,
+    .aortic-legend-dot,
+    .aortic-swatch,
+    .aortic-line,
+    .diagnostic-path,
+    .diagnostic-path li,
+    .diagnostic-path li > div,
+    .diagnostic-step-index,
+    .symptom-stat-card,
+    .symptom-row,
+    .symptom-row-icon,
+    .symptom-track,
+    .treatment-decision,
+    .treatment-decision-row,
+    .treatment-decision-map,
+    .decision-map-inputs > span,
+    .decision-spectrum-heading,
+    .decision-map-axis,
+    .axis-line,
+    .decision-map-zones,
+    .decision-map-zone,
+    .decision-map-marker,
+    .treatment-steps,
+    .treatment-steps li,
+    .treatment-balance,
+    .treatment-balance-column,
+    .prevention-timeline,
+    .prevention-timeline li,
+    .prevention-node,
+    .prevention-copy strong .story-inline-icon,
+    .imaging-panel,
+    .imaging-panel-media,
+    .imaging-modality,
+    .aneurysm-burden,
+    .aneurysm-burden-heading,
+    .aneurysm-burden-legend i,
+    .aneurysm-growth,
+    .aneurysm-growth-heading,
+    .growth-vessel,
+    .aneurysm-sex-risk,
+    .aneurysm-risk-drivers,
+    .risk-driver-row
+) {
+    border: 0 !important;
+    outline: 0 !important;
+    background-color: transparent !important;
+}
+
+body[data-story-version] :where(.stats-box) {
+    grid-template-columns: minmax(0, 1fr) !important;
+}
+
+body[data-story-version] :where(.stats-icon) {
+    display: none !important;
+}
+
+body[data-story-version] :where(
+    .diagnostic-path .story-inline-icon,
+    .symptom-row-icon,
+    .decision-map-marker,
+    .prevention-copy strong .story-inline-icon
+) {
+    background: transparent !important;
+}
+
+body[data-story-version] :where(
+    .axis-line,
+    .symptom-track span,
+    .risk-driver-row span,
+    .aneurysm-burden-legend i
+) {
+    background: var(--color-accent) !important;
+}
+
+body[data-story-version] :where(.story-visual-column, .chapter-opener) {
+    background-color: var(--color-bg) !important;
+}
+
+body[data-story-version] :where(
+    h1,
+    h2,
+    h3,
+    h4,
+    p,
+    small,
+    strong,
+    figcaption,
+    .chapter-opener-icon,
+    .chapter-opener-eyebrow,
+    .chapter-opener-title,
+    .story-visual-fallback span,
+    .story-visual-fallback strong,
+    .stats-copy span,
+    .abbr-legend,
+    .stats-kicker,
+    .section-reference,
+    .section-reference a,
+    .source-toggle,
+    .source-box,
+    .diagnosis-label,
+    .decision-spectrum-heading,
+    .story-pull-quote
+) {
+    color: var(--color-text) !important;
+    text-decoration-color: var(--color-text) !important;
+    border-color: transparent !important;
+    font-family: 'Roboto', Arial, sans-serif !important;
+}
+
+body[data-story-version] .source-disclosure {
+    display: block !important;
+    width: fit-content !important;
+    max-width: min(100%, 760px) !important;
+    margin: clamp(18px, 2.6vw, 30px) 0 0 !important;
+    padding: 0 !important;
+    font-size: clamp(0.82rem, 1vw, 0.95rem) !important;
+    line-height: 1.5 !important;
+}
+
+body[data-story-version] .source-toggle {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 38px !important;
+    padding: 8px 14px !important;
+    cursor: pointer !important;
+    color: var(--color-text) !important;
+    font-size: clamp(0.85rem, 1vw, 0.95rem) !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    list-style: none !important;
+    text-decoration: underline !important;
+    text-decoration-thickness: 1px !important;
+    text-underline-offset: 4px !important;
+}
+
+body[data-story-version] .source-toggle::-webkit-details-marker {
+    display: none !important;
+}
+
+body[data-story-version] .source-toggle-hide,
+body[data-story-version] .source-disclosure[open] .source-toggle-show {
+    display: none !important;
+}
+
+body[data-story-version] .source-disclosure[open] .source-toggle-hide {
+    display: inline !important;
+}
+
+body[data-story-version] .source-box {
+    display: block !important;
+    width: min(100%, 760px) !important;
+    margin-top: 12px !important;
+    padding: clamp(14px, 1.8vw, 20px) !important;
+    border: 1px solid var(--color-text) !important;
+    color: var(--color-text) !important;
+    font-size: clamp(0.82rem, 1vw, 0.95rem) !important;
+    line-height: 1.55 !important;
+}
+
+body[data-story-version] .source-box a {
+    color: var(--color-text) !important;
+    text-decoration: underline !important;
+    text-decoration-thickness: 1px !important;
+    text-underline-offset: 3px !important;
+}
+
+body[data-story-version] :where(.chapter-opener-rule) {
+    display: none !important;
+}
+
+body[data-story-version] :where(
+    .text-box h2,
+    .story-copy-column > h2
+) {
+    padding-left: 0 !important;
+    border-left: 0 !important;
+}
+
+body[data-story-version] :where(
+    .flow-research-section,
+    .flow-research-section[data-scroll-mode="sticky"]
+) {
+    width: 100% !important;
+    min-height: max(100svh, 760px) !important;
+    height: auto !important;
+    padding: 0 clamp(22px, 4vw, 72px) !important;
+}
+
+body[data-story-version] :where(
+    .flow-research-section .story-split-shell,
+    .flow-research-section .text-box
+) {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-height: max(100svh, 760px) !important;
+    height: auto !important;
+    padding: clamp(24px, 4vh, 48px) 0 !important;
+    overflow: visible !important;
+}
+
+body[data-story-version] .flow-research-section :where(
+    .element-modelPlaceholder,
+    .model-placeholder,
+    .model-placeholder-stage
+) {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    grid-column: auto !important;
+    grid-row: auto !important;
+}
+
+body[data-story-version] .flow-research-section :where(
+    .inline-model-viewer,
+    .model-placeholder-stage
+) {
+    height: min(70vh, 720px) !important;
+    aspect-ratio: 4 / 3 !important;
+}
+
+body[data-story-version] .flow-research-section :where(.model-placeholder figcaption) {
+    position: relative !important;
+    inset: auto !important;
+    left: auto !important;
+    bottom: auto !important;
+    width: 100% !important;
+    padding: 12px 0 0 !important;
+    text-shadow: none !important;
+}
+
+body[data-story-version] .flow-research-section :where(
+    h2,
+    .element-wrapper:not(.element-modelPlaceholder)
+) {
+    position: relative !important;
+    z-index: 1 !important;
+    grid-column: auto !important;
+    grid-row: auto !important;
+    text-shadow: none !important;
+}
+
+body[data-story-version] .flow-research-section .story-copy-column {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-auto-flow: row !important;
+}
+
+body[data-story-version] .flow-research-section .story-copy-column > h2,
+body[data-story-version] .flow-research-section .story-copy-column > .element-wrapper {
+    grid-column: 1 / -1 !important;
+}
+
+body[data-story-version] .flow-research-section .story-copy-column > h2 {
+    width: 100% !important;
+}
+
+body[data-story-version] .flow-research-section :where(.element-text .info-text) {
+    max-width: none !important;
+}
+
+body[data-story-version] :where(
+    .story-visual-column .story-inline-icon,
+    .story-visual-column .chapter-opener-icon,
+    .diagnostic-path .story-inline-icon,
+    .symptom-row-icon .story-inline-icon,
+    .decision-map-inputs .story-inline-icon,
+    .decision-map-marker .story-inline-icon,
+    .prevention-copy strong .story-inline-icon,
+    .aortic-stat-card .aortic-clock-value,
+    .aortic-stat-card .aortic-branch-percent,
+    .burden-panel-change,
+    .risk-driver-row strong
+) {
+    color: var(--color-accent) !important;
+}
+
+body[data-story-version] :where(.story-material-icon) {
+    font-family: 'Material Symbols Rounded' !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    font-feature-settings: 'liga' !important;
+    letter-spacing: 0 !important;
+}
+
+body[data-story-version] :where(
+    .aortic-case-routine,
+    .aortic-case-hidden,
+    .aortic-legend-dot,
+    .aortic-swatch,
+    .aortic-line,
+    .clock-early,
+    .clock-middle,
+    .clock-late,
+    .legend-routine,
+    .legend-hidden,
+    .legend-type-a,
+    .legend-type-b,
+    .legend-mortality
+) {
+    background: var(--color-accent) !important;
+}
+
+body[data-story-version] :where(
+    .aortic-clock-early,
+    .aortic-clock-middle,
+    .aortic-clock-late,
+    .aortic-mortality-fill,
+    .aortic-tear-marker
+) {
+    fill: var(--color-accent) !important;
+    fill-opacity: 1 !important;
+}
+
+body[data-story-version] :where(
+    .aortic-vessel-main,
+    .aortic-vessel-a,
+    .aortic-vessel-b,
+    .burden-line,
+    .burden-point,
+    .growth-hotspot,
+    .growth-slow-highlight
+) {
+    stroke: var(--color-accent) !important;
+    opacity: 1 !important;
+}
+
+body[data-story-version] :where(
+    .burden-panel-change,
+    .burden-point,
+    .risk-driver-row strong
+) {
+    fill: var(--color-accent) !important;
+}
+
+body[data-story-version] :where(
+    .burden-grid,
+    .burden-divider,
+    .aortic-clock-tick,
+    .aortic-mortality-track,
+    .growth-grid,
+    .growth-baseline,
+    .risk-driver-grid,
+    .aneurysm-drivers-heading::after,
+    .story-visual-fallback,
+    .inline-model-loading
+) {
+    display: none !important;
+}
+
+body[data-story-version] :where(
+    .burden-axis,
+    .drivers-year-axis
+) {
+    display: initial !important;
+    stroke: var(--color-text) !important;
+    stroke-width: 1.5 !important;
+    opacity: 1 !important;
+}
+
+body[data-story-version] :where(
+    .aortic-dot,
+    .aortic-legend-dot,
+    .aortic-swatch,
+    .aortic-line,
+    .aortic-case-routine,
+    .aortic-case-hidden,
+    .legend-hidden
+) {
+    border-radius: 0 !important;
+    outline: 0 !important;
+    transform: none !important;
+}
+
+body[data-story-version] :where(
+    .aortic-dot-field .aortic-dot,
+    .aortic-legend-dot.legend-background
+) {
+    visibility: visible !important;
+    background: var(--color-text) !important;
+    border-radius: 50% !important;
+}
+
+body[data-story-version] :where(
+    .aortic-dot-field .aortic-case-routine,
+    .aortic-dot-field .aortic-case-hidden
+) {
+    background: var(--color-accent) !important;
+}
+
+body[data-story-version] :where(.burden-line-projection) {
+    stroke-dasharray: none !important;
+}
+
+body[data-story-version] :where(
+    .aortic-clock-slice,
+    .aortic-vessel-main,
+    .aortic-vessel-b,
+    .wall-layer-legend .intima,
+    .wall-layer-legend .media
+) {
+    opacity: 1 !important;
+    fill-opacity: 1 !important;
+}
+
+body[data-story-version] :where(
+    .drivers-line,
+    .drivers-point,
+    .drivers-legend-smoking,
+    .drivers-legend-pressure
+) {
+    stroke: var(--color-accent) !important;
+    fill: transparent !important;
+}
+
+body[data-story-version] :where(
+    .drivers-legend-smoking,
+    .drivers-legend-pressure
+) {
+    background: var(--color-accent) !important;
+}
+
+body[data-story-version] :where(
+    .drivers-value,
+    .drivers-label,
+    .drivers-year,
+    .drivers-axis-label,
+    .burden-axis-label,
+    .aortic-stat-head span,
+    .aortic-stat-legend,
+    .aneurysm-burden-heading span,
+    .aneurysm-burden-legend,
+    .aneurysm-drivers-heading span,
+    .aneurysm-drivers-legend,
+    .drivers-mobile-list,
+    .drivers-mobile-list *,
+    .diagnostic-path p .story-inline-icon,
+    .text-box p .story-inline-icon
+) {
+    color: var(--color-text) !important;
+    fill: var(--color-text) !important;
+}
+
+body[data-story-version] :where(
+    .diagnostic-path p .story-inline-icon,
+    .text-box p .story-inline-icon
+) {
+    color: var(--color-accent) !important;
+}
+
+body[data-story-version] :where(
+    .drivers-axis-label,
+    .burden-axis-label
+) {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0 !important;
+}
+
+body[data-story-version="aneurysm"] .aneurysm-risk-drivers svg {
+    margin-top: 0 !important;
+}
+
+body[data-story-version="aneurysm"] .aneurysm-drivers-heading {
+    border-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+body[data-story-version="dissection"] .statistics-overview .story-visual-column-inner {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: clamp(16px, 2vw, 26px) !important;
+    align-items: stretch !important;
+    transform: none !important;
+    transform-origin: center !important;
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-stat-card {
+    min-height: 0 !important;
+    height: 100% !important;
+    padding-block: clamp(8px, 1vw, 14px) !important;
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-stat-card svg {
+    margin-bottom: 4px !important;
+}
+
+body[data-story-version="dissection"] .statistics-overview .element-aorticStat {
+    min-width: 0 !important;
+    height: 100% !important;
+}
+
+body[data-story-version] :where(
+    .symptom-stat-card,
+    .diagnostic-path,
+    .treatment-decision-map,
+    .prevention-timeline,
+    .aortic-stat-card,
+    .aneurysm-burden,
+    .aneurysm-risk-drivers
+) {
+    width: 100% !important;
+}
+
+body[data-story-version] :where(
+    .diagnosis-card-head strong,
+    .aortic-stat-head strong,
+    .aneurysm-burden-heading strong,
+    .aneurysm-drivers-heading strong
+) {
+    font-size: clamp(1.15rem, 1.9vw, 1.55rem) !important;
+    font-weight: 700 !important;
+    line-height: 1.16 !important;
+}
+
+body[data-story-version] :where(
+    .diagnosis-card-head span,
+    .aortic-stat-head span,
+    .aortic-stat-legend,
+    .aneurysm-burden-heading span,
+    .aneurysm-drivers-heading span,
+    .aneurysm-drivers-legend,
+    .aneurysm-burden-legend
+) {
+    font-size: clamp(0.9rem, 1.25vw, 1.05rem) !important;
+    line-height: 1.3 !important;
+}
+
+body[data-story-version] .diagnostic-path {
+    gap: clamp(20px, 3vw, 38px) !important;
+}
+
+body[data-story-version] .diagnostic-path li {
+    gap: clamp(12px, 1.8vw, 20px) !important;
+}
+
+body[data-story-version] .diagnostic-path strong {
+    display: grid !important;
+    justify-items: center !important;
+    gap: 14px !important;
+    font-size: clamp(1.05rem, 1.55vw, 1.28rem) !important;
+    font-weight: 700 !important;
+    line-height: 1.18 !important;
+    text-align: center !important;
+}
+
+body[data-story-version] .diagnostic-path .story-inline-icon {
+    display: grid !important;
+    width: clamp(64px, 7vw, 92px) !important;
+    height: clamp(64px, 7vw, 92px) !important;
+    place-items: center !important;
+    margin-right: 0 !important;
+    font-size: clamp(3rem, 5.2vw, 4.5rem) !important;
+    line-height: 1 !important;
+}
+
+body[data-story-version] .diagnostic-step-index {
+    display: inline-grid !important;
+    width: clamp(34px, 3.4vw, 46px) !important;
+    height: clamp(34px, 3.4vw, 46px) !important;
+    place-items: center !important;
+    border: 2px solid var(--color-accent) !important;
+    border-radius: 50% !important;
+    color: var(--color-accent) !important;
+    font-size: clamp(1rem, 1.45vw, 1.25rem) !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+}
+
+body[data-story-version] :where(
+    .alex-diagnosis-infographic-section,
+    .miriam-diagnosis-infographic-section
+) .diagnostic-path {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: clamp(18px, 2.4vw, 30px) !important;
+    margin: 30px 0 18px !important;
+    padding: clamp(18px, 2.6vw, 30px) !important;
+}
+
+body[data-story-version] :where(
+    .alex-diagnosis-infographic-section,
+    .miriam-diagnosis-infographic-section
+) .diagnostic-path li {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: clamp(12px, 1.7vw, 18px) !important;
+    min-height: clamp(190px, 18vw, 240px) !important;
+    padding: 0 !important;
+}
+
+body[data-story-version] :where(
+    .alex-diagnosis-infographic-section,
+    .miriam-diagnosis-infographic-section
+) .diagnostic-step-index {
+    margin: 0 auto !important;
+}
+
+body[data-story-version] :where(
+    .alex-diagnosis-infographic-section,
+    .miriam-diagnosis-infographic-section
+) .diagnostic-path li > div {
+    display: grid !important;
+    gap: clamp(10px, 1.4vw, 16px) !important;
+    align-content: start !important;
+    padding: 0 !important;
+}
+
+body[data-story-version] :where(
+    .alex-diagnosis-infographic-section,
+    .miriam-diagnosis-infographic-section
+) .diagnostic-path strong {
+    margin: 0 !important;
+}
+
+body[data-story-version] .symptom-stat-card {
+    display: grid !important;
+    gap: clamp(18px, 2vw, 28px) !important;
+}
+
+body[data-story-version] .symptom-bars {
+    display: grid !important;
+    gap: clamp(16px, 2vw, 24px) !important;
+}
+
+body[data-story-version] .symptom-row {
+    grid-template-columns: clamp(60px, 6vw, 82px) minmax(0, 1fr) !important;
+    gap: clamp(14px, 2vw, 24px) !important;
+    align-items: center !important;
+}
+
+body[data-story-version] .symptom-row-icon {
+    display: grid !important;
+    width: clamp(58px, 5.8vw, 78px) !important;
+    height: clamp(58px, 5.8vw, 78px) !important;
+    place-items: center !important;
+}
+
+body[data-story-version] .symptom-row-icon .story-inline-icon {
+    font-size: clamp(2.85rem, 4.8vw, 4rem) !important;
+    line-height: 1 !important;
+}
+
+body[data-story-version] .symptom-row-label {
+    font-size: clamp(1rem, 1.45vw, 1.22rem) !important;
+    line-height: 1.24 !important;
+}
+
+body[data-story-version] .symptom-row-label strong {
+    font-size: clamp(1.3rem, 2.2vw, 1.8rem) !important;
+    font-weight: 800 !important;
+}
+
+body[data-story-version] .symptom-track {
+    height: clamp(10px, 1.1vw, 14px) !important;
+}
+
+body[data-story-version="dissection"] .miriam-symptoms-section .symptom-bars {
+    grid-template-columns: 1fr !important;
+    gap: clamp(16px, 2vw, 24px) !important;
+}
+
+body[data-story-version="dissection"] .miriam-symptoms-section .symptom-row {
+    display: grid !important;
+    grid-template-columns: clamp(60px, 6vw, 82px) minmax(0, 1fr) !important;
+    grid-template-rows: auto auto !important;
+    gap: clamp(8px, 1vw, 12px) clamp(14px, 2vw, 24px) !important;
+    min-height: auto !important;
+    padding: 0 !important;
+}
+
+body[data-story-version="dissection"] .miriam-symptoms-section .symptom-row-icon {
+    grid-row: 1 / span 2 !important;
+}
+
+body[data-story-version="dissection"] .miriam-symptoms-section .symptom-row-label {
+    display: flex !important;
+    align-items: baseline !important;
+    justify-content: space-between !important;
+    gap: clamp(12px, 1.6vw, 20px) !important;
+    margin: 0 !important;
+}
+
+body[data-story-version="dissection"] .miriam-symptoms-section .symptom-track {
+    grid-column: 2 !important;
+    height: clamp(10px, 1.1vw, 14px) !important;
+}
+
+body[data-story-version] :where(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .treatment-decision-map {
+    gap: clamp(24px, 3vw, 36px) !important;
+    padding: clamp(20px, 3vw, 34px) !important;
+}
+
+body[data-story-version] :where(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .decision-spectrum-heading {
+    color: var(--color-text) !important;
+    font-size: clamp(1.05rem, 1.5vw, 1.3rem) !important;
+    font-weight: 800 !important;
+    line-height: 1.15 !important;
+    text-align: center !important;
+}
+
+body[data-story-version] :where(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .decision-map-inputs {
+    gap: clamp(12px, 1.7vw, 20px) !important;
+}
+
+body[data-story-version] :where(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .decision-map-inputs > span {
+    min-height: auto !important;
+    justify-content: center !important;
+    gap: 0 !important;
+    padding: 0 8px !important;
+    font-size: clamp(0.88rem, 1.2vw, 1.05rem) !important;
+    font-weight: 800 !important;
+    line-height: 1.15 !important;
+    text-align: center !important;
+}
+
+body[data-story-version] :where(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .decision-map-inputs .story-inline-icon {
+    font-size: clamp(1.9rem, 2.7vw, 2.45rem) !important;
+}
+
+body[data-story-version] :where(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .axis-label {
+    font-size: clamp(0.92rem, 1.25vw, 1.08rem) !important;
+    font-weight: 800 !important;
+    white-space: nowrap !important;
+}
+
+body[data-story-version] :where(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .decision-map-axis {
+    gap: clamp(16px, 2vw, 28px) !important;
+}
+
+body[data-story-version] :where(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .axis-line {
+    position: relative !important;
+    height: clamp(8px, 0.9vw, 12px) !important;
+    overflow: visible !important;
+    border-radius: 999px !important;
+}
+
+body[data-story-version] :where(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .axis-arrow {
+    position: absolute !important;
+    top: 50% !important;
+    right: -2px !important;
+    width: 0 !important;
+    height: 0 !important;
+    border-top: clamp(8px, 0.95vw, 12px) solid transparent !important;
+    border-bottom: clamp(8px, 0.95vw, 12px) solid transparent !important;
+    border-left: clamp(14px, 1.5vw, 20px) solid var(--color-accent) !important;
+    transform: translate(70%, -50%) !important;
+}
+
+body[data-story-version] :where(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .decision-map-zone {
+    gap: clamp(14px, 2vw, 22px) !important;
+    min-height: clamp(260px, 29vw, 340px) !important;
+    padding: clamp(20px, 2.4vw, 30px) !important;
+}
+
+body[data-story-version] :where(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .decision-map-marker {
+    width: clamp(74px, 7vw, 92px) !important;
+    height: clamp(74px, 7vw, 92px) !important;
+}
+
+body[data-story-version] :where(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .decision-map-marker .story-inline-icon {
+    font-size: clamp(3.8rem, 5.8vw, 4.9rem) !important;
+}
+
+body[data-story-version] :where(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .decision-map-finding small {
+    font-size: clamp(0.85rem, 1.15vw, 1rem) !important;
+    line-height: 1.25 !important;
+}
+
+body[data-story-version] :where(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .decision-map-finding strong {
+    font-size: clamp(1.2rem, 1.75vw, 1.55rem) !important;
+    font-weight: 800 !important;
+    line-height: 1.16 !important;
+}
+
+body[data-story-version] :where(
+    .alex-prevention-infographic-section,
+    .miriam-prevention-infographic-section
+) .prevention-timeline {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: clamp(14px, 1.7vw, 22px) !important;
+    margin: 30px 0 18px !important;
+    padding: clamp(18px, 2.6vw, 30px) !important;
+}
+
+body[data-story-version] :where(
+    .alex-prevention-infographic-section,
+    .miriam-prevention-infographic-section
+) .prevention-timeline li {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: clamp(14px, 2vw, 22px) !important;
+    min-height: clamp(210px, 21vw, 280px) !important;
+    padding: clamp(18px, 2vw, 26px) !important;
+}
+
+body[data-story-version] :where(
+    .alex-prevention-infographic-section,
+    .miriam-prevention-infographic-section
+) .prevention-node {
+    display: none !important;
+}
+
+body[data-story-version] :where(
+    .alex-prevention-infographic-section,
+    .miriam-prevention-infographic-section
+) .prevention-copy {
+    display: grid !important;
+    grid-column: auto !important;
+    grid-row: auto !important;
+    grid-template-rows: auto auto 1fr !important;
+    gap: clamp(10px, 1.5vw, 16px) !important;
+    padding: 0 !important;
+    text-align: left !important;
+}
+
+body[data-story-version] :where(
+    .alex-prevention-infographic-section,
+    .miriam-prevention-infographic-section
+) .prevention-copy small {
+    font-size: clamp(0.8rem, 1.05vw, 0.95rem) !important;
+    font-weight: 800 !important;
+}
+
+body[data-story-version] :where(
+    .alex-prevention-infographic-section,
+    .miriam-prevention-infographic-section
+) .prevention-copy strong {
+    gap: 16px !important;
+    font-size: clamp(1rem, 1.3vw, 1.18rem) !important;
+    font-weight: 800 !important;
+}
+
+body[data-story-version] :where(
+    .alex-prevention-infographic-section,
+    .miriam-prevention-infographic-section
+) .prevention-copy strong .story-inline-icon {
+    width: clamp(72px, 6.5vw, 90px) !important;
+    height: clamp(72px, 6.5vw, 90px) !important;
+    font-size: clamp(3.7rem, 5.5vw, 4.8rem) !important;
+}
+
+body[data-story-version] :where(
+    .aortic-clock-value,
+    .aortic-branch-percent,
+    .burden-panel-change,
+    .drivers-value
+) {
+    font-weight: 800 !important;
+}
+
+body[data-story-version] :where(
+    .aortic-stat-card svg text,
+    .burden-panel-title,
+    .burden-value,
+    .burden-year,
+    .drivers-label,
+    .drivers-year,
+    .drivers-axis-label,
+    .burden-axis-label
+) {
+    font-size: 1.08em !important;
+}
+
+@media (max-width: 759px) {
+    body[data-story-version="dissection"] .statistics-overview .story-visual-column-inner {
+        grid-template-columns: 1fr !important;
+    }
+
+    body[data-story-version] :where(
+        .alex-diagnosis-infographic-section,
+        .miriam-diagnosis-infographic-section
+    ) .diagnostic-path {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+
+    body[data-story-version] :where(
+        .alex-prevention-infographic-section,
+        .miriam-prevention-infographic-section
+    ) .prevention-timeline {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+
+body.light-mode[data-story-version] :where(
+    .story-visual-column,
+    .chapter-opener
+) {
+    background-color: var(--color-bg) !important;
+}
+
+body.light-mode[data-story-version] :where(
+    .decision-map-inputs > span,
+    .axis-label,
+    .decision-map-finding small,
+    .treatment-decision-map figcaption,
+    .prevention-copy small,
+    .aortic-stat-card svg text,
+    .drivers-label,
+    .drivers-year,
+    .drivers-axis-label,
+    .burden-axis-label
+) {
+    color: var(--color-text) !important;
+    fill: var(--color-text) !important;
+}
+
+body.light-mode[data-story-version] :where(
+    .decision-map-inputs .story-inline-icon,
+    .decision-map-marker .story-inline-icon,
+    .prevention-copy strong .story-inline-icon
+) {
+    color: var(--color-accent) !important;
+    fill: var(--color-accent) !important;
+}
+
+@media (min-width: 760px) and (max-width: 1100px) {
+    body[data-story-version] :where(
+        .step,
+        .step:first-of-type,
+        .step.model-section,
+        .step[data-scroll-mode="sticky"],
+        .step[data-scroll-mode="comparison"],
+        .flow-research-section,
+        .flow-research-section[data-scroll-mode="sticky"]
+    ) {
+        min-height: max(100svh, 700px) !important;
+        padding-inline: clamp(18px, 3vw, 34px) !important;
+    }
+
+    body[data-story-version] :where(
+        .step .story-split-shell,
+        .step:first-of-type .story-split-shell,
+        .step.model-section .story-split-shell,
+        .step[data-scroll-mode="sticky"] .story-split-shell,
+        .step[data-scroll-mode="comparison"] .story-split-shell,
+        .flow-research-section .story-split-shell
+    ) {
+        display: block !important;
+        min-height: max(100svh, 700px) !important;
+        padding-block: clamp(22px, 3vh, 34px) !important;
+    }
+
+    body[data-story-version] .story-visual-column {
+        position: fixed !important;
+        z-index: 4 !important;
+        top: var(--nav-height) !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        display: grid !important;
+        width: 52vw !important;
+        min-height: 0 !important;
+        padding: clamp(20px, 3vw, 34px) !important;
+        place-items: center !important;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: none !important;
+    }
+
+    body[data-story-version] .step.active .story-visual-column,
+    body[data-story-version] .step.is-gsap-active .story-visual-column {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+    }
+
+    body[data-story-version] .story-visual-column-inner {
+        max-height: 100% !important;
+        overflow: hidden !important;
+        align-content: center !important;
+        gap: clamp(10px, 1.7vh, 18px) !important;
+    }
+
+    body[data-story-version] .flow-research-section .story-visual-column-inner {
+        overflow: visible !important;
+    }
+
+    body[data-story-version] .story-copy-column {
+        width: min(40ch, calc(48vw - clamp(42px, 7vw, 78px))) !important;
+        min-height: max(100svh, 700px) !important;
+        margin-left: 55vw !important;
+        padding-block: clamp(10vh, 15vh, 18vh) !important;
+        justify-self: start !important;
+    }
+
+    body[data-story-version] .story-copy-column > h2 {
+        font-size: clamp(2rem, 4.2vw, 2.55rem) !important;
+        line-height: 1.08 !important;
+        margin-bottom: 1.1rem !important;
+    }
+
+    body[data-story-version] :where(.story-copy-column .info-text, .story-copy-column p) {
+        font-size: clamp(0.96rem, 1.75vw, 1.05rem) !important;
+        line-height: 1.55 !important;
+    }
+
+    body[data-story-version] .story-visual-column :where(
+        .inline-model-viewer,
+        .model-placeholder-stage
+    ) {
+        height: min(58vh, 560px) !important;
+        aspect-ratio: 4 / 3 !important;
+    }
+
+    body[data-story-version] .flow-research-section .story-visual-column :where(
+        .inline-model-viewer,
+        .model-placeholder-stage
+    ) {
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        aspect-ratio: 4 / 3 !important;
+    }
+
+    body[data-story-version] .story-visual-column .imaging-comparison {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 10px !important;
+    }
+
+    body[data-story-version] .story-visual-column .imaging-panel-media {
+        height: min(34vh, 300px) !important;
+    }
+
+    body[data-story-version] .evidence-section .story-visual-column .imaging-comparison {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 8px !important;
+    }
+
+    body[data-story-version] .evidence-section .story-visual-column .imaging-panel,
+    body[data-story-version] .evidence-section .story-visual-column .imaging-panel-media {
+        width: 100% !important;
+        height: min(24vh, 220px) !important;
+        min-height: 0 !important;
+    }
+
+    body[data-story-version] .evidence-section .story-visual-column .imaging-panel,
+    body[data-story-version] .evidence-section .story-visual-column .imaging-panel-media,
+    body[data-story-version] .evidence-section .story-visual-column .imaging-panel img {
+        max-width: 100% !important;
+    }
+
+    body[data-story-version] .evidence-section .story-visual-column .imaging-modality {
+        display: none !important;
+    }
+}
