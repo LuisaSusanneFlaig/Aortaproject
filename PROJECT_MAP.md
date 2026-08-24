@@ -39,6 +39,16 @@ npm run screenshots
 | 3D model viewer | `js/modules/ui/InlineModelViewer.js` |
 | Story validation | `js/stories/validateStory.js` |
 
+## Live pages
+
+| Page | File |
+| --- | --- |
+| Dashboard / story selection | `index.html` |
+| Alex aneurysm story | `scrollytelling-aneurysm.html` |
+| Miriam dissection story | `scrollytelling-dissection.html` |
+| Imprint | `impressum.html` |
+| Privacy policy | `datenschutz.html` |
+
 ## Assets
 
 | Asset type | Folder |

@@ -17,17 +17,24 @@
 
     <main>
         <section class="overview-hero" id="overview" aria-labelledby="overview-title">
-            <div class="overview-copy"><h1 id="overview-title">The Aorta</h1><p>Two conditions, two journeys, one vital blood vessel.</p></div>
+            <div class="overview-copy"><h1 id="overview-title">The Aorta</h1><p>At the centre of the body, one vessel carries the force of every heartbeat. Alex and Miriam show how differently that vessel can change.</p></div>
             <div class="anatomy-explorer" aria-label="Interactive anatomy of the aorta">
                 <figure class="anatomy-figure">
-                    <img src="assets/story_images/aorta_body_outline_alpha_v1.png" alt="Subtle human torso outline with the heart and full aorta">
-                    <button class="anatomy-hotspot" type="button" style="--x: 51%; --y: 23%; --i: 0;" aria-label="Show aortic arch" data-title="Aortic Arch" data-copy="The aortic arch connects the ascending and descending sections. Major arteries branch from here to supply the head and arms."></button>
-                    <button class="anatomy-hotspot" type="button" style="--x: 48%; --y: 29%; --i: 1;" aria-label="Show ascending aorta" data-title="Ascending Aorta" data-copy="The ascending aorta begins directly at the heart and carries oxygen-rich blood toward the aortic arch."></button>
-                    <button class="anatomy-hotspot" type="button" style="--x: 54%; --y: 34%; --i: 2;" aria-label="Show heart" data-title="Heart" data-copy="The heart pumps blood into the aorta. The aortic root marks the transition between the left ventricle and the main artery."></button>
-                    <button class="anatomy-hotspot" type="button" style="--x: 51%; --y: 49%; --i: 3;" aria-label="Show descending thoracic aorta" data-title="Descending Thoracic Aorta" data-copy="This section runs through the chest along the spine and supplies structures including the chest wall."></button>
-                    <button class="anatomy-hotspot" type="button" style="--x: 51%; --y: 63%; --i: 4;" aria-label="Show abdominal aorta" data-title="Abdominal Aorta" data-copy="Below the diaphragm, the abdominal aorta supplies the organs of the abdomen and gives off several major side branches."></button>
-                    <button class="anatomy-hotspot" type="button" style="--x: 51%; --y: 75%; --i: 5;" aria-label="Show aortic bifurcation" data-title="Aortic Bifurcation" data-copy="In the lower abdomen, the aorta divides into the two iliac arteries, which supply blood to the pelvis and legs."></button>
+                    <img class="anatomy-illustration" src="assets/story_images/dashboard_aorta_branches_ai_adapted.png" alt="Medical illustration of the human torso with the heart, full aorta, and major aortic branches">
+                    <button class="anatomy-hotspot" type="button" style="--x: 53%; --y: 37%; --i: 0;" aria-label="Show aortic arch" data-title="Aortic Arch" data-copy="The aortic arch curves above the heart. From this bend, the brachiocephalic trunk, left common carotid, and left subclavian artery carry blood toward the head, neck, and arms."></button>
+                    <button class="anatomy-hotspot" type="button" style="--x: 50%; --y: 44%; --i: 1;" aria-label="Show ascending aorta" data-title="Ascending Aorta" data-copy="The ascending aorta rises directly from the heart. This is where the force of the heartbeat first enters the main artery."></button>
+                    <button class="anatomy-hotspot" type="button" style="--x: 56%; --y: 51%; --i: 2;" aria-label="Show heart" data-title="Heart" data-copy="The heart pumps oxygen-rich blood through the aortic valve into the aorta. Small coronary arteries branch off near the root to supply the heart muscle itself."></button>
+                    <button class="anatomy-hotspot" type="button" style="--x: 53%; --y: 61%; --i: 3;" aria-label="Show descending thoracic aorta" data-title="Descending Thoracic Aorta" data-copy="The descending thoracic aorta runs down through the chest. It continues the main blood stream after the arch."></button>
+                    <button class="anatomy-hotspot" type="button" style="--x: 53%; --y: 76%; --i: 4;" aria-label="Show abdominal aorta" data-title="Abdominal Aorta" data-copy="Below the diaphragm, the abdominal aorta gives branches to the digestive organs and kidneys before it reaches the pelvis."></button>
+                    <button class="anatomy-hotspot" type="button" style="--x: 52%; --y: 92%; --i: 5;" aria-label="Show aortic bifurcation" data-title="Aortic Bifurcation" data-copy="In the lower abdomen, the aorta divides into the common iliac arteries, which carry blood toward the pelvis and legs."></button>
                 </figure>
+                <details class="section-reference source-disclosure anatomy-source-disclosure">
+                    <summary class="source-toggle">
+                        <span class="source-toggle-show">Show sources</span>
+                        <span class="source-toggle-hide">Hide sources</span>
+                    </summary>
+                    <div class="source-box">Medical illustration adapted with AI from the supplied original aorta-branches illustration. Original work licensed under Creative Commons Attribution-Share Alike 3.0 Unported (CC BY-SA 3.0): <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.en" target="_blank" rel="noopener noreferrer">https://creativecommons.org/licenses/by-sa/3.0/deed.en</a>. Changes were made for the dashboard composition.</div>
+                </details>
                 <aside class="anatomy-popover" id="anatomy-popover" hidden>
                     <button class="popover-close" type="button" aria-label="Close information"></button>
                     <h2></h2><p></p>
@@ -36,14 +43,14 @@
         </section>
 
         <section class="story-index" id="stories" aria-labelledby="stories-title">
-            <header class="section-heading"><h2 id="stories-title">Two Stories</h2><p>Patient-centered narratives connect imaging, data, and medical decision-making.</p></header>
+            <header class="section-heading"><h2 id="stories-title">Two Stories</h2><p>Both stories begin with the same vessel, but the questions are different: one follows slow enlargement, the other follows a sudden tear and the long recovery after it.</p></header>
             <article class="story-entry">
-                <img src="assets/story_images/alex_portrait_photoreal_v1.png" alt="Portrait of the fictional character Alex">
-                <div class="story-entry-copy"><h3>Alex</h3><p class="diagnosis-label">Aortic Aneurysm</p><p>A CT scan reveals that his aorta has widened. His story follows the question of when observation becomes treatment.</p><a href="scrollytelling-aneurysm.html">Start Alex's story <span aria-hidden="true">&rarr;</span></a></div>
+                <img src="assets/story_images/alex_portrait_photoreal_v1.png" alt="Portrait of Alex">
+                <div class="story-entry-copy"><h3>Alex</h3><p class="diagnosis-label">Aortic Aneurysm</p><p>Alex is young, feels well, and already knows that Marfan syndrome can make his aorta vulnerable. His scan turns that risk into something visible: a vessel that needs to be watched before it becomes dangerous.</p><a href="scrollytelling-aneurysm.html">Start Alex's story <span aria-hidden="true">&rarr;</span></a></div>
             </article>
             <article class="story-entry story-entry-reverse">
-                <img src="assets/story_images/miriam_portrait_photoreal_v1.png" alt="Portrait of the fictional character Miriam">
-                <div class="story-entry-copy"><h3>Miriam</h3><p class="diagnosis-label">Aortic Dissection</p><p>An acute tear changes the path of blood through her aorta. Her story follows the vessel wall from the event into the chronic phase.</p><a href="scrollytelling-dissection.html">Start Miriam's story <span aria-hidden="true">&rarr;</span></a></div>
+                <img src="assets/story_images/miriam_portrait_photoreal_v1.png" alt="Portrait of Miriam">
+                <div class="story-entry-copy"><h3>Miriam</h3><p class="diagnosis-label">Aortic Dissection</p><p>Miriam's story begins abruptly, with pain that points to an emergency inside the vessel wall. From the first scan onward, the question becomes how the torn aorta changes, heals, or stays at risk over time.</p><a href="scrollytelling-dissection.html">Start Miriam's story <span aria-hidden="true">&rarr;</span></a></div>
             </article>
         </section>
 

@@ -77,7 +77,6 @@ export function renderTreatmentDecision(element = {}) {
                         </section>
                     `).join('')}
                 </div>
-                ${element.caption ? `<figcaption>${element.caption}</figcaption>` : ''}
             </figure>
         `;
     }
@@ -160,7 +159,6 @@ export function renderImagingComparison(element = {}) {
                         <span class="imaging-modality">${item.modality || 'Imaging'}</span>
                         <img src="${item.src}" alt="${item.alt || ''}" loading="lazy">
                     </div>
-                    ${item.caption ? `<figcaption>${item.caption}</figcaption>` : ''}
                 </figure>
             `).join('')}
         </div>
@@ -179,11 +177,6 @@ export function renderModelPlaceholder(element = {}) {
                     ? '<div class="inline-model-loading" aria-hidden="true"></div><span class="inline-model-error">Animation unavailable</span>'
                     : '<span>GLTF / ANIMATION</span>'}
             </div>
-            <figcaption>
-                ${element.eyebrow ? `<small>${element.eyebrow}</small>` : ''}
-                <strong>${element.title || 'Flow visualization'}</strong>
-                ${element.text ? `<p>${element.text}</p>` : ''}
-            </figcaption>
         </figure>
     `;
 }

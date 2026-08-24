@@ -160,12 +160,13 @@ class InlineModelViewer {
     applySurfaceMaterial(model) {
         model.traverse((child) => {
             if (!child.isMesh) return;
+            if (child.geometry && !child.geometry.attributes.normal) child.geometry.computeVertexNormals();
             child.material = new THREE.MeshStandardMaterial({
                 color: 0xc83c48,
-                roughness: 0.52,
+                roughness: 0.44,
                 metalness: 0.02,
-                emissive: 0x3d0c12,
-                emissiveIntensity: 0.16,
+                emissive: 0xc83c48,
+                emissiveIntensity: 0.42,
                 side: THREE.DoubleSide
             });
         });

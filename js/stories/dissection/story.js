@@ -25,8 +25,7 @@ export const dissectionStory = {
                     src: 'assets/story_images/miriam_portrait_photoreal_v1.png',
                     eyebrow: 'Patient story',
                     aspect: '4 / 5',
-                    alt: 'Portrait of Miriam',
-                    caption: 'Miriam is a fictional character based on an open aortic dissection dataset.'
+                    alt: 'Portrait of Miriam'
                 },
                 {
                     type: 'pullQuote',
@@ -38,7 +37,7 @@ export const dissectionStory = {
                 },
                 {
                     type: 'text',
-                    text: 'The portrait introduces a fictional character, but the medical shape comes from an open dataset. The VMR 0246_H_AO_AOD case follows a female Marfan patient with CT images before and after an acute dissection, and then through years of follow-up. The visuals in this story use that record to show how the vessel changes over time.'
+                    text: 'Miriam\'s story starts when pain turns a hidden weakness into an emergency. The first task is to understand what has happened inside the vessel wall; the next is to follow how that injured aorta changes over months and years.'
                 }
             ]
         },
@@ -52,7 +51,7 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'This section gives the scale of the disease before Miriam\'s case becomes personal. The dot graphic shows that acute aortic dissection is uncommon: only a few people out of 100,000 are diagnosed each year, and some cases may be missed until after death. The branching graphic explains the main classification. Type A involves the first part of the aorta as it leaves the heart and is usually more immediately dangerous. Type B begins farther down, after the arteries to the head and arms. The key idea for the rest of the story is that one tear can create two competing paths for blood.'
+                    text: 'Aortic dissection is rare, but when it happens, it changes the situation within minutes. Only a few people out of 100,000 are diagnosed each year, and some cases are missed until after death. The classification helps explain the urgency. Type A involves the first part of the aorta as it leaves the heart and is usually the most immediately dangerous. Type B begins farther down, after the arteries to the head and arms. For Miriam, the key idea is that one tear can create two competing paths for blood.'
                 },
                 {
                     type: 'aorticStat',
@@ -78,18 +77,24 @@ export const dissectionStory = {
             className: 'model-section',
             inlineModel: {
                 url: 'assets/models/miriam_pre_dissection_aorta.gltf',
-                label: 'Miriam\'s aorta before the dissection'
+                label: 'Miriam\'s aorta before the dissection',
+                mode: 'surface',
+                legend: false
             },
             paragraphs: [],
             elements: [
 
                 {
                     type: 'text',
-                    text: 'The 3D model shows Miriam\'s aorta before the dissection. A healthy aorta is a flexible tube with layered walls. The inner layer touches the blood, the middle layer gives strength, and the outer layer supports the vessel. When those layers stay together, blood has one open channel, called the lumen.'
+                    text: 'Before the tear, Miriam\'s aorta can be understood as one continuous vessel with one main open channel for blood, called the lumen. Seeing it as a single surface makes the later change easier to grasp: the emergency is not that a new vessel appears, but that blood forces a new route inside the existing wall.'
                 },
                 {
                     type: 'text',
-                    text: 'A dissection changes that simple tube into a split pathway. Blood enters through a tear in the inner layer and separates the wall from the inside. The original channel is called the true lumen; the new channel inside the wall is called the false lumen. The model helps orient the viewer before the later flow visuals show blood moving through both spaces.'
+                    text: 'When dissection occurs, blood enters through a tear and separates layers of the vessel wall. The original channel is called the true lumen; the new channel inside the wall is called the false lumen. From that moment, the aorta is no longer just a pipe carrying blood downward. It has become a divided pathway.'
+                },
+                {
+                    type: 'reference',
+                    text: 'Anatomy and case source: VMR dataset 0246_H_AO_AOD, pre-dissection aortic geometry and follow-up case material; patient course described in Baeumler et al., IEEE TBME 2025, DOI 10.1109/TBME.2024.3480362.'
                 }
             ]
         },
@@ -103,7 +108,7 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'The symptom graphic turns clinical warning signs into a quick visual checklist. Many people with acute Type B dissection report severe chest or back pain, often starting suddenly. High blood pressure is also common. Migrating pain means the pain seems to move as the tear extends along the aorta. A fainting episode, a normal heart tracing, or a normal chest X-ray cannot safely rule the disease in or out, so symptoms are only the first clue.'
+                    text: 'Miriam\'s pain fits a pattern doctors are trained to take seriously. Many people with acute Type B dissection report severe chest or back pain, often beginning suddenly. High blood pressure is also common. Migrating pain means the pain seems to move as the tear extends along the aorta. A fainting episode, a normal heart tracing, or a normal chest X-ray cannot safely rule the disease in or out, so symptoms are only the first clue.'
                 },
                 {
                     type: 'symptomBars',
@@ -133,7 +138,7 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'The numbered diagnostic graphic shows how doctors move from suspicion to proof. First they ask whether the patient has risk factors, such as Marfan syndrome or known aortic disease. Then they examine the pattern of pain, pulses, blood pressure differences, and signs from the brain or limbs. Lab tests may include D-dimer, a blood marker that rises when clots are being broken down; it can sometimes help rule out dissection in carefully selected low-risk cases, but it cannot confirm the diagnosis. The final step is imaging. ECG-gated CT is timed to the heartbeat, which reduces motion blur and shows the tear, its length, and complications.'
+                    text: 'From the first suspicion, the team has to move quickly. They ask whether Miriam has risk factors such as Marfan syndrome or known aortic disease. They examine the pattern of pain, pulses, blood pressure differences, and signs from the brain or limbs. A lab test may include D-dimer, a blood marker that rises when clots are being broken down; in carefully selected low-risk patients it can help rule out dissection, but it cannot prove the diagnosis. The decisive step is imaging. ECG-gated CT is timed to the heartbeat, reducing motion blur so the tear, its length, and possible complications can be seen.'
                 },
                 {
                     type: 'diagnosticPath',
@@ -172,7 +177,7 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'These two images explain where the diagnosis comes from and how it becomes a flow model. CT angiography, or CTA, is a CT scan taken while contrast dye makes the blood-filled aorta visible. In Miriam\'s case it shows a Type B dissection starting just after the left subclavian artery and extending toward the diaphragm. The red overlay marks the digital vessel wall. The 4D-flow MRI image is different: it was measured in a flexible physical model built from the same anatomy, so it shows flow behavior in a controlled model rather than a direct scan inside Miriam\'s body.'
+                    text: 'The images make the tear visible. CT angiography, or CTA, is a CT scan taken while contrast dye fills the blood space of the aorta. In Miriam\'s case it shows a Type B dissection starting just after the left subclavian artery and extending toward the diaphragm. The red overlay marks the reconstructed vessel wall. The 4D-flow MRI image comes from a flexible physical model built from the same anatomy, so it shows flow behavior in a controlled experiment rather than a direct scan inside Miriam\'s body.'
                 },
                 {
                     type: 'imagingComparison',
@@ -205,7 +210,7 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'The treatment spectrum summarizes the first major decision, but it is not a timeline. It shows the current urgency of the situation. On the lower-urgency side, if pain and blood pressure are controlled and organs are still receiving blood, treatment usually focuses on medication, monitoring, and repeat imaging. On the higher-urgency side, if complications appear, doctors may need to redirect flow with an endovascular repair, often called TEVAR. TEVAR places a stent graft inside the aorta through blood vessels, usually without opening the chest.'
+                    text: 'Treatment depends on how stable the situation is right now. If pain and blood pressure are controlled and the organs are still receiving blood, care usually begins with medication, close monitoring, and repeat imaging. If complications appear, doctors may need to redirect flow with an endovascular repair, often called TEVAR. TEVAR places a stent graft inside the aorta through blood vessels, usually without opening the chest.'
                 },
                 {
                     type: 'treatmentDecision',
@@ -224,8 +229,7 @@ export const dissectionStory = {
                             label: 'Complicated Type B',
                             treatment: 'Endovascular treatment'
                         }
-                    ],
-                    caption: 'The arrow shows clinical urgency at the current assessment, not progression through time.'
+                    ]
                 },
                 {
                     type: 'reference',
@@ -243,7 +247,7 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'The flow visualization now shows what the diagnosis means mechanically. The tear has divided the aorta into a true lumen, the original channel, and a false lumen inside the wall. The moving particles represent simulated blood flow through both channels. They help the viewer see that the dissection is not just a line on an image; it changes how blood travels.'
+                    text: 'After the acute event, Miriam\'s aorta carries blood through two spaces instead of one. The original channel is the true lumen; the new channel inside the wall is the false lumen. The moving particles trace simulated blood flow through both channels, making clear that the dissection is not only a line on an image. It changes the route of circulation.'
                 },
                 {
                     type: 'modelPlaceholder',
@@ -257,7 +261,7 @@ export const dissectionStory = {
                 },
                 {
                     type: 'text',
-                    text: 'Faster paths, slower zones, and swirling motion are easier to notice in the animation than in a still scan. These patterns can change the forces on the vessel wall. The model does not tell us exactly what will happen to Miriam, but it explains why flow matters after the acute event.'
+                    text: 'Some paths are faster, other zones are slower, and parts of the flow swirl. These patterns can change the forces on the vessel wall. They do not tell us exactly what will happen to Miriam, but they explain why blood movement still matters after the first emergency has passed.'
                 },
                 {
                     type: 'reference',
@@ -275,11 +279,11 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'The chronic-phase visual moves the story from the emergency to long-term follow-up. Months and years later, the true and false lumen can remain separated. If the false lumen stays open, blood may continue to move through it instead of the vessel healing into one stable channel.'
+                    text: 'Months and years later, the story is no longer only about surviving the emergency. The true and false lumen can remain separated. If the false lumen stays open, blood may continue to move through it instead of the vessel healing into one stable channel.'
                 },
                 {
                     type: 'text',
-                    text: 'The animated spheres show simulated flow in the remodeled aorta after the vessel has changed shape. Follow-up imaging records that parts of the aorta enlarge over time. In plain terms, the wall is still adapting to the split pathway, and the visual helps connect that changing shape with the movement of blood.'
+                    text: 'Follow-up imaging records that parts of the aorta enlarge over time. In plain terms, the wall is still adapting to the split pathway. The simulated flow in the remodeled vessel connects the changing shape with the movement of blood through it.'
                 },
                 {
                     type: 'modelPlaceholder',
@@ -293,7 +297,7 @@ export const dissectionStory = {
                 },
                 {
                     type: 'text',
-                    text: 'Slow or circulating flow can be a sign that blood is lingering in parts of the vessel. That may matter for long-term enlargement, but this model is not a personal forecast. It is a way to inspect one possible mechanical explanation for why follow-up remains important.'
+                    text: 'Slow or circulating flow can mean that blood is lingering in parts of the vessel. That may matter for long-term enlargement, but it is not a personal forecast. It is one mechanical reason why follow-up remains important even when the acute phase is over.'
                 },
                 {
                     type: 'reference',
@@ -311,7 +315,7 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'The prevention infographic turns long-term care into five everyday goals. Blood pressure control reduces force on the injured wall. Rehabilitation helps a person return to activity in a supervised way. Dosed activity means exercise is adapted so blood pressure does not spike unpredictably. Whole-aorta imaging means CT or MRI follow-up checks the entire vessel, not only the first tear. Genetic risk matters because Marfan syndrome can affect family members too.'
+                    text: 'For Miriam, prevention means protecting an aorta that has already been injured. Blood pressure control reduces force on the wall. Rehabilitation helps her return to activity in a supervised way. Dosed activity means exercise is adapted so blood pressure does not spike unpredictably. Whole-aorta imaging means CT or MRI follow-up checks the entire vessel, not only the first tear. Genetic risk matters because Marfan syndrome can affect family members too.'
                 },
                 {
                     type: 'preventionTimeline',
@@ -361,7 +365,7 @@ export const dissectionStory = {
                 },
                 {
                     type: 'text',
-                    text: 'The final image returns from the model to the patient story. Miriam\'s future cannot be decided from one scan or one simulation. What the visuals have shown is why follow-up is necessary: the aorta is a living vessel, its shape can change, and blood flow can keep influencing the wall long after the first emergency.'
+                    text: 'Miriam\'s future cannot be decided from one scan or one simulation. What remains after the emergency is a long relationship with follow-up care. The aorta is a living vessel, its shape can change, and blood flow can keep influencing the wall long after the first tear.'
                 },
                 {
                     type: 'closingStatement',
