@@ -40,6 +40,11 @@ export function smokeTestStoryRendering() {
                 if (renderedSections !== config.sections.length) {
                     errors.push(`${version}: rendered ${renderedSections} of ${config.sections.length} sections`);
                 }
+                const visualColumns = (documentStub.nodes.story.innerHTML.match(/class="story-visual-column"/g) || []).length;
+                const copyColumns = (documentStub.nodes.story.innerHTML.match(/class="story-copy-column"/g) || []).length;
+                if (visualColumns !== config.sections.length || copyColumns !== config.sections.length) {
+                    errors.push(`${version}: split layout rendered ${visualColumns} visual and ${copyColumns} copy columns for ${config.sections.length} sections`);
+                }
                 if (documentStub.storyTitle.textContent !== config.title) {
                     errors.push(`${version}: page title was not rendered`);
                 }

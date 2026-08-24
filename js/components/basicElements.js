@@ -9,6 +9,18 @@ export function renderReferenceText(value = '') {
     });
 }
 
+export function renderReferenceDisclosure(value = '') {
+    return `
+        <details class="section-reference source-disclosure">
+            <summary class="source-toggle">
+                <span class="source-toggle-show">Show sources</span>
+                <span class="source-toggle-hide">Hide sources</span>
+            </summary>
+            <div class="source-box">${renderReferenceText(value)}</div>
+        </details>
+    `;
+}
+
 export function renderBasicElement(element) {
     switch (element.type) {
         case 'heading': return `<h3 class="info-heading">${element.text || 'New heading'}</h3>`;
@@ -21,7 +33,7 @@ export function renderBasicElement(element) {
             return `<div class="stats-box stats-box-extra"><div class="stats-icon">${renderIcon(element.icon)}</div><div class="stats-copy"><strong>${element.label || 'Info:'}</strong><span>${element.text || 'New information'}</span>${legends.length ? `<small class="abbr-legend">${legends.join(' - ')}</small>` : ''}</div></div>`;
         }
         case 'closingStatement': return `<blockquote class="closing-statement">${element.text || ''}</blockquote>`;
-        case 'reference': return `<p class="section-reference">${renderReferenceText(element.text || '')}</p>`;
+        case 'reference': return renderReferenceDisclosure(element.text || '');
         case 'iconGrid': return `<div class="icon-grid">${(element.items || []).map((item) => `<div class="icon-item"><div class="icon-placeholder">${renderIcon(item.icon)}</div><span>${item.label}</span></div>`).join('')}</div>`;
         case 'iconImages': return `<div class="icon-list">${(element.items || []).map((image) => `<img src="${image.src}" alt="${image.alt}" class="icon-image">`).join('')}</div>`;
         default: return null;

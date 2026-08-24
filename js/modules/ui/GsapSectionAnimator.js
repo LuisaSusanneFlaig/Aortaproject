@@ -117,6 +117,40 @@ export class GsapSectionAnimator {
                 const content = section.querySelector('.text-box');
                 if (!content) return;
 
+                if (content.classList.contains('story-split-shell')) {
+                    const copy = content.querySelector('.story-copy-column');
+                    const activeTrigger = ScrollTrigger.create({
+                        trigger: section,
+                        start: 'top 62%',
+                        end: 'bottom 38%',
+                        onToggle: ({ isActive }) => {
+                            section.classList.toggle('is-gsap-active', isActive);
+                        }
+                    });
+                    localAnimations.push(activeTrigger);
+                    this.animations.push(activeTrigger);
+
+                    if (copy) {
+                        const copyReveal = gsap.fromTo(copy, {
+                            autoAlpha: 0.3,
+                            y: 44
+                        }, {
+                            autoAlpha: 1,
+                            y: 0,
+                            ease: 'none',
+                            scrollTrigger: {
+                                trigger: section,
+                                start: 'top 86%',
+                                end: 'top 46%',
+                                scrub: true
+                            }
+                        });
+                        localAnimations.push(copyReveal);
+                        this.animations.push(copyReveal);
+                    }
+                    return;
+                }
+
                 const isFirstSection = index === 0;
                 const compact = conditions.compact;
                 const timeline = gsap.timeline({

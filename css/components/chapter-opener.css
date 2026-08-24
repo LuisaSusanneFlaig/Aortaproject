@@ -24,8 +24,8 @@ body[data-story-version] .chapter-opener::before {
 body[data-story-version] .chapter-opener-inner {
     display: grid;
     width: min(var(--story-content-max), 100%);
-    justify-items: center;
-    text-align: center;
+    justify-items: start;
+    text-align: left;
 }
 
 body[data-story-version] .chapter-opener-icon {
@@ -34,16 +34,16 @@ body[data-story-version] .chapter-opener-icon {
     height: var(--chapter-opener-icon-size);
     margin-bottom: 24px;
     place-items: center;
-    border: 1px solid color-mix(in srgb, var(--color-accent) 58%, transparent);
+    border: 0;
     border-radius: 50%;
-    background: color-mix(in srgb, var(--color-accent) 14%, transparent);
-    color: var(--color-accent);
+    background: transparent;
+    color: var(--color-text);
     font-size: 3rem;
-    box-shadow: 0 0 48px color-mix(in srgb, var(--color-accent) 18%, transparent);
+    box-shadow: none;
 }
 
 body[data-story-version] .chapter-opener-eyebrow {
-    color: var(--color-accent);
+    color: var(--color-text);
     font-size: clamp(0.95rem, 1.25vw, 1.1rem);
     font-weight: 700;
     letter-spacing: 0.18em;
@@ -51,21 +51,19 @@ body[data-story-version] .chapter-opener-eyebrow {
 }
 
 body[data-story-version] .chapter-opener-title {
-    max-width: 12ch;
+    max-width: 14ch;
     margin: 16px 0 26px;
     color: var(--color-text);
-    font-family: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+    font-family: 'Roboto', Arial, sans-serif;
     font-size: var(--chapter-opener-title-size);
     font-weight: 500;
     letter-spacing: -0.04em;
     line-height: 0.95;
-    text-wrap: balance;
+    text-wrap: pretty;
 }
 
 body[data-story-version] .chapter-opener-rule {
-    width: var(--chapter-opener-rule-width);
-    height: 3px;
-    background: linear-gradient(90deg, transparent, var(--color-accent) 18%, var(--color-accent) 82%, transparent);
+    display: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

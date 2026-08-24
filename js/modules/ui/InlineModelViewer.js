@@ -15,6 +15,7 @@ class InlineModelViewer {
     }
 
     startWhenNear() {
+        this.visibilityTarget = this.container.closest('.step') || this.container;
         if (!('IntersectionObserver' in window)) {
             this.isVisible = true;
             this.init();
@@ -26,7 +27,7 @@ class InlineModelViewer {
             if (entry.isIntersecting && !this.hasStarted) this.init();
             else if (entry.isIntersecting) this.startAnimationLoop();
         }, { rootMargin: '320px' });
-        this.visibilityObserver.observe(this.container);
+        this.visibilityObserver.observe(this.visibilityTarget);
     }
 
     async init() {
@@ -190,9 +191,9 @@ class InlineModelViewer {
         const layerGap = Math.max(size.x, size.y, size.z) * 0.011;
         const cutStep = size.x * 0.13;
         const layers = [
-            { name: 'Intima', color: 0x69c8dc, offset: layerGap, roughness: 0.38, cut: cutStep },
-            { name: 'Media', color: 0xcf3550, offset: 0, roughness: 0.5, cut: 0 },
-            { name: 'Adventitia', color: 0xe3b357, offset: -layerGap, roughness: 0.66, cut: -cutStep }
+            { name: 'Intima', color: 0xc83c48, offset: layerGap, roughness: 0.38, cut: cutStep },
+            { name: 'Media', color: 0xc83c48, offset: 0, roughness: 0.5, cut: 0 },
+            { name: 'Adventitia', color: 0xc83c48, offset: -layerGap, roughness: 0.66, cut: -cutStep }
         ];
 
         const group = new THREE.Group();

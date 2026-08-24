@@ -2,11 +2,15 @@
   "type": "module",
   "scripts": {
     "dev": "node tools/dev-server.js",
+    "screenshots": "node tools/capture-screenshots.js",
     "validate": "node tools/validate-stories.js",
     "check": "node tools/check-project.js"
   },
   "dependencies": {
     "gltfpack": "^1.1.0",
     "gsap": "^3.12.2"
+  },
+  "devDependencies": {
+    "playwright": "^1.62.1"
   }
 }

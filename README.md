@@ -32,6 +32,7 @@ npm run check
 | Validation rules | `js/stories/validateStory.js` |
 
 See [docs/EDITING_GUIDE.md](docs/EDITING_GUIDE.md) for recipes and [AGENTS.md](AGENTS.md) for coding-model guardrails.
+For a very short practical overview, start with [PROJECT_MAP.md](PROJECT_MAP.md).
 
 ## Architecture
 
