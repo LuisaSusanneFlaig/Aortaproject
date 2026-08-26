@@ -270,42 +270,6 @@ export const dissectionStory = {
             ]
         },
         {
-            id: 's12',
-            title: 'Long-term Remodeling',
-            scrollMode: 'sticky',
-            timelineLabel: '+36 / +64 months',
-            className: 'flow-research-section miriam-flow-section',
-            paragraphs: [],
-            elements: [
-                {
-                    type: 'text',
-                    text: 'Months and years later, the story is no longer only about surviving the emergency. The true and false lumen can remain separated. If the false lumen stays open, blood may continue to move through it instead of the vessel healing into one stable channel.'
-                },
-                {
-                    type: 'text',
-                    text: 'Follow-up imaging records that parts of the aorta enlarge over time. In plain terms, the wall is still adapting to the split pathway. The simulated flow in the remodeled vessel connects the changing shape with the movement of blood through it.'
-                },
-                {
-                    type: 'modelPlaceholder',
-                    id: 'flow-vis-chronic',
-                    src: 'assets/models/flow/miriam-particles-spheres.glb',
-                    modelMode: 'flow',
-                    animationFps: 15,
-                    alt: 'Animated spherical particles representing long-term flow through the aortic model',
-                    eyebrow: '+36 / +64 months',
-                    title: 'Flow-Vis - Chronic Remodeling'
-                },
-                {
-                    type: 'text',
-                    text: 'Slow or circulating flow can mean that blood is lingering in parts of the vessel. That may matter for long-term enlargement, but it is not a personal forecast. It is one mechanical reason why follow-up remains important even when the acute phase is over.'
-                },
-                {
-                    type: 'reference',
-                    text: 'Patient course: Baeumler et al., IEEE TBME 2025, DOI 10.1109/TBME.2024.3480362; VMR dataset 0246_H_AO_AOD.'
-                }
-            ]
-        },
-        {
             id: 's17',
             title: 'Prevention',
             scrollMode: 'sequence',

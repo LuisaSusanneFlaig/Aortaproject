@@ -166,8 +166,11 @@ export function renderImagingComparison(element = {}) {
 }
 
 export function renderModelPlaceholder(element = {}) {
+    const framingAttribute = element.framingScale
+        ? ` data-framing-scale="${element.framingScale}"`
+        : '';
     const viewerAttributes = element.src
-        ? ` data-inline-model data-model-url="${element.src}" data-model-mode="${element.modelMode || 'flow'}" data-animation-fps="${element.animationFps || 30}"`
+        ? ` data-inline-model data-model-url="${element.src}" data-model-mode="${element.modelMode || 'flow'}" data-animation-fps="${element.animationFps || 30}"${framingAttribute}`
         : '';
     const accessibleLabel = element.alt || element.title || 'Animated flow model';
     return `
