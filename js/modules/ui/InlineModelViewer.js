@@ -72,8 +72,10 @@ class InlineModelViewer {
         try {
             const gltf = await new GLTFLoader().loadAsync(modelUrl);
             this.originalModel = gltf.scene;
+            if (modelMode === 'flow') this.markTransparentSourceMeshes(this.originalModel);
             if (modelMode === 'surface') this.applySurfaceMaterial(this.originalModel);
             this.prepareMaterials(this.originalModel);
+            if (modelMode === 'flow') this.applyTransparentFlowSurfaceMaterial(this.originalModel);
             this.layeredModel = modelMode === 'layers'
                 ? this.createLayeredModel(this.originalModel)
                 : null;
@@ -98,6 +100,14 @@ class InlineModelViewer {
         return light;
     }
 
+    markTransparentSourceMeshes(model) {
+        model.traverse((child) => {
+            if (!child.isMesh || !child.material) return;
+            const materials = Array.isArray(child.material) ? child.material : [child.material];
+            child.userData.isFlowSurface = materials.some((material) => material.transparent || material.opacity < 0.95);
+        });
+    }
+
     prepareMaterials(model) {
         model.traverse((child) => {
             if ((!child.isMesh && !child.isPoints) || !child.material) return;
@@ -110,6 +120,25 @@ class InlineModelViewer {
                 material.metalness = Math.min(material.metalness ?? 0, 0.08);
                 material.needsUpdate = true;
             });
+        });
+    }
+
+    applyTransparentFlowSurfaceMaterial(model) {
+        model.traverse((child) => {
+            if (!child.isMesh || !child.userData.isFlowSurface) return;
+            if (child.geometry && !child.geometry.attributes.normal) child.geometry.computeVertexNormals();
+            child.material = new THREE.MeshStandardMaterial({
+                color: 0xc83c48,
+                roughness: 0.64,
+                metalness: 0.02,
+                emissive: 0xc83c48,
+                emissiveIntensity: 0.08,
+                transparent: true,
+                opacity: 0.16,
+                depthWrite: false,
+                side: THREE.DoubleSide
+            });
+            child.renderOrder = -1;
         });
     }
 
