@@ -10,6 +10,7 @@ class InlineModelViewer {
         this.lastFrameTime = 0;
         this.animationAccumulator = 0;
         this.animationFps = Math.max(1, Number(container.dataset.animationFps) || 30);
+        this.framingScale = Number(container.dataset.framingScale) || null;
         this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         this.startWhenNear();
     }
@@ -240,7 +241,11 @@ class InlineModelViewer {
     }
 
     fitModel(model, modelMode = 'layers') {
-        model.rotation.set(-Math.PI / 2, 0, modelMode === 'surface' ? Math.PI / 2 : 0);
+        if (modelMode === 'flow') {
+            model.rotation.set(0, Math.PI / 2, 0);
+        } else {
+            model.rotation.set(-Math.PI / 2, 0, modelMode === 'surface' ? Math.PI / 2 : 0);
+        }
         model.updateMatrixWorld(true);
 
         const box = new THREE.Box3().setFromObject(model);
@@ -250,7 +255,7 @@ class InlineModelViewer {
 
         const maxDimension = Math.max(size.x, size.y, size.z) || 1;
         const distance = maxDimension / (2 * Math.tan(THREE.MathUtils.degToRad(this.camera.fov / 2)));
-        const framingScale = modelMode === 'surface' ? 0.72 : modelMode === 'flow' ? 0.62 : 1;
+        const framingScale = this.framingScale || (modelMode === 'surface' ? 0.72 : modelMode === 'flow' ? 0.38 : 1);
         const framingDistance = distance * framingScale;
         this.cameraDistance = framingDistance;
         this.camera.position.set(

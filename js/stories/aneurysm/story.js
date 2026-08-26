@@ -236,9 +236,10 @@ export const aneurysmStory = {
                 {
                     type: 'modelPlaceholder',
                     id: 'alex-flow-overview-model',
-                    src: 'assets/models/flow/alex-marfan-pathlines-many.glb',
+                    src: 'assets/models/flow/marfan_lines_animation_fixed_optimized_s60.glb',
                     modelMode: 'flow',
                     animationFps: 20,
+                    framingScale: 0.3,
                     alt: 'Animated pathlines representing simulated blood flow through Alex\'s Marfan-associated aneurysm model',
                     eyebrow: 'Patient-specific simulation',
                     title: 'Flow-Vis - Overall Flow'
@@ -250,36 +251,6 @@ export const aneurysmStory = {
                 {
                     type: 'reference',
                     text: 'Data basis: open VMR dataset 0021_H_AO_MFS, case 0129_0000, with CT-based geometry and simulation files. The flow visualization is a model calculation, not a direct measurement in Alex\'s body.'
-                }
-            ]
-        },
-        {
-            id: 'alex-flow-focus',
-            title: 'Inside the Enlarged Segment',
-            className: 'flow-research-section alex-flow-section',
-            scrollMode: 'sticky',
-            elements: [
-                {
-                    type: 'text',
-                    text: 'The close-up view explains the flow terms used in the visual. A vortex is a swirling pattern. Reverse flow means some blood briefly moves opposite the main direction. Flow separation means the stream pulls away from the wall instead of staying smooth along it. Near-wall flow matters because the vessel wall is the tissue that may continue to stretch.'
-                },
-                {
-                    type: 'modelPlaceholder',
-                    id: 'alex-flow-focus-model',
-                    src: 'assets/models/flow/alex-marfan-pathlines-sparse.glb',
-                    modelMode: 'flow',
-                    animationFps: 20,
-                    alt: 'Animated sparse pathlines showing focused simulated blood flow inside Alex\'s enlarged aortic segment',
-                    eyebrow: 'Detailed view of the same simulation',
-                    title: 'Flow-Vis - Aneurysm Focus'
-                },
-                {
-                    type: 'text',
-                    text: 'These patterns help describe the forces acting inside the enlarged segment, but they are not a diagnosis on their own. Alex\'s care still depends on measurements, symptoms, family history, and follow-up imaging. The flow view adds another way to understand why a widened vessel needs attention even when a person feels well.'
-                },
-                {
-                    type: 'reference',
-                    text: 'Context: second camera perspective of the same patient-specific VMR simulation from 0021_H_AO_MFS, case 0129_0000; no additional examination and no documented follow-up measurement.'
                 }
             ]
         },
