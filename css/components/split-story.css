@@ -213,7 +213,7 @@ body[data-story-version] .story-visual-column .model-placeholder figcaption {
     max-width: 13ch;
     margin-top: 12px;
     color: var(--color-text);
-    font-family: 'Roboto', Arial, sans-serif;
+    font-family: 'Hanken Grotesk', Arial, sans-serif;
     font-size: clamp(2.6rem, 5vw, 5.5rem);
     font-weight: 500;
     line-height: 0.98;

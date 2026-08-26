@@ -33,11 +33,11 @@ export const dissectionStory = {
                 },
                 {
                     type: 'text',
-                    text: 'Miriam lives with Marfan syndrome. This condition can weaken connective tissue, including the wall of the aorta: the large artery that carries blood from the heart to the body. Her story begins when the inner lining of that artery tears. Blood then pushes into the wall itself. This is called an aortic dissection.'
+                    text: 'Miriam lives with Marfan syndrome. This condition can weaken connective tissue, including the wall of the aorta: the large artery that carries blood from the heart to the body. Her story begins when the inner lining of that artery tears. Blood then pushes into the wall itself and creates a second channel. This is called an aortic dissection, and it can be life-threatening.'
                 },
                 {
                     type: 'text',
-                    text: 'Miriam\'s story starts when pain turns a hidden weakness into an emergency. The first task is to understand what has happened inside the vessel wall; the next is to follow how that injured aorta changes over months and years.'
+                    text: 'The first task is to understand what has happened inside the vessel wall; the next is to follow how that injured aorta changes over months and years.'
                 }
             ]
         },
@@ -51,17 +51,15 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Aortic dissection is rare, but when it happens, it changes the situation within minutes. Only a few people out of 100,000 are diagnosed each year, and some cases are missed until after death. The classification helps explain the urgency. Type A involves the first part of the aorta as it leaves the heart and is usually the most immediately dangerous. Type B begins farther down, after the arteries to the head and arms. For Miriam, the key idea is that one tear can create two competing paths for blood.'
+                    text: 'Aortic dissection is rare, but when it happens, it changes the situation within minutes. Only a few people out of 100,000 are diagnosed each year, and some cases are missed entirely. The classification helps explain the urgency. Type A involves the first part of the aorta as it leaves the heart and is usually the most immediately dangerous. Type B begins farther down, behind the arteries leading to the head. '
                 },
                 {
                     type: 'aorticStat',
-                    variant: 'incidence',
-                    title: 'Rare - and partly hidden'
+                    variant: 'incidence'
                 },
                 {
                     type: 'aorticStat',
-                    variant: 'split',
-                    title: 'Two paths after the same tear'
+                    variant: 'split'
                 },
                 {
                     type: 'reference',
@@ -108,11 +106,10 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Miriam\'s pain fits a pattern doctors are trained to take seriously. Many people with acute Type B dissection report severe chest or back pain, often beginning suddenly. High blood pressure is also common. Migrating pain means the pain seems to move as the tear extends along the aorta. A fainting episode, a normal heart tracing, or a normal chest X-ray cannot safely rule the disease in or out, so symptoms are only the first clue.'
+                    text: ' Many people with acute Type B dissection report severe chest or back pain, often beginning suddenly. High blood pressure is also common. Migrating pain means the pain seems to move as the tear extends along the aorta. A fainting episode, a normal heart tracing, or a normal chest X-ray cannot safely rule the disease in or out, so symptoms are only the first clue.'
                 },
                 {
                     type: 'symptomBars',
-                    title: 'Acute Type B Dissection',
                     subtitle: 'IRAD: 1,891 of 5,638 acute dissections',
                     items: [
                         { icon: 'warning', label: 'Severe or worst-ever pain', value: 88.7, color: '#c83c48' },
@@ -138,7 +135,7 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'From the first suspicion, the team has to move quickly. They ask whether Miriam has risk factors such as Marfan syndrome or known aortic disease. They examine the pattern of pain, pulses, blood pressure differences, and signs from the brain or limbs. A lab test may include D-dimer, a blood marker that rises when clots are being broken down; in carefully selected low-risk patients it can help rule out dissection, but it cannot prove the diagnosis. The decisive step is imaging. ECG-gated CT is timed to the heartbeat, reducing motion blur so the tear, its length, and possible complications can be seen.'
+                    text: 'From the first suspicion, the team has to move quickly. They ask whether Miriam has risk factors such as Marfan syndrome or known aortic disease. They examine the pattern of pain, blood pressure differences, and signs from the brain or limbs. A lab test may include D-dimer, a blood marker that rises when clots are being broken down; in carefully selected low-risk patients it can help rule out dissection, but it cannot prove the diagnosis. The decisive step is imaging. ECG-gated CTA is timed to the heartbeat, reducing motion blur so the tear, its length, and possible complications can be seen.'
                 },
                 {
                     type: 'diagnosticPath',
@@ -177,32 +174,32 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'The images make the tear visible. CT angiography, or CTA, is a CT scan taken while contrast dye fills the blood space of the aorta. In Miriam\'s case it shows a Type B dissection starting just after the left subclavian artery and extending toward the diaphragm. The red overlay marks the reconstructed vessel wall. The 4D-flow MRI image comes from a flexible physical model built from the same anatomy, so it shows flow behavior in a controlled experiment rather than a direct scan inside Miriam\'s body.'
+                    text: 'The CT angiography (CTA) images make the tear visible from more than one direction. Contrast dye fills the blood space of the aorta, making the vessel and the dissection easier to follow. In Miriam\'s case, the scan shows a Type B dissection starting just after the left subclavian artery and extending toward the diaphragm. The axial and coronal views show the same anatomy in two planes.'
                 },
                 {
                     type: 'imagingComparison',
                     items: [
                         {
-                            modality: 'CTA',
-                            src: 'assets/story_images/miriam_cta_wall_overlay.jpg',
-                            alt: 'Coronal CTA image of the patient-specific Type B aortic dissection with red digital wall segmentation'
+                            modality: 'Axial CTA',
+                            src: 'assets/story_images/miriam_cta_axial_0246.png',
+                            alt: 'Axial CTA slice from Miriam\'s patient-specific Type B aortic dissection dataset'
                         },
                         {
-                            modality: '4D-flow MRI',
-                            src: 'assets/story_images/miriam_4d_flow_mri.jpg',
-                            alt: '4D-flow MRI streamlines in the original Type B dissection model with true and false lumen'
+                            modality: 'Coronal CTA',
+                            src: 'assets/story_images/miriam_cta_coronal_0246.png',
+                            alt: 'Coronal CTA reconstruction from Miriam\'s patient-specific Type B aortic dissection dataset'
                         }
                     ]
                 },
                 {
                     type: 'reference',
-                    text: 'Image source: Zimmermann et al., Scientific Reports 2023, figs. 1 and 3, DOI 10.1038/s41598-023-49942-0, CC BY 4.0. Patient reference: Baeumler et al. (2025) and VMR dataset 0246_H_AO_AOD.'
+                    text: 'Image source: 0246_H_AO_AOD.vti from the Vascular Model Repository, case 0246_H_AO_AOD; axial and coronal reconstructions exported from the supplied CT volume.'
                 }
             ]
         },
         {
             id: 's13',
-            title: 'Acute Treatment',
+            title: 'Current-risk decision spectrum',
             scrollMode: 'sequence',
             timelineLabel: 'Acute',
             className: 'miriam-treatment-infographic-section',
@@ -210,12 +207,11 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Treatment depends on how stable the situation is right now. If pain and blood pressure are controlled and the organs are still receiving blood, care usually begins with medication, close monitoring, and repeat imaging. If complications appear, doctors may need to redirect flow with an endovascular repair, often called TEVAR. TEVAR places a stent graft inside the aorta through blood vessels, usually without opening the chest.'
+                    text: 'Treatment depends on how stable the situation is right now. If pain and blood pressure are controlled and the organs are still receiving blood, care usually begins with medication, close monitoring, and repeat imaging. If complications appear, doctors may need to redirect redirect blood flow through a process called TEVAR. TEVAR places an implant inside the aorta which supports the vessel wall and redirects flow. This is done during a minimally invasive procedure without open surgery'
                 },
                 {
                     type: 'treatmentDecision',
                     variant: 'decisionMap',
-                    title: 'Current-risk decision spectrum',
                     axisStart: 'Lower urgency',
                     axisEnd: 'Higher urgency',
                     items: [

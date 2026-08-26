@@ -9,22 +9,25 @@ export function renderSymptomBars(element = {}) {
     return `
         <div class="symptom-stat-card">
             <div class="diagnosis-card-head">
-                <strong>${element.title || 'Symptoms'}</strong>
+                ${element.title ? `<strong>${element.title}</strong>` : ''}
                 <span>${element.subtitle || ''}</span>
             </div>
             <div class="symptom-bars">
-                ${items.map((item, index) => `
+                ${items.map((item, index) => {
+                    const displayValue = Math.round(item.value);
+                    return `
                     <div class="symptom-row" style="--row-index:${index}">
                         ${item.icon ? `<span class="symptom-row-icon">${renderMaterialIcon(item.icon, 'story-inline-icon')}</span>` : ''}
                         <div class="symptom-row-label">
                             <span>${item.label}</span>
-                            <strong>${item.value}%</strong>
+                            <strong>${displayValue}%</strong>
                         </div>
-                        <div class="symptom-track" role="img" aria-label="${item.label}: ${item.value} percent">
+                        <div class="symptom-track" role="img" aria-label="${item.label}: ${displayValue} percent">
                             <span style="width: ${clampPercent(item.value)}%; background: ${item.color || 'var(--color-accent)'}"></span>
                         </div>
                     </div>
-                `).join('')}
+                `;
+                }).join('')}
             </div>
             ${element.note ? `<p class="symptom-note">${element.note}</p>` : ''}
         </div>
@@ -70,7 +73,8 @@ export function renderTreatmentDecision(element = {}) {
                         <section class="decision-map-zone" style="--row-index:${index}">
                             <span class="decision-map-marker">${renderMaterialIcon(item.icon || 'fact_check', 'story-inline-icon')}</span>
                             <div class="decision-map-finding">
-                                <small>${item.label}</small>
+                                <span class="decision-map-label">${item.label}</span>
+                                <span class="decision-map-arrow" aria-hidden="true">↓</span>
                                 <strong>${item.treatment}</strong>
                             </div>
                             ${item.text ? `<p>${item.text}</p>` : ''}
@@ -140,7 +144,6 @@ export function renderPreventionTimeline(element = {}) {
                 <li style="--row-index:${index}">
                     <span class="prevention-node" aria-hidden="true"></span>
                     <div class="prevention-copy">
-                        <small>${item.eyebrow || ''}</small>
                         <strong>${renderMaterialIcon(icons[index] || 'check_circle', 'story-inline-icon')}${item.title || ''}</strong>
                         ${item.text ? `<p>${item.text}</p>` : ''}
                     </div>
@@ -180,6 +183,7 @@ export function renderModelPlaceholder(element = {}) {
                     ? '<div class="inline-model-loading" aria-hidden="true"></div><span class="inline-model-error">Animation unavailable</span>'
                     : '<span>GLTF / ANIMATION</span>'}
             </div>
+            ${element.note ? `<p class="symptom-note model-placeholder-note">${element.note}</p>` : ''}
         </figure>
     `;
 }

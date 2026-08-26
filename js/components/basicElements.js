@@ -1,4 +1,4 @@
-import { collectAbbreviations, renderIcon } from './icons.js';
+import { collectAbbreviations, renderIcon, renderMaterialIcon } from './icons.js';
 
 export function renderReferenceText(value = '') {
     return value.replace(/https?:\/\/[^\s<]+|10\.\d{4,9}\/[-._;()/:A-Z0-9]+/gi, (match) => {
@@ -13,7 +13,7 @@ export function renderReferenceDisclosure(value = '') {
     return `
         <details class="section-reference source-disclosure">
             <summary class="source-toggle">
-                <span class="source-toggle-show">Show sources</span>
+                <span class="source-toggle-show">${renderMaterialIcon('medical_information')}</span>
                 <span class="source-toggle-hide">Hide sources</span>
             </summary>
             <div class="source-box">${renderReferenceText(value)}</div>
