@@ -87,7 +87,7 @@ export function renderChart(chart) {
 
 export function renderAorticStatGraphic(element = {}) {
     const variant = element.variant || 'incidence';
-    const title = element.title || 'Aortic dissection statistic';
+    const title = element.title || '';
     const caption = element.caption || '';
 
     if (variant === 'clock') {
@@ -105,7 +105,7 @@ export function renderAorticStatGraphic(element = {}) {
         return `
             <div class="aortic-stat-card aortic-stat-clock">
                 <div class="aortic-stat-head">
-                    <strong>${title}</strong>
+                    ${title ? `<strong>${title}</strong>` : ''}
                     <span>48 h</span>
                 </div>
                 <svg viewBox="0 0 350 350" role="img" aria-label="48-hour clock diagram showing mortality pressure in untreated Type A dissection">
@@ -128,60 +128,41 @@ export function renderAorticStatGraphic(element = {}) {
     if (variant === 'split') {
         return `
             <div class="aortic-stat-card aortic-stat-split">
-                <div class="aortic-stat-head">
-                    <strong>${title}</strong>
-                    <span>Type A / Type B</span>
-                </div>
-                <svg viewBox="0 0 720 360" role="img" aria-label="Branching diagram for Type A and Type B aortic dissection">
-                    <path d="M60 180 C155 180 215 180 285 180" class="aortic-vessel aortic-vessel-main"></path>
-                    <path d="M285 180 C365 105 455 70 640 74" class="aortic-vessel aortic-vessel-a"></path>
-                    <path d="M285 180 C380 220 470 245 640 258" class="aortic-vessel aortic-vessel-b"></path>
-                    <circle cx="285" cy="180" r="10" class="aortic-tear-marker"></circle>
-                    <text x="445" y="44" text-anchor="middle" class="aortic-branch-title">Type A</text>
-                    <text x="445" y="288" text-anchor="middle" class="aortic-branch-title">Type B</text>
-                    <text x="445" y="105" text-anchor="middle" class="aortic-branch-percent">60-65%</text>
-                    <text x="445" y="246" text-anchor="middle" class="aortic-branch-percent">35-40%</text>
-                    <g transform="translate(380 126)">
-                        <rect width="180" height="14" class="aortic-mortality-track"></rect>
-                        <rect width="50" height="14" class="aortic-mortality-fill"></rect>
-                        <text x="0" y="36" class="aortic-mortality-label">22-28% 30-day mortality</text>
-                    </g>
-                    <g transform="translate(380 303)">
-                        <rect width="180" height="14" class="aortic-mortality-track"></rect>
-                        <rect width="25" height="14" class="aortic-mortality-fill"></rect>
-                        <text x="0" y="36" class="aortic-mortality-label">11-14% 30-day mortality</text>
-                    </g>
+                <svg viewBox="0 0 720 360" role="img" aria-label="Pie chart showing Type A aortic dissection at 60 to 65 percent and Type B at 35 to 40 percent">
+                    <path d="M360 180 L360 35 A145 145 0 1 1 257.47 282.53 Z" class="aortic-pie-slice aortic-pie-slice-a"></path>
+                    <path d="M360 180 L257.47 282.53 A145 145 0 0 1 360 35 Z" class="aortic-pie-slice aortic-pie-slice-b"></path>
+                    <text x="620" y="190" text-anchor="middle" class="aortic-branch-percent aortic-pie-label-a">60-65%</text>
+                    <text x="100" y="190" text-anchor="middle" class="aortic-branch-percent aortic-pie-label-b">35-40%</text>
                 </svg>
                 <div class="aortic-stat-legend">
-                    <span><i class="aortic-line legend-type-a"></i>Type A</span>
-                    <span><i class="aortic-line legend-type-b"></i>Type B</span>
-                    <span><i class="aortic-swatch legend-mortality"></i>early mortality</span>
+                    <span><i class="aortic-swatch legend-type-a"></i>Type A</span>
+                    <span><i class="aortic-swatch legend-type-b"></i>Type B</span>
                 </div>
                 ${caption ? `<p>${caption}</p>` : ''}
             </div>
         `;
     }
 
-    const dots = Array.from({ length: 200 }, (_, index) => {
-        const indexStyle = `style="--dot-index:${index}"`;
-        if (index < 5) return `<span class="aortic-dot aortic-case-routine" ${indexStyle} aria-label="Routine case"></span>`;
-        if (index < 12) return `<span class="aortic-dot aortic-case-hidden" ${indexStyle} aria-label="Possible hidden case"></span>`;
-        return `<span class="aortic-dot" ${indexStyle} aria-hidden="true"></span>`;
-    }).join('');
+    const diagnosedCases = [
+        [148, 62], [188, 62], [228, 62], [268, 62], [308, 62]
+    ].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="8" class="aortic-case-marker aortic-case-marker-routine" aria-hidden="true"></circle>`).join('');
+    const hiddenCases = [
+        [148, 102], [188, 102], [228, 102], [268, 102], [308, 102], [188, 142], [268, 142]
+    ].map(([x, y]) => `<rect x="${x - 8}" y="${y - 8}" width="16" height="16" class="aortic-case-marker aortic-case-marker-hidden" aria-hidden="true"></rect>`).join('');
 
     return `
-        <div class="aortic-stat-card aortic-stat-incidence">
-            <div class="aortic-stat-head">
-                <strong>${title}</strong>
-                <span>per 100,000/year</span>
+            <div class="aortic-stat-card aortic-stat-incidence">
+                <div class="aortic-stat-head">
+                ${title ? `<strong>${title}</strong>` : ''}
             </div>
-            <div class="aortic-dot-field" role="img" aria-label="Dot field with five routine cases and seven possible hidden cases among 100,000 people">
-                ${dots}
-            </div>
-            <div class="aortic-stat-legend">
-                <span><i class="aortic-legend-dot legend-routine"></i>5 routine cases</span>
-                <span><i class="aortic-legend-dot legend-hidden"></i>+7 possibly hidden</span>
-                <span><i class="aortic-legend-dot legend-background"></i>200 dots = 100,000 people</span>
+            <svg class="aortic-population-square" viewBox="0 0 456 300" role="img" aria-label="A large square representing 100.000 people, containing five diagnosed cases and seven possibly hidden cases">
+                <rect x="108" y="12" width="240" height="240" class="aortic-population-frame"></rect>
+                <g class="aortic-case-markers">${diagnosedCases}${hiddenCases}</g>
+                <text x="228" y="282" text-anchor="middle" class="aortic-population-label">100.000 people</text>
+            </svg>
+            <div class="aortic-case-key" aria-label="Five diagnosed cases and seven possibly hidden cases">
+                <span class="aortic-case-group"><i class="aortic-case-marker aortic-case-marker-routine"></i><b>5 diagnosed cases</b></span>
+                <span class="aortic-case-group"><i class="aortic-case-marker aortic-case-marker-hidden"></i><b>+7 possibly hidden</b></span>
             </div>
             ${caption ? `<p>${caption}</p>` : ''}
         </div>
@@ -190,15 +171,15 @@ export function renderAorticStatGraphic(element = {}) {
 
 export function renderAneurysmBurden(element = {}) {
     return `
-        <figure class="aneurysm-burden" aria-labelledby="aneurysm-burden-title aneurysm-burden-caption">
+        <figure class="aneurysm-burden" aria-label="Aortic aneurysm burden from 1990 to 2030">
             <div class="aneurysm-burden-heading">
-                <strong id="aneurysm-burden-title">${element.title || 'Global aneurysm burden'}</strong>
+                ${element.title ? `<strong id="aneurysm-burden-title">${element.title}</strong>` : ''}
                 <span>1990-2030</span>
             </div>
-            <svg viewBox="0 0 920 470" role="img" aria-label="Absolute deaths rise from 88,353 in 1990 to 153,927 in 2021 and a projected 174,611 in 2030. The age-standardized mortality rate falls from 2.54 to 1.86 and a projected 1.70 per 100,000 people.">
+            <svg viewBox="0 0 920 470" role="img" aria-label="Absolute deaths rise from 88.353 in 1990 to 153.927 in 2021 and a projected 174.611 in 2030. The age-standardized mortality rate falls from 2.54 to 1.86 and a projected 1.70 per 100,000 people.">
                 <g class="burden-panel burden-panel-deaths">
                     <text x="48" y="48" class="burden-panel-title">Absolute deaths</text>
-                    <text x="48" y="78" class="burden-panel-change">+74.2%</text>
+                    <text x="48" y="78" class="burden-panel-change">+74%</text>
                     <line x1="48" y1="360" x2="420" y2="360" class="burden-axis"></line>
                     <line x1="48" y1="140" x2="48" y2="360" class="burden-axis"></line>
                     <text x="234" y="428" text-anchor="middle" class="burden-axis-label">Year</text>
@@ -210,9 +191,9 @@ export function renderAneurysmBurden(element = {}) {
                     <circle cx="74" cy="305" r="7" class="burden-point"></circle>
                     <circle cx="318" cy="192" r="7" class="burden-point"></circle>
                     <circle cx="394" cy="154" r="7" class="burden-point burden-point-projection"></circle>
-                    <text x="74" y="282" text-anchor="middle" class="burden-value">88,353</text>
-                    <text x="318" y="169" text-anchor="middle" class="burden-value">153,927</text>
-                    <text x="394" y="131" text-anchor="middle" class="burden-value">174,611</text>
+                    <text x="74" y="282" text-anchor="middle" class="burden-value">88.353</text>
+                    <text x="318" y="169" text-anchor="middle" class="burden-value">153.927</text>
+                    <text x="394" y="131" text-anchor="middle" class="burden-value">174.611</text>
                     <text x="74" y="394" text-anchor="middle" class="burden-year">1990</text>
                     <text x="318" y="394" text-anchor="middle" class="burden-year">2021</text>
                     <text x="394" y="394" text-anchor="middle" class="burden-year">2030</text>
@@ -220,21 +201,21 @@ export function renderAneurysmBurden(element = {}) {
                 <line x1="460" y1="42" x2="460" y2="405" class="burden-divider"></line>
                 <g class="burden-panel burden-panel-rate">
                     <text x="500" y="48" class="burden-panel-title">Mortality rate per 100,000</text>
-                    <text x="500" y="78" class="burden-panel-change">-26.8%</text>
+                    <text x="500" y="78" class="burden-panel-change">-27%</text>
                     <line x1="500" y1="360" x2="872" y2="360" class="burden-axis"></line>
                     <line x1="500" y1="140" x2="500" y2="360" class="burden-axis"></line>
                     <text x="686" y="428" text-anchor="middle" class="burden-axis-label">Year</text>
                     <text x="482" y="250" text-anchor="middle" class="burden-axis-label burden-axis-label-y" transform="rotate(-90 482 250)">Rate per 100,000</text>
                     <line x1="500" y1="286" x2="872" y2="286" class="burden-grid"></line>
                     <line x1="500" y1="212" x2="872" y2="212" class="burden-grid"></line>
-                    <path d="M526 166 L770 286" class="burden-line burden-line-solid"></path>
-                    <path d="M770 286 L846 316" class="burden-line burden-line-projection"></path>
-                    <circle cx="526" cy="166" r="7" class="burden-point"></circle>
+                    <path d="M526 245 L770 286" class="burden-line burden-line-solid"></path>
+                    <path d="M770 286 L846 299" class="burden-line burden-line-projection"></path>
+                    <circle cx="526" cy="245" r="7" class="burden-point"></circle>
                     <circle cx="770" cy="286" r="7" class="burden-point"></circle>
-                    <circle cx="846" cy="316" r="7" class="burden-point burden-point-projection"></circle>
-                    <text x="526" y="143" text-anchor="middle" class="burden-value">2.54</text>
+                    <circle cx="846" cy="299" r="7" class="burden-point burden-point-projection"></circle>
+                    <text x="526" y="222" text-anchor="middle" class="burden-value">2.54</text>
                     <text x="770" y="263" text-anchor="middle" class="burden-value">1.86</text>
-                    <text x="846" y="293" text-anchor="middle" class="burden-value">1.70</text>
+                    <text x="846" y="276" text-anchor="middle" class="burden-value">1.70</text>
                     <text x="526" y="394" text-anchor="middle" class="burden-year">1990</text>
                     <text x="770" y="394" text-anchor="middle" class="burden-year">2021</text>
                     <text x="846" y="394" text-anchor="middle" class="burden-year">2030</text>

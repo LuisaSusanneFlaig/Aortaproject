@@ -35,7 +35,7 @@ export const aneurysmStory = {
                 },
                 {
                     type: 'text',
-                    text: 'His story begins before an emergency. A planned scan turns an invisible risk into a shape doctors can measure, compare, and follow. From there, the central question is simple: when is careful observation enough, and when should treatment be discussed before the vessel becomes unstable?'
+                    text: 'His story begins before an emergency. A planned scan turns an invisible risk into a shape doctors can measure, compare, and follow. From there, the central question is simple: when is careful observation enough, and when should treatment be discussed before the blood vessel becomes at risk of tearing?'
                 }
             ]
         },
@@ -47,11 +47,10 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Before Alex\'s scan becomes personal, the statistics set the wider scene. More people worldwide are dying with aortic aneurysm than in earlier decades, partly because populations are growing and aging. At the same time, the age-standardized death rate has fallen, which means the risk after adjusting for age has improved. The values for 2030 are projections, not measurements. Alex\'s story then narrows this global picture to one vessel, one body, and one set of decisions.'
+                    text: 'Before Alex\'s scan becomes personal, the statistics set the wider scene. More people worldwide are dying with aortic aneurysm than in earlier decades, partly because populations are growing and aging. At the same time, after adjusting for age, the risk of death is decreasing (standadized death rate). This shows that diagnostics and treatment methods are improving. The values for 2030 are estimates, not measurements.'
                 },
                 {
                     type: 'aneurysmBurden',
-                    title: 'More deaths, lower age-standardized rate'
                 },
                 {
                     type: 'reference',
@@ -73,7 +72,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Alex\'s aorta is not a textbook diagram. Its shape comes from CT imaging, where the vessel wall can be reconstructed as a three-dimensional surface. In Marfan syndrome, doctors follow that shape over time because a weakened wall can widen gradually. A single scan matters, but the trend matters even more: diameter, growth, and location are compared across follow-up visits.'
+                    text: 'Alex\'s aorta is shown here as a 3D model. The actual shape of his aorta is captured using CT imaging. The model you can see on the left is then extracted from that imaging.. In Marfan syndrome, doctors follow that shape over time because a weakened wall can widen gradually. A single scan matters, but the trend matters even more: diameter, growth, and location are compared across follow-up visits.'
                 },
                 {
                     type: 'reference',
@@ -89,11 +88,10 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'The difficult part of a thoracic aortic aneurysm is that it can stay quiet for a long time. Clinical sources describe most people as having no symptoms before an acute event; one review gives roughly 95% without warning signs and about 5% with symptoms beforehand. If the widened vessel presses on nearby structures, it may cause chest or back pain, hoarseness, trouble swallowing, or shortness of breath. Sudden severe pain, fainting, breathlessness, or neurological symptoms can signal dissection or rupture. For Alex, the important clue is imaging rather than pain.'
+                    text: 'The difficult part of a thoracic aortic aneurysm is that it can stay quiet for a long time. Clinical sources describe most people as having no symptoms before an sudden serious event; one review gives roughly 95% without warning signs and about 5% with symptoms beforehand. If the widened vessel presses on nearby parts of the body , it may cause chest or back pain, a change in the voice, trouble swallowing, or shortness of breath. Sudden severe pain, fainting, breathlessness, or neurological symptoms can signal a tear in the wall of the aorta or a burst blood vessel.'
                 },
                 {
                     type: 'symptomBars',
-                    title: 'Typical warning pattern',
                     subtitle: 'Thoracic aortic aneurysm',
                     items: [
                         {
@@ -106,8 +104,7 @@ export const aneurysmStory = {
                             label: 'Symptoms before acute event',
                             value: 5
                         }
-                    ],
-                    note: 'Alex has no documented symptoms; these percentages are general context, not a personal prediction.'
+                    ]
                 },
                 {
                     type: 'reference',
@@ -123,7 +120,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Alex does not enter the story through sudden pain. His diagnosis pathway begins with known inherited risk. In Marfan syndrome, the aorta is checked before symptoms appear because enlargement can be silent. Planned imaging measures the aortic diameter over time, then the care team compares it with earlier scans, growth rate, family history, valve findings, and body size.'
+                    text: 'Alex diagnosis pathway begins with known inherited risk. In Marfan syndrome, the aorta is checked before symptoms appear because enlargement can be silent. Planned imaging measures the aortic diameter over time, then the care team compares it with earlier scans, growth rate, family history, valve findings, and body size.'
                 },
                 {
                     type: 'diagnosticPath',
@@ -154,24 +151,24 @@ export const aneurysmStory = {
         },
         {
             id: 'diagnose-bildgebung',
-            title: 'CT Imaging',
+            title: 'CTA Imaging',
             className: 'evidence-section alex-imaging-section',
             scrollMode: 'comparison',
             elements: [
                 {
                     type: 'text',
-                    text: 'The CT images let doctors look at Alex\'s chest from more than one direction. CT, or computed tomography, creates cross-sectional X-ray images, and contrast dye makes the blood-filled aorta appear bright. In the axial view, the body is seen as a horizontal slice, with the aorta appearing as a round bright structure in front of the spine. In the coronal view, the body is seen from the front, so the heart, ascending aorta, arch, and head-and-arm branches can be followed together.'
+                    text: 'The CT angiography (CTA) images let doctors look at Alex\'s chest from more than one direction. CTA uses computed tomography and contrast dye to make the blood-filled aorta appear bright. In the axial view, the body is seen as a horizontal slice, with the aorta appearing as a round bright structure in front of the spine. In the coronal view, the body is seen from the front, so the heart, ascending aorta, arch, and head-and-arm branches can be followed together.'
                 },
                 {
                     type: 'imagingComparison',
                     items: [
                         {
-                            modality: 'Axial-CT',
+                            modality: 'Axial CTA',
                             src: 'assets/story_images/alex_ct_axial_0021.png',
                             alt: 'Axial CT slice through Alex\'s chest with contrast-enhanced aorta in cross-section'
                         },
                         {
-                            modality: 'Coronal CT',
+                            modality: 'Coronal CTA',
                             src: 'assets/story_images/alex_ct_coronal_0021.png',
                             alt: 'Coronal CT reconstruction of Alex\'s chest with heart, ascending aorta, and aortic arch'
                         }
@@ -185,18 +182,17 @@ export const aneurysmStory = {
         },
         {
             id: 'behandlung',
-            title: 'Observe or Intervene',
+            title: 'Current-risk decision spectrum',
             className: 'alex-treatment-infographic-section',
             scrollMode: 'sequence',
             elements: [
                 {
                     type: 'text',
-                    text: 'The treatment spectrum is not a timeline. It shows how the current level of risk can shift the decision from continued monitoring toward planned repair. If the aortic diameter and growth remain stable, doctors usually continue surveillance. Faster growth or added risk features can bring Alex to an aortic center earlier. If a treatment threshold is reached, elective replacement means planned surgery before an emergency occurs. Guidelines for Marfan-associated aortic root disease use diameter thresholds, often 5.0 cm or sometimes 4.5 cm with added risk factors, but Alex\'s dataset does not include a diameter series or documented treatment.'
+                    text: 'The treatment spectrum is not a timeline. It shows how the current level of risk can shift the decision from continued monitoring toward planned repair. If the aortic diameter and growth remain stable, doctors usually continue surveillance. Faster growth or added risk features can bring Alex to an aortic center earlier. If the point at which treatment is recommended is reached, aortic repair means planned surgery before an emergency occurs. Guidelines for Marfan-associated aortic root disease use diameter thresholds, often 5.0 cm or sometimes 4.5 cm with added risk factors.'
                 },
                 {
                     type: 'treatmentDecision',
                     variant: 'decisionMap',
-                    title: 'Current-risk decision spectrum',
                     axisStart: 'Lower urgency',
                     axisEnd: 'Higher urgency',
                     items: [
@@ -208,12 +204,12 @@ export const aneurysmStory = {
                         {
                             icon: 'radiology',
                             label: 'Faster growth or added risk',
-                            treatment: 'Earlier aortic center review'
+                            treatment: 'Appointment at an aortic center'
                         },
                         {
                             icon: 'medical_services',
-                            label: 'Treatment threshold reached',
-                            treatment: 'Elective replacement'
+                            label: 'Point at which treatment is recommended',
+                            treatment: 'Aortic repair'
                         }
                     ]
                 },
@@ -231,7 +227,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'In the enlarged aorta, shape and movement belong together. The streamlines trace how blood may travel through Alex\'s CT-based vessel geometry. Color and motion make changes in speed and direction easier to see, especially where the vessel widens or curves. This is not a real-time scan of blood inside Alex, but a model built from his anatomy.'
+                    text: 'In the aorta, shape and blood flow are tightly connected. The lines you can see on the left show how the blood flows in Alex’s aorta. Color and motion make changes in speed and direction easier to see, especially where the blood vessel widens or curves. This is not a real-time scan of blood inside Alex, but a model built from his anatomy.'
                 },
                 {
                     type: 'modelPlaceholder',
@@ -246,7 +242,7 @@ export const aneurysmStory = {
                 },
                 {
                     type: 'text',
-                    text: 'The important point is not only where the aorta is wide, but how the wider shape reorganizes movement. Blood can accelerate through curved regions and then spread or swirl inside the enlargement. Those patterns matter because the vessel wall is exposed to the flow with every heartbeat.'
+                    text: 'The important point is not only where the aorta is wide, but how the wider shape reorganizes flow. Blood accelerates in the arch and creates a string swirling flow in the enlargement, called a vortex or turbulent flow. This differs from the organized, straight flow in healthy aortas called laminar flow. Those patterns matter because the vessel wall is exposed to the flow with every heartbeat.'
                 },
                 {
                     type: 'reference',
@@ -315,10 +311,6 @@ export const aneurysmStory = {
                 {
                     type: 'closingStatement',
                     text: 'The story ends with observation, not certainty.'
-                },
-                {
-                    type: 'reference',
-                    text: 'Sources: ACC/AHA Guideline for the Diagnosis and Management of Aortic Disease (2022), sections on Marfan syndrome and surveillance imaging; VMR dataset 0021_H_AO_MFS, case 0129_0000.'
                 }
             ]
         }
