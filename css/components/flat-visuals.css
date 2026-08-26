@@ -3,9 +3,9 @@ body[data-story-version] {
     --color-text: #ffffff;
     --text-main: #ffffff;
     --text-dim: #ffffff;
-    --color-accent: #c83c48;
-    --accent-red: #c83c48;
-    --accent-blue: #c83c48;
+    --color-accent: #b62413;
+    --accent-red: #b62413;
+    --accent-blue: #b62413;
     color: #ffffff;
 }
 
@@ -13,9 +13,9 @@ body.light-mode[data-story-version] {
     --color-text: #1d1d1f;
     --text-main: #1d1d1f;
     --text-dim: #1d1d1f;
-    --color-accent: #a62535;
-    --accent-red: #a62535;
-    --accent-blue: #a62535;
+    --color-accent: #b62413;
+    --accent-red: #b62413;
+    --accent-blue: #b62413;
     color: #1d1d1f;
 }
 
@@ -160,6 +160,23 @@ body[data-story-version] :where(
     font-family: 'Roboto', Arial, sans-serif !important;
 }
 
+body[data-story-version] :where(
+    h1,
+    h2,
+    h3,
+    h4,
+    .chapter-opener-title,
+    .chapter-opener-eyebrow,
+    .decision-spectrum-heading,
+    .story-visual-fallback strong,
+    .aneurysm-burden-heading,
+    .aneurysm-growth-heading,
+    .aneurysm-sex-heading,
+    .aneurysm-drivers-heading
+) {
+    font-family: 'Hanken Grotesk', Arial, sans-serif !important;
+}
+
 body[data-story-version] .source-disclosure {
     display: block !important;
     width: fit-content !important;
@@ -198,6 +215,14 @@ body[data-story-version] .source-disclosure[open] .source-toggle-show {
 
 body[data-story-version] .source-disclosure[open] .source-toggle-hide {
     display: inline !important;
+}
+
+body[data-story-version] .source-toggle-show .story-material-icon {
+    color: var(--color-text) !important;
+}
+
+body.light-mode[data-story-version] .source-toggle-show .story-material-icon {
+    color: #000 !important;
 }
 
 body[data-story-version] .source-box {
@@ -438,6 +463,14 @@ body[data-story-version] :where(
     border-radius: 50% !important;
 }
 
+body[data-story-version="dissection"] :where(
+    .aortic-dot-field .aortic-case-hidden,
+    .aortic-stat-legend .legend-hidden
+) {
+    border-radius: 0 !important;
+    transform: none !important;
+}
+
 body[data-story-version] :where(
     .aortic-dot-field .aortic-case-routine,
     .aortic-dot-field .aortic-case-hidden
@@ -446,7 +479,357 @@ body[data-story-version] :where(
 }
 
 body[data-story-version] :where(.burden-line-projection) {
-    stroke-dasharray: none !important;
+    stroke-dasharray: 1 11 !important;
+}
+
+body[data-story-version="dissection"] .aortic-stat-split .aortic-stat-legend {
+    gap: 14px 24px !important;
+    font-size: 1.05rem !important;
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-stat-split svg {
+    width: min(100%, 500px) !important;
+}
+
+body[data-story-version="dissection"] .aortic-stat-split .aortic-stat-legend .aortic-swatch {
+    width: 18px !important;
+    height: 18px !important;
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-case-key {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    align-items: center;
+    margin: 12px auto 4px;
+    font-size: 0.95rem;
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-case-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-case-group b {
+    margin-left: 6px;
+    font-weight: 500;
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-case-marker {
+    display: block;
+    width: 9px;
+    height: 9px;
+    background: var(--color-accent);
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-case-marker-routine {
+    border-radius: 50%;
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-case-marker-hidden {
+    border-radius: 0;
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-population-square {
+    display: block;
+    width: min(100%, 420px);
+    height: auto;
+    margin: 14px auto 8px;
+    overflow: visible;
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-population-frame {
+    fill: var(--color-text);
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-population-square .aortic-case-marker {
+    fill: var(--color-accent);
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-population-label {
+    fill: var(--color-text);
+    font-size: 17px;
+    font-weight: 600;
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-scale-zoom {
+    display: block;
+    width: min(100%, 650px);
+    height: auto;
+    margin: 14px auto 10px;
+    overflow: visible;
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-scale-cell {
+    fill: transparent;
+    stroke: color-mix(in srgb, var(--color-text) 72%, transparent);
+    stroke-width: 1.2;
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-scale-cell-detail {
+    stroke-width: 1;
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-scale-connector {
+    fill: none;
+    stroke: color-mix(in srgb, var(--color-text) 58%, transparent);
+    stroke-width: 3;
+    stroke-dasharray: 8 8;
+    stroke-linecap: round;
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-scale-lens {
+    fill: var(--color-bg);
+    stroke: color-mix(in srgb, var(--color-text) 72%, transparent);
+    stroke-width: 8;
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-scale-handle {
+    fill: none;
+    stroke: color-mix(in srgb, var(--color-text) 72%, transparent);
+    stroke-width: 24;
+    stroke-linecap: round;
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-scale-label {
+    fill: var(--color-text);
+    font-size: 15px;
+    font-weight: 500;
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-case-key span,
+body[data-story-version="dissection"] .statistics-overview .aortic-stat-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-dot-field {
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+}
+
+body[data-story-version="dissection"] .statistics-overview .aortic-dot-field .aortic-dot {
+    width: 18px !important;
+    height: 18px !important;
+    justify-self: center;
+}
+
+body:not(.light-mode)[data-story-version="dissection"] .step :where(
+    p,
+    small,
+    span,
+    li,
+    figcaption,
+    label
+) {
+    color: var(--color-text) !important;
+}
+
+body:not(.light-mode)[data-story-version="dissection"] .step .imaging-modality,
+body:not(.light-mode)[data-story-version="dissection"] .step .diagnosis-label,
+body:not(.light-mode)[data-story-version="dissection"] .step .aortic-branch-percent {
+    color: var(--color-accent) !important;
+}
+
+body:not(.light-mode)[data-story-version="aneurysm"] .step :where(
+    p,
+    small,
+    span,
+    li,
+    figcaption,
+    label
+) {
+    color: var(--color-text) !important;
+}
+
+body:not(.light-mode)[data-story-version="aneurysm"] .step .imaging-modality,
+body:not(.light-mode)[data-story-version="aneurysm"] .step .diagnosis-label,
+body:not(.light-mode)[data-story-version="aneurysm"] .step .aortic-branch-percent {
+    color: var(--color-accent) !important;
+}
+
+body:not(.light-mode)[data-story-version="aneurysm"] .alex-prevention-infographic-section .prevention-copy strong .story-inline-icon {
+    color: var(--color-accent) !important;
+}
+
+body:not(.light-mode)[data-story-version] .step .story-inline-icon {
+    color: var(--color-accent) !important;
+}
+
+body[data-story-version] .step :where(
+    h1,
+    h2,
+    h3,
+    h4,
+    p,
+    span,
+    small,
+    strong,
+    em,
+    li,
+    label,
+    figcaption,
+    svg text
+) {
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+}
+
+body[data-story-version] :where(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .decision-map-finding {
+    display: flex !important;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+body[data-story-version] :where(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) :where(.decision-map-label, .decision-map-finding strong) {
+    margin: 0 !important;
+    color: var(--color-text) !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    line-height: 1.35 !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+}
+
+body[data-story-version] :where(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .decision-map-arrow {
+    color: var(--color-accent) !important;
+    font-size: 1.35rem !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+}
+
+body.light-mode[data-story-version] .step :where(
+    p,
+    small,
+    span,
+    li,
+    figcaption,
+    label
+) {
+    color: #000 !important;
+}
+
+body.light-mode[data-story-version] .step :where(
+    .story-inline-icon,
+    .imaging-modality,
+    .diagnosis-label,
+    .aortic-branch-percent
+) {
+    color: var(--color-accent) !important;
+}
+
+body[data-story-version] :where(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .decision-map-finding :where(.decision-map-label, strong) {
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    line-height: 1.35 !important;
+}
+
+/* Track the current story chapter in the fixed navigation. */
+body[data-story-version] .nav-links li a.active,
+body[data-story-version] .nav-menu-mobile li a.active {
+    border-bottom: 3px solid var(--color-accent) !important;
+    border-radius: 0 !important;
+}
+
+body[data-story-version] .nav-links li a.active::after,
+body[data-story-version] .nav-menu-mobile li a.active::after {
+    content: none !important;
+    display: none !important;
+}
+
+body[data-story-version="aneurysm"] .alex-treatment-infographic-section .decision-map-finding .decision-map-label,
+body[data-story-version="aneurysm"] .alex-treatment-infographic-section .decision-map-finding strong,
+body[data-story-version="dissection"] .miriam-treatment-infographic-section .decision-map-finding .decision-map-label,
+body[data-story-version="dissection"] .miriam-treatment-infographic-section .decision-map-finding strong {
+    margin: 0 !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    line-height: 1.35 !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+}
+
+body[data-story-version="aneurysm"] .alex-treatment-infographic-section .decision-map-finding strong,
+body[data-story-version="dissection"] .miriam-treatment-infographic-section .decision-map-finding strong {
+    font-weight: 800 !important;
+}
+
+body[data-story-version="dissection"] .statistics-overview .text-box {
+    grid-template-columns: minmax(0, 1fr) !important;
+}
+
+body[data-story-version="dissection"] .statistics-overview .element-aorticStat {
+    grid-column: 1 / -1 !important;
+}
+
+body[data-story-version="dissection"] .aortic-stat-split .aortic-branch-percent {
+    font-size: 50px !important;
+}
+
+body[data-story-version="dissection"] .aortic-stat-split .aortic-pie-slice-a {
+    fill: #ffffff !important;
+}
+
+body[data-story-version="dissection"] .aortic-stat-split .aortic-pie-slice-b {
+    fill: var(--color-accent) !important;
+}
+
+body[data-story-version="dissection"] .aortic-stat-split .legend-type-a {
+    background: #ffffff !important;
+}
+
+body[data-story-version="dissection"] .aortic-stat-split .legend-type-b {
+    background: var(--color-accent) !important;
+}
+
+body.light-mode[data-story-version="dissection"] .aortic-stat-split .aortic-pie-slice-a,
+body.light-mode[data-story-version="dissection"] .aortic-stat-split .legend-type-a {
+    fill: #111111 !important;
+    background: #111111 !important;
+}
+
+body[data-story-version="dissection"] .aortic-stat-split .aortic-pie-label-a {
+    fill: #ffffff !important;
+}
+
+body[data-story-version="dissection"] .aortic-stat-split .aortic-pie-label-b {
+    fill: var(--color-accent) !important;
+}
+
+body.light-mode[data-story-version="dissection"] .aortic-stat-split .aortic-pie-label-a {
+    fill: #111111 !important;
+}
+
+body[data-story-version="dissection"] .aortic-stat-legend .legend-routine {
+    border-radius: 50% !important;
+}
+
+body[data-story-version="aneurysm"] .aneurysm-burden .burden-axis-label-y {
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: rotate(-90deg) !important;
+}
+
+body[data-story-version="aneurysm"] .aneurysm-burden-legend .burden-legend-projection {
+    background: radial-gradient(circle, var(--color-accent) 0 1.5px, transparent 1.6px) 0 50% / 8px 3px repeat-x !important;
+}
+
+body[data-story-version="aneurysm"] .aneurysm-burden .burden-panel-rate .burden-line-projection {
+    stroke-dasharray: 2 8 !important;
 }
 
 body[data-story-version] :where(
@@ -1146,6 +1529,40 @@ body.light-mode[data-story-version] :where(
     }
 }
 
+/* Keep the CTA comparison frames equal and rectangular across both stories. */
+body[data-story-version] .imaging-comparison {
+    width: 100% !important;
+}
+
+body[data-story-version] .imaging-comparison .imaging-panel {
+    width: 100% !important;
+    grid-area: auto !important;
+}
+
+body[data-story-version] .imaging-comparison .imaging-panel-media {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 4 / 3 !important;
+}
+
+body[data-story-version] .imaging-comparison .imaging-panel:last-child img {
+    object-fit: contain !important;
+    object-position: center !important;
+}
+
+body[data-story-version] .imaging-comparison .imaging-modality,
+body[data-story-version="dissection"] .evidence-section .imaging-modality {
+    color: var(--color-accent) !important;
+    border-color: color-mix(in srgb, var(--color-accent) 52%, transparent) !important;
+}
+
+@media (min-width: 821px) {
+    body[data-story-version] .imaging-comparison {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+
 /* Soft edge fade for scroll handoff without changing section pacing. */
 @media (min-width: 760px) {
     body[data-story-version] .chapter-opener {
@@ -1166,4 +1583,13 @@ body.light-mode[data-story-version] :where(
         -webkit-mask-size: 100% 100%;
         mask-size: 100% 100%;
     }
+}
+
+body[data-story-version] :where(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .decision-map-finding :where(.decision-map-label, strong) {
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    line-height: 1.35 !important;
 }

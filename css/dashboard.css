@@ -1,5 +1,44 @@
 .dashboard-page { background: var(--color-bg); color: var(--color-text); }
 .dashboard-page main { overflow: hidden; }
+body.light-mode.dashboard-page :where(
+    p,
+    small,
+    span,
+    li,
+    figcaption,
+    label,
+    .overview-footer,
+    .overview-footer a,
+    .story-entry-copy > p:not(.diagnosis-label),
+    .state-button
+) {
+    color: #000 !important;
+}
+body.light-mode.dashboard-page :where(.diagnosis-label, .topic-links a:hover) {
+    color: var(--color-accent) !important;
+}
+body.light-mode.dashboard-page :where(
+    .overview-copy p,
+    .section-heading p,
+    .story-entry-copy > p:not(.diagnosis-label),
+    .state-description p,
+    .anatomy-popover p,
+    .state-button,
+    .overview-footer
+) {
+    color: #000;
+}
+body:not(.light-mode).dashboard-page :where(
+    .overview-copy p,
+    .section-heading p,
+    .story-entry-copy > p:not(.diagnosis-label),
+    .state-description p,
+    .anatomy-popover p,
+    .state-button,
+    .overview-footer
+) {
+    color: var(--color-text);
+}
 .dashboard-page .navbar,
 .dashboard-page .navbar.scrolled,
 body.light-mode.dashboard-page .navbar {
@@ -12,6 +51,17 @@ body.light-mode.dashboard-page .navbar.scrolled {
 }
 .dashboard-page .nav-links li a.active::after {
     display: none;
+}
+.dashboard-page .nav-logo span {
+    color: var(--color-accent) !important;
+}
+.dashboard-page .nav-links li a,
+.dashboard-page .nav-menu-mobile a {
+    color: var(--color-text) !important;
+}
+body.light-mode.dashboard-page .nav-links li a,
+body.light-mode.dashboard-page .nav-menu-mobile a {
+    color: #000 !important;
 }
 .dashboard-page .nav-links li a:hover {
     background: transparent;
@@ -41,6 +91,8 @@ body.light-mode.dashboard-page .navbar.scrolled {
 .anatomy-source-disclosure .source-toggle-hide,
 .anatomy-source-disclosure[open] .source-toggle-show { display: none; }
 .anatomy-source-disclosure[open] .source-toggle-hide { display: inline; }
+.anatomy-source-disclosure .source-toggle-show .story-material-icon { color: var(--color-text); }
+body.light-mode .anatomy-source-disclosure .source-toggle-show .story-material-icon { color: #000; }
 .anatomy-source-disclosure .source-box { display: block; width: min(100%, 760px); margin-top: 12px; padding: clamp(14px, 1.8vw, 20px); border: 1px solid var(--color-text); color: var(--color-text); font-size: clamp(0.82rem, 1vw, 0.95rem); line-height: 1.55; text-align: left; }
 .anatomy-source-disclosure .source-box a { color: var(--color-text); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
 .anatomy-popover { position: absolute; right: 0; top: var(--popover-y, 34%); width: min(300px, 36%); padding: 24px 48px 24px 24px; border: 0; border-radius: 6px; background: var(--color-bg); backdrop-filter: none; box-shadow: none; transform: translateY(-50%); z-index: 4; }
@@ -75,10 +127,10 @@ body.light-mode.dashboard-page .navbar.scrolled {
 .section-heading { max-width: 720px; margin-bottom: clamp(44px, 7vw, 80px); }
 .section-heading h2 { margin: 0; font-size: clamp(2rem, 5vw, 4rem); font-weight: 500; }
 .section-heading p { margin: 16px 0 0; font-size: 1.05rem; }
-.story-entry { display: grid; grid-template-columns: minmax(240px, .72fr) minmax(0, 1.28fr); align-items: center; gap: clamp(36px, 8vw, 104px); padding: clamp(36px, 6vw, 72px) 0; border-top: 0; }
+.story-entry { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: center; gap: clamp(36px, 8vw, 104px); padding: clamp(36px, 6vw, 72px) 0; border-top: 0; }
 .story-entry-reverse img { grid-column: 2; }
 .story-entry-reverse .story-entry-copy { grid-column: 1; grid-row: 1; }
-.story-entry img { width: min(330px, 100%); aspect-ratio: 4 / 5; object-fit: cover; object-position: center 30%; border-radius: 6px; }
+.story-entry img { width: 100%; max-width: none; aspect-ratio: 4 / 5; object-fit: cover; object-position: center 30%; border-radius: 6px; }
 .story-entry-copy h3 { margin: 0; font-size: clamp(2.2rem, 5vw, 4.5rem); font-weight: 500; }
 .diagnosis-label { margin: 8px 0 28px; color: var(--color-accent); font-weight: 500; }
 .story-entry-copy > p:not(.diagnosis-label) { max-width: 58ch; margin: 0 0 28px; font-size: 1.05rem; }
