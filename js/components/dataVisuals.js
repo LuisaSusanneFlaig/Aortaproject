@@ -1,13 +1,5 @@
 import { clampPercent } from './renderUtils.js';
 
-const statCategoryMap = {
-    A: 'Anatomy', R: 'Patient reference', '!': 'Note', '3D': 'Model', X: 'Context',
-    DNA: 'Risk factor', BP: 'Blood pressure', S: 'Symptom', CT: 'Imaging', US: 'Ultrasound',
-    M: 'Imaging', F: 'Hemodynamics', I: 'Mechanism', Rx: 'Therapy', OP: 'Surgery',
-    EV: 'Therapy', '%': 'Outcome', N: 'Context', H: 'Heart', '*': 'Context', Lab: 'Lab'
-};
-
-
 export function renderChart(chart) {
     if (!chart) return '';
     const type = chart.chartType || chart.type;
@@ -144,10 +136,10 @@ export function renderAorticStatGraphic(element = {}) {
     }
 
     const diagnosedCases = [
-        [148, 62], [188, 62], [228, 62], [268, 62], [308, 62]
+        [186, 79], [260, 72], [302, 112], [168, 139], [241, 165]
     ].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="8" class="aortic-case-marker aortic-case-marker-routine" aria-hidden="true"></circle>`).join('');
     const hiddenCases = [
-        [148, 102], [188, 102], [228, 102], [268, 102], [308, 102], [188, 142], [268, 142]
+        [211, 104], [280, 93], [328, 143], [197, 188], [264, 131], [150, 107], [290, 176]
     ].map(([x, y]) => `<rect x="${x - 8}" y="${y - 8}" width="16" height="16" class="aortic-case-marker aortic-case-marker-hidden" aria-hidden="true"></rect>`).join('');
 
     return `
@@ -155,10 +147,10 @@ export function renderAorticStatGraphic(element = {}) {
                 <div class="aortic-stat-head">
                 ${title ? `<strong>${title}</strong>` : ''}
             </div>
-            <svg class="aortic-population-square" viewBox="0 0 456 300" role="img" aria-label="A large square representing 100.000 people, containing five diagnosed cases and seven possibly hidden cases">
-                <rect x="108" y="12" width="240" height="240" class="aortic-population-frame"></rect>
+            <svg class="aortic-population-circle" viewBox="0 0 456 300" role="img" aria-label="A large circle representing 100.000 people, containing five diagnosed cases and seven possibly hidden cases">
+                <circle cx="228" cy="132" r="120" class="aortic-population-frame"></circle>
                 <g class="aortic-case-markers">${diagnosedCases}${hiddenCases}</g>
-                <text x="228" y="282" text-anchor="middle" class="aortic-population-label">100.000 people</text>
+                <text x="228" y="282" text-anchor="middle" class="aortic-population-label">100.000 people worldwide</text>
             </svg>
             <div class="aortic-case-key" aria-label="Five diagnosed cases and seven possibly hidden cases">
                 <span class="aortic-case-group"><i class="aortic-case-marker aortic-case-marker-routine"></i><b>5 diagnosed cases</b></span>
@@ -174,11 +166,11 @@ export function renderAneurysmBurden(element = {}) {
         <figure class="aneurysm-burden" aria-label="Aortic aneurysm burden from 1990 to 2030">
             <div class="aneurysm-burden-heading">
                 ${element.title ? `<strong id="aneurysm-burden-title">${element.title}</strong>` : ''}
-                <span>1990-2030</span>
+                <span>Worlwide 1990-2030</span>
             </div>
-            <svg viewBox="0 0 920 470" role="img" aria-label="Absolute deaths rise from 88.353 in 1990 to 153.927 in 2021 and a projected 174.611 in 2030. The age-standardized mortality rate falls from 2.54 to 1.86 and a projected 1.70 per 100,000 people.">
+            <svg viewBox="0 0 920 470" role="img" aria-label="Deaths rise from 88.353 in 1990 to 153.927 in 2021 and a projected 174.611 in 2030. The age-standardized mortality rate falls from 2.54 to 1.86 and a projected 1.70 per 100,000 people.">
                 <g class="burden-panel burden-panel-deaths">
-                    <text x="48" y="48" class="burden-panel-title">Absolute deaths</text>
+                    <text x="48" y="48" class="burden-panel-title">Deaths</text>
                     <text x="48" y="78" class="burden-panel-change">+74%</text>
                     <line x1="48" y1="360" x2="420" y2="360" class="burden-axis"></line>
                     <line x1="48" y1="140" x2="48" y2="360" class="burden-axis"></line>

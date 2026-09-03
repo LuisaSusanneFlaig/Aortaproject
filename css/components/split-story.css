@@ -20,8 +20,8 @@ body[data-story-version] .flow-research-section[data-scroll-mode="sticky"] {
     box-sizing: border-box;
     display: block;
     width: 100%;
-    min-height: max(100svh, 760px) !important;
-    height: auto !important;
+    min-height: max(100svh, 760px);
+    height: auto;
     margin: 0;
     padding: 0 clamp(22px, 4vw, 72px);
     overflow: visible;
@@ -34,19 +34,19 @@ body[data-story-version] .step[data-scroll-mode="sticky"] .story-split-shell,
 body[data-story-version] .step[data-scroll-mode="comparison"] .story-split-shell,
 body[data-story-version] .flow-research-section .story-split-shell {
     box-sizing: border-box;
-    display: block !important;
-    width: 100% !important;
-    max-width: none !important;
-    min-height: max(100svh, 760px) !important;
-    height: auto !important;
+    display: block;
+    width: 100%;
+    max-width: none;
+    min-height: max(100svh, 760px);
+    height: auto;
     margin: 0 auto;
-    padding: clamp(24px, 4vh, 48px) 0 !important;
+    padding: clamp(24px, 4vh, 48px) 0;
     overflow: visible;
-    background: transparent !important;
-    backdrop-filter: none !important;
-    box-shadow: none !important;
-    opacity: 1 !important;
-    transform: none !important;
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+    opacity: 1;
+    transform: none;
 }
 
 body[data-story-version] .story-visual-column {
@@ -81,11 +81,26 @@ body[data-story-version] .step.active .story-visual-column {
         transform 0.28s ease;
 }
 
-body[data-story-version].is-chapter-transition-active .step .story-visual-column {
+body[data-story-version].is-completion-active .story-visual-column {
     opacity: 0 !important;
     visibility: hidden !important;
     pointer-events: none !important;
-    transition: none !important;
+}
+
+/* Give both final consultation images the same breathing room before the
+   standalone completion CTA. */
+body[data-story-version] :is(
+    .alex-outlook-section,
+    .miriam-consultation-section
+) .text-box {
+    padding-bottom: clamp(32px, 5vh, 56px) !important;
+}
+
+body[data-story-version].is-chapter-transition-active .step .story-visual-column {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: none;
 }
 
 body[data-story-version] .story-visual-column-inner {
@@ -118,20 +133,26 @@ body[data-story-version] .chapter-opener {
 }
 
 body[data-story-version] .story-copy-column > h2 {
-    grid-column: auto !important;
+    grid-column: auto;
     margin: 0 0 1.5rem;
     order: initial;
 }
 
 body[data-story-version] .story-copy-column .element-wrapper {
-    position: relative !important;
+    position: relative;
     z-index: 1;
     width: 100%;
     min-width: 0;
     margin: 0 0 1rem;
-    grid-column: auto !important;
-    grid-row: auto !important;
+    grid-column: auto;
+    grid-row: auto;
     text-shadow: none;
+}
+
+/* The evidence section now uses one CTA image instead of a comparison pair. */
+body[data-story-version="dissection"] .evidence-section[data-scroll-mode="comparison"] .story-copy-column .element-wrapper {
+    grid-column: auto;
+    grid-row: auto;
 }
 
 body[data-story-version] .story-visual-column .element-wrapper,
@@ -139,22 +160,22 @@ body[data-story-version] .story-visual-column .inline-model-figure,
 body[data-story-version] .story-visual-column .element-modelPlaceholder,
 body[data-story-version] .story-visual-column .model-placeholder,
 body[data-story-version] .story-visual-column .model-placeholder-stage {
-    position: relative !important;
-    inset: auto !important;
-    top: auto !important;
+    position: relative;
+    inset: auto;
+    top: auto;
     box-sizing: border-box;
-    width: 100% !important;
-    max-width: 100% !important;
-    height: auto !important;
-    min-height: 0 !important;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 0;
     margin: 0;
-    grid-column: auto !important;
-    grid-row: auto !important;
+    grid-column: auto;
+    grid-row: auto;
 }
 
 body[data-story-version] .story-visual-column .inline-model-viewer,
 body[data-story-version] .story-visual-column .model-placeholder-stage {
-    height: min(70vh, 720px) !important;
+    height: min(70vh, 720px);
     aspect-ratio: 4 / 3;
 }
 
@@ -165,7 +186,7 @@ body[data-story-version] .story-visual-column .info-image img {
 }
 
 body[data-story-version] .story-visual-column .imaging-comparison {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 body[data-story-version] .story-visual-column .model-placeholder figcaption {
@@ -227,7 +248,7 @@ body[data-story-version] .story-visual-column .model-placeholder figcaption {
     body[data-story-version] .step[data-scroll-mode="comparison"],
     body[data-story-version] .flow-research-section,
     body[data-story-version] .flow-research-section[data-scroll-mode="sticky"] {
-        min-height: 0 !important;
+        min-height: 0;
         padding: 0 18px;
     }
 
@@ -237,11 +258,11 @@ body[data-story-version] .story-visual-column .model-placeholder figcaption {
     body[data-story-version] .step[data-scroll-mode="sticky"] .story-split-shell,
     body[data-story-version] .step[data-scroll-mode="comparison"] .story-split-shell,
     body[data-story-version] .flow-research-section .story-split-shell {
-        display: grid !important;
-        grid-template-columns: minmax(0, 1fr) !important;
-        gap: 24px !important;
-        min-height: 0 !important;
-        padding: 34px 0 56px !important;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 24px;
+        min-height: 0;
+        padding: 34px 0 56px;
     }
 
     body[data-story-version] .story-visual-column {
@@ -282,7 +303,7 @@ body[data-story-version] .story-visual-column .model-placeholder figcaption {
 
     body[data-story-version] .story-visual-column .inline-model-viewer,
     body[data-story-version] .story-visual-column .model-placeholder-stage {
-        height: min(72svh, 620px) !important;
+        height: min(72svh, 620px);
     }
 }
 
@@ -300,7 +321,7 @@ body[data-story-version] .story-visual-column .model-placeholder figcaption {
     }
 
     body[data-story-version] .story-visual-column .imaging-comparison {
-        grid-template-columns: minmax(0, 1fr) !important;
+        grid-template-columns: minmax(0, 1fr);
     }
 }
 
@@ -309,4 +330,35 @@ body[data-story-version] .story-visual-column .model-placeholder figcaption {
         transform: none;
         transition: none;
     }
+}
+
+body[data-story-version] .flow-variant-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 12px;
+}
+
+body[data-story-version] .flow-variant-button {
+    padding: 8px 14px;
+    border: 1px solid color-mix(in srgb, var(--color-accent) 58%, transparent);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--color-text);
+    font: inherit;
+    font-size: 0.82rem;
+    cursor: pointer;
+}
+
+body[data-story-version] .flow-variant-button:hover,
+body[data-story-version] .flow-variant-button:focus-visible,
+body[data-story-version] .flow-variant-button.active {
+    background: var(--color-accent);
+    color: #fff;
+}
+
+body[data-story-version] .flow-variant-button:disabled {
+    cursor: wait;
+    opacity: 0.62;
 }

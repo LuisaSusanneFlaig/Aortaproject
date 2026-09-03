@@ -1,0 +1,88 @@
+/* Reusable story information popup. */
+.story-info-popup {
+    margin: 1.25rem 0;
+    border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+    border-radius: 6px;
+    background: color-mix(in srgb, currentColor 5%, transparent);
+}
+
+.story-info-popup summary {
+    padding: .8rem 1rem;
+    color: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    list-style: none;
+}
+
+.story-info-popup summary::-webkit-details-marker {
+    display: none;
+}
+
+.story-info-popup summary::after {
+    content: '+';
+    float: right;
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 1;
+}
+
+.story-info-popup[open] summary::after {
+    content: '\2212';
+}
+
+.story-info-popup-content {
+    padding: 0 1rem 1rem;
+}
+
+.story-info-popup-content p {
+    margin: 0;
+    color: color-mix(in srgb, currentColor 74%, transparent);
+    font-size: .98rem;
+    line-height: 1.6;
+}
+
+.inline-info-term {
+    display: inline;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--color-accent);
+    font: inherit;
+    line-height: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow-wrap: normal;
+    vertical-align: baseline;
+    hyphens: none;
+}
+
+.inline-info-term:hover,
+.inline-info-term:focus-visible {
+    text-decoration: underline;
+}
+
+.inline-info-box {
+    box-sizing: border-box;
+    width: min(100%, 760px);
+    max-width: 100%;
+    margin: 12px 0 0;
+    padding: clamp(14px, 1.8vw, 20px);
+    border: 1px solid var(--color-text);
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: clamp(0.82rem, 1vw, 0.95rem);
+    line-height: 1.55;
+}
+
+.inline-info-box[hidden] {
+    display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .story-info-popup,
+    .inline-info-box {
+        scroll-behavior: auto;
+    }
+}

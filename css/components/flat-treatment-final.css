@@ -1,0 +1,11 @@
+﻿body[data-story-version] #story :is(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .decision-map-finding :is(.decision-map-label, strong) {
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.35;
+}
+
+
+

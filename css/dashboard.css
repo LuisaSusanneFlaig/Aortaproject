@@ -1,5 +1,5 @@
 .dashboard-page { background: var(--color-bg); color: var(--color-text); }
-.dashboard-page main { overflow: hidden; }
+.dashboard-page main { position: relative; overflow: visible; isolation: isolate; }
 body.light-mode.dashboard-page :where(
     p,
     small,
@@ -26,7 +26,7 @@ body.light-mode.dashboard-page :where(
     .state-button,
     .overview-footer
 ) {
-    color: #000;
+    color: #000 !important;
 }
 body:not(.light-mode).dashboard-page :where(
     .overview-copy p,
@@ -37,7 +37,7 @@ body:not(.light-mode).dashboard-page :where(
     .state-button,
     .overview-footer
 ) {
-    color: var(--color-text);
+    color: var(--color-text) !important;
 }
 .dashboard-page .navbar,
 .dashboard-page .navbar.scrolled,
@@ -57,11 +57,11 @@ body.light-mode.dashboard-page .navbar.scrolled {
 }
 .dashboard-page .nav-links li a,
 .dashboard-page .nav-menu-mobile a {
-    color: var(--color-text) !important;
+    color: var(--color-text);
 }
 body.light-mode.dashboard-page .nav-links li a,
 body.light-mode.dashboard-page .nav-menu-mobile a {
-    color: #000 !important;
+    color: #000;
 }
 .dashboard-page .nav-links li a:hover {
     background: transparent;
@@ -69,13 +69,27 @@ body.light-mode.dashboard-page .nav-menu-mobile a {
 .dashboard-page .theme-toggle {
     border: 0;
 }
-.overview-hero, .story-index, .topic-index { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
-.overview-hero { min-height: 100vh; padding: calc(var(--nav-height) + clamp(54px, 8vw, 104px)) 0 clamp(72px, 9vw, 112px); display: flex; flex-direction: column; align-items: center; }
-.overview-copy { text-align: center; max-width: 720px; }
-.overview-copy h1 { margin: 0; font-size: clamp(3rem, 7vw, 6rem); font-weight: 500; line-height: 1; }
+.dashboard-intro, .overview-hero, .story-index, .topic-index { position: relative; z-index: 1; width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+.dashboard-intro { min-height: min(1200px, 115vh); padding: calc(var(--nav-height) + clamp(96px, 12vw, 160px)) 0 clamp(180px, 20vw, 260px); display: block; overflow: visible; }
+.intro-heading, .intro-columns { position: relative; z-index: 1; }
+.intro-heading { padding: clamp(32px, 5vw, 72px) 0; text-align: center; }
+.header-line-pattern { position: absolute; inset: 0 auto auto 50%; z-index: -1; width: 100vw; height: 100%; overflow: visible; transform: translateX(-50%); pointer-events: none; }
+.header-line-art { display: block; opacity: .6; }
+.header-line-group { filter: url(#organic-path-noise); }
+.section-kicker { margin: 0 0 18px; color: var(--color-accent); font-size: 1rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+body:not(.light-mode).dashboard-page .section-kicker { color: #fff; }
+.intro-heading h1 { margin: 0; font-size: clamp(5rem, 16vw, 14rem); font-weight: 500; line-height: .92; }
+.intro-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(24px, 4vw, 56px); max-width: 920px; margin: clamp(42px, 6vw, 68px) auto 0; }
+.intro-columns p { margin: 0; color: color-mix(in srgb, var(--color-text) 72%, transparent); font-size: 1.05rem; line-height: 1.7; }
+.intro-columns a { color: var(--color-text); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.overview-hero { min-height: 100vh; padding: clamp(88px, 12vw, 156px) 0 clamp(72px, 9vw, 112px); display: flex; flex-direction: column; align-items: center; }
+.overview-copy { text-align: left; max-width: 760px; margin-right: auto; }
+.overview-copy h2 { margin: 0; font-size: clamp(2.25rem, 5vw, 4.25rem); font-weight: 500; line-height: 1; }
 .overview-copy p, .section-heading p, .story-entry-copy > p:not(.diagnosis-label), .state-description p { color: color-mix(in srgb, var(--color-text) 68%, transparent); line-height: 1.65; }
-.overview-copy p { margin: 22px 0 0; font-size: clamp(1rem, 2vw, 1.25rem); }
-.anatomy-explorer { position: relative; width: min(920px, 100%); margin-top: clamp(24px, 4vw, 42px); }
+.overview-copy p:not(.section-kicker) { margin: 22px 0 0; font-size: clamp(1rem, 2vw, 1.25rem); }
+.anatomy-layout { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.4fr); gap: clamp(28px, 5vw, 80px); align-items: center; width: 100%; margin-top: clamp(46px, 7vw, 84px); }
+.anatomy-copy { max-width: 42ch; }
+.anatomy-explorer { position: relative; width: 100%; }
 .anatomy-figure { position: relative; width: min(500px, 78vw); height: clamp(560px, 64vh, 820px); margin: 0 auto; overflow: hidden; }
 .anatomy-illustration { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: contain; clip-path: inset(0 0 100% 0); animation: anatomy-reveal 1.15s cubic-bezier(.22,.75,.2,1) .15s forwards; }
 .anatomy-hotspot { position: absolute; left: var(--x); top: var(--y); width: 30px; height: 30px; padding: 0; border: 2px solid var(--color-accent); border-radius: 50%; background: var(--color-bg); color: var(--color-accent); box-shadow: none; opacity: 0; transform: translate(-50%, -42%) scale(.72); animation: hotspot-enter .4s ease calc(.9s + var(--i) * .1s) forwards; cursor: pointer; z-index: 2; }
@@ -85,16 +99,6 @@ body.light-mode.dashboard-page .nav-menu-mobile a {
 .anatomy-hotspot:hover, .anatomy-hotspot:focus-visible, .anatomy-hotspot.active { color: #fff; }
 .anatomy-hotspot.active { background: var(--color-accent); outline: 4px solid color-mix(in srgb, var(--color-accent) 24%, transparent); outline-offset: 4px; animation: hotspot-enter .4s ease forwards, hotspot-pulse 2.1s ease-in-out .25s infinite; }
 .anatomy-hotspot.active::after { transform: translate(-50%, -50%) rotate(0); }
-.anatomy-source-disclosure { display: block; width: fit-content; max-width: min(100%, 760px); margin: 14px auto 0; padding: 0; font-size: clamp(0.82rem, 1vw, 0.95rem); line-height: 1.5; }
-.anatomy-source-disclosure .source-toggle { display: inline-flex; align-items: center; justify-content: center; min-height: 38px; padding: 8px 14px; cursor: pointer; color: var(--color-text); font-size: clamp(0.85rem, 1vw, 0.95rem); font-weight: 800; line-height: 1; list-style: none; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
-.anatomy-source-disclosure .source-toggle::-webkit-details-marker { display: none; }
-.anatomy-source-disclosure .source-toggle-hide,
-.anatomy-source-disclosure[open] .source-toggle-show { display: none; }
-.anatomy-source-disclosure[open] .source-toggle-hide { display: inline; }
-.anatomy-source-disclosure .source-toggle-show .story-material-icon { color: var(--color-text); }
-body.light-mode .anatomy-source-disclosure .source-toggle-show .story-material-icon { color: #000; }
-.anatomy-source-disclosure .source-box { display: block; width: min(100%, 760px); margin-top: 12px; padding: clamp(14px, 1.8vw, 20px); border: 1px solid var(--color-text); color: var(--color-text); font-size: clamp(0.82rem, 1vw, 0.95rem); line-height: 1.55; text-align: left; }
-.anatomy-source-disclosure .source-box a { color: var(--color-text); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
 .anatomy-popover { position: absolute; right: 0; top: var(--popover-y, 34%); width: min(300px, 36%); padding: 24px 48px 24px 24px; border: 0; border-radius: 6px; background: var(--color-bg); backdrop-filter: none; box-shadow: none; transform: translateY(-50%); z-index: 4; }
 .anatomy-popover.is-left { left: 0; right: auto; }
 .anatomy-popover::before { display: none; }
@@ -144,8 +148,14 @@ body.light-mode .anatomy-source-disclosure .source-toggle-show .story-material-i
 .overview-footer nav { display: flex; gap: 24px; }
 .dashboard-page .nav-toggle { padding: 8px; border: 0; background: transparent; color: var(--color-text); }
 @media (max-width: 760px) {
-  .overview-hero, .story-index, .topic-index { width: min(calc(100% - 32px), 1120px); }
+  .dashboard-intro, .overview-hero, .story-index, .topic-index { width: min(calc(100% - 32px), 1120px); }
+  .dashboard-intro { min-height: 0; padding-top: calc(var(--nav-height) + 42px); padding-bottom: 96px; }
+  .intro-heading { padding: 28px 0 42px; }
+  .intro-columns { grid-template-columns: 1fr; gap: 18px; }
   .overview-hero { align-items: stretch; } .overview-copy { text-align: left; }
+  .anatomy-layout { grid-template-columns: 1fr; gap: 12px; margin-top: 42px; }
+  .anatomy-context { padding-top: 0; }
+  .anatomy-context p { max-width: 54ch; }
   .anatomy-figure { width: min(100%, 480px); }
   .anatomy-hotspot { width: 32px; height: 32px; }
   .anatomy-popover { position: relative; top: auto; right: auto; width: 100%; margin-top: 16px; transform: none; }
@@ -164,21 +174,33 @@ body.light-mode .anatomy-source-disclosure .source-toggle-show .story-material-i
 }
 
 /* Larger content hierarchy for the overview page. */
-.overview-copy h1 { font-size: 6.5rem; }
-.overview-copy p { font-size: 1.35rem; }
+.intro-heading h1 { font-size: clamp(5rem, 16vw, 14rem); }
+.overview-copy h2, .section-heading h2 { font-size: clamp(2.4rem, 4.5vw, 3.8rem); }
+.overview-copy p { font-size: 1.1rem; }
 .anatomy-popover h2 { font-size: 1.4rem; }
 .anatomy-popover p { font-size: 1.05rem; }
 .state-description strong { font-size: 1.55rem; }
 .state-description p, .section-heading p, .story-entry-copy > p:not(.diagnosis-label) { font-size: 1.15rem; }
-.section-heading h2 { font-size: 4.4rem; }
-.story-entry-copy h3 { font-size: 4.8rem; }
+.story-entry-copy h3 { font-size: clamp(1.75rem, 3.5vw, 3rem); }
 .diagnosis-label { font-size: 1.1rem; }
 .topic-links a { font-size: 1.45rem; }
 
 @media (max-width: 760px) {
-  .overview-copy h1 { font-size: 3.75rem; }
+  .intro-heading h1 { font-size: clamp(4.5rem, 17vw, 5rem); }
+  .overview-copy h2, .section-heading h2 { font-size: 2.65rem; }
   .overview-copy p { font-size: 1.2rem; }
   .section-heading h2 { font-size: 2.65rem; }
   .story-entry-copy h3 { font-size: 2.9rem; }
   .topic-links a { font-size: 1.3rem; }
+}
+
+/* Keep dashboard body copy at one readable scale across sections. */
+.dashboard-page .intro-columns p,
+.dashboard-page .overview-copy p:not(.section-kicker),
+.dashboard-page .section-heading p,
+.dashboard-page .story-entry-copy > p:not(.diagnosis-label),
+.dashboard-page .state-description p,
+.dashboard-page .anatomy-popover p {
+    font-size: 1.05rem;
+    line-height: 1.65;
 }

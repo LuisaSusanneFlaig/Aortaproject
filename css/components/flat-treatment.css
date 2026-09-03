@@ -1,0 +1,150 @@
+﻿body[data-story-version] #story :is(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .treatment-decision-map {
+    gap: clamp(24px, 3vw, 36px);
+    padding: clamp(20px, 3vw, 34px);
+}
+
+body[data-story-version] #story :is(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .decision-spectrum-heading {
+    color: var(--color-text);
+    font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+    font-weight: 800;
+    line-height: 1.15;
+    text-align: center;
+}
+
+body[data-story-version] #story :is(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .decision-map-inputs {
+    gap: clamp(12px, 1.7vw, 20px);
+}
+
+body[data-story-version] #story :is(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .decision-map-inputs > span {
+    min-height: auto;
+    justify-content: center;
+    gap: 0;
+    padding: 0 8px;
+    font-size: clamp(0.88rem, 1.2vw, 1.05rem);
+    font-weight: 800;
+    line-height: 1.15;
+    text-align: center;
+}
+
+body[data-story-version] #story :is(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .decision-map-inputs .story-inline-icon {
+    font-size: clamp(1.9rem, 2.7vw, 2.45rem);
+}
+
+body[data-story-version] #story :is(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .axis-label {
+    font-size: clamp(0.92rem, 1.25vw, 1.08rem);
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+body[data-story-version] #story :is(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .decision-map-axis {
+    gap: clamp(16px, 2vw, 28px);
+}
+
+body[data-story-version] #story :is(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .axis-line {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: clamp(8px, 0.9vw, 12px);
+    overflow: visible;
+    border-radius: 999px;
+    background-color: var(--color-accent) !important;
+}
+
+body[data-story-version] #story :is(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .axis-arrow {
+    position: absolute;
+    top: 50%;
+    right: -2px;
+    width: 0;
+    height: 0;
+    border-top: clamp(8px, 0.95vw, 12px) solid transparent;
+    border-bottom: clamp(8px, 0.95vw, 12px) solid transparent;
+    border-left: clamp(14px, 1.5vw, 20px) solid var(--color-accent);
+    transform: translate(70%, -50%);
+}
+
+body[data-story-version] #story :is(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .decision-map-zone {
+    gap: clamp(14px, 2vw, 22px);
+    min-height: clamp(260px, 29vw, 340px);
+    padding: clamp(20px, 2.4vw, 30px);
+}
+
+body[data-story-version] #story :is(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .decision-map-marker {
+    width: clamp(74px, 7vw, 92px);
+    height: clamp(74px, 7vw, 92px);
+}
+
+body[data-story-version] #story :is(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .decision-map-marker .story-inline-icon {
+    font-size: clamp(3.8rem, 5.8vw, 4.9rem);
+}
+
+body[data-story-version] #story :is(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .decision-map-finding small {
+    font-size: clamp(0.85rem, 1.15vw, 1rem);
+    line-height: 1.25;
+}
+
+body[data-story-version] #story :is(
+    .alex-treatment-infographic-section,
+    .miriam-treatment-infographic-section
+) .decision-map-finding strong {
+    font-size: clamp(1.2rem, 1.75vw, 1.55rem);
+    font-weight: 800;
+    line-height: 1.16;
+    color: var(--color-accent);
+}
+
+@media (min-width: 901px) {
+    body[data-story-version="dissection"] #story .miriam-treatment-infographic-section .decision-map-zone:nth-child(2) {
+        position: relative;
+        left: 70%;
+    }
+}
+
+@media (max-width: 900px) {
+    body[data-story-version="dissection"] #story .miriam-treatment-infographic-section .decision-map-zone:nth-child(2) {
+        left: auto;
+    }
+}
+
+
+
+

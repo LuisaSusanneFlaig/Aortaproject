@@ -33,6 +33,9 @@ export class GsapSectionAnimator {
         }, ({ conditions }) => {
             const localAnimations = [];
 
+            this.addSymptomButtonShine(gsap, localAnimations);
+            this.addDiagnosticButtonShine(gsap, localAnimations);
+
             openers.forEach((opener) => {
                 const inner = opener.querySelector('.chapter-opener-inner');
                 const icon = opener.querySelector('.chapter-opener-icon');
@@ -116,6 +119,8 @@ export class GsapSectionAnimator {
             sections.forEach((section, index) => {
                 const content = section.querySelector('.text-box');
                 if (!content) return;
+
+                this.addInlineModelRotation(section, gsap, localAnimations);
 
                 if (content.classList.contains('story-split-shell')) {
                     const copy = content.querySelector('.story-copy-column');
@@ -289,12 +294,124 @@ export class GsapSectionAnimator {
                 sections.forEach((section) => {
                     section.classList.remove('is-gsap-active');
                     delete section.dataset.gsapProgress;
+                    const modelContainer = section.querySelector('[data-inline-model]');
+                    if (modelContainer) delete modelContainer.dataset.scrollRotationBound;
                 });
                 openers.forEach((opener) => opener.classList.remove('is-chapter-active'));
             };
         });
 
         requestAnimationFrame(() => ScrollTrigger.refresh());
+    }
+
+    addSymptomButtonShine(gsap, localAnimations) {
+        const buttons = this.root.querySelectorAll('.symptom-info-trigger');
+        buttons.forEach((button, index) => {
+            const shineElement = button.querySelector('.symptom-button-shine');
+            if (!shineElement) return;
+
+            const shine = gsap.timeline({
+                delay: 0.8 + index * 0.12
+            });
+            shine.set(shineElement, { xPercent: -160, autoAlpha: 0 });
+            shine.to(shineElement, {
+                xPercent: 160,
+                autoAlpha: 0.35,
+                duration: 1.4,
+                ease: 'power2.inOut'
+            });
+            shine.to(shineElement, {
+                autoAlpha: 0,
+                duration: 0.3,
+                ease: 'power1.out'
+            });
+
+            localAnimations.push(shine);
+            this.animations.push(shine);
+        });
+    }
+
+    addDiagnosticButtonShine(gsap, localAnimations) {
+        const targets = this.root.querySelectorAll(
+            '.alex-diagnosis-infographic-section .diagnostic-shine-target'
+        );
+        targets.forEach((target, index) => {
+            const shineElement = target.querySelector('.diagnostic-button-shine');
+            if (!shineElement) return;
+
+            const shine = gsap.timeline({
+                delay: 1.05 + index * 0.45,
+                repeat: -1,
+                repeatDelay: 1.4
+            });
+            shine.set(shineElement, { xPercent: -160, autoAlpha: 0 });
+            shine.to(shineElement, {
+                xPercent: 160,
+                autoAlpha: 0.75,
+                duration: 1.4,
+                ease: 'power2.inOut'
+            });
+            shine.to(shineElement, {
+                autoAlpha: 0,
+                duration: 0.3,
+                ease: 'power1.out'
+            });
+
+            localAnimations.push(shine);
+            this.animations.push(shine);
+        });
+    }
+
+    addInlineModelRotation(section, gsap, localAnimations) {
+        if (!section.classList.contains('alex-aorta-model-section')
+            && !section.classList.contains('alex-flow-section')
+            && !section.classList.contains('miriam-aorta-model-section')
+            && !section.classList.contains('miriam-flow-section')) return;
+        const modelContainer = section.querySelector('[data-inline-model]');
+        if (!modelContainer || modelContainer.dataset.scrollRotationBound === 'true') return;
+
+        const setupRotation = () => {
+            const viewer = modelContainer.inlineModelViewer;
+            if (!viewer?.model || modelContainer.dataset.scrollRotationBound === 'true') return;
+
+            modelContainer.dataset.scrollRotationBound = 'true';
+            // Rotate a centered parent around the world Y axis so the model's
+            // fitted X/Z orientation and position remain unchanged. Resolve
+            // the target on every update because flow buttons replace the
+            // model and create a new rotation pivot.
+            const getRotationTarget = () => viewer.rotationPivot || viewer.model;
+            const baseRotation = getRotationTarget().rotation.y;
+            const rotationState = { value: 0 };
+            const rotationDirection = section.classList.contains('miriam-aorta-model-section')
+                || section.classList.contains('miriam-flow-section') ? -1 : 1;
+            const rotationTween = gsap.to(rotationState, {
+                value: Math.PI * 2 * rotationDirection,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top 80%',
+                    end: 'bottom 20%',
+                    scrub: true,
+                    onUpdate: () => {
+                        const rotationTarget = getRotationTarget();
+                        if (rotationTarget) rotationTarget.rotation.y = baseRotation + rotationState.value;
+                    }
+                },
+                onUpdate: () => {
+                    const rotationTarget = getRotationTarget();
+                    if (rotationTarget) rotationTarget.rotation.y = baseRotation + rotationState.value;
+                }
+            });
+
+            localAnimations.push(rotationTween);
+            this.animations.push(rotationTween);
+        };
+
+        if (modelContainer.inlineModelViewer?.model) {
+            setupRotation();
+        } else {
+            modelContainer.addEventListener('inline-model-ready', setupRotation, { once: true });
+        }
     }
 
     destroy() {

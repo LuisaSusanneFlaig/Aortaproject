@@ -1,0 +1,25 @@
+﻿/* Soft edge fade for scroll handoff without changing section pacing. */
+@media (min-width: 760px) {
+    body[data-story-version] #story .chapter-opener {
+        -webkit-mask-image: linear-gradient(
+            to bottom,
+            transparent 0,
+            #000 clamp(44px, 9vh, 104px),
+            #000 calc(100% - clamp(44px, 9vh, 104px)),
+            transparent 100%
+        );
+        mask-image: linear-gradient(
+            to bottom,
+            transparent 0,
+            #000 clamp(44px, 9vh, 104px),
+            #000 calc(100% - clamp(44px, 9vh, 104px)),
+            transparent 100%
+        );
+        -webkit-mask-size: 100% 100%;
+        mask-size: 100% 100%;
+    }
+}
+
+
+
+

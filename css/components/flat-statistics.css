@@ -1,0 +1,249 @@
+﻿body[data-story-version="dissection"] #story .statistics-overview .text-box {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+body[data-story-version="dissection"] #story .statistics-overview .element-aorticStat {
+    grid-column: 1 / -1;
+}
+
+body[data-story-version="dissection"] #story .aortic-stat-split .aortic-branch-percent {
+    font-size: 50px;
+}
+
+body[data-story-version="dissection"] #story .aortic-stat-split .aortic-pie-slice-a {
+    fill: #ffffff;
+}
+
+body[data-story-version="dissection"] #story .aortic-stat-split .aortic-pie-slice-b {
+    fill: var(--color-accent);
+}
+
+body[data-story-version="dissection"] #story .aortic-stat-split .legend-type-a {
+    background: #ffffff;
+}
+
+body[data-story-version="dissection"] #story .aortic-stat-split .legend-type-b {
+    background: var(--color-accent);
+}
+
+body.light-mode[data-story-version="dissection"] .aortic-stat-split .aortic-pie-slice-a,
+body.light-mode[data-story-version="dissection"] .aortic-stat-split .legend-type-a {
+    fill: #111111 !important;
+    background: #111111;
+}
+
+body[data-story-version="dissection"] #story .aortic-stat-split .aortic-pie-label-a {
+    fill: #ffffff;
+}
+
+body[data-story-version="dissection"] #story .aortic-stat-split .aortic-pie-label-b {
+    fill: var(--color-accent);
+}
+
+body.light-mode[data-story-version="dissection"] .aortic-stat-split .aortic-pie-label-a {
+    fill: #111111;
+}
+
+body[data-story-version="dissection"] #story .aortic-stat-legend .legend-routine {
+    border-radius: 50%;
+}
+
+body[data-story-version="dissection"] #story .aortic-stat-split .aortic-stat-legend {
+    justify-content: center;
+    width: 100%;
+}
+
+body[data-story-version="dissection"] #story .aortic-stat-split .legend-type-a {
+    background: #ffffff !important;
+}
+
+body[data-story-version="dissection"] #story .aortic-stat-split .legend-type-b {
+    background: var(--color-accent) !important;
+}
+
+body.light-mode[data-story-version="dissection"] #story .aortic-stat-split .legend-type-a {
+    background: #111111 !important;
+}
+
+body[data-story-version="aneurysm"] #story .aneurysm-burden .burden-axis-label-y {
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: rotate(-90deg);
+}
+
+body[data-story-version="aneurysm"] #story .aneurysm-burden-legend .burden-legend-projection {
+    background: radial-gradient(circle, var(--color-accent) 0 1.5px, transparent 1.6px) 0 50% / 8px 3px repeat-x;
+}
+
+body[data-story-version="aneurysm"] #story .aneurysm-burden-legend i.burden-legend-solid {
+    display: inline-block;
+    flex: 0 0 34px;
+    width: 34px;
+    height: 3px;
+    background: var(--color-accent);
+    background-image: none;
+    opacity: 1;
+}
+
+body[data-story-version="aneurysm"] #story .aneurysm-burden .burden-panel-rate .burden-line-projection {
+    stroke-dasharray: 2 8;
+}
+
+body[data-story-version="aneurysm"] #story .aneurysm-burden .burden-line-solid {
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+}
+
+body[data-story-version] #story :is(
+    .aortic-clock-slice,
+    .aortic-vessel-main,
+    .aortic-vessel-b,
+    .wall-layer-legend .intima,
+    .wall-layer-legend .media
+) {
+    opacity: 1;
+    fill-opacity: 1;
+}
+
+body[data-story-version] #story :is(
+    .drivers-line,
+    .drivers-point,
+    .drivers-legend-smoking,
+    .drivers-legend-pressure
+) {
+    stroke: var(--color-accent);
+    fill: transparent;
+}
+
+body[data-story-version] #story :is(
+    .drivers-legend-smoking,
+    .drivers-legend-pressure
+) {
+    background: var(--color-accent);
+}
+
+body[data-story-version] #story :is(
+    .drivers-value,
+    .drivers-label,
+    .drivers-year,
+    .drivers-axis-label,
+    .burden-axis-label,
+    .aortic-stat-head span,
+    .aortic-stat-legend,
+    .aneurysm-burden-heading span,
+    .aneurysm-burden-legend,
+    .aneurysm-drivers-heading span,
+    .aneurysm-drivers-legend,
+    .drivers-mobile-list,
+    .drivers-mobile-list *,
+    .diagnostic-path p .story-inline-icon,
+    .text-box p .story-inline-icon
+) {
+    color: var(--color-text);
+    fill: var(--color-text);
+}
+
+body[data-story-version] #story :is(
+    .diagnostic-path p .story-inline-icon,
+    .text-box p .story-inline-icon
+) {
+    color: var(--color-accent);
+}
+
+body[data-story-version] #story :is(
+    .drivers-axis-label,
+    .burden-axis-label
+) {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0;
+}
+
+body[data-story-version="aneurysm"] #story .aneurysm-risk-drivers svg {
+    margin-top: 0;
+}
+
+body[data-story-version="aneurysm"] #story .aneurysm-drivers-heading {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+body[data-story-version="dissection"] #story .statistics-overview .story-visual-column-inner {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(16px, 2vw, 26px);
+    align-items: stretch;
+    transform: none;
+    transform-origin: center;
+}
+
+body[data-story-version="dissection"] #story .statistics-overview .aortic-stat-card {
+    min-height: 0;
+    height: 100%;
+    padding-block: clamp(8px, 1vw, 14px);
+}
+
+body[data-story-version="dissection"] #story .statistics-overview .aortic-stat-card svg {
+    margin-bottom: 4px;
+}
+
+body[data-story-version="dissection"] #story .statistics-overview .element-aorticStat {
+    min-width: 0;
+    height: 100%;
+}
+
+body[data-story-version] #story :is(
+    .symptom-stat-card,
+    .diagnostic-path,
+    .treatment-decision-map,
+    .prevention-timeline,
+    .aortic-stat-card,
+    .aneurysm-burden,
+    .aneurysm-risk-drivers
+) {
+    width: 100%;
+}
+
+body[data-story-version] #story :is(
+    .diagnosis-card-head strong,
+    .aortic-stat-head strong,
+    .aneurysm-burden-heading strong,
+    .aneurysm-drivers-heading strong
+) {
+    font-size: clamp(1.15rem, 1.9vw, 1.55rem);
+    font-weight: 700;
+    line-height: 1.16;
+}
+
+body[data-story-version] #story :is(
+    .diagnosis-card-head span,
+    .aortic-stat-head span,
+    .aortic-stat-legend,
+    .aneurysm-burden-heading span,
+    .aneurysm-drivers-heading span,
+    .aneurysm-drivers-legend,
+    .aneurysm-burden-legend
+) {
+    font-size: clamp(0.9rem, 1.25vw, 1.05rem);
+    line-height: 1.3;
+}
+
+body[data-story-version="aneurysm"] #story .symptom-stat-card .diagnosis-card-head span {
+    color: var(--color-text);
+    font-family: 'Hanken Grotesk', Arial, sans-serif;
+    font-size: clamp(0.9rem, 1.25vw, 1.05rem);
+    line-height: 1.3;
+    text-align: left;
+}
+
+body[data-story-version="dissection"] #story .miriam-symptoms-section .diagnosis-card-head span {
+    color: var(--color-text);
+    font-family: 'Hanken Grotesk', Arial, sans-serif;
+    font-size: clamp(0.9rem, 1.25vw, 1.05rem);
+    line-height: 1.3;
+    text-align: left;
+}
+
+
+
+

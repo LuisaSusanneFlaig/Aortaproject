@@ -41,7 +41,7 @@ export const settings = {
     colorFast: "#ff4444",
     colorMode: 'Solid',
     aortaOpacity: 0.26,
-    aortaColor: "#ffffff",
+    aortaColor: "#b62413",
     wireframe: false,
     ambientIntensity: 1.0,
     directIntensity: 2.5,

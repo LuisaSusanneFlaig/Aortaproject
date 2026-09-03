@@ -1,11 +1,1 @@
-@layer tokens;
-@import url('tokens.css');
-@import url('base.css');
-@import url('navbar.css');
-@import url('scrollytelling.css');
-@import url('sections.css');
-@import url('icons.css');
-@import url('footer.css');
-@import url('components/chapter-opener.css');
-@import url('components/split-story.css');
-@import url('components/flat-visuals.css');
+@import url('global.css');

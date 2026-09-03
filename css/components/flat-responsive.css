@@ -1,0 +1,135 @@
+﻿@media (min-width: 760px) and (max-width: 1100px) {
+    body[data-story-version] #story :is(
+        .step,
+        .step:first-of-type,
+        .step.model-section,
+        .step[data-scroll-mode="sticky"],
+        .step[data-scroll-mode="comparison"],
+        .flow-research-section,
+        .flow-research-section[data-scroll-mode="sticky"]
+    ) {
+        min-height: max(100svh, 700px);
+        padding-inline: clamp(18px, 3vw, 34px);
+    }
+
+    body[data-story-version] #story :is(
+        .step .story-split-shell,
+        .step:first-of-type .story-split-shell,
+        .step.model-section .story-split-shell,
+        .step[data-scroll-mode="sticky"] .story-split-shell,
+        .step[data-scroll-mode="comparison"] .story-split-shell,
+        .flow-research-section .story-split-shell
+    ) {
+        display: block;
+        min-height: max(100svh, 700px);
+        padding-block: clamp(22px, 3vh, 34px);
+    }
+
+    body[data-story-version] #story .story-visual-column {
+        position: fixed;
+        z-index: 4;
+        top: var(--nav-height);
+        bottom: 0;
+        left: 0;
+        display: grid;
+        width: 52vw;
+        min-height: 0;
+        padding: clamp(20px, 3vw, 34px);
+        place-items: center;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: none;
+        transition: none;
+    }
+
+    body[data-story-version] #story .step.active .story-visual-column {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transition: opacity 0.18s ease;
+    }
+
+    body[data-story-version] #story .story-visual-column-inner {
+        max-height: 100%;
+        overflow: hidden;
+        align-content: center;
+        gap: clamp(10px, 1.7vh, 18px);
+    }
+
+    body[data-story-version] #story .flow-research-section .story-visual-column-inner {
+        overflow: visible;
+    }
+
+    body[data-story-version] #story .story-copy-column {
+        width: min(40ch, calc(48vw - clamp(42px, 7vw, 78px)));
+        min-height: max(100svh, 700px);
+        margin-left: 55vw;
+        padding-block: clamp(10vh, 15vh, 18vh);
+        justify-self: start;
+    }
+
+    body[data-story-version] #story .story-copy-column > h2 {
+        font-size: clamp(2rem, 4.2vw, 2.55rem);
+        line-height: 1.08;
+        margin-bottom: 1.1rem;
+    }
+
+    body[data-story-version] #story :is(.story-copy-column .info-text, .story-copy-column p) {
+        font-size: clamp(0.96rem, 1.75vw, 1.05rem);
+        line-height: 1.55;
+    }
+
+    body[data-story-version] #story .story-visual-column :is(
+        .inline-model-viewer,
+        .model-placeholder-stage
+    ) {
+        height: min(58vh, 560px);
+        aspect-ratio: 4 / 3;
+    }
+
+    body[data-story-version] #story .flow-research-section .story-visual-column :is(
+        .inline-model-viewer,
+        .model-placeholder-stage
+    ) {
+        width: 100%;
+        height: auto;
+        min-height: 0;
+        aspect-ratio: 4 / 3;
+    }
+
+    body[data-story-version] #story .story-visual-column .imaging-comparison {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    body[data-story-version] #story .story-visual-column .imaging-panel-media {
+        height: min(34vh, 300px);
+    }
+
+    body[data-story-version] #story .evidence-section .story-visual-column .imaging-comparison {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 8px;
+    }
+
+    body[data-story-version] #story .evidence-section .story-visual-column .imaging-panel,
+    body[data-story-version] #story .evidence-section .story-visual-column .imaging-panel-media {
+        width: 100%;
+        height: min(24vh, 220px);
+        min-height: 0;
+    }
+
+    body[data-story-version] #story .evidence-section .story-visual-column .imaging-panel,
+    body[data-story-version] #story .evidence-section .story-visual-column .imaging-panel-media,
+    body[data-story-version] #story .evidence-section .story-visual-column .imaging-panel img {
+        max-width: 100%;
+    }
+
+    body[data-story-version] #story .evidence-section .story-visual-column .imaging-modality {
+        display: none;
+    }
+}
+
+
+
+

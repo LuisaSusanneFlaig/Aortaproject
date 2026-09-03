@@ -2,6 +2,9 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
+// Keep 3D mesh materials aligned with the UI accent token (--color-accent).
+const MODEL_ACCENT = 0xb62413;
+
 class InlineModelViewer {
     constructor(container) {
         this.container = container;
@@ -9,7 +12,9 @@ class InlineModelViewer {
         this.hasStarted = false;
         this.lastFrameTime = 0;
         this.animationAccumulator = 0;
+        this.referenceModelDimension = null;
         this.animationFps = Math.max(1, Number(container.dataset.animationFps) || 30);
+        this.animationSpeed = Math.max(0, Number(container.dataset.animationSpeed) || 1);
         this.framingScale = Number(container.dataset.framingScale) || null;
         this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         this.startWhenNear();
@@ -23,12 +28,15 @@ class InlineModelViewer {
             return;
         }
 
+        // Load the model well before the section is visible so its first render
+        // does not arrive late while the user is already scrolling through it.
         this.visibilityObserver = new IntersectionObserver(([entry]) => {
             this.isVisible = entry.isIntersecting;
             if (entry.isIntersecting && !this.hasStarted) this.init();
             else if (entry.isIntersecting) this.startAnimationLoop();
-        }, { rootMargin: '320px' });
+        }, { rootMargin: '1200px 0px' });
         this.visibilityObserver.observe(this.visibilityTarget);
+        if (this.container.dataset.preload === 'true') this.init();
     }
 
     async init() {
@@ -58,6 +66,21 @@ class InlineModelViewer {
         this.controls.enablePan = false;
         this.controls.enableZoom = false;
 
+        const rotationHint = this.container.querySelector('.inline-model-360-hint');
+        if (rotationHint) {
+            let hintTimer;
+            this.controls.addEventListener('start', () => {
+                window.clearTimeout(hintTimer);
+                rotationHint.classList.add('is-hidden');
+            });
+            this.controls.addEventListener('end', () => {
+                window.clearTimeout(hintTimer);
+                hintTimer = window.setTimeout(() => {
+                    rotationHint.classList.remove('is-hidden');
+                }, 2000);
+            });
+        }
+
         this.scene.add(
             new THREE.HemisphereLight(0xd9f3ff, 0x240b10, 2.2),
             this.createDirectionalLight(0xffffff, 3.2, 4, 5, 7),
@@ -70,28 +93,100 @@ class InlineModelViewer {
         this.resize();
 
         try {
-            const gltf = await new GLTFLoader().loadAsync(modelUrl);
+            await this.loadModel(modelUrl);
+        } catch (error) {
+            this.container.classList.add('has-error');
+            console.error('[InlineModelViewer] Model could not be loaded', modelUrl, error);
+        }
+    }
+
+    async loadModel(modelUrl) {
+        const modelMode = this.container.dataset.modelMode || 'layers';
+        this.framingScale = Number(this.container.dataset.framingScale) || null;
+        this.animationFps = Math.max(1, Number(this.container.dataset.animationFps) || 30);
+        this.animationSpeed = Math.max(0, Number(this.container.dataset.animationSpeed) || 1);
+        const gltf = await new GLTFLoader().loadAsync(modelUrl);
             this.originalModel = gltf.scene;
             if (modelMode === 'flow') this.markTransparentSourceMeshes(this.originalModel);
             if (modelMode === 'surface') this.applySurfaceMaterial(this.originalModel);
             this.prepareMaterials(this.originalModel);
             if (modelMode === 'flow') this.applyTransparentFlowSurfaceMaterial(this.originalModel);
+            if (modelMode === 'flow') this.applyFlowAccentColor(this.originalModel);
             this.layeredModel = modelMode === 'layers'
                 ? this.createLayeredModel(this.originalModel)
                 : null;
             this.model = this.layeredModel || this.originalModel;
             this.scene.add(this.model);
             this.fitModel(this.model, modelMode);
+            if (modelMode === 'surface' || modelMode === 'flow') {
+                this.rotationPivot = new THREE.Group();
+                this.rotationPivot.name = 'ScrollRotationPivot';
+                this.scene.remove(this.model);
+                this.rotationPivot.add(this.model);
+                // Re-center the mesh inside the pivot so Y rotation happens
+                // around the visible model rather than its source-file origin.
+                this.model.updateMatrixWorld(true);
+                const pivotCenter = new THREE.Box3().setFromObject(this.model).getCenter(new THREE.Vector3());
+                this.model.position.sub(pivotCenter);
+                // Offsets are normalized to the model's reference dimension so
+                // the same values remain useful for both flow exports.
+                this.rotationPivot.position.set(
+                    (Number(this.container.dataset.offsetX) || 0) * this.referenceModelDimension,
+                    (Number(this.container.dataset.offsetY) || 0) * this.referenceModelDimension,
+                    0
+                );
+                this.scene.add(this.rotationPivot);
+            }
             this.instancedGroups = modelMode === 'flow'
                 ? this.collapseRepeatedMeshes(this.originalModel)
                 : [];
             this.setupAnimation(gltf.animations || []);
             this.container.classList.add('is-loaded');
+            this.container.dispatchEvent(new CustomEvent('inline-model-ready'));
             this.startAnimationLoop();
-        } catch (error) {
-            this.container.classList.add('has-error');
-            console.error('[InlineModelViewer] Model could not be loaded', modelUrl, error);
+    }
+
+    async switchModel(modelUrl, options = {}) {
+        if (!modelUrl || modelUrl === this.container.dataset.modelUrl) return;
+        this.container.dataset.modelUrl = modelUrl;
+        Object.entries(options).forEach(([key, value]) => {
+            const attribute = key.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
+            this.container.setAttribute(`data-${attribute}`, String(value));
+        });
+        if (options.framingScale !== undefined) this.framingScale = options.framingScale;
+        if (options.animationFps !== undefined) this.animationFps = Math.max(1, options.animationFps);
+        if (options.animationSpeed !== undefined) this.animationSpeed = Math.max(0, options.animationSpeed);
+        if (!this.hasStarted || !this.scene) return;
+
+        if (this.animationFrame) cancelAnimationFrame(this.animationFrame);
+        this.animationFrame = null;
+        this.mixer?.stopAllAction();
+
+        const modelRoot = this.rotationPivot || this.model;
+        if (modelRoot) this.scene.remove(modelRoot);
+        this.instancedGroups?.forEach(({ instancedMesh }) => this.scene.remove(instancedMesh));
+        this.disposeObject(this.originalModel);
+        this.instancedGroups = [];
+        this.originalModel = null;
+        this.layeredModel = null;
+        this.model = null;
+        this.rotationPivot = null;
+        this.mixer = null;
+        this.animationAccumulator = 0;
+        this.container.classList.remove('is-loaded', 'has-error');
+        await this.loadModel(modelUrl);
+    }
+
+    disposeObject(object) {
+        object?.traverse((child) => {
+            if (child.geometry) child.geometry.dispose();
+            const materials = Array.isArray(child.material) ? child.material : [child.material];
+            materials.filter(Boolean).forEach((material) => {
+                Object.values(material).forEach((value) => value?.isTexture && value.dispose());
+                material.dispose();
+            });
         }
+        );
     }
 
     createDirectionalLight(color, intensity, x, y, z) {
@@ -104,7 +199,12 @@ class InlineModelViewer {
         model.traverse((child) => {
             if (!child.isMesh || !child.material) return;
             const materials = Array.isArray(child.material) ? child.material : [child.material];
-            child.userData.isFlowSurface = materials.some((material) => material.transparent || material.opacity < 0.95);
+            const transparentMaterial = materials.find((material) => material.transparent || material.opacity < 0.95);
+            // The GLBs use a very low-opacity mesh for the vessel wall and a
+            // higher-opacity mesh for the color-scaled pathlines. Only the
+            // former should receive the uniform wall material.
+            if (!transparentMaterial || transparentMaterial.opacity > 0.3) return;
+            child.userData.isFlowSurface = true;
         });
     }
 
@@ -113,6 +213,7 @@ class InlineModelViewer {
             if ((!child.isMesh && !child.isPoints) || !child.material) return;
             const materials = Array.isArray(child.material) ? child.material : [child.material];
             materials.forEach((material) => {
+                if (child.geometry?.attributes?.color) material.vertexColors = true;
                 material.side = THREE.DoubleSide;
                 material.transparent = false;
                 material.opacity = 1;
@@ -123,15 +224,27 @@ class InlineModelViewer {
         });
     }
 
+    applyFlowAccentColor(model) {
+        model.traverse((child) => {
+            if (child.userData.isFlowSurface || (!child.isMesh && !child.isPoints && !child.isLine)) return;
+            const materials = Array.isArray(child.material) ? child.material : [child.material];
+            materials.filter(Boolean).forEach((material) => {
+                material.color?.set(MODEL_ACCENT);
+                material.vertexColors = false;
+                material.needsUpdate = true;
+            });
+        });
+    }
+
     applyTransparentFlowSurfaceMaterial(model) {
         model.traverse((child) => {
             if (!child.isMesh || !child.userData.isFlowSurface) return;
             if (child.geometry && !child.geometry.attributes.normal) child.geometry.computeVertexNormals();
             child.material = new THREE.MeshStandardMaterial({
-                color: 0xc83c48,
+                color: MODEL_ACCENT,
                 roughness: 0.64,
                 metalness: 0.02,
-                emissive: 0xc83c48,
+                emissive: MODEL_ACCENT,
                 emissiveIntensity: 0.08,
                 transparent: true,
                 opacity: 0.16,
@@ -145,6 +258,7 @@ class InlineModelViewer {
     setupAnimation(clips) {
         if (!clips.length) return;
         this.mixer = new THREE.AnimationMixer(this.originalModel);
+        this.mixer.timeScale = this.animationSpeed;
         clips.forEach((clip) => this.mixer.clipAction(clip).play());
         if (this.reducedMotion) this.mixer.setTime(0);
         this.syncInstancedMeshes();
@@ -192,10 +306,10 @@ class InlineModelViewer {
             if (!child.isMesh) return;
             if (child.geometry && !child.geometry.attributes.normal) child.geometry.computeVertexNormals();
             child.material = new THREE.MeshStandardMaterial({
-                color: 0xc83c48,
+                color: MODEL_ACCENT,
                 roughness: 0.44,
                 metalness: 0.02,
-                emissive: 0xc83c48,
+                emissive: MODEL_ACCENT,
                 emissiveIntensity: 0.42,
                 side: THREE.DoubleSide
             });
@@ -222,9 +336,9 @@ class InlineModelViewer {
         const layerGap = Math.max(size.x, size.y, size.z) * 0.011;
         const cutStep = size.x * 0.13;
         const layers = [
-            { name: 'Intima', color: 0xc83c48, offset: layerGap, roughness: 0.38, cut: cutStep },
-            { name: 'Media', color: 0xc83c48, offset: 0, roughness: 0.5, cut: 0 },
-            { name: 'Adventitia', color: 0xc83c48, offset: -layerGap, roughness: 0.66, cut: -cutStep }
+            { name: 'Intima', color: MODEL_ACCENT, offset: layerGap, roughness: 0.38, cut: cutStep },
+            { name: 'Media', color: MODEL_ACCENT, offset: 0, roughness: 0.5, cut: 0 },
+            { name: 'Adventitia', color: MODEL_ACCENT, offset: -layerGap, roughness: 0.66, cut: -cutStep }
         ];
 
         const group = new THREE.Group();
@@ -270,16 +384,30 @@ class InlineModelViewer {
     }
 
     fitModel(model, modelMode = 'layers') {
-        if (modelMode === 'flow') {
-            model.rotation.set(0, Math.PI / 2, 0);
-        } else {
-            model.rotation.set(-Math.PI / 2, 0, modelMode === 'surface' ? Math.PI / 2 : 0);
-        }
+        const configuredRotation = (axis, fallback) => {
+            const value = Number(this.container.dataset[`rotation${axis}`]);
+            return Number.isFinite(value) ? value : fallback;
+        };
+        const defaultRotation = modelMode === 'flow'
+            ? { x: 0, y: Math.PI / 2, z: 0 }
+            : { x: -Math.PI / 2, y: 0, z: modelMode === 'surface' ? Math.PI / 2 : 0 };
+        model.rotation.set(
+            configuredRotation('X', defaultRotation.x),
+            configuredRotation('Y', defaultRotation.y),
+            configuredRotation('Z', defaultRotation.z)
+        );
         model.updateMatrixWorld(true);
 
-        const box = new THREE.Box3().setFromObject(model);
+        let box = new THREE.Box3().setFromObject(model);
+        let size = box.getSize(new THREE.Vector3());
+        const sourceMaxDimension = Math.max(size.x, size.y, size.z) || 1;
+        if (!this.referenceModelDimension) this.referenceModelDimension = sourceMaxDimension;
+        model.scale.multiplyScalar(this.referenceModelDimension / sourceMaxDimension);
+        model.updateMatrixWorld(true);
+
+        box = new THREE.Box3().setFromObject(model);
         const center = box.getCenter(new THREE.Vector3());
-        const size = box.getSize(new THREE.Vector3());
+        size = box.getSize(new THREE.Vector3());
         model.position.sub(center);
 
         const maxDimension = Math.max(size.x, size.y, size.z) || 1;

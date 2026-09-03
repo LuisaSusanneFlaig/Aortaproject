@@ -87,13 +87,13 @@ body {
 .scrolly-layout {
     display: block;
     width: 100%;
-    position: relative;
+    position: relative !important;
     min-height: 100vh;
 
     .left-column {
         width: min(100%, 980px);
         margin: 0 auto;
-        position: relative;
+        position: relative !important;
         z-index: 2;
         padding-top: var(--nav-height);
         transition: width 0.4s ease, max-width 0.4s ease;
@@ -149,7 +149,7 @@ body {
 
 /* UI Elements */
 .visual-status {
-    position: absolute;
+    position: absolute !important;
     right: 28px;
     bottom: 28px;
     z-index: 5;
@@ -229,7 +229,7 @@ body {
     &:not(.active) .text-box {
         width: min(1000px, 100%);
         opacity: 1;
-        transform: none;
+        transform: none !important;
     }
 }
 
@@ -346,7 +346,7 @@ body.light-mode .wall-layer-legend {
 
 .text-box.cols-2 {
     width: min(1300px, 95%);
-    max-width: none;
+    max-width: none !important;
 
     & > h2 { grid-column: 1 / -1; }
 
@@ -365,7 +365,7 @@ body.light-mode .wall-layer-legend {
 
 :where(.text-box.cols-2) .element-text,
 :where(.text-box.cols-2) .element-pullQuote {
-    grid-column: 2;
+    grid-column: 2 !important;
     align-self: start;
     max-width: 54ch;
 }
@@ -476,7 +476,7 @@ body.light-mode .wall-layer-legend {
 
     .info-image img {
         width: 100%;
-        height: auto;
+        height: auto !important;
         display: block;
         object-fit: contain;
         background: #08090a;
@@ -508,7 +508,7 @@ body.light-mode .wall-layer-legend {
 
 .text-box .story-pull-quote {
     margin: 4px 0 24px;
-    padding: 0;
+    padding: 0 !important;
     border: 0;
     color: #f4f1f1;
     font-size: clamp(1.75rem, 3vw, 2.55rem);
@@ -551,8 +551,8 @@ body.light-mode .wall-layer-legend {
     .text-box.cols-2 > h2,
     .story-intro .element-wrapper,
     .story-intro .element-image {
-        grid-column: 1;
-        grid-row: auto;
+        grid-column: 1 !important;
+        grid-row: auto !important;
     }
 }
 
@@ -566,7 +566,7 @@ body.light-mode .wall-layer-legend {
     .info-image img,
     .imaging-panel img {
         transition: none !important;
-        transform: none !important;
+        transform: none;
     }
 }
 
@@ -616,6 +616,20 @@ body.light-mode .wall-layer-legend {
     letter-spacing: 0;
     text-transform: none;
     white-space: nowrap;
+}
+
+.story-svg-icon.story-material-icon {
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    background-color: currentColor;
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    vertical-align: middle;
 }
 
 body[data-story-version] .step .stats-box {
@@ -727,7 +741,7 @@ body[data-story-version="aneurysm"] #story {
 body[data-story-version="aneurysm"] .step,
 body[data-story-version="aneurysm"] .step:first-of-type {
     display: block;
-    min-height: 0;
+    min-height: 0 !important;
     padding: 0 clamp(20px, 5vw, 64px);
     scroll-margin-top: calc(var(--nav-height) + 22px);
 }
@@ -737,8 +751,8 @@ body[data-story-version="aneurysm"] .step.active .text-box,
 body[data-story-version="aneurysm"] .step:not(.active) .text-box {
     width: min(980px, 100%);
     padding: clamp(38px, 5vw, 64px) 0;
-    opacity: 1;
-    transform: none;
+    opacity: 1 !important;
+    transform: none !important;
 }
 
 body[data-story-version="aneurysm"] .step.chapter-start .text-box {
@@ -747,6 +761,12 @@ body[data-story-version="aneurysm"] .step.chapter-start .text-box {
 body[data-story-version="aneurysm"] .step.chapter-start {
     scroll-margin-top: calc(var(--nav-height) - clamp(76px, 10vw, 128px));
     display: block;
+}
+
+/* Keep chapter openers opaque so fixed visuals from the previous section do not bleed through. */
+body[data-story-version] #story .chapter-opener.chapter-opener {
+    -webkit-mask-image: none;
+    mask-image: none;
 }
 
 body[data-story-version="aneurysm"] .aneurysm-intro .text-box {
@@ -969,7 +989,7 @@ body[data-story-version="aneurysm"].story-ready .step .text-box {
 }
 
 body[data-story-version="aneurysm"].story-ready .step.is-revealed .text-box {
-    opacity: 1;
+    opacity: 1 !important;
     transform: translateY(0);
 }
 
@@ -1321,7 +1341,7 @@ body[data-story-version="aneurysm"] .aneurysm-prognosis-section .text-box {
 
 .paired-prognosis-panel .growth-profile-row {
     grid-template-columns: minmax(88px, 0.72fr) minmax(0, 1.45fr) minmax(68px, 0.58fr);
-    gap: 12px;
+    gap: 12px !important;
     min-height: 128px;
 }
 
@@ -1367,7 +1387,7 @@ body[data-story-version="aneurysm"] .aneurysm-prognosis-section .text-box {
     .paired-prognosis-panel > .info-text,
     .paired-prognosis-panel .aneurysm-growth-heading,
     .paired-prognosis-panel .aneurysm-sex-heading {
-        min-height: 0;
+        min-height: 0 !important;
     }
 }
 
@@ -1564,7 +1584,7 @@ body[data-story-version="aneurysm"] .aneurysm-prognosis-section .text-box {
 body[data-story-version="aneurysm"] .aneurysm-prognosis-section.step[data-scroll-mode="sequence"] .element-pairedPrognosis,
 body[data-story-version="aneurysm"] .aneurysm-sex-section.step[data-scroll-mode="sequence"] .element-aneurysmSexRisk,
 body[data-story-version="aneurysm"] .aneurysm-risk-section.step[data-scroll-mode="sequence"] .element-aneurysmRiskDrivers {
-    opacity: 1 !important;
+    opacity: 1;
     transform: none !important;
 }
 
@@ -1639,7 +1659,7 @@ body[data-story-version="aneurysm"] .step[data-scroll-mode="sequence"] .burden-l
     body[data-story-version="aneurysm"] .alex-aorta-model-section[data-scroll-mode="sticky"],
     body[data-story-version="aneurysm"] .alex-flow-section[data-scroll-mode="sticky"],
     body[data-story-version="aneurysm"] .alex-imaging-section[data-scroll-mode="comparison"] {
-        min-height: 0;
+        min-height: 0 !important;
     }
 
     body[data-story-version="aneurysm"] .aneurysm-intro[data-scroll-mode="sticky"] .text-box,
@@ -1665,8 +1685,8 @@ body[data-story-version="aneurysm"] .step[data-scroll-mode="sequence"] .burden-l
     body[data-story-version="aneurysm"] .alex-aorta-model-section .element-wrapper,
     body[data-story-version="aneurysm"] .alex-flow-section .element-wrapper,
     body[data-story-version="aneurysm"] .alex-imaging-section .element-wrapper {
-        grid-column: 1;
-        grid-row: auto;
+        grid-column: 1 !important;
+        grid-row: auto !important;
     }
 
     body[data-story-version="aneurysm"] .alex-flow-section .element-modelPlaceholder {
@@ -1682,7 +1702,7 @@ body[data-story-version="aneurysm"] .step[data-scroll-mode="sequence"] .burden-l
     body[data-story-version="aneurysm"] .alex-aorta-model-section .inline-model-figure {
         position: relative;
         top: auto;
-        grid-column: 1;
+        grid-column: 1 !important;
         grid-row: auto;
     }
 
@@ -1965,7 +1985,7 @@ body[data-story-version="aneurysm"] .step[data-scroll-mode="sequence"] .burden-l
 }
 
 .diagnostic-path li:last-child {
-    padding-bottom: 0;
+    padding-bottom: 0 !important;
 }
 
 .diagnostic-step-index {
@@ -1988,6 +2008,46 @@ body[data-story-version="aneurysm"] .step[data-scroll-mode="sequence"] .burden-l
     margin: 2px 0 3px;
     color: #fff;
     font-size: 0.96rem;
+}
+
+.diagnostic-custom-icon {
+    display: inline-block;
+    width: 4.5rem;
+    height: 4.5rem;
+    margin-right: 0.55rem;
+    flex: 0 0 2.35rem;
+    background-color: var(--color-accent);
+    vertical-align: middle;
+}
+
+.diagnostic-custom-icon-radiology_aorta {
+    -webkit-mask: url('../assets/radiology_aorta.svg') center / contain no-repeat;
+    mask: url('../assets/radiology_aorta.svg') center / contain no-repeat;
+}
+
+.diagnostic-custom-icon-genetics_svg {
+    -webkit-mask: url('../assets/genetics.svg') center / contain no-repeat;
+    mask: url('../assets/genetics.svg') center / contain no-repeat;
+}
+
+.diagnostic-custom-icon-monitor_heart_svg {
+    -webkit-mask: url('../assets/monitor_heart.svg') center / contain no-repeat;
+    mask: url('../assets/monitor_heart.svg') center / contain no-repeat;
+}
+
+.diagnostic-custom-icon-labs_svg {
+    -webkit-mask: url('../assets/labs.svg') center / contain no-repeat;
+    mask: url('../assets/labs.svg') center / contain no-repeat;
+}
+
+.diagnostic-custom-icon-event_available_svg {
+    -webkit-mask: url('../assets/event_available.svg') center / contain no-repeat;
+    mask: url('../assets/event_available.svg') center / contain no-repeat;
+}
+
+.diagnostic-custom-icon-compare_svg {
+    -webkit-mask: url('../assets/compare.svg') center / contain no-repeat;
+    mask: url('../assets/compare.svg') center / contain no-repeat;
 }
 
 .text-box .diagnostic-path p {
@@ -2314,7 +2374,7 @@ body[data-story-version="dissection"] .miriam-diagnosis-infographic-section .sec
         left: 47px;
         right: auto;
         width: 3px;
-        height: auto;
+        height: auto !important;
         background: linear-gradient(180deg, var(--color-accent), var(--color-accent), var(--color-accent));
     }
 
@@ -2527,6 +2587,35 @@ body[data-story-version="aneurysm"] .alex-treatment-infographic-section .decisio
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 8px;
     overflow: hidden;
+}
+
+.inline-model-viewer .inline-model-360-hint {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 2;
+    display: grid;
+    width: 58px;
+    height: 58px;
+    place-items: center;
+    border: 1px solid color-mix(in srgb, var(--color-text) 28%, transparent);
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--color-bg) 78%, transparent);
+    color: var(--color-text) !important;
+    font-size: 2rem;
+    font-weight: 400;
+    line-height: 1;
+    overflow: visible;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.inline-model-viewer .inline-model-360-hint.is-hidden {
+    opacity: 0;
+    visibility: hidden;
 }
 
 body[data-story-version="aneurysm"] .alex-treatment-infographic-section .decision-map-zone {
@@ -3013,8 +3102,8 @@ body[data-story-version="dissection"] .miriam-prevention-infographic-section .pr
 body[data-story-version="dissection"] .miriam-prevention-infographic-section .prevention-copy,
 body[data-story-version="dissection"] .miriam-prevention-infographic-section .prevention-timeline li:nth-child(even) .prevention-copy {
     display: grid;
-    grid-column: auto;
-    grid-row: auto;
+    grid-column: auto !important;
+    grid-row: auto !important;
     grid-template-rows: auto auto 1fr;
     gap: 10px;
     padding: 0;
@@ -4164,8 +4253,8 @@ body[data-story-version="dissection"] .statistics-overview .element-text {
 
 body[data-story-version="dissection"] .statistics-overview .element-aorticStat {
     min-width: 0;
-    opacity: 1 !important;
-    transform: none !important;
+    opacity: 1;
+    transform: none;
 }
 
 body[data-story-version="dissection"] .statistics-overview .aortic-stat-card {
@@ -4526,9 +4615,9 @@ body[data-story-version] .step.model-section .text-box,
 body[data-story-version] .step[data-scroll-mode="sticky"] .text-box,
 body[data-story-version] .step[data-scroll-mode="comparison"] .text-box,
 body[data-story-version] .step.chapter-start .text-box {
-    min-height: 0 !important;
+    min-height: 0;
     padding-top: 0 !important;
-    padding-bottom: 0 !important;
+    padding-bottom: 0;
 }
 
 body[data-story-version] .step [data-scroll-item],
@@ -4550,7 +4639,7 @@ body[data-story-version] .step .element-image,
 body[data-story-version] .step .inline-model-figure,
 body[data-story-version] .step .element-imagingComparison,
 body[data-story-version] .step .element-modelPlaceholder {
-    position: relative !important;
+    position: relative;
     top: auto !important;
 }
 
@@ -4688,7 +4777,7 @@ body[data-story-version] .step .aortic-clock-caption {
         width: 100%;
         min-width: 0;
         min-height: calc(100svh - var(--nav-height)) !important;
-        height: auto !important;
+        height: auto;
         padding: 28px 16px;
         overflow: visible;
     }
@@ -4710,8 +4799,8 @@ body[data-story-version] .step .aortic-clock-caption {
     body[data-story-version] .step .text-box > * {
         min-width: 0;
         max-width: 100%;
-        grid-column: 1 !important;
-        grid-row: auto !important;
+        grid-column: 1;
+        grid-row: auto;
     }
 
     body[data-story-version] .step img,
@@ -4745,7 +4834,7 @@ body[data-story-version] .step .aortic-clock-caption {
     body[data-story-version] .step.model-section,
     body[data-story-version] .step[data-scroll-mode="sticky"],
     body[data-story-version] .step[data-scroll-mode="comparison"] {
-        padding-inline: 14px;
+        padding-inline: 14px !important;
     }
 
 }
@@ -4759,19 +4848,19 @@ body[data-story-version] .scrolly-layout .left-column {
 body[data-story-version] .pin-spacer:has(> .flow-research-section) {
     box-sizing: border-box !important;
     width: 100vw !important;
-    max-width: none !important;
+    max-width: none;
 }
 
 body[data-story-version] .flow-research-section,
 body[data-story-version] .flow-research-section[data-scroll-mode="sticky"] {
     box-sizing: border-box;
-    width: 100vw;
+    width: 100vw !important;
     min-height: 100svh !important;
     min-height: 100dvh !important;
     height: 100svh !important;
     height: 100dvh !important;
     margin-inline: 0;
-    padding: 0 !important;
+    padding: 0;
 }
 
 body[data-story-version] .flow-research-section .text-box,
@@ -4781,8 +4870,8 @@ body[data-story-version="dissection"] .flow-research-section .text-box {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(300px, 390px) !important;
     grid-auto-rows: min-content;
-    gap: 12px !important;
-    width: 100vw !important;
+    gap: 12px;
+    width: 100vw;
     max-width: none;
     min-height: 100svh !important;
     min-height: 100dvh !important;
@@ -4795,13 +4884,13 @@ body[data-story-version="dissection"] .flow-research-section .text-box {
 }
 
 body[data-story-version] .flow-research-section .element-modelPlaceholder {
-    position: absolute !important;
+    position: absolute;
     z-index: 0;
     inset: 0;
     width: 100%;
     height: 100%;
     margin: 0;
-    grid-column: auto !important;
+    grid-column: auto;
     grid-row: auto !important;
 }
 
@@ -4848,8 +4937,8 @@ body[data-story-version] .flow-research-section h2,
 body[data-story-version] .flow-research-section .element-wrapper:not(.element-modelPlaceholder) {
     position: relative;
     z-index: 2;
-    grid-column: 2 !important;
-    grid-row: auto !important;
+    grid-column: 2;
+    grid-row: auto;
     text-shadow: 0 2px 18px rgba(0, 0, 0, 0.92);
 }
 
@@ -4862,11 +4951,18 @@ body[data-story-version] .flow-research-section .element-text .info-text {
     max-width: 32ch;
 }
 
+/* Let the prognosis copy grow beyond one viewport instead of clipping the final lines. */
+body[data-story-version="aneurysm"] .alex-flow-section .text-box {
+    min-height: 126vh !important;
+    height: auto !important;
+    overflow: visible;
+}
+
 @media (max-width: 820px) {
     body[data-story-version] .flow-research-section,
     body[data-story-version] .flow-research-section[data-scroll-mode="sticky"] {
-        min-height: 0 !important;
-        height: auto !important;
+        min-height: 0;
+        height: auto;
         margin-inline: 0;
     }
 
@@ -4876,27 +4972,27 @@ body[data-story-version] .flow-research-section .element-text .info-text {
         display: grid;
         grid-template-columns: minmax(0, 1fr) !important;
         width: 100vw !important;
-        min-height: 0 !important;
+        min-height: 0;
         padding: 0 16px 40px !important;
         align-content: start;
         overflow: visible;
     }
 
     body[data-story-version] .flow-research-section .element-modelPlaceholder {
-        position: relative !important;
+        position: relative;
         inset: auto;
         order: -4;
         width: 100vw;
         height: 100svh;
         height: 100dvh;
         margin-left: -16px;
-        grid-column: 1 !important;
-        grid-row: auto !important;
+        grid-column: 1;
+        grid-row: auto;
     }
 
     body[data-story-version] .flow-research-section h2,
     body[data-story-version] .flow-research-section .element-wrapper:not(.element-modelPlaceholder) {
-        grid-column: 1 !important;
+        grid-column: 1;
         margin-inline: 0;
         text-shadow: none;
     }
@@ -4922,7 +5018,7 @@ body[data-story-version] .flow-research-section .element-text .info-text {
     body[data-story-version] .flow-research-section .text-box,
     body[data-story-version="aneurysm"] .flow-research-section .text-box,
     body[data-story-version="dissection"] .flow-research-section .text-box {
-        padding-inline: 14px !important;
+        padding-inline: 14px;
     }
 
     body[data-story-version] .flow-research-section .element-modelPlaceholder {

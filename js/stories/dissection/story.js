@@ -13,7 +13,7 @@ export const dissectionStory = {
     sections: [
         {
             id: 's1',
-            title: 'Miriam',
+            title: 'Dissection Story',
             scrollMode: 'sticky',
             timelineLabel: 'Miriam - age 25',
             className: 'story-intro',
@@ -33,7 +33,11 @@ export const dissectionStory = {
                 },
                 {
                     type: 'text',
-                    text: 'Miriam lives with Marfan syndrome. This condition can weaken connective tissue, including the wall of the aorta: the large artery that carries blood from the heart to the body. Her story begins when the inner lining of that artery tears. Blood then pushes into the wall itself and creates a second channel. This is called an aortic dissection, and it can be life-threatening.'
+                    text: 'Miriam lives with Marfan syndrome. This condition can weaken connective tissue, including the wall of the aorta: the large artery that carries blood from the heart to the body. Her story begins when the inner lining of that artery tears. Blood then pushes into the wall itself and creates a second channel. This is called an aortic dissection, and it can be life-threatening.',
+                    infoPopup: {
+                        title: 'Marfan syndrome',
+                        text: 'Marfan syndrome is an inherited connective-tissue condition, often caused by changes in the FBN1 gene. Because connective tissue helps support the aortic wall, the aorta can gradually widen and is monitored over time. The condition can affect several body systems and varies from person to person.'
+                    }
                 },
                 {
                     type: 'text',
@@ -51,7 +55,7 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Aortic dissection is rare, but when it happens, it changes the situation within minutes. Only a few people out of 100,000 are diagnosed each year, and some cases are missed entirely. The classification helps explain the urgency. Type A involves the first part of the aorta as it leaves the heart and is usually the most immediately dangerous. Type B begins farther down, behind the arteries leading to the head. '
+                    text: 'Aortic dissection is rare, but rarity does not make it insignificant. It is a condition in which a small number of cases can have extremely serious consequences. Symptoms can resemble those of other conditions, and some dissections may initially go undetected. What happens next depends strongly on where the dissection begins. Type A involves the first part of the aorta as it leaves the heart and usually requires immediate treatment. Type B begins farther down, beyond the arteries leading to the head, and may follow a different treatment path. This makes aortic dissection an important example of how a single anatomical difference can fundamentally change a medical situation.'
                 },
                 {
                     type: 'aorticStat',
@@ -72,12 +76,17 @@ export const dissectionStory = {
             title: 'Healthy Anatomy',
             scrollMode: 'sticky',
             timelineLabel: 'Before the event',
-            className: 'model-section',
+            className: 'model-section miriam-aorta-model-section',
             inlineModel: {
                 url: 'assets/models/miriam_pre_dissection_aorta.gltf',
                 label: 'Miriam\'s aorta before the dissection',
                 mode: 'surface',
-                legend: false
+                legend: false,
+                rotationX: -1.5,
+                rotationY: 0.2,
+                rotationZ: Math.PI / 2,
+                framingScale: 0.9,
+                rotationHint: true
             },
             paragraphs: [],
             elements: [
@@ -110,13 +119,13 @@ export const dissectionStory = {
                 },
                 {
                     type: 'symptomBars',
-                    subtitle: 'IRAD: 1,891 of 5,638 acute dissections',
+                    subtitle: '1,891 of 5,638 acute dissections',
                     items: [
-                        { icon: 'warning', label: 'Severe or worst-ever pain', value: 88.7, color: '#c83c48' },
-                        { icon: 'monitor_heart', label: 'Chest or back pain', value: 88.7, color: '#c83c48' },
-                        { icon: 'warning', label: 'Sudden onset', value: 85.4, color: '#c83c48' },
+                        { icon: 'bolt', label: 'Severe or worst-ever pain', value: 88.7, color: '#c83c48' },
+                        { icon: 'rib_cage', label: 'Chest or back pain', value: 88.7, color: '#c83c48' },
+                        { icon: 'acute', label: 'Sudden onset', value: 85.4, color: '#c83c48' },
                         { icon: 'blood_pressure', label: 'High blood pressure', value: 64.6, color: '#c83c48' },
-                        { icon: 'route', label: 'Migrating pain', value: 16.8, color: '#c83c48' }
+                        { icon: 'hand_bones', label: 'Migrating pain', value: 16.8, color: '#c83c48' }
                     ]
                 },
                 {
@@ -135,25 +144,29 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'From the first suspicion, the team has to move quickly. They ask whether Miriam has risk factors such as Marfan syndrome or known aortic disease. They examine the pattern of pain, blood pressure differences, and signs from the brain or limbs. A lab test may include D-dimer, a blood marker that rises when clots are being broken down; in carefully selected low-risk patients it can help rule out dissection, but it cannot prove the diagnosis. The decisive step is imaging. ECG-gated CTA is timed to the heartbeat, reducing motion blur so the tear, its length, and possible complications can be seen.'
+                    text: 'From the first suspicion, the team has to move quickly. They ask whether Miriam has risk factors such as Marfan syndrome or known aortic disease. They examine the pattern of pain, blood pressure differences, and signs from the brain or limbs. A lab test may include D-dimer, a blood marker that rises when clots are being broken down; in carefully selected low-risk patients it can help rule out dissection, but it cannot prove the diagnosis. The decisive step is imaging. Aortic imaging is timed to the heartbeat, reducing motion blur so the tear, its length, and possible complications can be seen.',
+                    infoPopup: {
+                        title: 'D-dimer',
+                        text: 'D-dimer is a small protein fragment. A blood test can help assess the likelihood of clot-related disease: a negative result can help rule it out in people with a low clinical probability, while a positive result can have other causes and usually needs further testing.'
+                    }
                 },
                 {
                     type: 'diagnosticPath',
                     items: [
                         {
-                            icon: 'warning',
-                            title: 'Risk'
+                            icon: 'genetics_svg',
+                            title: 'Marfan Risk'
                         },
                         {
-                            icon: 'monitor_heart',
+                            icon: 'monitor_heart_svg',
                             title: 'Assessment'
                         },
                         {
-                            icon: 'biotech',
+                            icon: 'labs_svg',
                             title: 'Lab tests'
                         },
                         {
-                            icon: 'radiology',
+                            icon: 'radiology_aorta',
                             title: 'Aortic imaging'
                         }
                     ]
@@ -166,7 +179,7 @@ export const dissectionStory = {
         },
         {
             id: 's10',
-            title: 'Imaging',
+            title: 'CTA Imaging',
             scrollMode: 'comparison',
             timelineLabel: 'Acute - CTA',
             className: 'evidence-section',
@@ -174,26 +187,27 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'The CT angiography (CTA) images make the tear visible from more than one direction. Contrast dye fills the blood space of the aorta, making the vessel and the dissection easier to follow. In Miriam\'s case, the scan shows a Type B dissection starting just after the left subclavian artery and extending toward the diaphragm. The axial and coronal views show the same anatomy in two planes.'
+                    text: 'The CT angiography (CTA) image makes the tear visible. Contrast dye fills the blood space of the aorta, making the vessel and the dissection easier to follow. In Miriam\'s case, the scan shows a Type B dissection starting just after the left artery and extending toward the chest. The red line marks the tear.'
                 },
                 {
-                    type: 'imagingComparison',
-                    items: [
+                    type: 'image',
+                    src: 'assets/story_images/miriam_cta.png',
+                    alt: 'CTA image showing Miriam\'s Type B aortic dissection',
+                    aspect: '3 / 4',
+                    hotspots: [
                         {
-                            modality: 'Axial CTA',
-                            src: 'assets/story_images/miriam_cta_axial_0246.png',
-                            alt: 'Axial CTA slice from Miriam\'s patient-specific Type B aortic dissection dataset'
+                            x: '53%',
+                            y: '15%',
+                            title: 'Dissection flap',
+                            text: 'The red line marks the flap in the aortic wall, where blood has entered the wall layers.'
                         },
                         {
-                            modality: 'Coronal CTA',
-                            src: 'assets/story_images/miriam_cta_coronal_0246.png',
-                            alt: 'Coronal CTA reconstruction from Miriam\'s patient-specific Type B aortic dissection dataset'
+                            x: '48%',
+                            y: '42%',
+                            title: 'End of dissection flap',
+                            text: 'The highlighted widened region shows the altered aortic channel created by the dissection.'
                         }
                     ]
-                },
-                {
-                    type: 'reference',
-                    text: 'Image source: 0246_H_AO_AOD.vti from the Vascular Model Repository, case 0246_H_AO_AOD; axial and coronal reconstructions exported from the supplied CT volume.'
                 }
             ]
         },
@@ -207,7 +221,11 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Treatment depends on how stable the situation is right now. If pain and blood pressure are controlled and the organs are still receiving blood, care usually begins with medication, close monitoring, and repeat imaging. If complications appear, doctors may need to redirect redirect blood flow through a process called TEVAR. TEVAR places an implant inside the aorta which supports the vessel wall and redirects flow. This is done during a minimally invasive procedure without open surgery'
+                    text: 'Treatment depends on how stable the situation is right now. If pain and blood pressure are controlled and the organs are still receiving blood, care usually begins with medication, close monitoring, and repeat imaging. If complications appear, doctors may need to redirect redirect blood flow through a process called TEVAR. The procedure places an implant inside the aorta which supports the vessel wall and redirects flow. This is done during a minimally invasive procedure without open surgery',
+                    infoPopup: {
+                        title: 'TEVAR',
+                        text: 'TEVAR stands for Thoracal EndoVascular Aortic Repair. Doctors guide a covered stent through a blood vessel and place it inside the aorta to support the weakened wall and redirect blood flow. It can be used as an alternative to open surgery in suitable cases.'
+                    }
                 },
                 {
                     type: 'treatmentDecision',
@@ -216,14 +234,14 @@ export const dissectionStory = {
                     axisEnd: 'Higher urgency',
                     items: [
                         {
-                            icon: 'monitor_heart',
+                            icon: 'prescriptions',
                             label: 'Uncomplicated Type B',
                             treatment: 'Medical therapy'
                         },
                         {
                             icon: 'medical_services',
                             label: 'Complicated Type B',
-                            treatment: 'Endovascular treatment'
+                            treatment: 'Aortic treatment'
                         }
                     ]
                 },
@@ -248,9 +266,17 @@ export const dissectionStory = {
                 {
                     type: 'modelPlaceholder',
                     id: 'flow-vis-subacute',
-                    src: 'assets/models/flow/miriam-particles-points.glb',
+                    src: 'assets/models/flow/dissection_lines_anim.glb',
+                    flowVariants: [
+                        { label: 'Pathlines', src: 'assets/models/flow/dissection_lines_anim.glb', framingScale: 0.2, offsetX: 0, offsetY: 0, rotationY: 1.5708, animationFps: 20, animationSpeed: 1 },
+                        { label: 'Particle flow', src: 'assets/models/flow/dissection_particles_anim.glb', framingScale: 0.2, offsetX: 0, offsetY: -0.06, rotationY: 1.5708, animationFps: 20, animationSpeed: 0.5 }
+                    ],
                     modelMode: 'flow',
+                    preload: true,
                     animationFps: 20,
+                    offsetX: 0,
+                    offsetY: 0,
+                    rotationHint: true,
                     alt: 'Animated particle paths representing flow through the aortic model',
                     eyebrow: '+1.5 months',
                     title: 'Flow-Vis - Subacute Phase'
@@ -275,7 +301,7 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'For Miriam, prevention means protecting an aorta that has already been injured. Blood pressure control reduces force on the wall. Rehabilitation helps her return to activity in a supervised way. Dosed activity means exercise is adapted so blood pressure does not spike unpredictably. Whole-aorta imaging means CT or MRI follow-up checks the entire vessel, not only the first tear. Genetic risk matters because Marfan syndrome can affect family members too.'
+                    text: 'For Miriam, prevention means protecting an aorta that has already been injured. Blood pressure control reduces force on the wall. Rehabilitation helps her return to activity in a supervised way. Dosed activity means exercise is adapted so blood pressure does not spike unpredictably. Whole-aorta imaging means CTA follow-up checks the entire vessel, not only the first tear. Genetic risk matters because Marfan syndrome can affect family members too.'
                 },
                 {
                     type: 'preventionTimeline',
@@ -294,7 +320,7 @@ export const dissectionStory = {
                         },
                         {
                             eyebrow: 'Long term',
-                            title: 'Whole-aorta imaging'
+                            title: 'Regular imaging'
                         },
                         {
                             eyebrow: 'In the family',

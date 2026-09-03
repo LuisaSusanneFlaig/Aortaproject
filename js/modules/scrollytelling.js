@@ -47,6 +47,64 @@ class ScrollytellingApp {
         this.lookCurve = new THREE.CatmullRomCurve3(Config.hotspots.map(h => h.target));
     }
 
+    get completionKey() {
+        return `aorta-project-${this.version}-completed`;
+    }
+
+    hasCompletedBothStories() {
+        try {
+            return ['aneurysm', 'dissection'].every((version) => (
+                localStorage.getItem(`aorta-project-${version}-completed`) === 'true'
+            ));
+        } catch {
+            return false;
+        }
+    }
+
+    markStoryComplete() {
+        try {
+            localStorage.setItem(this.completionKey, 'true');
+        } catch {
+            return;
+        }
+
+        if (this.hasCompletedBothStories()) this.renderCompletionPrompt();
+    }
+
+    renderCompletionPrompt() {
+        if (document.querySelector('.story-completion-cta')) return;
+        const story = document.getElementById('story');
+        if (!story) return;
+
+        const prompt = document.createElement('section');
+        prompt.className = 'story-completion-cta';
+        prompt.setAttribute('aria-labelledby', 'story-completion-title');
+        prompt.innerHTML = `
+            <p class="story-completion-kicker">Both stories completed</p>
+            <h2 id="story-completion-title">See the full picture</h2>
+            <p>You have followed both an aortic aneurysm and an aortic dissection. Continue to the shared ending.</p>
+            <a class="story-completion-link" href="ending.html">Continue to ending <span aria-hidden="true">&rarr;</span></a>
+        `;
+        // Keep the completion CTA outside the complete scrollytelling layout
+        // so pin spacers and the last story step cannot absorb it.
+        const scrollyLayout = story.closest('.scrolly-layout');
+        if (scrollyLayout?.parentElement) {
+            scrollyLayout.parentElement.insertBefore(prompt, scrollyLayout.nextSibling);
+        } else {
+            (story.parentElement || story).appendChild(prompt);
+        }
+
+        // The story visual is fixed while the last step is active. Hide it
+        // once the standalone completion CTA enters the viewport, so the
+        // final image cannot visually carry into the CTA area.
+        if ('IntersectionObserver' in window) {
+            const completionObserver = new IntersectionObserver(([entry]) => {
+                document.body.classList.toggle('is-completion-active', entry.isIntersecting);
+            }, { threshold: 0.08 });
+            completionObserver.observe(prompt);
+        }
+    }
+
     async init() {
         console.info('[App] Initializing Scrollytelling App...');
 
@@ -525,6 +583,8 @@ class ScrollytellingApp {
             scrollyLayout.classList.toggle('is-full-layout', activeStep?.classList.contains('layout-full'));
             scrollyLayout.classList.toggle('has-2-cols', textBox?.classList.contains('cols-2'));
         }
+
+        if (sectionIndex === this.storySectionCount - 1) this.markStoryComplete();
     }
 
     updateNavLinks(sectionIndex) {
@@ -578,6 +638,70 @@ class ScrollytellingApp {
         const navToggle = document.getElementById('nav-toggle');
         const navMenu = document.getElementById('nav-menu-mobile');
         if (navToggle && navMenu) navToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
+        document.addEventListener('click', (event) => {
+            const flowButton = event.target.closest('.flow-variant-button');
+            if (flowButton) {
+                const modelStage = flowButton.closest('.model-placeholder')?.querySelector('[data-inline-model]');
+                const viewer = modelStage?.inlineModelViewer;
+                if (!viewer) return;
+                const variantOptions = {};
+                ['framingScale', 'offsetX', 'offsetY', 'rotationX', 'rotationY', 'rotationZ', 'animationFps', 'animationSpeed'].forEach((key) => {
+                    const value = Number(flowButton.dataset[`flow${key[0].toUpperCase()}${key.slice(1)}`]);
+                    if (Number.isFinite(value)) variantOptions[key] = value;
+                });
+                const controls = flowButton.closest('.flow-variant-controls');
+                controls?.querySelectorAll('.flow-variant-button').forEach((button) => {
+                    const isSelected = button === flowButton;
+                    button.classList.toggle('active', isSelected);
+                    button.setAttribute('aria-pressed', String(isSelected));
+                    button.disabled = true;
+                });
+                viewer.switchModel(flowButton.dataset.flowUrl, variantOptions).finally(() => {
+                    controls?.querySelectorAll('.flow-variant-button').forEach((button) => { button.disabled = false; });
+                });
+                return;
+            }
+
+            const imageHotspotClose = event.target.closest('.image-hotspot-close');
+            if (imageHotspotClose) {
+                const popup = imageHotspotClose.closest('.image-hotspot-popover');
+                if (!popup) return;
+                popup.hidden = true;
+                const trigger = document.querySelector(`.image-hotspot[aria-controls="${popup.id}"]`);
+                trigger?.setAttribute('aria-expanded', 'false');
+                return;
+            }
+
+            const button = event.target.closest('.inline-info-term');
+            const symptomButton = event.target.closest('.symptom-info-trigger');
+            const diagnosticButton = event.target.closest('.diagnostic-info-trigger');
+            const imageHotspot = event.target.closest('.image-hotspot');
+            if (!button && !symptomButton && !diagnosticButton && !imageHotspot) return;
+
+            const trigger = button || symptomButton || diagnosticButton || imageHotspot;
+            const popup = document.getElementById(trigger.getAttribute('aria-controls'));
+            if (!popup) return;
+
+            const isOpen = trigger.getAttribute('aria-expanded') === 'true';
+
+            if ((diagnosticButton || imageHotspot) && !isOpen) {
+                const exclusiveGroup = diagnosticButton
+                    ? trigger.closest('.diagnostic-path')
+                    : trigger.closest('.has-image-hotspot');
+                const triggerSelector = diagnosticButton
+                    ? '.diagnostic-info-trigger[aria-expanded="true"]'
+                    : '.image-hotspot[aria-expanded="true"]';
+                exclusiveGroup?.querySelectorAll(triggerSelector).forEach((openTrigger) => {
+                    openTrigger.setAttribute('aria-expanded', 'false');
+                    const openPopup = document.getElementById(openTrigger.getAttribute('aria-controls'));
+                    if (openPopup) openPopup.hidden = true;
+                });
+            }
+
+            trigger.setAttribute('aria-expanded', String(!isOpen));
+            popup.hidden = isOpen;
+        });
+        if (this.hasCompletedBothStories()) this.renderCompletionPrompt();
     }
 
     async setSectionMesh(sectionIndex, url, label) {
