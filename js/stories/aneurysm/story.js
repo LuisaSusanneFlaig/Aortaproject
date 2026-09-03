@@ -251,10 +251,10 @@ export const aneurysmStory = {
                 {
                     type: 'modelPlaceholder',
                     id: 'alex-flow-overview-model',
-                    src: 'assets/models/flow/aneurysm_lines_anim.glb',
+                    src: 'https://github.com/LuisaSusanneFlaig/Aortaproject/releases/download/v1.0-flow/aneurysm_lines_anim.glb',
                     flowVariants: [
-                        { label: 'Pathlines', src: 'assets/models/flow/aneurysm_lines_anim.glb', framingScale: 0.29, rotationY: 1.5708, animationFps: 20, animationSpeed: 1 },
-                        { label: 'Particle flow', src: 'assets/models/flow/aneurysm_particles_anim.glb', framingScale: 0.35, rotationY: 1.5708, animationFps: 20, animationSpeed: 0.5 }
+                        { label: 'Pathlines', src: 'https://github.com/LuisaSusanneFlaig/Aortaproject/releases/download/v1.0-flow/aneurysm_lines_anim.glb', framingScale: 0.29, rotationY: 1.5708, animationFps: 20, animationSpeed: 1 },
+                        { label: 'Particle flow', src: 'https://github.com/LuisaSusanneFlaig/Aortaproject/releases/download/v1.0-flow/aneurysm_particles_anim.glb', framingScale: 0.35, rotationY: 1.5708, animationFps: 20, animationSpeed: 0.5 }
                     ],
                     modelMode: 'flow',
                     preload: true,
