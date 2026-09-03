@@ -121,11 +121,11 @@ export const dissectionStory = {
                     type: 'symptomBars',
                     subtitle: '1,891 of 5,638 acute dissections',
                     items: [
-                        { icon: 'bolt', label: 'Severe or worst-ever pain', value: 88.7, color: '#c83c48' },
-                        { icon: 'rib_cage', label: 'Chest or back pain', value: 88.7, color: '#c83c48' },
-                        { icon: 'acute', label: 'Sudden onset', value: 85.4, color: '#c83c48' },
-                        { icon: 'blood_pressure', label: 'High blood pressure', value: 64.6, color: '#c83c48' },
-                        { icon: 'hand_bones', label: 'Migrating pain', value: 16.8, color: '#c83c48' }
+                        { icon: 'bolt', label: 'Severe or worst-ever pain', value: 88.7, color: '#c83c48', info: 'A sudden, severe pain in the chest or back is an important warning sign. It can feel different from usual pain and needs urgent medical assessment.' },
+                        { icon: 'rib_cage', label: 'Chest or back pain', value: 88.7, color: '#c83c48', info: 'Pain can be felt in the chest, back, or both. Its location alone cannot confirm a dissection, but it helps clinicians decide how urgently to investigate.' },
+                        { icon: 'acute', label: 'Sudden onset', value: 85.4, color: '#c83c48', info: 'Dissection pain often begins abruptly. A sudden onset is a clinical clue, but other conditions can also cause sudden pain.' },
+                        { icon: 'blood_pressure', label: 'High blood pressure', value: 64.6, color: '#c83c48', info: 'High blood pressure can increase stress on the aortic wall. A normal reading does not rule out dissection, especially after pain or treatment has changed the pressure.' },
+                        { icon: 'hand_bones', label: 'Migrating pain', value: 16.8, color: '#c83c48', info: 'Migrating pain can move from the chest toward the back or abdomen as the dissection extends. This pattern is a clue, not a diagnosis by itself.' }
                     ]
                 },
                 {
@@ -155,19 +155,23 @@ export const dissectionStory = {
                     items: [
                         {
                             icon: 'genetics_svg',
-                            title: 'Marfan Risk'
+                            title: 'Marfan Risk',
+                            info: 'Marfan syndrome can weaken the connective tissue in the aortic wall. This inherited risk is important when clinicians assess sudden chest or back pain.'
                         },
                         {
                             icon: 'monitor_heart_svg',
-                            title: 'Assessment'
+                            title: 'Assessment',
+                            info: 'The team checks the pain pattern, blood pressure, pulses, and signs affecting the brain or limbs. These findings help assess urgency but cannot confirm a dissection alone.'
                         },
                         {
                             icon: 'labs_svg',
-                            title: 'Lab tests'
+                            title: 'Lab tests',
+                            info: 'Blood tests can support the assessment in selected patients. A test such as D-dimer may help rule out dissection in carefully chosen low-risk situations, but it cannot prove the diagnosis.'
                         },
                         {
                             icon: 'radiology_aorta',
-                            title: 'Aortic imaging'
+                            title: 'Aortic imaging',
+                            info: 'CTA shows the aorta and the dissection flap in detail. It helps identify where the dissection starts, how far it extends, and whether complications are present.'
                         }
                     ]
                 },
@@ -182,7 +186,7 @@ export const dissectionStory = {
             title: 'CTA Imaging',
             scrollMode: 'comparison',
             timelineLabel: 'Acute - CTA',
-            className: 'evidence-section',
+            className: 'evidence-section miriam-imaging-section',
             paragraphs: [],
             elements: [
                 {
@@ -236,12 +240,14 @@ export const dissectionStory = {
                         {
                             icon: 'prescriptions',
                             label: 'Uncomplicated Type B',
-                            treatment: 'Medical therapy'
+                            treatment: 'Medical therapy',
+                            info: 'When a Type B dissection is uncomplicated, treatment often starts with medication, pain control, blood-pressure management, and close imaging follow-up.'
                         },
                         {
                             icon: 'medical_services',
                             label: 'Complicated Type B',
-                            treatment: 'Aortic treatment'
+                            treatment: 'Aortic treatment',
+                            info: 'Signs such as organ malperfusion, rupture, persistent pain, or uncontrolled blood pressure can make a Type B dissection complicated and may require an aortic intervention.'
                         }
                     ]
                 },
@@ -308,23 +314,28 @@ export const dissectionStory = {
                     items: [
                         {
                             eyebrow: 'Today',
-                            title: 'Blood pressure'
+                            title: 'Blood pressure',
+                            info: 'After a dissection, controlling blood pressure reduces stress on the injured aortic wall. Medication and targets should follow Miriam’s treatment plan.'
                         },
                         {
                             eyebrow: 'After the acute phase',
-                            title: 'Rehabilitation'
+                            title: 'Rehabilitation',
+                            info: 'Supervised rehabilitation can support a gradual return to everyday activity after the acute phase. The pace depends on symptoms, imaging, and clinical advice.'
                         },
                         {
                             eyebrow: 'In everyday life',
-                            title: 'Dosed activity'
+                            title: 'Dosed activity',
+                            info: 'Activity is adapted to avoid unpredictable blood-pressure spikes. What is appropriate should be decided with Miriam’s care team.'
                         },
                         {
                             eyebrow: 'Long term',
-                            title: 'Regular imaging'
+                            title: 'Regular imaging',
+                            info: 'Follow-up CTA or other imaging checks whether the whole aorta remains stable and whether its shape changes over time.'
                         },
                         {
                             eyebrow: 'In the family',
-                            title: 'Genetic risk'
+                            title: 'Genetic risk',
+                            info: 'Marfan syndrome can run in families. Family members may benefit from genetic counseling and appropriate cardiovascular assessment.'
                         }
                     ]
                 },

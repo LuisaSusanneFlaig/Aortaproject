@@ -6,6 +6,7 @@
     .decision-map-inputs .story-inline-icon,
     .decision-map-marker .story-inline-icon,
     .prevention-copy strong .story-inline-icon,
+    .prevention-info-trigger .story-inline-icon,
     .aortic-stat-card .aortic-clock-value,
     .aortic-stat-card .aortic-branch-percent,
     .burden-panel-change,
@@ -306,7 +307,7 @@ body:not(.light-mode)[data-story-version="aneurysm"] #story .step .aortic-branch
     color: var(--color-accent);
 }
 
-body:not(.light-mode)[data-story-version="aneurysm"] #story .alex-prevention-infographic-section .prevention-copy strong .story-inline-icon {
+body:not(.light-mode)[data-story-version="aneurysm"] #story .alex-prevention-infographic-section :is(.prevention-copy strong, .prevention-info-trigger) .story-inline-icon {
     color: var(--color-accent);
 }
 
