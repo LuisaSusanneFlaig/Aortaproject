@@ -266,10 +266,10 @@ export const dissectionStory = {
                 {
                     type: 'modelPlaceholder',
                     id: 'flow-vis-subacute',
-                    src: 'assets/models/flow/dissection_lines_anim.glb',
+                    src: 'https://github.com/LuisaSusanneFlaig/Aortaproject/releases/download/v1.0-flow/dissection_lines_anim.glb',
                     flowVariants: [
-                        { label: 'Pathlines', src: 'assets/models/flow/dissection_lines_anim.glb', framingScale: 0.2, offsetX: 0, offsetY: 0, rotationY: 1.5708, animationFps: 20, animationSpeed: 1 },
-                        { label: 'Particle flow', src: 'assets/models/flow/dissection_particles_anim.glb', framingScale: 0.2, offsetX: 0, offsetY: -0.06, rotationY: 1.5708, animationFps: 20, animationSpeed: 0.5 }
+                        { label: 'Pathlines', src: 'https://github.com/LuisaSusanneFlaig/Aortaproject/releases/download/v1.0-flow/dissection_lines_anim.glb', framingScale: 0.2, offsetX: 0, offsetY: 0, rotationY: 1.5708, animationFps: 20, animationSpeed: 1 },
+                        { label: 'Particle flow', src: 'https://github.com/LuisaSusanneFlaig/Aortaproject/releases/download/v1.0-flow/dissection_particles_anim.glb', framingScale: 0.2, offsetX: 0, offsetY: -0.06, rotationY: 1.5708, animationFps: 20, animationSpeed: 0.5 }
                     ],
                     modelMode: 'flow',
                     preload: true,
