@@ -3,9 +3,12 @@
     .miriam-prevention-infographic-section
 ) .prevention-timeline {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(14px, 1.7vw, 22px);
-    margin: 30px 0 18px;
+    grid-template-columns: repeat(3, minmax(0, clamp(120px, 12vw, 170px)));
+    grid-template-rows: repeat(2, auto);
+    column-gap: clamp(4px, 0.5vw, 8px);
+    row-gap: clamp(10px, 1.2vw, 16px);
+    justify-content: center;
+    margin: 0 0 18px;
     padding: clamp(18px, 2.6vw, 30px);
 }
 
@@ -15,9 +18,9 @@ body[data-story-version] #story :is(
 ) .prevention-timeline li {
     display: grid;
     grid-template-columns: 1fr;
-    gap: clamp(14px, 2vw, 22px);
-    min-height: clamp(210px, 21vw, 280px);
-    padding: clamp(18px, 2vw, 26px);
+    row-gap: 0;
+    min-height: clamp(170px, 16vw, 210px);
+    padding: clamp(18px, 1vw, 26px);
 }
 
 body[data-story-version] #story :is(
@@ -67,10 +70,70 @@ body[data-story-version="aneurysm"] #story .alex-prevention-infographic-section 
 body[data-story-version] #story :is(
     .alex-prevention-infographic-section,
     .miriam-prevention-infographic-section
-) .prevention-copy strong .story-inline-icon {
+) :is(.prevention-copy strong, .prevention-copy .prevention-info-trigger) .story-inline-icon {
     width: clamp(72px, 6.5vw, 90px);
     height: clamp(72px, 6.5vw, 90px);
     font-size: clamp(3.7rem, 5.5vw, 4.8rem);
+}
+
+body[data-story-version] #story .prevention-info-trigger {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-weight: 800;
+    line-height: 1.25;
+    text-align: left;
+    cursor: pointer;
+}
+
+body[data-story-version] #story .prevention-info-trigger .story-inline-icon {
+    margin-right: 0;
+    color: var(--color-accent);
+}
+
+body[data-story-version] #story .prevention-info-box {
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+    margin-top: 0;
+    overflow-wrap: anywhere;
+}
+
+body[data-story-version] #story .prevention-info-row {
+    position: relative;
+    z-index: 8;
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+}
+
+body[data-story-version] #story :is(
+    .alex-diagnosis-infographic-section,
+    .miriam-diagnosis-infographic-section,
+    .alex-prevention-infographic-section,
+    .miriam-prevention-infographic-section
+) .story-visual-column-inner {
+    overflow: visible;
+}
+
+body[data-story-version] #story .story-copy-column {
+    position: relative;
+    top: auto;
+    bottom: auto;
+    overflow: visible;
+}
+
+body[data-story-version] #story .prevention-info-trigger .story-svg-icon {
+    background-color: currentColor;
 }
 
 body[data-story-version] #story :is(
@@ -118,8 +181,20 @@ body[data-story-version] #story :is(
         .alex-prevention-infographic-section,
         .miriam-prevention-infographic-section
     ) .prevention-timeline {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, clamp(120px, 34vw, 170px)));
+        column-gap: clamp(4px, 1vw, 8px);
+        justify-content: center;
     }
+
+    body[data-story-version="dissection"] #story .miriam-prevention-infographic-section .prevention-timeline {
+        grid-template-columns: repeat(2, minmax(0, clamp(120px, 34vw, 170px)));
+        column-gap: clamp(4px, 1vw, 8px);
+        min-height: 0;
+    }
+}
+
+body[data-story-version="dissection"] #story .miriam-prevention-infographic-section .prevention-timeline {
+    margin-top: 0;
 }
 
 body.light-mode[data-story-version] #story :is(

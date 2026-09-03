@@ -124,10 +124,18 @@ export class GsapSectionAnimator {
 
                 if (content.classList.contains('story-split-shell')) {
                     const copy = content.querySelector('.story-copy-column');
+                    const visualTriggerStart = section.classList.contains('miriam-diagnosis-infographic-section')
+                        || section.classList.contains('miriam-imaging-section')
+                        ? 'top 30%'
+                        : 'top 62%';
+                    const visualTriggerEnd = section.classList.contains('miriam-symptoms-section')
+                        || section.classList.contains('miriam-diagnosis-infographic-section')
+                        ? 'bottom 30%'
+                        : 'bottom 38%';
                     const activeTrigger = ScrollTrigger.create({
                         trigger: section,
-                        start: 'top 62%',
-                        end: 'bottom 38%',
+                        start: visualTriggerStart,
+                        end: visualTriggerEnd,
                         onToggle: ({ isActive }) => {
                             section.classList.toggle('is-gsap-active', isActive);
                         }
@@ -311,12 +319,14 @@ export class GsapSectionAnimator {
             if (!shineElement) return;
 
             const shine = gsap.timeline({
-                delay: 0.8 + index * 0.12
+                delay: 1.05 + index * 0.45,
+                repeat: -1,
+                repeatDelay: 1.4
             });
             shine.set(shineElement, { xPercent: -160, autoAlpha: 0 });
             shine.to(shineElement, {
                 xPercent: 160,
-                autoAlpha: 0.35,
+                autoAlpha: 0.75,
                 duration: 1.4,
                 ease: 'power2.inOut'
             });
@@ -333,10 +343,10 @@ export class GsapSectionAnimator {
 
     addDiagnosticButtonShine(gsap, localAnimations) {
         const targets = this.root.querySelectorAll(
-            '.alex-diagnosis-infographic-section .diagnostic-shine-target'
+            '.diagnostic-shine-target, .visual-icon-shine-target'
         );
         targets.forEach((target, index) => {
-            const shineElement = target.querySelector('.diagnostic-button-shine');
+            const shineElement = target.querySelector('.diagnostic-button-shine, .visual-icon-shine');
             if (!shineElement) return;
 
             const shine = gsap.timeline({

@@ -5,6 +5,16 @@ import { clampPercent } from './renderUtils.js';
 
 let symptomInfoId = 0;
 let diagnosticInfoId = 0;
+let decisionInfoId = 0;
+let preventionInfoId = 0;
+
+const renderVisualIcon = (icon, className = 'story-inline-icon') => renderMaterialIcon(
+    icon,
+    `${className} visual-icon-shine-target`
+).replace(
+    '</span>',
+    '<span class="visual-icon-shine" aria-hidden="true"></span></span>'
+);
 
 export function renderSymptomBars(element = {}) {
     const items = element.items || [];
@@ -20,8 +30,8 @@ export function renderSymptomBars(element = {}) {
                     const infoId = item.info ? `symptom-info-${++symptomInfoId}` : '';
                     const icon = item.icon
                         ? (item.info
-                            ? `<button class="symptom-row-icon symptom-info-trigger" type="button" aria-label="More information about ${item.label}" aria-expanded="false" aria-controls="${infoId}">${renderMaterialIcon(item.icon, 'story-inline-icon')}<span class="symptom-button-shine" aria-hidden="true"></span></button>`
-                            : `<span class="symptom-row-icon">${renderMaterialIcon(item.icon, 'story-inline-icon')}</span>`)
+                            ? `<button class="symptom-row-icon symptom-info-trigger" type="button" aria-label="More information about ${item.label}" aria-expanded="false" aria-controls="${infoId}">${renderMaterialIcon(item.icon, 'story-inline-icon').replace('</span>', '<span class="symptom-button-shine" aria-hidden="true"></span></span>')}</button>`
+                            : `<span class="symptom-row-icon">${renderVisualIcon(item.icon)}</span>`)
                         : '';
                     return `
                     <div class="symptom-row" style="--row-index:${index}">
@@ -82,6 +92,7 @@ export function renderTreatmentDecision(element = {}) {
     if (element.variant === 'decisionMap') {
         const items = element.items || [];
         const inputs = element.inputs || [];
+        const infoBoxes = [];
         return `
             <figure class="treatment-decision-map" aria-label="${element.title || 'Treatment decision map'}">
                 ${element.title ? `<div class="decision-spectrum-heading">${element.title}</div>` : ''}
@@ -98,7 +109,13 @@ export function renderTreatmentDecision(element = {}) {
                 <div class="decision-map-zones">
                     ${items.map((item, index) => `
                         <section class="decision-map-zone" style="--row-index:${index}">
-                            <span class="decision-map-marker">${renderMaterialIcon(item.icon || 'fact_check', 'story-inline-icon')}</span>
+                            ${item.info
+                                ? (() => {
+                                    const infoId = `decision-info-${++decisionInfoId}`;
+                                    infoBoxes.push(`<div class="symptom-info-box decision-info-box" id="${infoId}" hidden>${item.info}</div>`);
+                                    return `<button class="decision-map-marker decision-info-trigger" type="button" aria-label="More information about ${item.label}" aria-expanded="false" aria-controls="${infoId}">${renderVisualIcon(item.icon || 'fact_check')}</button>`;
+                                })()
+                                : `<span class="decision-map-marker">${renderVisualIcon(item.icon || 'fact_check')}</span>`}
                             <div class="decision-map-finding">
                                 <span class="decision-map-label">${item.label}</span>
                                 <span class="decision-map-arrow" aria-hidden="true">↓</span>
@@ -108,6 +125,7 @@ export function renderTreatmentDecision(element = {}) {
                         </section>
                     `).join('')}
                 </div>
+                ${infoBoxes.length ? `<div class="decision-info-row">${infoBoxes.join('')}</div>` : ''}
             </figure>
         `;
     }
@@ -116,13 +134,13 @@ export function renderTreatmentDecision(element = {}) {
         <div class="treatment-decision">
             ${(element.items || []).map((item, index) => `
                 <section class="treatment-decision-row" style="--row-index:${index}">
-                    ${item.icon ? `<span class="treatment-decision-badge">${renderMaterialIcon(item.icon, 'story-inline-icon')}</span>` : ''}
+                    ${item.icon ? `<span class="treatment-decision-badge">${renderVisualIcon(item.icon)}</span>` : ''}
                     <div>
-                        <small>${renderMaterialIcon('fact_check', 'story-inline-icon')}Finding</small>
+                        <small>${renderVisualIcon('fact_check')}Finding</small>
                         <strong>${item.label}</strong>
                     </div>
                     <div>
-                        <small>${renderMaterialIcon('medical_services', 'story-inline-icon')}Treatment</small>
+                        <small>${renderVisualIcon('medical_services')}Treatment</small>
                         <strong>${item.treatment}</strong>
                         <p>${item.text}</p>
                     </div>
@@ -139,7 +157,7 @@ export function renderTreatmentSteps(element = {}) {
             ${(element.items || []).map((item, index) => `
                 <li style="--row-index:${index}">
                     <span>${index + 1}</span>
-                    <strong>${renderMaterialIcon(icons[index] || 'medical_services', 'story-inline-icon')}${item.title}</strong>
+                    <strong>${renderVisualIcon(icons[index] || 'medical_services')}${item.title}</strong>
                     <p>${item.text}</p>
                 </li>
             `).join('')}
@@ -150,7 +168,7 @@ export function renderTreatmentSteps(element = {}) {
 export function renderTreatmentBalance(element = {}) {
     const renderList = (title, items, className, icon) => `
         <section class="treatment-balance-column ${className}">
-            <h3>${renderMaterialIcon(icon, 'story-inline-icon')}${title}</h3>
+            <h3>${renderVisualIcon(icon)}${title}</h3>
             <ul>${(items || []).map((item) => `<li>${item}</li>`).join('')}</ul>
         </section>
     `;
@@ -165,18 +183,26 @@ export function renderTreatmentBalance(element = {}) {
 
 export function renderPreventionTimeline(element = {}) {
     const icons = ['blood_pressure', 'prescriptions', 'fitness_center', 'calendar_month', 'genetics'];
+    const infoBoxes = [];
     return `
         <ol class="prevention-timeline">
-            ${(element.items || []).map((item, index) => `
+            ${(element.items || []).map((item, index) => {
+                const infoId = item.info ? `prevention-info-${++preventionInfoId}` : '';
+                if (item.info) infoBoxes.push(`<div class="symptom-info-box prevention-info-box" id="${infoId}" hidden>${item.info}</div>`);
+                return `
                 <li style="--row-index:${index}">
                     <span class="prevention-node" aria-hidden="true"></span>
                     <div class="prevention-copy">
-                        <strong>${renderMaterialIcon(icons[index] || 'check_circle', 'story-inline-icon')}${item.title || ''}</strong>
+                        ${item.info
+                            ? `<button class="prevention-info-trigger" type="button" aria-label="More information about ${item.title || 'this prevention step'}" aria-expanded="false" aria-controls="${infoId}">${renderVisualIcon(icons[index] || 'check_circle')}${item.title || ''}</button>`
+                            : `<strong>${renderVisualIcon(icons[index] || 'check_circle')}${item.title || ''}</strong>`}
                         ${item.text ? `<p>${item.text}</p>` : ''}
                     </div>
                 </li>
-            `).join('')}
+                `;
+            }).join('')}
         </ol>
+        ${infoBoxes.length ? `<div class="prevention-info-row">${infoBoxes.join('')}</div>` : ''}
     `;
 }
 

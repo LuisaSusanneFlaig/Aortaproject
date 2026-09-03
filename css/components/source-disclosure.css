@@ -57,6 +57,7 @@ body[data-story-version] #story .source-disclosure[open] .source-toggle-hide {
 
 .source-disclosure .source-toggle-show .story-material-icon,
 body[data-story-version] #story .source-toggle-show .story-material-icon {
+    font-size: clamp(1.35rem, 2vw, 1.7rem);
     color: var(--color-text);
 }
 

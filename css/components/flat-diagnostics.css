@@ -130,7 +130,7 @@ body[data-story-version] #story .symptom-info-trigger {
     overflow: hidden;
     padding: 0;
     border: 0;
-    border-radius: 50%;
+    border-radius: 0;
     background: transparent;
     color: inherit;
     font: inherit;
@@ -138,29 +138,6 @@ body[data-story-version] #story .symptom-info-trigger {
 }
 
 body[data-story-version] #story .symptom-button-shine {
-    position: absolute;
-    inset: -40% auto -40% 0;
-    z-index: 0;
-    width: 48%;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.45),
-        transparent
-    );
-    content: '';
-    filter: blur(3px);
-    pointer-events: none;
-    transform: skewX(-18deg);
-    will-change: transform;
-}
-
-body[data-story-version="aneurysm"] #story .alex-diagnosis-infographic-section .diagnostic-shine-target {
-    position: relative;
-    overflow: hidden;
-}
-
-body[data-story-version="aneurysm"] #story .alex-diagnosis-infographic-section .diagnostic-button-shine {
     position: absolute;
     inset: -40% auto -40% 0;
     z-index: 2;
@@ -178,8 +155,57 @@ body[data-story-version="aneurysm"] #story .alex-diagnosis-infographic-section .
     will-change: transform;
 }
 
+body[data-story-version] #story .diagnostic-shine-target {
+    position: relative;
+    overflow: hidden;
+}
+
+body[data-story-version] #story .diagnostic-button-shine {
+    position: absolute;
+    inset: -40% auto -40% 0;
+    z-index: 2;
+    width: 35%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.8),
+        transparent
+    );
+    content: '';
+    filter: blur(2px);
+    pointer-events: none;
+    transform: skewX(-18deg);
+    will-change: transform;
+}
+
+body[data-story-version] #story .visual-icon-shine-target {
+    position: relative;
+    display: inline-flex;
+    overflow: hidden;
+    vertical-align: middle;
+}
+
+body[data-story-version] #story .visual-icon-shine {
+    position: absolute;
+    inset: -40% auto -40% 0;
+    z-index: 2;
+    width: 38%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.8),
+        transparent
+    );
+    content: '';
+    filter: blur(2px);
+    pointer-events: none;
+    transform: skewX(-18deg);
+    will-change: transform;
+}
+
 body[data-story-version] #story .symptom-info-trigger .story-inline-icon {
     position: relative;
+    overflow: hidden;
     z-index: 1;
 }
 
@@ -209,6 +235,11 @@ body[data-story-version] #story .symptom-info-box[hidden] {
 }
 
 body[data-story-version] #story .diagnostic-info-row {
+    position: relative;
+    z-index: 8;
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 100%;
     width: 100%;
 }
 

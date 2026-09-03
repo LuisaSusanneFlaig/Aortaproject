@@ -45,8 +45,11 @@ body[data-story-version] .flow-research-section .story-split-shell {
     background: transparent;
     backdrop-filter: none;
     box-shadow: none;
-    opacity: 1;
-    transform: none;
+    /* A transformed ancestor changes the containing block of the fixed
+       visual column. Keep the split shell neutral in both stories so the
+       visual stage stays viewport-fixed while the copy scrolls. */
+    opacity: 1 !important;
+    transform: none !important;
 }
 
 body[data-story-version] .story-visual-column {
@@ -71,7 +74,7 @@ body[data-story-version] .story-visual-column {
     transition: none;
 }
 
-body[data-story-version] .step.active .story-visual-column {
+body[data-story-version] .step:is(.active, .is-gsap-active) .story-visual-column {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
@@ -79,6 +82,22 @@ body[data-story-version] .step.active .story-visual-column {
     transition:
         opacity 0.22s ease,
         transform 0.28s ease;
+}
+
+/* Miriam's diagnosis copy is longer than the other infographic sections.
+   Keep its visual stage on the previous story state until the adjusted
+   ScrollTrigger takes over, instead of letting the marker-based .active
+   fallback reveal it early. */
+@media (min-width: 901px) and (prefers-reduced-motion: no-preference) {
+    body[data-story-version="dissection"] .step:is(
+        .miriam-diagnosis-infographic-section,
+        .miriam-imaging-section
+    ).active:not(.is-gsap-active) .story-visual-column {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: scale(0.975);
+    }
 }
 
 body[data-story-version].is-completion-active .story-visual-column {

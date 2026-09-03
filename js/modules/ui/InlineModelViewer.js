@@ -12,6 +12,7 @@ class InlineModelViewer {
         this.hasStarted = false;
         this.lastFrameTime = 0;
         this.animationAccumulator = 0;
+        this.modelLoadToken = 0;
         this.referenceModelDimension = null;
         this.animationFps = Math.max(1, Number(container.dataset.animationFps) || 30);
         this.animationSpeed = Math.max(0, Number(container.dataset.animationSpeed) || 1);
@@ -48,8 +49,10 @@ class InlineModelViewer {
 
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera(38, 1, 0.01, 10000);
+        const isLocalHost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+        const isPathlineModel = modelUrl.includes('_lines_anim.glb');
         this.renderer = new THREE.WebGLRenderer({
-            antialias: modelMode !== 'flow',
+            antialias: modelMode !== 'flow' || isLocalHost || isPathlineModel,
             alpha: true,
             powerPreference: 'high-performance'
         });
@@ -101,11 +104,16 @@ class InlineModelViewer {
     }
 
     async loadModel(modelUrl) {
+        const loadToken = ++this.modelLoadToken;
         const modelMode = this.container.dataset.modelMode || 'layers';
         this.framingScale = Number(this.container.dataset.framingScale) || null;
         this.animationFps = Math.max(1, Number(this.container.dataset.animationFps) || 30);
         this.animationSpeed = Math.max(0, Number(this.container.dataset.animationSpeed) || 1);
         const gltf = await new GLTFLoader().loadAsync(modelUrl);
+        if (loadToken !== this.modelLoadToken) {
+            this.disposeObject(gltf.scene);
+            return;
+        }
             this.originalModel = gltf.scene;
             if (modelMode === 'flow') this.markTransparentSourceMeshes(this.originalModel);
             if (modelMode === 'surface') this.applySurfaceMaterial(this.originalModel);
@@ -148,6 +156,9 @@ class InlineModelViewer {
 
     async switchModel(modelUrl, options = {}) {
         if (!modelUrl || modelUrl === this.container.dataset.modelUrl) return;
+        // Invalidate an in-flight preload before starting the requested model.
+        // Otherwise both async loads can add a model to the same scene.
+        this.modelLoadToken += 1;
         this.container.dataset.modelUrl = modelUrl;
         Object.entries(options).forEach(([key, value]) => {
             const attribute = key.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);

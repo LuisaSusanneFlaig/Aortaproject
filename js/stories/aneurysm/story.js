@@ -120,7 +120,8 @@ export const aneurysmStory = {
                         {
                             icon: 'sick',
                             label: 'Symptoms before acute event',
-                            value: 5
+                            value: 5,
+                            info: 'A small proportion of people may notice symptoms before an acute event. Chest or back pain, shortness of breath, trouble swallowing, or a changed voice should be assessed promptly, especially when an aortic aneurysm is already known.'
                         }
                     ]
                 },
@@ -218,17 +219,20 @@ export const aneurysmStory = {
                         {
                             icon: 'circle_circle',
                             label: 'Stable diameter and growth',
-                            treatment: 'Continue monitoring'
+                            treatment: 'Continue monitoring',
+                            info: 'When the aortic diameter and growth remain stable, the usual next step is continued surveillance with planned imaging and review by the care team.'
                         },
                         {
                             icon: 'expand',
                             label: 'Faster growth or added risk',
-                            treatment: 'Appointment at an aortic center'
+                            treatment: 'Appointment at an aortic center',
+                            info: 'Faster enlargement or additional risk features can shift the decision toward earlier specialist review at an aortic center.'
                         },
                         {
                             icon: 'surgical',
                             label: 'Point at which treatment is recommended',
-                            treatment: 'Aortic repair'
+                            treatment: 'Aortic repair',
+                            info: 'If the aorta reaches a treatment threshold or other risk factors make repair advisable, planned aortic surgery may be discussed before an emergency occurs.'
                         }
                     ]
                 },
@@ -294,23 +298,28 @@ export const aneurysmStory = {
                     items: [
                         {
                             eyebrow: 'Every day',
-                            title: 'Blood pressure'
+                            title: 'Blood pressure',
+                            info: 'Keeping blood pressure controlled reduces stress on the aortic wall. Alex should follow the plan agreed with his care team and report concerns about side effects or unusually high readings.'
                         },
                         {
                             eyebrow: 'With the care team',
-                            title: 'Medication'
+                            title: 'Medication',
+                            info: 'Medication may be used to manage blood pressure and reduce strain on the aorta. The choice and dose depend on Alex’s wider health and should be reviewed with his clinicians.'
                         },
                         {
                             eyebrow: 'In activity',
-                            title: 'Adapted exertion'
+                            title: 'Adapted exertion',
+                            info: 'Activity recommendations are individualized. Avoiding sudden, extreme exertion can help limit sharp blood-pressure rises, while the care team defines what is safe.'
                         },
                         {
                             eyebrow: 'Long term',
-                            title: 'Regular imaging'
+                            title: 'Regular imaging',
+                            info: 'Follow-up imaging tracks aortic size and shape over time. Comparing scans helps the care team identify meaningful changes early.'
                         },
                         {
                             eyebrow: 'In the family',
-                            title: 'Genetic risk'
+                            title: 'Genetic risk',
+                            info: 'Inherited connective-tissue conditions can affect relatives. Genetic counseling and family assessment can help determine who may benefit from follow-up.'
                         }
                     ]
                 },
