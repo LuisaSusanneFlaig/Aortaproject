@@ -126,6 +126,10 @@ function renderInlineModel(model) {
     if (!model?.url) return '';
     const label = model.label || '3D model';
     const modelMode = model.mode || 'layers';
+    const rotationX = Number.isFinite(model.rotationX) ? ` data-rotation-x="${model.rotationX}"` : '';
+    const rotationY = Number.isFinite(model.rotationY) ? ` data-rotation-y="${model.rotationY}"` : '';
+    const rotationZ = Number.isFinite(model.rotationZ) ? ` data-rotation-z="${model.rotationZ}"` : '';
+    const framingScale = Number.isFinite(model.framingScale) ? ` data-framing-scale="${model.framingScale}"` : '';
     const legend = model.legend === false ? '' : `
         <div class="wall-layer-legend" aria-label="Legend of aortic wall layers">
             <span><i class="intima"></i>Intima</span>
@@ -134,7 +138,8 @@ function renderInlineModel(model) {
         </div>`;
     return `
         <figure class="inline-model-figure">
-            <div class="inline-model-viewer" data-inline-model data-model-url="${model.url}" data-model-mode="${modelMode}" role="img" aria-label="${label}">
+            <div class="inline-model-viewer" data-inline-model data-model-url="${model.url}" data-model-mode="${modelMode}"${rotationX}${rotationY}${rotationZ}${framingScale} role="img" aria-label="${label}">
+                ${model.rotationHint ? '<span class="inline-model-360-hint material-symbols-rounded story-material-icon" aria-hidden="true">360</span>' : ''}
                 <div class="inline-model-loading" aria-hidden="true"></div>
             </div>
             <div class="inline-model-meta">

@@ -3,6 +3,8 @@ import { renderAneurysmGrowth, renderAneurysmSexRisk } from './dataVisuals.js';
 import { renderMaterialIcon } from './icons.js';
 import { clampPercent } from './renderUtils.js';
 
+let symptomInfoId = 0;
+let diagnosticInfoId = 0;
 
 export function renderSymptomBars(element = {}) {
     const items = element.items || [];
@@ -15,9 +17,15 @@ export function renderSymptomBars(element = {}) {
             <div class="symptom-bars">
                 ${items.map((item, index) => {
                     const displayValue = Math.round(item.value);
+                    const infoId = item.info ? `symptom-info-${++symptomInfoId}` : '';
+                    const icon = item.icon
+                        ? (item.info
+                            ? `<button class="symptom-row-icon symptom-info-trigger" type="button" aria-label="More information about ${item.label}" aria-expanded="false" aria-controls="${infoId}">${renderMaterialIcon(item.icon, 'story-inline-icon')}<span class="symptom-button-shine" aria-hidden="true"></span></button>`
+                            : `<span class="symptom-row-icon">${renderMaterialIcon(item.icon, 'story-inline-icon')}</span>`)
+                        : '';
                     return `
                     <div class="symptom-row" style="--row-index:${index}">
-                        ${item.icon ? `<span class="symptom-row-icon">${renderMaterialIcon(item.icon, 'story-inline-icon')}</span>` : ''}
+                        ${icon}
                         <div class="symptom-row-label">
                             <span>${item.label}</span>
                             <strong>${displayValue}%</strong>
@@ -25,6 +33,7 @@ export function renderSymptomBars(element = {}) {
                         <div class="symptom-track" role="img" aria-label="${item.label}: ${displayValue} percent">
                             <span style="width: ${clampPercent(item.value)}%; background: ${item.color || 'var(--color-accent)'}"></span>
                         </div>
+                        ${item.info ? `<div class="symptom-info-box" id="${infoId}" hidden>${item.info}</div>` : ''}
                     </div>
                 `;
                 }).join('')}
@@ -36,18 +45,36 @@ export function renderSymptomBars(element = {}) {
 
 export function renderDiagnosticPath(element = {}) {
     const icons = ['search', 'monitor_heart', 'biotech', 'radiology'];
-    return `
-        <ol class="diagnostic-path">
-            ${(element.items || []).map((item, index) => `
+    const customIcons = new Set(['radiology_aorta', 'genetics_svg', 'monitor_heart_svg', 'labs_svg', 'event_available_svg', 'compare_svg']);
+    const renderDiagnosticIcon = (icon) => customIcons.has(icon)
+        ? `<span class="diagnostic-custom-icon diagnostic-custom-icon-${icon} diagnostic-shine-target" aria-hidden="true"><span class="diagnostic-button-shine" aria-hidden="true"></span></span>`
+        : renderMaterialIcon(icon, 'story-inline-icon diagnostic-shine-target').replace(
+            '</span>',
+            '<span class="diagnostic-button-shine" aria-hidden="true"></span></span>'
+        );
+    const infoBoxes = [];
+    const renderDiagnosticItem = (item, index) => {
+        const infoId = item.info ? `diagnostic-info-${++diagnosticInfoId}` : '';
+        if (item.info) infoBoxes.push(`<div class="symptom-info-box diagnostic-info-box" id="${infoId}" hidden>${item.info}</div>`);
+        const icon = renderDiagnosticIcon(item.icon || icons[index] || 'fact_check');
+        const trigger = item.info
+            ? `<button class="diagnostic-info-trigger" type="button" aria-label="More information about ${item.title}" aria-expanded="false" aria-controls="${infoId}">${icon}</button>`
+            : icon;
+        return `
                 <li style="--row-index:${index}">
                     <span class="diagnostic-step-index">${index + 1}</span>
                     <div>
-                        <strong>${renderMaterialIcon(item.icon || icons[index] || 'fact_check', 'story-inline-icon')}${item.title}</strong>
+                        <strong>${trigger}${item.title}</strong>
                         ${item.text ? `<p>${item.text}</p>` : ''}
                     </div>
                 </li>
-            `).join('')}
+            `;
+    };
+    return `
+        <ol class="diagnostic-path">
+            ${(element.items || []).map(renderDiagnosticItem).join('')}
         </ol>
+        ${infoBoxes.length ? `<div class="diagnostic-info-row">${infoBoxes.join('')}</div>` : ''}
     `;
 }
 
@@ -137,7 +164,7 @@ export function renderTreatmentBalance(element = {}) {
 }
 
 export function renderPreventionTimeline(element = {}) {
-    const icons = ['blood_pressure', 'medical_services', 'fitness_center', 'calendar_month', 'genetics'];
+    const icons = ['blood_pressure', 'prescriptions', 'fitness_center', 'calendar_month', 'genetics'];
     return `
         <ol class="prevention-timeline">
             ${(element.items || []).map((item, index) => `
@@ -172,17 +199,31 @@ export function renderModelPlaceholder(element = {}) {
     const framingAttribute = element.framingScale
         ? ` data-framing-scale="${element.framingScale}"`
         : '';
+    const offsetAttribute = (key) => Number.isFinite(element[key])
+        ? ` data-${key.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}="${element[key]}"`
+        : '';
     const viewerAttributes = element.src
-        ? ` data-inline-model data-model-url="${element.src}" data-model-mode="${element.modelMode || 'flow'}" data-animation-fps="${element.animationFps || 30}"${framingAttribute}`
+        ? ` data-inline-model data-model-url="${element.src}" data-model-mode="${element.modelMode || 'flow'}" data-animation-fps="${element.animationFps || 30}"${element.preload ? ' data-preload="true"' : ''}${framingAttribute}${offsetAttribute('offsetX')}${offsetAttribute('offsetY')}`
         : '';
     const accessibleLabel = element.alt || element.title || 'Animated flow model';
+    const flowVariants = element.flowVariants || [];
+    const variantAttribute = (variant, key) => Number.isFinite(variant[key])
+        ? ` data-flow-${key.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}="${variant[key]}"`
+        : '';
+    const flowControls = flowVariants.length > 1 ? `
+            <div class="flow-variant-controls" role="group" aria-label="Choose flow visualization">
+                ${flowVariants.map((variant, index) => `
+                    <button class="flow-variant-button${index === 0 ? ' active' : ''}" type="button" data-flow-url="${variant.src}"${variantAttribute(variant, 'framingScale')}${variantAttribute(variant, 'offsetX')}${variantAttribute(variant, 'offsetY')}${variantAttribute(variant, 'rotationX')}${variantAttribute(variant, 'rotationY')}${variantAttribute(variant, 'rotationZ')}${variantAttribute(variant, 'animationFps')}${variantAttribute(variant, 'animationSpeed')} aria-pressed="${index === 0}">${variant.label || ('View ' + (index + 1))}</button>
+                `).join('')}
+            </div>` : '';
     return `
         <figure class="model-placeholder" id="${element.id || ''}">
-            <div class="model-placeholder-stage${element.src ? ' inline-model-viewer' : ''}"${viewerAttributes} role="img" aria-label="${accessibleLabel}">
+            <div class="model-placeholder-stage${element.src ? ' inline-model-viewer' : ''}"${viewerAttributes}${flowVariants.length > 1 ? ' data-flow-switch' : ''} role="img" aria-label="${accessibleLabel}">
                 ${element.src
-                    ? '<div class="inline-model-loading" aria-hidden="true"></div><span class="inline-model-error">Animation unavailable</span>'
+                    ? `${element.rotationHint ? '<span class="inline-model-360-hint material-symbols-rounded story-material-icon" aria-hidden="true">360</span>' : ''}<div class="inline-model-loading" aria-hidden="true"></div><span class="inline-model-error">Animation unavailable</span>`
                     : '<span>GLTF / ANIMATION</span>'}
             </div>
+            ${flowControls}
             ${element.note ? `<p class="symptom-note model-placeholder-note">${element.note}</p>` : ''}
         </figure>
     `;

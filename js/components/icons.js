@@ -28,6 +28,30 @@ const materialIconMap = {
     '*': 'fact_check', '5.5': 'warning'
 };
 
+const svgIconAssetMap = {
+    '360': '360_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg',
+    acute: 'acute_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg',
+    block: 'block_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg',
+    blood_pressure: 'blood_pressure_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg',
+    bolt: 'bolt_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg',
+    calendar_month: 'calendar_month_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg',
+    circle_circle: 'circle_circle_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg',
+    compare: 'compare.svg',
+    event_available: 'event_available.svg',
+    expand: 'expand_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg',
+    fitness_center: 'fitness_center_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg',
+    genetics: 'genetics.svg',
+    hand_bones: 'hand_bones_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg',
+    labs: 'labs.svg',
+    medical_information: 'medical_information_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg',
+    medical_services: 'medical_services_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg',
+    monitor_heart: 'monitor_heart.svg',
+    prescriptions: 'prescriptions_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg',
+    rib_cage: 'rib_cage_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg',
+    sick: 'sick_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg',
+    surgical: 'surgical_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg'
+};
+
 const abbreviationLegend = {
     BD: 'blood pressure', CT: 'computed tomography', DNA: 'genetic information',
     EVAR: 'endovascular aortic repair', OP: 'operation', Rx: 'medical therapy',
@@ -35,6 +59,10 @@ const abbreviationLegend = {
 };
 
 export function renderMaterialIcon(name, className = '') {
+    const asset = svgIconAssetMap[name];
+    if (asset) {
+        return `<span class="story-svg-icon story-material-icon svg-icon-${name} ${className}" style="-webkit-mask-image: url('assets/${asset}'); mask-image: url('assets/${asset}')" aria-hidden="true"></span>`;
+    }
     return `<span class="material-symbols-rounded story-material-icon ${className}" aria-hidden="true">${name}</span>`;
 }
 

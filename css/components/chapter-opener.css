@@ -69,8 +69,8 @@ body[data-story-version] .chapter-opener-rule {
 @media (prefers-reduced-motion: reduce) {
     body[data-story-version] .chapter-opener,
     body[data-story-version] .chapter-opener * {
-        animation: none !important;
-        transition: none !important;
+        animation: none;
+        transition: none;
     }
 }
 

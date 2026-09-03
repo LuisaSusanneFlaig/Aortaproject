@@ -1,0 +1,276 @@
+﻿/* Final visual simplification: no framed boxes, gradients, shadows, or glass panels. */
+body[data-story-version] {
+    --color-text: #ffffff;
+    --text-main: #ffffff;
+    --text-dim: #ffffff;
+    --color-accent: #b62413;
+    --accent-red: #b62413;
+    --accent-blue: #b62413;
+    color: #ffffff;
+}
+
+body.light-mode[data-story-version] {
+    --color-text: #1d1d1f;
+    --text-main: #1d1d1f;
+    --text-dim: #1d1d1f;
+    --color-accent: #b62413;
+    --accent-red: #b62413;
+    --accent-blue: #b62413;
+    color: #1d1d1f;
+}
+
+body[data-story-version] #story *,
+body[data-story-version] #story *::before,
+body[data-story-version] #story *::after {
+    box-shadow: none;
+    backdrop-filter: none;
+    background-image: none;
+}
+
+body[data-story-version] #story *::before,
+body[data-story-version] #story *::after {
+    display: none;
+    content: none;
+}
+
+body[data-story-version] #story :is(
+    .text-box,
+    .story-split-shell,
+    .story-visual-column,
+    .story-visual-fallback,
+    .info-image,
+    .info-image img,
+    .stats-box,
+    .model-placeholder-stage,
+    .model-placeholder figcaption,
+    .inline-model-viewer,
+    .inline-model-loading,
+    .wall-layer-legend i,
+    .chapter-opener-icon,
+    .chapter-opener-rule,
+    .aortic-stat-card,
+    .aortic-dot,
+    .aortic-case-routine,
+    .aortic-case-hidden,
+    .aortic-legend-dot,
+    .aortic-swatch,
+    .aortic-line,
+    .diagnostic-path,
+    .diagnostic-path li,
+    .diagnostic-path li > div,
+    .diagnostic-step-index,
+    .symptom-stat-card,
+    .symptom-row,
+    .symptom-row-icon,
+    .symptom-track,
+    .treatment-decision,
+    .treatment-decision-row,
+    .treatment-decision-map,
+    .decision-map-inputs > span,
+    .decision-spectrum-heading,
+    .decision-map-axis,
+    .axis-line,
+    .decision-map-zones,
+    .decision-map-zone,
+    .decision-map-marker,
+    .treatment-steps,
+    .treatment-steps li,
+    .treatment-balance,
+    .treatment-balance-column,
+    .prevention-timeline,
+    .prevention-timeline li,
+    .prevention-node,
+    .prevention-copy strong .story-inline-icon,
+    .imaging-panel,
+    .imaging-panel-media,
+    .imaging-modality,
+    .aneurysm-burden,
+    .aneurysm-burden-heading,
+    .aneurysm-burden-legend i,
+    .aneurysm-growth,
+    .aneurysm-growth-heading,
+    .growth-vessel,
+    .aneurysm-sex-risk,
+    .aneurysm-risk-drivers,
+    .risk-driver-row
+) {
+    border: 0;
+    outline: 0;
+    background-color: transparent;
+}
+
+body[data-story-version] #story :is(.stats-box) {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+body[data-story-version] #story :is(.stats-icon) {
+    display: none;
+}
+
+body[data-story-version] #story :is(
+    .diagnostic-path .story-inline-icon,
+    .symptom-row-icon,
+    .decision-map-marker,
+    .prevention-copy strong .story-inline-icon
+) {
+    background: transparent;
+}
+
+body[data-story-version] #story :is(
+    .axis-line,
+    .symptom-track span,
+    .risk-driver-row span,
+    .aneurysm-burden-legend i
+) {
+    background: var(--color-accent);
+}
+
+body[data-story-version] #story :is(.story-visual-column, .chapter-opener) {
+    background-color: var(--color-bg);
+}
+
+body[data-story-version] #story :is(
+    h1,
+    h2,
+    h3,
+    h4,
+    p,
+    small,
+    strong,
+    figcaption,
+    .chapter-opener-icon,
+    .chapter-opener-eyebrow,
+    .chapter-opener-title,
+    .story-visual-fallback span,
+    .story-visual-fallback strong,
+    .stats-copy span,
+    .abbr-legend,
+    .stats-kicker,
+    .diagnosis-label,
+    .decision-spectrum-heading,
+    .story-pull-quote
+) {
+    color: var(--color-text);
+    text-decoration-color: var(--color-text);
+    border-color: transparent;
+    font-family: 'Roboto', Arial, sans-serif;
+}
+
+body[data-story-version] #story :is(
+    h1,
+    h2,
+    h3,
+    h4,
+    .chapter-opener-title,
+    .chapter-opener-eyebrow,
+    .decision-spectrum-heading,
+    .story-visual-fallback strong,
+    .aneurysm-burden-heading,
+    .aneurysm-growth-heading,
+    .aneurysm-sex-heading,
+    .aneurysm-drivers-heading
+) {
+    font-family: 'Hanken Grotesk', Arial, sans-serif;
+}
+
+body[data-story-version] #story :is(.chapter-opener-rule) {
+    display: none;
+}
+
+body[data-story-version] #story :is(
+    .text-box h2,
+    .story-copy-column > h2
+) {
+    padding-left: 0;
+    border-left: 0;
+}
+
+body[data-story-version] #story :is(
+    .flow-research-section,
+    .flow-research-section[data-scroll-mode="sticky"]
+) {
+    width: 100%;
+    min-height: max(100svh, 760px);
+    height: auto;
+    padding: 0 clamp(22px, 4vw, 72px);
+}
+
+body[data-story-version] #story :is(
+    .flow-research-section .story-split-shell,
+    .flow-research-section .text-box
+) {
+    display: block;
+    width: 100%;
+    max-width: none;
+    min-height: max(100svh, 760px);
+    height: auto;
+    padding: clamp(24px, 4vh, 48px) 0;
+    overflow: visible;
+}
+
+body[data-story-version] #story .flow-research-section :is(
+    .element-modelPlaceholder,
+    .model-placeholder,
+    .model-placeholder-stage
+) {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 0;
+    margin: 0;
+    grid-column: auto;
+    grid-row: auto;
+}
+
+body[data-story-version] #story .flow-research-section :is(
+    .inline-model-viewer,
+    .model-placeholder-stage
+) {
+    height: min(70vh, 720px);
+    aspect-ratio: 4 / 3;
+}
+
+body[data-story-version] #story .flow-research-section :is(.model-placeholder figcaption) {
+    position: relative;
+    inset: auto;
+    left: auto;
+    bottom: auto;
+    width: 100%;
+    padding: 12px 0 0;
+    text-shadow: none;
+}
+
+body[data-story-version] #story .flow-research-section :is(
+    h2,
+    .element-wrapper:not(.element-modelPlaceholder)
+) {
+    position: relative;
+    z-index: 1;
+    grid-column: auto;
+    grid-row: auto;
+    text-shadow: none;
+}
+
+body[data-story-version] #story .flow-research-section .story-copy-column {
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-flow: row;
+}
+
+body[data-story-version] #story .flow-research-section .story-copy-column > h2,
+body[data-story-version] #story .flow-research-section .story-copy-column > .element-wrapper {
+    grid-column: 1 / -1;
+}
+
+body[data-story-version] #story .flow-research-section .story-copy-column > h2 {
+    width: 100%;
+}
+
+body[data-story-version] #story .flow-research-section :is(.element-text .info-text) {
+    max-width: none;
+}
+
+
+
+

@@ -1,6 +1,7 @@
 export const supportedElementTypes = new Set([
     'heading',
     'text',
+    'infoPopup',
     'pullQuote',
     'image',
     'video',

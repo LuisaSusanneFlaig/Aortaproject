@@ -1,0 +1,92 @@
+/* Scientific source disclosure shared by the dashboard and story pages. */
+.source-disclosure {
+    display: block;
+    width: fit-content;
+    max-width: min(100%, 760px);
+    margin: clamp(18px, 2.6vw, 30px) 0 0;
+    padding: 0;
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: clamp(0.82rem, 1vw, 0.95rem);
+    line-height: 1.5;
+}
+
+body[data-story-version] #story .source-disclosure {
+    margin: clamp(18px, 2.6vw, 30px) 0 0;
+}
+
+.anatomy-source-disclosure {
+    margin: 14px auto 0;
+}
+
+.source-disclosure .source-toggle,
+body[data-story-version] #story .source-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 8px 14px;
+    cursor: pointer;
+    color: var(--color-text);
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: clamp(0.85rem, 1vw, 0.95rem);
+    font-weight: 800;
+    line-height: 1;
+    list-style: none;
+    text-decoration: underline;
+    text-decoration-color: var(--color-text);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+}
+
+.source-disclosure .source-toggle::-webkit-details-marker,
+body[data-story-version] #story .source-toggle::-webkit-details-marker {
+    display: none;
+}
+
+.source-disclosure .source-toggle-hide,
+.source-disclosure[open] .source-toggle-show,
+body[data-story-version] #story .source-toggle-hide,
+body[data-story-version] #story .source-disclosure[open] .source-toggle-show {
+    display: none;
+}
+
+.source-disclosure[open] .source-toggle-hide,
+body[data-story-version] #story .source-disclosure[open] .source-toggle-hide {
+    display: inline;
+}
+
+.source-disclosure .source-toggle-show .story-material-icon,
+body[data-story-version] #story .source-toggle-show .story-material-icon {
+    color: var(--color-text);
+}
+
+body.light-mode .source-disclosure .source-toggle-show .story-material-icon,
+body.light-mode[data-story-version] #story .source-toggle-show .story-material-icon {
+    color: #000;
+}
+
+.source-disclosure .source-box,
+body[data-story-version] #story .source-box {
+    display: block;
+    width: min(100%, 760px);
+    margin-top: 12px;
+    padding: clamp(14px, 1.8vw, 20px);
+    border: 1px solid var(--color-text);
+    color: var(--color-text);
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: clamp(0.82rem, 1vw, 0.95rem);
+    line-height: 1.55;
+}
+
+.anatomy-source-disclosure .source-box {
+    text-align: left;
+}
+
+.source-disclosure .source-box a,
+body[data-story-version] #story .source-box a {
+    color: var(--color-text);
+    text-decoration: underline;
+    text-decoration-color: var(--color-text);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}

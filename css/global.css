@@ -1,0 +1,26 @@
+/* Shared stylesheet entrypoint. Keep this order stable while section styles are moved. */
+@layer tokens;
+@import url('tokens.css');
+@import url('base.css');
+@import url('navbar.css');
+@import url('scrollytelling.css');
+@import url('sections.css');
+@import url('icons.css');
+@import url('footer.css');
+@import url('components/chapter-opener.css');
+@import url('components/split-story.css');
+/* Flat visual rules are split by feature; keep this order stable. */
+@import url('components/flat-foundation.css');
+@import url('components/source-disclosure.css');
+@import url('components/flat-theme.css');
+@import url('components/flat-statistics.css');
+@import url('components/flat-diagnostics.css');
+@import url('components/flat-treatment.css');
+@import url('components/flat-prevention.css');
+@import url('components/flat-responsive.css');
+@import url('components/flat-imaging.css');
+@import url('components/flat-chapter-fade.css');
+@import url('components/flat-treatment-final.css');
+@import url('components/info-popup.css');
+@import url('components/story-layout.css');
+@import url('components/ending-page.css');

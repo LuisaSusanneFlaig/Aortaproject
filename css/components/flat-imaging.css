@@ -1,0 +1,135 @@
+﻿/* Keep the CTA comparison frames equal and rectangular across both stories. */
+body[data-story-version] #story .imaging-comparison {
+    width: 100%;
+}
+
+body[data-story-version] #story .imaging-comparison .imaging-panel {
+    width: 100%;
+    grid-area: auto;
+}
+
+body[data-story-version] #story .imaging-comparison .imaging-panel-media {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 4 / 3;
+}
+
+body[data-story-version] #story .imaging-comparison .imaging-panel:last-child img {
+    object-fit: contain;
+    object-position: center;
+}
+
+body[data-story-version] #story .imaging-comparison .imaging-modality,
+body[data-story-version="dissection"] #story .evidence-section .imaging-modality {
+    color: var(--color-accent);
+    border-color: color-mix(in srgb, var(--color-accent) 52%, transparent);
+}
+
+body[data-story-version] #story .has-image-hotspot {
+    position: relative;
+}
+
+body[data-story-version] #story .image-hotspot {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: 2px solid var(--color-accent);
+    border-radius: 50%;
+    background: var(--color-bg);
+    color: var(--color-accent);
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    z-index: 2;
+}
+
+body[data-story-version] #story .image-hotspot::before,
+body[data-story-version] #story .image-hotspot::after {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 11px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    content: '';
+    display: block;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+body[data-story-version] #story .image-hotspot::after {
+    transform: translate(-50%, -50%) rotate(90deg);
+}
+
+body[data-story-version] #story .image-hotspot:hover,
+body[data-story-version] #story .image-hotspot:focus-visible,
+body[data-story-version] #story .image-hotspot[aria-expanded="true"] {
+    background: var(--color-accent);
+    color: #fff;
+    outline: 3px solid color-mix(in srgb, var(--color-accent) 22%, transparent);
+    outline-offset: 4px;
+}
+
+body[data-story-version] #story .image-hotspot-popover {
+    position: absolute;
+    right: 16px;
+    top: 38%;
+    z-index: 3;
+    width: min(280px, 42%);
+    padding: 20px 24px;
+    background: var(--color-bg);
+    color: var(--color-text);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+    transform: translateY(-50%);
+}
+
+body[data-story-version] #story .image-hotspot-popover[hidden] {
+    display: none;
+}
+
+body[data-story-version] #story .image-hotspot-popover h2 {
+    margin: 0 0 8px;
+    font-size: 1.05rem;
+}
+
+body[data-story-version] #story .image-hotspot-popover p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+body[data-story-version] #story .image-hotspot-close {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--color-text);
+    font-size: 1.35rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+@media (max-width: 820px) {
+    body[data-story-version] #story .image-hotspot-popover {
+        right: 8%;
+        width: min(280px, 70%);
+    }
+}
+
+@media (min-width: 821px) {
+    body[data-story-version] #story .imaging-comparison {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+
+

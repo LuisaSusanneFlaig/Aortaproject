@@ -1,0 +1,159 @@
+﻿body[data-story-version] #story :is(
+    .alex-prevention-infographic-section,
+    .miriam-prevention-infographic-section
+) .prevention-timeline {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(14px, 1.7vw, 22px);
+    margin: 30px 0 18px;
+    padding: clamp(18px, 2.6vw, 30px);
+}
+
+body[data-story-version] #story :is(
+    .alex-prevention-infographic-section,
+    .miriam-prevention-infographic-section
+) .prevention-timeline li {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(14px, 2vw, 22px);
+    min-height: clamp(210px, 21vw, 280px);
+    padding: clamp(18px, 2vw, 26px);
+}
+
+body[data-story-version] #story :is(
+    .alex-prevention-infographic-section,
+    .miriam-prevention-infographic-section
+) .prevention-node {
+    display: none;
+}
+
+body[data-story-version] #story :is(
+    .alex-prevention-infographic-section,
+    .miriam-prevention-infographic-section
+) .prevention-copy {
+    display: grid;
+    grid-column: auto;
+    grid-row: auto;
+    grid-template-rows: auto auto 1fr;
+    gap: clamp(10px, 1.5vw, 16px);
+    padding: 0;
+    text-align: left;
+}
+
+body[data-story-version] #story :is(
+    .alex-prevention-infographic-section,
+    .miriam-prevention-infographic-section
+) .prevention-copy small {
+    font-size: clamp(0.8rem, 1.05vw, 0.95rem);
+    font-weight: 800;
+}
+
+body[data-story-version] #story :is(
+    .alex-prevention-infographic-section,
+    .miriam-prevention-infographic-section
+) .prevention-copy strong {
+    gap: 16px;
+    font-size: clamp(1rem, 1.3vw, 1.18rem);
+    font-weight: 800;
+}
+
+/* Keep Alex's prevention labels stacked like Miriam's: icon first, title below. */
+body[data-story-version="aneurysm"] #story .alex-prevention-infographic-section .prevention-copy strong {
+    display: grid;
+    gap: 12px;
+    line-height: 1.25;
+}
+
+body[data-story-version] #story :is(
+    .alex-prevention-infographic-section,
+    .miriam-prevention-infographic-section
+) .prevention-copy strong .story-inline-icon {
+    width: clamp(72px, 6.5vw, 90px);
+    height: clamp(72px, 6.5vw, 90px);
+    font-size: clamp(3.7rem, 5.5vw, 4.8rem);
+}
+
+body[data-story-version] #story :is(
+    .aortic-clock-value,
+    .aortic-branch-percent,
+    .burden-panel-change,
+    .drivers-value
+) {
+    font-weight: 800;
+}
+
+body[data-story-version] #story :is(
+    .alex-prevention-infographic-section,
+    .miriam-prevention-infographic-section
+) .prevention-copy strong .story-svg-icon {
+    background-color: currentColor;
+}
+
+body[data-story-version] #story :is(
+    .aortic-stat-card svg text,
+    .burden-panel-title,
+    .burden-value,
+    .burden-year,
+    .drivers-label,
+    .drivers-year,
+    .drivers-axis-label,
+    .burden-axis-label
+) {
+    font-size: 1.08em;
+}
+
+@media (max-width: 759px) {
+    body[data-story-version="dissection"] #story .statistics-overview .story-visual-column-inner {
+        grid-template-columns: 1fr;
+    }
+
+    body[data-story-version] #story :is(
+        .alex-diagnosis-infographic-section,
+        .miriam-diagnosis-infographic-section
+    ) .diagnostic-path {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    body[data-story-version] #story :is(
+        .alex-prevention-infographic-section,
+        .miriam-prevention-infographic-section
+    ) .prevention-timeline {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+body.light-mode[data-story-version] #story :is(
+    .story-visual-column,
+    .chapter-opener
+) {
+    background-color: var(--color-bg);
+}
+
+body.light-mode[data-story-version] #story :is(
+    .decision-map-inputs > span,
+    .axis-label,
+    .decision-map-finding small,
+    .treatment-decision-map figcaption,
+    .prevention-copy small,
+    .aortic-stat-card svg text,
+    .drivers-label,
+    .drivers-year,
+    .drivers-axis-label,
+    .burden-axis-label
+) {
+    color: var(--color-text);
+    fill: var(--color-text);
+}
+
+body.light-mode[data-story-version] #story :is(
+    .decision-map-inputs .story-inline-icon,
+    .decision-map-marker .story-inline-icon,
+    .prevention-copy strong .story-inline-icon
+) {
+    color: var(--color-accent);
+    fill: var(--color-accent);
+}
+
+
+
+

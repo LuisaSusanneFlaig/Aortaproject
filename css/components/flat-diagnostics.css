@@ -1,0 +1,271 @@
+﻿body[data-story-version] #story .diagnostic-path {
+    gap: clamp(20px, 3vw, 38px);
+}
+
+body[data-story-version] #story .diagnostic-path li {
+    gap: clamp(12px, 1.8vw, 20px);
+}
+
+body[data-story-version] #story .diagnostic-path strong {
+    display: grid;
+    justify-items: center;
+    gap: 14px;
+    font-size: clamp(1.05rem, 1.55vw, 1.28rem);
+    font-weight: 700;
+    line-height: 1.18;
+    text-align: center;
+}
+
+body[data-story-version] #story .diagnostic-info-trigger {
+    display: grid;
+    width: 100%;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+}
+
+body[data-story-version] #story .diagnostic-info-trigger:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--color-text) 78%, transparent);
+    outline-offset: 5px;
+}
+
+body[data-story-version] #story .diagnostic-path .story-inline-icon {
+    display: grid;
+    width: clamp(64px, 7vw, 92px);
+    height: clamp(64px, 7vw, 92px);
+    place-items: center;
+    margin-right: 0;
+    font-size: clamp(3rem, 5.2vw, 4.5rem);
+    line-height: 1;
+}
+
+body[data-story-version] #story .diagnostic-step-index {
+    display: inline-grid;
+    width: clamp(34px, 3.4vw, 46px);
+    height: clamp(34px, 3.4vw, 46px);
+    place-items: center;
+    border: 2px solid var(--color-accent);
+    border-radius: 50%;
+    color: var(--color-accent);
+    font-size: clamp(1rem, 1.45vw, 1.25rem);
+    font-weight: 700;
+    line-height: 1;
+}
+
+body[data-story-version] #story :is(
+    .alex-diagnosis-infographic-section,
+    .miriam-diagnosis-infographic-section
+) .diagnostic-path {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(18px, 2.4vw, 30px);
+    margin: 30px 0 18px;
+    padding: clamp(18px, 2.6vw, 30px);
+}
+
+body[data-story-version] #story :is(
+    .alex-diagnosis-infographic-section,
+    .miriam-diagnosis-infographic-section
+) .diagnostic-path li {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(12px, 1.7vw, 18px);
+    min-height: clamp(190px, 18vw, 240px);
+    padding: 0;
+}
+
+body[data-story-version] #story :is(
+    .alex-diagnosis-infographic-section,
+    .miriam-diagnosis-infographic-section
+) .diagnostic-step-index {
+    margin: 0 auto;
+}
+
+body[data-story-version] #story :is(
+    .alex-diagnosis-infographic-section,
+    .miriam-diagnosis-infographic-section
+) .diagnostic-path li > div {
+    display: grid;
+    gap: clamp(10px, 1.4vw, 16px);
+    align-content: start;
+    padding: 0;
+}
+
+body[data-story-version] #story :is(
+    .alex-diagnosis-infographic-section,
+    .miriam-diagnosis-infographic-section
+) .diagnostic-path strong {
+    margin: 0;
+}
+
+body[data-story-version] #story .symptom-stat-card {
+    display: grid;
+    gap: clamp(18px, 2vw, 28px);
+}
+
+body[data-story-version] #story .symptom-bars {
+    display: grid;
+    gap: clamp(16px, 2vw, 24px);
+}
+
+body[data-story-version] #story .symptom-row {
+    grid-template-columns: clamp(60px, 6vw, 82px) minmax(0, 1fr);
+    gap: clamp(14px, 2vw, 24px);
+    align-items: center;
+}
+
+body[data-story-version] #story .symptom-row-icon {
+    display: grid;
+    width: clamp(58px, 5.8vw, 78px);
+    height: clamp(58px, 5.8vw, 78px);
+    place-items: center;
+}
+
+body[data-story-version] #story .symptom-info-trigger {
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+}
+
+body[data-story-version] #story .symptom-button-shine {
+    position: absolute;
+    inset: -40% auto -40% 0;
+    z-index: 0;
+    width: 48%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.45),
+        transparent
+    );
+    content: '';
+    filter: blur(3px);
+    pointer-events: none;
+    transform: skewX(-18deg);
+    will-change: transform;
+}
+
+body[data-story-version="aneurysm"] #story .alex-diagnosis-infographic-section .diagnostic-shine-target {
+    position: relative;
+    overflow: hidden;
+}
+
+body[data-story-version="aneurysm"] #story .alex-diagnosis-infographic-section .diagnostic-button-shine {
+    position: absolute;
+    inset: -40% auto -40% 0;
+    z-index: 2;
+    width: 35%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.8),
+        transparent
+    );
+    content: '';
+    filter: blur(2px);
+    pointer-events: none;
+    transform: skewX(-18deg);
+    will-change: transform;
+}
+
+body[data-story-version] #story .symptom-info-trigger .story-inline-icon {
+    position: relative;
+    z-index: 1;
+}
+
+body[data-story-version] #story .symptom-info-trigger:hover,
+body[data-story-version] #story .symptom-info-trigger:focus-visible,
+body[data-story-version] #story .symptom-info-trigger[aria-expanded="true"] {
+    color: var(--color-accent);
+    outline: 2px solid color-mix(in srgb, var(--color-accent) 45%, transparent);
+    outline-offset: 5px;
+}
+
+body[data-story-version] #story .symptom-info-box {
+    grid-column: 1 / -1;
+    box-sizing: border-box;
+    width: 100%;
+    margin-top: 4px;
+    padding: clamp(14px, 1.8vw, 20px);
+    border: 1px solid var(--color-text);
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-size: clamp(0.88rem, 1vw, 1rem);
+    line-height: 1.55;
+}
+
+body[data-story-version] #story .symptom-info-box[hidden] {
+    display: none;
+}
+
+body[data-story-version] #story .diagnostic-info-row {
+    width: 100%;
+}
+
+body[data-story-version] #story .diagnostic-info-row .diagnostic-info-box {
+    margin-top: 0;
+}
+
+body[data-story-version] #story .symptom-row-icon .story-inline-icon {
+    font-size: clamp(2.85rem, 4.8vw, 4rem);
+    line-height: 1;
+}
+
+body[data-story-version] #story .symptom-row-label {
+    font-size: clamp(1rem, 1.45vw, 1.22rem);
+    line-height: 1.24;
+}
+
+body[data-story-version] #story .symptom-row-label strong {
+    font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+    font-weight: 800;
+}
+
+body[data-story-version] #story .symptom-track {
+    height: clamp(10px, 1.1vw, 14px);
+}
+
+body[data-story-version="dissection"] #story .miriam-symptoms-section .symptom-bars {
+    grid-template-columns: 1fr;
+    gap: clamp(16px, 2vw, 24px);
+}
+
+body[data-story-version="dissection"] #story .miriam-symptoms-section .symptom-row {
+    display: grid;
+    grid-template-columns: clamp(60px, 6vw, 82px) minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    gap: clamp(8px, 1vw, 12px) clamp(14px, 2vw, 24px);
+    min-height: auto;
+    padding: 0;
+}
+
+body[data-story-version="dissection"] #story .miriam-symptoms-section .symptom-row-icon {
+    grid-row: 1 / span 2;
+}
+
+body[data-story-version="dissection"] #story .miriam-symptoms-section .symptom-row-label {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: clamp(12px, 1.6vw, 20px);
+    margin: 0;
+}
+
+body[data-story-version="dissection"] #story .miriam-symptoms-section .symptom-track {
+    grid-column: 2;
+    height: clamp(10px, 1.1vw, 14px);
+}
+
+
+
+

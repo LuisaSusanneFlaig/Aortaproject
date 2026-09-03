@@ -6,6 +6,7 @@
     <title>The Aorta | Aorta Project</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/dashboard.css">
+    <script src="vendor/gsap/gsap.min.js"></script>
 </head>
 <body class="dashboard-page">
     <nav class="navbar">
@@ -16,9 +17,38 @@
     <div class="nav-menu-mobile" id="nav-menu-mobile"><ul><li><a href="#overview">Overview</a></li><li><a href="#stories">Stories</a></li></ul></div>
 
     <main>
-        <section class="overview-hero" id="overview" aria-labelledby="overview-title">
-            <div class="overview-copy"><h1 id="overview-title">The Aorta</h1><p>At the centre of the body, one vessel carries the force of every heartbeat. Alex and Miriam show how differently that vessel can change.</p></div>
-            <div class="anatomy-explorer" aria-label="Interactive anatomy of the aorta">
+        <section class="dashboard-intro" id="overview" aria-labelledby="overview-title">
+            <svg class="header-line-pattern" aria-hidden="true" focusable="false" viewBox="0 0 1000 1100" preserveAspectRatio="none">
+                <defs>
+                    <filter id="organic-path-noise" x="-20%" y="-15%" width="500%" height="500%">
+                        <feTurbulence type="fractalNoise" baseFrequency="0.012 0.08" numOctaves="2" seed="17" result="noise"></feTurbulence>
+                        <feDisplacementMap in="SourceGraphic" in2="noise" scale="9" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+                    </filter>
+                    <clipPath id="header-art-reveal" clipPathUnits="userSpaceOnUse">
+                        <rect class="header-art-reveal-rect" x="-160" y="0" width="0" height="408"></rect>
+                    </clipPath>
+                </defs>
+                <g class="header-line-group" transform="translate(0 160)">
+                    <image class="header-line-art" href="assets/vector-1.svg" x="-160" y="0" width="1200" height="408" preserveAspectRatio="none" clip-path="url(#header-art-reveal)"></image>
+                </g>
+            </svg>
+            <div class="intro-heading">
+                <p class="section-kicker">by Luisa Flaig & Aaron Schroeder</p>
+                <h1 id="overview-title">A Matter of Flow</h1>
+            </div>
+            <div class="intro-columns">
+                <p>This application is a science-communication project about the aorta and the diseases that can change it. It translates medical imaging, computational models, and clinical knowledge into an interactive scrollytelling experience that can be explored at a human pace.</p>
+                <p>The underlying vascular models and datasets come from the <a href="https://www.vascularmodel.com/index.html" target="_blank" rel="noopener noreferrer">Vascular Model Repository</a>, an open-source database of computational models of normal and diseased cardiovascular anatomy. The repository is intended for research; this project creates a visual and narrative entry point for understanding what those models can show.</p>
+            </div>
+        </section>
+
+        <section class="overview-hero anatomy-section" id="anatomy" aria-labelledby="anatomy-title">
+            <div class="anatomy-layout">
+                <div class="overview-copy anatomy-copy">
+                    <h2 id="anatomy-title">A shared starting point</h2>
+                    <p>At the centre of the body, one vessel carries the force of every heartbeat. Before following disease, we first look at the healthy aorta: its route from the heart, its major branches, and the places where its shape matters. This shared map makes the later changes easier to recognize and understand. The aorta is continuous, but it passes through the chest and abdomen and supplies different parts of the body along the way. Use the markers to meet its main regions before entering either story.</p>
+                </div>
+                <div class="anatomy-explorer" aria-label="Interactive anatomy of the aorta">
                 <figure class="anatomy-figure">
                     <img class="anatomy-illustration" src="assets/story_images/dashboard_aorta_branches_ai_adapted.png" alt="Medical illustration of the human torso with the heart, full aorta, and major aortic branches">
                     <button class="anatomy-hotspot" type="button" style="--x: 53%; --y: 37%; --i: 0;" aria-label="Show aortic arch" data-title="Aortic Arch" data-copy="The aortic arch curves above the heart. From this bend, the brachiocephalic trunk, left common carotid, and left subclavian artery carry blood toward the head, neck, and arms."></button>
@@ -40,6 +70,7 @@
                     <h2></h2><p></p>
                 </aside>
             </div>
+            </div>
         </section>
 
         <section class="story-index" id="stories" aria-labelledby="stories-title">
@@ -59,6 +90,16 @@
     <footer class="overview-footer"><span>Aorta Project</span><nav aria-label="Legal navigation"><a href="impressum.html">Imprint</a><a href="datenschutz.html">Privacy Policy</a></nav></footer>
 
     <script type="module">
+        const headerArt = document.querySelector('.header-line-art');
+        const headerReveal = document.querySelector('.header-art-reveal-rect');
+        if (headerArt && headerReveal && window.gsap) {
+            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (reducedMotion) {
+                headerReveal.setAttribute('width', '1200');
+            } else {
+                window.gsap.to(headerReveal, { attr: { width: 1200 }, duration: 2.4, ease: 'power1.inOut' });
+            }
+        }
         import { ThemeManager } from './js/modules/ui/ThemeManager.js';
         new ThemeManager();
         const popover = document.getElementById('anatomy-popover');

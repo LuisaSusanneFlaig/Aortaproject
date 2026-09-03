@@ -30,7 +30,7 @@ npm run screenshots
 | Alex aneurysm story text/order | `js/stories/aneurysm/story.js` |
 | Miriam dissection story text/order | `js/stories/dissection/story.js` |
 | Visual styling values | `css/tokens.css` |
-| Final visual overrides | `css/components/flat-visuals.css` |
+| Final visual overrides | `css/global.css`, `css/components/flat-*.css` |
 | Split story layout | `css/components/split-story.css` |
 | Chapter openers | `js/components/chapterOpener.js`, `css/components/chapter-opener.css` |
 | Text, images, references | `js/components/basicElements.js` |

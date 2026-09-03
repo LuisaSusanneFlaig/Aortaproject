@@ -13,7 +13,7 @@ export const aneurysmStory = {
     sections: [
         {
             id: 'definition',
-            title: 'Alex',
+            title: 'Aneurysm Story',
             timelineLabel: 'Alex - age 18',
             className: 'story-intro aneurysm-intro',
             columns: '2',
@@ -31,7 +31,11 @@ export const aneurysmStory = {
                 },
                 {
                     type: 'text',
-                    text: 'Alex lives with Marfan syndrome, an inherited condition that can weaken connective tissue. The aorta, the large artery that carries blood away from the heart, depends on strong connective tissue in its wall. When that wall stretches and widens, the enlargement is called an aortic aneurysm.'
+                    text: 'Alex lives with Marfan syndrome, an inherited condition that can weaken connective tissue. The aorta, the large artery that carries blood away from the heart, depends on strong connective tissue in its wall. When that wall stretches and widens, the enlargement is called an aortic aneurysm.',
+                    infoPopup: {
+                        title: 'Marfan syndrome',
+                        text: 'Marfan syndrome is relatively rare, affecting about 1 in 5,000 to 10,000 people. It can affect different parts of the body, including the skeleton, eyes, heart, and blood vessels People with Marfan syndrome are often taller than average, with long arms and legs and slender hands and feet.'
+                    }
                 },
                 {
                     type: 'text',
@@ -47,7 +51,11 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Before Alex\'s scan becomes personal, the statistics set the wider scene. More people worldwide are dying with aortic aneurysm than in earlier decades, partly because populations are growing and aging. At the same time, after adjusting for age, the risk of death is decreasing (standadized death rate). This shows that diagnostics and treatment methods are improving. The values for 2030 are estimates, not measurements.'
+                    text: 'Before Alex\'s scan becomes personal, the statistics set the wider scene. More people worldwide are dying with aortic aneurysm than in earlier decades, partly because populations are growing and aging. At the same time, after adjusting for age, the risk of death is decreasing (standardized death rate). This shows that diagnostics and treatment methods are improving. The values for 2030 are estimates, not measurements.',
+                    infoPopup: {
+                        title: 'standardized death rate',
+                        text: 'A standardized mortality rate adjusts mortality figures to a common population structure, often by age, so populations or years can be compared more fairly. It estimates the death rate that would be seen if the population had the same age distribution as the reference population.'
+                    }
                 },
                 {
                     type: 'aneurysmBurden',
@@ -67,12 +75,17 @@ export const aneurysmStory = {
                 url: 'assets/models/alex_aneurysm_aorta_0021.glb',
                 label: 'Patient-specific aortic geometry of Alex',
                 mode: 'surface',
-                legend: false
+                legend: false,
+                rotationHint: true
             },
             elements: [
                 {
                     type: 'text',
-                    text: 'Alex\'s aorta is shown here as a 3D model. The actual shape of his aorta is captured using CT imaging. The model you can see on the left is then extracted from that imaging.. In Marfan syndrome, doctors follow that shape over time because a weakened wall can widen gradually. A single scan matters, but the trend matters even more: diameter, growth, and location are compared across follow-up visits.'
+                    text: 'Alex\'s aorta is shown here as a 3D model. The actual shape of his aorta is captured using CTA imaging. The model you can see on the left is then extracted from that imaging. In Marfan syndrome, doctors follow that shape over time because a weakened wall can widen gradually. A single scan matters, but the trend matters even more: diameter, growth, and location are compared across follow-up visits.',
+                    infoPopup: {
+                        title: 'CTA',
+                        text: 'CT angiography uses computed tomography, often with iodinated contrast injected into a vein, to visualize blood vessels. Computer processing combines the scan slices into detailed, freely viewable 3D images.'
+                    }
                 },
                 {
                     type: 'reference',
@@ -88,19 +101,24 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'The difficult part of a thoracic aortic aneurysm is that it can stay quiet for a long time. Clinical sources describe most people as having no symptoms before an sudden serious event; one review gives roughly 95% without warning signs and about 5% with symptoms beforehand. If the widened vessel presses on nearby parts of the body , it may cause chest or back pain, a change in the voice, trouble swallowing, or shortness of breath. Sudden severe pain, fainting, breathlessness, or neurological symptoms can signal a tear in the wall of the aorta or a burst blood vessel.'
+                    text: 'The difficult part of a thoracic aortic aneurysm is that it can stay quiet for a long time. Clinical sources describe most people as having no symptoms before an sudden serious event; one review gives roughly 95% without warning signs and about 5% with symptoms beforehand. If the widened vessel presses on nearby parts of the body , it may cause chest or back pain, a change in the voice, trouble swallowing, or shortness of breath. Sudden severe pain, fainting, breathlessness, or neurological symptoms can signal a tear in the wall of the aorta or a burst blood vessel.',
+                    infoPopup: {
+                        title: 'thoracic aortic aneurysm',
+                        text: 'A thoracic aortic aneurysm is a bulge or widening in the part of the aorta that runs through the chest.'
+                    }
                 },
                 {
                     type: 'symptomBars',
                     subtitle: 'Thoracic aortic aneurysm',
                     items: [
                         {
-                            icon: 'monitor_heart',
+                            icon: 'block',
                             label: 'No symptoms',
-                            value: 95
+                            value: 95,
+                            info: 'Many thoracic aortic aneurysms grow without noticeable symptoms. This is why regular imaging can be important: it may identify changes before the aneurysm causes an emergency.'
                         },
                         {
-                            icon: 'warning',
+                            icon: 'sick',
                             label: 'Symptoms before acute event',
                             value: 5
                         }
@@ -120,26 +138,34 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Alex diagnosis pathway begins with known inherited risk. In Marfan syndrome, the aorta is checked before symptoms appear because enlargement can be silent. Planned imaging measures the aortic diameter over time, then the care team compares it with earlier scans, growth rate, family history, valve findings, and body size.'
+                    text: 'Alex diagnosis pathway begins with known inherited risk. In Marfan syndrome, the aorta is checked before symptoms appear because enlargement can be silent. Planned imaging measures the aortic diameter over time, then the care team compares it with earlier scans, growth rate, family history, valve findings, and body size.',
+                    infoPopup: {
+                        title: 'valve findings',
+                        text: 'Heart valves act like one-way doors that keep blood moving through the heart in the right direction. The aortic valve sits between the heart’s main pumping chamber and the aorta, and scans can show whether it is opening and closing normally.'
+                    }
                 },
                 {
                     type: 'diagnosticPath',
                     items: [
                         {
-                            icon: 'genetics',
-                            title: 'Known Marfan risk'
+                            icon: 'genetics_svg',
+                            title: 'Marfan risk',
+                            info: 'Marfan syndrome can weaken the connective tissue in the aortic wall. That inherited risk is why Alex needs aortic follow-up even when he feels well.'
                         },
                         {
-                            icon: 'calendar_month',
-                            title: 'Planned surveillance'
+                            icon: 'event_available_svg',
+                            title: 'Surveillance',
+                            info: 'Surveillance means planned follow-up visits and imaging. Comparing measurements over time helps the care team see whether the aorta is stable or changing.'
                         },
                         {
-                            icon: 'radiology',
-                            title: 'CT or MRI measurement'
+                            icon: 'radiology_aorta',
+                            title: 'CTA imaging',
+                            info: 'CT angiography combines computed tomography with contrast dye to show the aorta clearly. It helps measure the vessel and map its shape.'
                         },
                         {
-                            icon: 'monitor_heart',
-                            title: 'Aortic team review'
+                            icon: 'compare_svg',
+                            title: 'Aortic review',
+                            info: 'The team reviews the latest measurement alongside earlier scans, growth rate, family history, valve findings, and body size before deciding what happens next.'
                         }
                     ]
                 },
@@ -153,30 +179,23 @@ export const aneurysmStory = {
             id: 'diagnose-bildgebung',
             title: 'CTA Imaging',
             className: 'evidence-section alex-imaging-section',
-            scrollMode: 'comparison',
+            scrollMode: 'sequence',
             elements: [
                 {
                     type: 'text',
-                    text: 'The CT angiography (CTA) images let doctors look at Alex\'s chest from more than one direction. CTA uses computed tomography and contrast dye to make the blood-filled aorta appear bright. In the axial view, the body is seen as a horizontal slice, with the aorta appearing as a round bright structure in front of the spine. In the coronal view, the body is seen from the front, so the heart, ascending aorta, arch, and head-and-arm branches can be followed together.'
+                    text: 'The CT angiography (CTA) image shows Alex\'s chest from the side. CTA uses computed tomography and contrast dye to make the blood-filled aorta appear bright, helping doctors assess its shape and size.'
                 },
                 {
-                    type: 'imagingComparison',
-                    items: [
-                        {
-                            modality: 'Axial CTA',
-                            src: 'assets/story_images/alex_ct_axial_0021.png',
-                            alt: 'Axial CT slice through Alex\'s chest with contrast-enhanced aorta in cross-section'
-                        },
-                        {
-                            modality: 'Coronal CTA',
-                            src: 'assets/story_images/alex_ct_coronal_0021.png',
-                            alt: 'Coronal CT reconstruction of Alex\'s chest with heart, ascending aorta, and aortic arch'
-                        }
-                    ]
-                },
-                {
-                    type: 'reference',
-                    text: 'Image source: CT volume OSMSC0129-cm.vti from the Vascular Model Repository 0021_H_AO_MFS, case 0129_0000; axial and coronal reconstructions exported from the original VTI volume.'
+                    type: 'image',
+                    src: 'assets/story_images/alex_cta_sagittal.png',
+                    alt: 'Sagittal CTA image of Alex\'s chest with the thoracic aorta highlighted in red',
+                    aspect: '1 / 1',
+                    hotspot: {
+                        x: '60%',
+                        y: '30%',
+                        title: 'Thoracic aortic aneurysm',
+                        text: 'The widened section of Alex\'s thoracic aorta is the finding being measured and followed over time.'
+                    }
                 }
             ]
         },
@@ -197,17 +216,17 @@ export const aneurysmStory = {
                     axisEnd: 'Higher urgency',
                     items: [
                         {
-                            icon: 'monitor_heart',
+                            icon: 'circle_circle',
                             label: 'Stable diameter and growth',
                             treatment: 'Continue monitoring'
                         },
                         {
-                            icon: 'radiology',
+                            icon: 'expand',
                             label: 'Faster growth or added risk',
                             treatment: 'Appointment at an aortic center'
                         },
                         {
-                            icon: 'medical_services',
+                            icon: 'surgical',
                             label: 'Point at which treatment is recommended',
                             treatment: 'Aortic repair'
                         }
@@ -232,17 +251,27 @@ export const aneurysmStory = {
                 {
                     type: 'modelPlaceholder',
                     id: 'alex-flow-overview-model',
-                    src: 'assets/models/flow/marfan_lines_animation_fixed_optimized_s60.glb',
+                    src: 'assets/models/flow/aneurysm_lines_anim.glb',
+                    flowVariants: [
+                        { label: 'Pathlines', src: 'assets/models/flow/aneurysm_lines_anim.glb', framingScale: 0.29, rotationY: 1.5708, animationFps: 20, animationSpeed: 1 },
+                        { label: 'Particle flow', src: 'assets/models/flow/aneurysm_particles_anim.glb', framingScale: 0.35, rotationY: 1.5708, animationFps: 20, animationSpeed: 0.5 }
+                    ],
                     modelMode: 'flow',
+                    preload: true,
                     animationFps: 20,
                     framingScale: 0.3,
                     alt: 'Animated pathlines representing simulated blood flow through Alex\'s Marfan-associated aneurysm model',
                     eyebrow: 'Patient-specific simulation',
-                    title: 'Flow-Vis - Overall Flow'
+                    title: 'Flow-Vis - Overall Flow',
+                    rotationHint: true
                 },
                 {
                     type: 'text',
-                    text: 'The important point is not only where the aorta is wide, but how the wider shape reorganizes flow. Blood accelerates in the arch and creates a string swirling flow in the enlargement, called a vortex or turbulent flow. This differs from the organized, straight flow in healthy aortas called laminar flow. Those patterns matter because the vessel wall is exposed to the flow with every heartbeat.'
+                    text: 'The important point is not only where the aorta is wide, but how the wider shape reorganizes flow. Blood accelerates in the arch and creates a string swirling flow in the enlargement, called a vortex or turbulent flow. This differs from the organized, straight flow in healthy aortas called laminar flow. Those patterns matter because the vessel wall is exposed to the flow with every heartbeat.',
+                    infoPopup: {
+                        title: 'laminar flow',
+                        text: 'Laminar flow moves in smooth layers, with little mixing or crosswise swirling between them. It can occur in the bloodstream and is an orderly flow that may become turbulent when disturbances grow beyond a critical point.'
+                    }
                 },
                 {
                     type: 'reference',
