@@ -16,7 +16,7 @@ export function renderReferenceDisclosure(value = '') {
     return `
         <details class="section-reference source-disclosure">
             <summary class="source-toggle">
-                <span class="source-toggle-show">${renderMaterialIcon('medical_information')}</span>
+                <span class="source-toggle-show">Sources</span>
                 <span class="source-toggle-hide">Hide sources</span>
             </summary>
             <div class="source-box">${renderReferenceText(value)}</div>

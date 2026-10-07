@@ -267,6 +267,10 @@ export const aneurysmStory = {
                     alt: 'Animated pathlines representing simulated blood flow through Alex\'s Marfan-associated aneurysm model',
                     eyebrow: 'Patient-specific simulation',
                     title: 'Flow-Vis - Overall Flow',
+                    infoPopup: {
+                        title: 'About this simulation',
+                        text: 'This animation is a computer model of blood-flow patterns reconstructed from Alex\'s aortic anatomy. It illustrates how the widened vessel can change the speed and direction of flow; it is not a live measurement or a prediction of an individual outcome.'
+                    },
                     rotationHint: true
                 },
                 {
