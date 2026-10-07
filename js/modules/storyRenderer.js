@@ -139,6 +139,7 @@ function renderInlineModel(model) {
     return `
         <figure class="inline-model-figure">
             <div class="inline-model-viewer" data-inline-model data-model-url="${model.url}" data-model-mode="${modelMode}"${rotationX}${rotationY}${rotationZ}${framingScale} role="img" aria-label="${label}">
+                <span class="inline-model-plus-icon" aria-hidden="true">+</span>
                 ${model.rotationHint ? '<span class="inline-model-360-hint material-symbols-rounded story-material-icon" aria-hidden="true">360</span>' : ''}
                 <div class="inline-model-loading" aria-hidden="true"></div>
             </div>

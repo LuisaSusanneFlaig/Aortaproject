@@ -7,6 +7,7 @@ let symptomInfoId = 0;
 let diagnosticInfoId = 0;
 let decisionInfoId = 0;
 let preventionInfoId = 0;
+let imageHotspotId = 0;
 
 const renderVisualIcon = (icon, className = 'story-inline-icon') => renderMaterialIcon(
     icon,
@@ -194,7 +195,7 @@ export function renderPreventionTimeline(element = {}) {
                     <span class="prevention-node" aria-hidden="true"></span>
                     <div class="prevention-copy">
                         ${item.info
-                            ? `<button class="prevention-info-trigger" type="button" aria-label="More information about ${item.title || 'this prevention step'}" aria-expanded="false" aria-controls="${infoId}">${renderVisualIcon(icons[index] || 'check_circle')}${item.title || ''}</button>`
+                            ? `<button class="prevention-info-trigger" type="button" aria-label="More information about ${item.title || 'this prevention step'}" aria-expanded="false" aria-controls="${infoId}"><span class="prevention-info-icon-wrap">${renderVisualIcon(icons[index] || 'check_circle', 'story-inline-icon prevention-info-icon')}<span class="prevention-info-badge" aria-hidden="true">+</span></span>${item.title || ''}</button>`
                             : `<strong>${renderVisualIcon(icons[index] || 'check_circle')}${item.title || ''}</strong>`}
                         ${item.text ? `<p>${item.text}</p>` : ''}
                     </div>
@@ -242,13 +243,37 @@ export function renderModelPlaceholder(element = {}) {
                     <button class="flow-variant-button${index === 0 ? ' active' : ''}" type="button" data-flow-url="${variant.src}"${variantAttribute(variant, 'framingScale')}${variantAttribute(variant, 'offsetX')}${variantAttribute(variant, 'offsetY')}${variantAttribute(variant, 'rotationX')}${variantAttribute(variant, 'rotationY')}${variantAttribute(variant, 'rotationZ')}${variantAttribute(variant, 'animationFps')}${variantAttribute(variant, 'animationSpeed')} aria-pressed="${index === 0}">${variant.label || ('View ' + (index + 1))}</button>
                 `).join('')}
             </div>` : '';
+
+    const hotspots = Array.isArray(element.hotspots)
+        ? element.hotspots
+        : (element.hotspot ? [element.hotspot] : []);
+    const hotspotMarkup = hotspots.map((hotspot) => {
+        const infoId = `image-hotspot-info-${++imageHotspotId}`;
+        return `
+            <button class="image-hotspot" type="button" style="--x:${hotspot.x || '88%'}; --y:${hotspot.y || '15%'};" aria-label="Show information about ${hotspot.title || 'this design'}" aria-expanded="false" aria-controls="${infoId}"></button>
+            <aside class="image-hotspot-popover" id="${infoId}" hidden>
+                <button class="image-hotspot-close" type="button" aria-label="Close information">×</button>
+                <h2>${hotspot.title || 'Flow Simulation Design'}</h2>
+                <p>${hotspot.text || ''}</p>
+            </aside>
+        `;
+    }).join('');
+
+    const infoPopupMarkup = element.src ? `
+            <details class="model-viewport-info-popup">
+                <summary aria-label="${element.infoPopup?.title || 'More information'}"></summary>
+                ${element.infoPopup?.text ? `<div class="image-hotspot-popover"><p>${element.infoPopup.text}</p></div>` : ''}
+            </details>` : '';
+
     return `
-        <figure class="model-placeholder" id="${element.id || ''}">
+        <figure class="model-placeholder${hotspots.length ? ' has-image-hotspot' : ''}" id="${element.id || ''}">
             <div class="model-placeholder-stage${element.src ? ' inline-model-viewer' : ''}"${viewerAttributes}${flowVariants.length > 1 ? ' data-flow-switch' : ''} role="img" aria-label="${accessibleLabel}">
                 ${element.src
                     ? `${element.rotationHint ? '<span class="inline-model-360-hint material-symbols-rounded story-material-icon" aria-hidden="true">360</span>' : ''}<div class="inline-model-loading" aria-hidden="true"></div><span class="inline-model-error">Animation unavailable</span>`
                     : '<span>GLTF / ANIMATION</span>'}
             </div>
+            ${infoPopupMarkup}
+            ${hotspotMarkup}
             ${flowControls}
             ${element.note ? `<p class="symptom-note model-placeholder-note">${element.note}</p>` : ''}
         </figure>

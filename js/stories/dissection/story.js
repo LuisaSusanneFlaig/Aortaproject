@@ -285,7 +285,11 @@ export const dissectionStory = {
                     rotationHint: true,
                     alt: 'Animated particle paths representing flow through the aortic model',
                     eyebrow: '+1.5 months',
-                    title: 'Flow-Vis - Subacute Phase'
+                    title: 'Flow-Vis - Subacute Phase',
+                    infoPopup: {
+                        title: 'About this simulation',
+                        text: 'This animation is a computer model of blood-flow patterns reconstructed from Miriam\'s aortic anatomy after dissection. It illustrates how blood can move through the true and false lumens; it is not a live measurement or a prediction of Miriam\'s individual outcome.'
+                    }
                 },
                 {
                     type: 'text',

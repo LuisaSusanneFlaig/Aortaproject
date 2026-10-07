@@ -74,6 +74,63 @@ body[data-story-version] #story .image-hotspot[aria-expanded="true"] {
     outline-offset: 4px;
 }
 
+/* Use the same plus hotspot treatment for the prognosis information control. */
+body[data-story-version] #story .model-viewport-info-popup {
+    position: static;
+}
+
+body[data-story-version] #story .model-placeholder:has(.model-viewport-info-popup) {
+    position: relative;
+}
+
+body[data-story-version] #story .model-viewport-info-popup summary {
+    position: relative;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: 2px solid var(--color-accent);
+    border-radius: 50%;
+    background: var(--color-bg);
+    color: var(--color-accent);
+    box-sizing: border-box;
+}
+
+body[data-story-version] #story .model-viewport-info-popup summary::before,
+body[data-story-version] #story .model-viewport-info-popup summary::after {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 11px;
+    height: 2px;
+    margin: 0;
+    border-radius: 2px;
+    background: currentColor;
+    content: '';
+    display: block;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+body[data-story-version] #story .model-viewport-info-popup summary::after {
+    transform: translate(-50%, -50%) rotate(90deg);
+}
+
+body[data-story-version] #story .model-viewport-info-popup summary:hover,
+body[data-story-version] #story .model-viewport-info-popup summary:focus-visible {
+    background: var(--color-accent);
+    color: #fff;
+    outline: 3px solid color-mix(in srgb, var(--color-accent) 22%, transparent);
+    outline-offset: 4px;
+}
+
+body[data-story-version] #story .model-viewport-info-popup .image-hotspot-popover {
+    width: min(280px, calc(100vw - 32px));
+    max-width: calc(100vw - 32px);
+}
+
 body[data-story-version] #story .image-hotspot-popover {
     position: absolute;
     right: 16px;

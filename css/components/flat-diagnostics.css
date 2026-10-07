@@ -33,6 +33,57 @@ body[data-story-version] #story .diagnostic-info-trigger:focus-visible {
     outline-offset: 5px;
 }
 
+/* Small image-hotspot-style info badge on treatment icons. */
+body[data-story-version] #story :is(
+    .decision-info-trigger,
+    .symptom-info-trigger,
+    .diagnostic-info-trigger
+) {
+    position: relative;
+}
+
+body[data-story-version] #story :is(
+    .decision-info-trigger,
+    .symptom-info-trigger,
+    .diagnostic-info-trigger
+)::after {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    display: grid;
+    width: 16px;
+    height: 16px;
+    place-items: center;
+    border: 1px solid var(--color-accent);
+    border-radius: 50%;
+    background: var(--color-bg);
+    color: var(--color-accent);
+    content: '+';
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1;
+    pointer-events: none;
+}
+
+body[data-story-version] #story :is(
+    .decision-info-trigger,
+    .symptom-info-trigger,
+    .diagnostic-info-trigger
+):hover::after,
+body[data-story-version] #story :is(
+    .decision-info-trigger,
+    .symptom-info-trigger,
+    .diagnostic-info-trigger
+):focus-visible::after,
+body[data-story-version] #story :is(
+    .decision-info-trigger,
+    .symptom-info-trigger,
+    .diagnostic-info-trigger
+)[aria-expanded="true"]::after {
+    background: var(--color-accent);
+    color: #fff;
+}
+
 body[data-story-version] #story .diagnostic-path .story-inline-icon {
     display: grid;
     width: clamp(64px, 7vw, 92px);

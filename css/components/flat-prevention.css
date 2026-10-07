@@ -98,6 +98,37 @@ body[data-story-version] #story .prevention-info-trigger .story-inline-icon {
     color: var(--color-accent);
 }
 
+body[data-story-version] #story .prevention-info-icon-wrap {
+    position: relative;
+    display: inline-block;
+}
+
+body[data-story-version] #story .prevention-info-badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    display: grid !important;
+    width: 16px;
+    height: 16px;
+    place-items: center;
+    border: 1px solid var(--color-accent) !important;
+    border-radius: 50%;
+    background: var(--color-bg);
+    color: var(--color-accent) !important;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1;
+    pointer-events: none;
+}
+
+body[data-story-version] #story .prevention-info-trigger:hover .prevention-info-badge,
+body[data-story-version] #story .prevention-info-trigger:focus-visible .prevention-info-badge,
+body[data-story-version] #story .prevention-info-trigger[aria-expanded="true"] .prevention-info-badge {
+    background: var(--color-accent);
+    color: #fff;
+}
+
 body[data-story-version] #story .prevention-info-box {
     box-sizing: border-box;
     min-width: 0;
