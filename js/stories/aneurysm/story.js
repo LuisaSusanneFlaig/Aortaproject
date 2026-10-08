@@ -1,6 +1,6 @@
 const flowModelBase = ['localhost', '127.0.0.1'].includes(globalThis.location?.hostname)
     ? 'assets/models/flow/optimized/'
-    : 'https://media.githubusercontent.com/media/LuisaSusanneFlaig/Aortaproject/changes-to-version-1/assets/models/flow/optimized/';
+    : 'https://media.githubusercontent.com/media/LuisaSusanneFlaig/Aortaproject/refs/heads/changes-to-version-1/assets/models/flow/optimized/';
 
 export const aneurysmStory = {
 
