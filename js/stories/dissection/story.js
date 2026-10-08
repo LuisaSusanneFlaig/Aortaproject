@@ -1,3 +1,7 @@
+const flowModelBase = ['localhost', '127.0.0.1'].includes(globalThis.location?.hostname)
+    ? 'assets/models/flow/optimized/'
+    : 'https://media.githubusercontent.com/media/LuisaSusanneFlaig/Aortaproject/changes-to-version-1/assets/models/flow/optimized/';
+
 export const dissectionStory = {
 
     title: 'Aortic Dissection',
@@ -93,7 +97,7 @@ export const dissectionStory = {
 
                 {
                     type: 'text',
-                    text: 'Before the tear, Miriam\'s aorta can be understood as one continuous vessel with one main open channel for blood, called the lumen. Seeing it as a single surface makes the later change easier to grasp: the emergency is not that a new vessel appears, but that blood forces a new route inside the existing wall.'
+                    text: 'Before the tear, Miriam\'s aorta is one continuous vessel with a single channel for blood. Seeing it as one surface makes the later change easier to grasp: the emergency is not that a new vessel appears, but that blood forces a second route inside the existing wall.'
                 },
                 {
                     type: 'text',
@@ -144,7 +148,7 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'From the first suspicion, the team has to move quickly. They ask whether Miriam has risk factors such as Marfan syndrome or known aortic disease. They examine the pattern of pain, blood pressure differences, and signs from the brain or limbs. A lab test may include D-dimer, a blood marker that rises when clots are being broken down; in carefully selected low-risk patients it can help rule out dissection, but it cannot prove the diagnosis. The decisive step is imaging. Aortic imaging is timed to the heartbeat, reducing motion blur so the tear, its length, and possible complications can be seen.',
+                    text: 'A suspected dissection is an emergency, so assessment and imaging happen quickly. The team asks when the pain began and whether Miriam has Marfan syndrome or known aortic disease, checks blood pressure and pulses in the limbs, and looks for signs that blood flow to the brain, kidneys, gut, or legs may be affected. These clues help judge urgency but cannot confirm the diagnosis. In selected people with a low likelihood of dissection, a D-dimer blood test may help rule it out; it is not used alone and a positive result does not prove a tear. CT angiography is usually the key test: it shows where the tear begins, how far the split extends, and whether branch arteries or organs may be affected.',
                     infoPopup: {
                         title: 'D-dimer',
                         text: 'D-dimer is a small protein fragment. A blood test can help assess the likelihood of clot-related disease: a negative result can help rule it out in people with a low clinical probability, while a positive result can have other causes and usually needs further testing.'
@@ -156,28 +160,28 @@ export const dissectionStory = {
                         {
                             icon: 'genetics_svg',
                             title: 'Marfan Risk',
-                            info: 'Marfan syndrome can weaken the connective tissue in the aortic wall. This inherited risk is important when clinicians assess sudden chest or back pain.'
+                            info: 'Miriam’s Marfan syndrome is an inherited risk factor clinicians consider when assessing sudden chest or back pain.'
                         },
                         {
                             icon: 'monitor_heart_svg',
                             title: 'Assessment',
-                            info: 'The team checks the pain pattern, blood pressure, pulses, and signs affecting the brain or limbs. These findings help assess urgency but cannot confirm a dissection alone.'
+                            info: 'Clinicians compare blood pressure and pulse strength between limbs and check for new weakness, confusion, fainting, or a painful or cool limb. A difference can suggest that a branch artery is affected, but normal findings do not rule out dissection.'
                         },
                         {
                             icon: 'labs_svg',
                             title: 'Lab tests',
-                            info: 'Blood tests can support the assessment in selected patients. A test such as D-dimer may help rule out dissection in carefully chosen low-risk situations, but it cannot prove the diagnosis.'
+                            info: 'Blood tests can include D-dimer and tests of organ function. D-dimer may help rule out dissection only in selected low-risk cases; it cannot confirm the diagnosis, and other illnesses can raise it.'
                         },
                         {
                             icon: 'radiology_aorta',
                             title: 'Aortic imaging',
-                            info: 'CTA shows the aorta and the dissection flap in detail. It helps identify where the dissection starts, how far it extends, and whether complications are present.'
+                            info: 'CTA images the aorta and its major branches. The team looks for the wall flap and both channels, maps how far they extend, measures the aorta, and checks whether blood flow to organs is reduced or there are signs of bleeding.'
                         }
                     ]
                 },
                 {
                     type: 'reference',
-                    text: 'Sources: S2k guideline on Type B aortic dissection (2022), chapter 5; POSTPRINT review on acute aortic dissection.'
+                    text: 'Sources: [2022 ACC/AHA Aortic Disease Guideline](https://doi.org/10.1161/CIR.0000000000001106), acute aortic syndrome diagnosis and imaging; [2022 German S2k Guideline on Type B Aortic Dissection](https://register.awmf.org/assets/guidelines/004-034l_S2k_Typ_B_Aortendissektion_2022-05.pdf), chapter 5.'
                 }
             ]
         },
@@ -191,7 +195,7 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'The CT angiography (CTA) image makes the tear visible. Contrast dye fills the blood space of the aorta, making the vessel and the dissection easier to follow. In Miriam\'s case, the scan shows a Type B dissection starting just after the left artery and extending toward the chest. The red line marks the tear.'
+                    text: 'For a CT angiogram (CTA), contrast is injected through a small tube in a vein while a fast CT scanner takes many thin X-ray images. The contrast makes blood inside the aorta visible. From the image slices, clinicians can follow the vessel through the chest and abdomen, identify the flap separating the two channels, measure the aorta, and check the branch vessels. The red marking was added during image editing to highlight Miriam\'s Type B dissection; it was not red in the original scan.'
                 },
                 {
                     type: 'image',
@@ -225,10 +229,10 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Treatment depends on how stable the situation is right now. If pain and blood pressure are controlled and the organs are still receiving blood, care usually begins with medication, close monitoring, and repeat imaging. If complications appear, doctors may need to redirect redirect blood flow through a process called TEVAR. The procedure places an implant inside the aorta which supports the vessel wall and redirects flow. This is done during a minimally invasive procedure without open surgery',
+                    text: 'Treatment depends on whether the dissection is causing complications. For an uncomplicated Type B dissection, the first step is usually hospital care with medicine to lower heart rate and blood pressure, pain relief, and close checks of pulses, organ function, and repeat images. If blood flow to an organ is reduced, the aorta is enlarging or leaking, pain persists, or blood pressure cannot be controlled, the team may recommend repair. TEVAR places a fabric-covered support (stent graft) inside the aorta through an artery, usually in the groin, to cover the main tear and redirect blood. It is not suitable for every anatomy or every person; Marfan syndrome and other connective-tissue conditions can affect whether an endovascular repair or open surgery is preferred.',
                     infoPopup: {
                         title: 'TEVAR',
-                        text: 'TEVAR stands for Thoracal EndoVascular Aortic Repair. Doctors guide a covered stent through a blood vessel and place it inside the aorta to support the weakened wall and redirect blood flow. It can be used as an alternative to open surgery in suitable cases.'
+                        text: 'TEVAR means thoracic endovascular aortic repair. Through an artery, usually in the groin, doctors guide a catheter carrying a fabric-covered metal stent graft to the chest aorta. Once opened, it lines the inside of the vessel and covers the main tear, helping blood flow through the intended channel. Suitability depends on the tear\'s position, branch vessels, and the strength of the aortic wall; people with Marfan syndrome may need a different balance of endovascular and open repair.'
                     }
                 },
                 {
@@ -241,19 +245,19 @@ export const dissectionStory = {
                             icon: 'prescriptions',
                             label: 'Uncomplicated Type B',
                             treatment: 'Medical therapy',
-                            info: 'When a Type B dissection is uncomplicated, treatment often starts with medication, pain control, blood-pressure management, and close imaging follow-up.'
+                            info: 'If there is no rupture, organ blood-flow problem, ongoing severe pain, or uncontrolled blood pressure, treatment generally begins with medicines in hospital. The team controls heart rate and blood pressure, treats pain, watches organ function, and repeats imaging to check for change.'
                         },
                         {
                             icon: 'medical_services',
                             label: 'Complicated Type B',
                             treatment: 'Aortic treatment',
-                            info: 'Signs such as organ malperfusion, rupture, persistent pain, or uncontrolled blood pressure can make a Type B dissection complicated and may require an aortic intervention.'
+                            info: 'A blocked branch artery, reduced blood supply to an organ, bleeding or rupture, ongoing pain, or blood pressure that remains high despite treatment can make the dissection complicated. The aortic team then weighs urgent repair options, including TEVAR or open surgery, based on anatomy and connective-tissue disease.'
                         }
                     ]
                 },
                 {
                     type: 'reference',
-                    text: 'Source: S2k guideline on Type B aortic dissection (2022), chapters 6 and 7. Miriam reference: VMR dataset 0246_H_AO_AOD.'
+                    text: 'Sources: [2022 German S2k Guideline on Type B Aortic Dissection](https://register.awmf.org/assets/guidelines/004-034l_S2k_Typ_B_Aortendissektion_2022-05.pdf), treatment chapters; [2022 ACC/AHA Aortic Disease Guideline](https://doi.org/10.1161/CIR.0000000000001106), acute aortic syndrome management. Miriam case: VMR dataset 0246_H_AO_AOD.'
                 }
             ]
         },
@@ -267,15 +271,17 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'After the acute event, Miriam\'s aorta carries blood through two spaces instead of one. The original channel is the true lumen; the new channel inside the wall is the false lumen. The moving particles trace simulated blood flow through both channels, making clear that the dissection is not only a line on an image. It changes the route of circulation.'
+                    text: 'After the acute event, this simulation shows how blood moves through both channels of Miriam\'s dissected aorta. It illustrates how the tear changes the route of circulation.'
                 },
                 {
                     type: 'modelPlaceholder',
                     id: 'flow-vis-subacute',
-                    src: 'https://media.githubusercontent.com/media/LuisaSusanneFlaig/Aortaproject/v1.0-flow/assets/models/flow/dissection_lines_anim.glb',
+                    src: `${flowModelBase}dissection_lines_anim.glb`,
                     flowVariants: [
-                        { label: 'Pathlines', src: 'https://media.githubusercontent.com/media/LuisaSusanneFlaig/Aortaproject/v1.0-flow/assets/models/flow/dissection_lines_anim.glb', framingScale: 0.2, offsetX: 0, offsetY: 0, rotationY: 1.5708, animationFps: 20, animationSpeed: 1 },
-                        { label: 'Particle flow', src: 'https://media.githubusercontent.com/media/LuisaSusanneFlaig/Aortaproject/v1.0-flow/assets/models/flow/dissection_particles_anim.glb', framingScale: 0.2, offsetX: 0, offsetY: -0.06, rotationY: 1.5708, animationFps: 20, animationSpeed: 0.5 }
+                        { label: 'Pathlines', src: `${flowModelBase}dissection_lines_anim.glb`, framingScale: 0.42, rotationY: -1.5708, animationFps: 20, animationSpeed: 1 },
+                        { label: 'Particle flow', src: `${flowModelBase}dissection_particles_anim.glb`, framingScale: 0.35, rotationY: -1.5708, animationFps: 20, animationSpeed: 0.5 },
+                        { label: 'Healthy laminar flow · pathlines', src: `${flowModelBase}healthy_lines_anim.glb`, framingScale: 0.29, rotationY: -1.5708, animationFps: 20, animationSpeed: 1, showInfoPopup: false },
+                        { label: 'Healthy laminar flow · particles', src: `${flowModelBase}healthy_particle_anim.glb`, framingScale: 0.35, rotationY: -1.5708, animationFps: 20, animationSpeed: 0.5, showInfoPopup: false }
                     ],
                     modelMode: 'flow',
                     preload: true,
@@ -288,16 +294,16 @@ export const dissectionStory = {
                     title: 'Flow-Vis - Subacute Phase',
                     infoPopup: {
                         title: 'About this simulation',
-                        text: 'This animation is a computer model of blood-flow patterns reconstructed from Miriam\'s aortic anatomy after dissection. It illustrates how blood can move through the true and false lumens; it is not a live measurement or a prediction of Miriam\'s individual outcome.'
+                        text: 'Miriam\'s dissected aorta is reconstructed from medical imaging and divided into a computational mesh that includes both channels. Software calculates blood movement through that geometry, including how blood enters the aorta and leaves through its branches. The calculated results are then rendered as a 3D animation; color and motion help show flow direction and relative speed. This is simulated data, not blood recorded in the body or a prediction of Miriam\'s individual outcome.'
                     }
                 },
                 {
                     type: 'text',
-                    text: 'Some paths are faster, other zones are slower, and parts of the flow swirl. These patterns can change the forces on the vessel wall. They do not tell us exactly what will happen to Miriam, but they explain why blood movement still matters after the first emergency has passed.'
+                    text: 'Flow speed and direction vary across the vessel, and swirling areas may change the forces on the wall. For comparison, the healthy-flow reference uses a separate healthy aortic anatomy to illustrate general laminar flow; it does not represent Miriam\'s dissected aorta. This patient-specific model cannot predict Miriam\'s individual outcome, but it shows why blood movement still matters after the first emergency.'
                 },
                 {
                     type: 'reference',
-                    text: 'Context: patient-specific simulation based on the subacute CTA anatomy. The flow shown is a model calculation, not a direct measurement in Miriam\'s body. Source: Zimmermann et al. (2023), DOI 10.1038/s41598-023-49942-0.'
+                    text: 'Context: patient-specific simulation based on the subacute CTA anatomy. Source: Zimmermann et al. (2023), DOI 10.1038/s41598-023-49942-0. Methods reference: Wilson NM, Ortiz AK, Johnson AB. The Vascular Model Repository: A Public Resource of Medical Imaging Data and Blood Flow Simulation Results. J Med Devices. 2013;7(4):040923. DOI: 10.1115/1.4025983.'
                 }
             ]
         },
@@ -311,7 +317,7 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'For Miriam, prevention means protecting an aorta that has already been injured. Blood pressure control reduces force on the wall. Rehabilitation helps her return to activity in a supervised way. Dosed activity means exercise is adapted so blood pressure does not spike unpredictably. Whole-aorta imaging means CTA follow-up checks the entire vessel, not only the first tear. Genetic risk matters because Marfan syndrome can affect family members too.'
+                    text: 'After the emergency, care shifts to lowering the chance of further aortic problems and finding change early. Long-term blood-pressure and heart-rate medicines reduce strain on the wall; the care team adjusts them to the person and checks for side effects. Repeat imaging—often CTA or MRI—looks for enlargement or other changes in the dissected area and the rest of the aorta. Activity is usually returned to gradually, with a clinician or rehabilitation team advising what level is appropriate and which heavy straining to avoid. Because Miriam has Marfan syndrome, follow-up is lifelong and close relatives may be offered genetic counseling and aortic assessment.'
                 },
                 {
                     type: 'preventionTimeline',
@@ -319,33 +325,33 @@ export const dissectionStory = {
                         {
                             eyebrow: 'Today',
                             title: 'Blood pressure',
-                            info: 'After a dissection, controlling blood pressure reduces stress on the injured aortic wall. Medication and targets should follow Miriam’s treatment plan.'
+                            info: 'Long-term medicine is commonly used to keep blood pressure and heart rate under control, reducing the force of each heartbeat on the aorta. The exact targets and medicines are set by Miriam\'s clinicians; she should not change a dose without them.'
                         },
                         {
                             eyebrow: 'After the acute phase',
                             title: 'Rehabilitation',
-                            info: 'Supervised rehabilitation can support a gradual return to everyday activity after the acute phase. The pace depends on symptoms, imaging, and clinical advice.'
+                            info: 'Once the acute phase is over, a supervised program can help rebuild stamina and confidence step by step. The team adapts the plan to symptoms, blood pressure, imaging, and any treatment she received.'
                         },
                         {
                             eyebrow: 'In everyday life',
                             title: 'Dosed activity',
-                            info: 'Activity is adapted to avoid unpredictable blood-pressure spikes. What is appropriate should be decided with Miriam’s care team.'
+                            info: 'Gentle, regular activity may be encouraged, while sudden maximal effort and heavy straining can cause sharp blood-pressure rises. Safe activities and intensity vary; Miriam\'s aortic team should give advice for her situation.'
                         },
                         {
                             eyebrow: 'Long term',
                             title: 'Regular imaging',
-                            info: 'Follow-up CTA or other imaging checks whether the whole aorta remains stable and whether its shape changes over time.'
+                            info: 'After a dissection treated with medicine alone, guideline follow-up commonly includes CT or MRI at about 1, 6, and 12 months, then yearly if stable. The schedule can change with findings. Imaging checks the dissected segment and the remaining aorta for enlargement or new problems.'
                         },
                         {
                             eyebrow: 'In the family',
                             title: 'Genetic risk',
-                            info: 'Marfan syndrome can run in families. Family members may benefit from genetic counseling and appropriate cardiovascular assessment.'
+                            info: 'Marfan syndrome is inherited, so relatives may share the risk even if they feel well. Genetic counseling can explain testing, and close relatives may be offered heart imaging to look for aortic enlargement.'
                         }
                     ]
                 },
                 {
                     type: 'reference',
-                    text: 'Sources: S2k guideline on Type B aortic dissection (AWMF 004-034, 2022), chapters on rehabilitation and follow-up; ACC/AHA Guideline for the Diagnosis and Management of Aortic Disease (2022), recommendations on imaging, genetics, and family screening.'
+                    text: 'Sources: [2022 German S2k Guideline on Type B Aortic Dissection](https://register.awmf.org/assets/guidelines/004-034l_S2k_Typ_B_Aortendissektion_2022-05.pdf), follow-up and rehabilitation; [2022 ACC/AHA Aortic Disease Guideline](https://doi.org/10.1161/CIR.0000000000001106), imaging after dissection, Marfan syndrome, and family assessment.'
                 }
             ]
         },

@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 
 // Keep 3D mesh materials aligned with the UI accent token (--color-accent).
 const MODEL_ACCENT = 0xb62413;
@@ -109,7 +110,9 @@ class InlineModelViewer {
         this.framingScale = Number(this.container.dataset.framingScale) || null;
         this.animationFps = Math.max(1, Number(this.container.dataset.animationFps) || 30);
         this.animationSpeed = Math.max(0, Number(this.container.dataset.animationSpeed) || 1);
-        const gltf = await new GLTFLoader().loadAsync(modelUrl);
+        const loader = new GLTFLoader();
+        loader.setMeshoptDecoder(MeshoptDecoder);
+        const gltf = await loader.loadAsync(modelUrl);
         if (loadToken !== this.modelLoadToken) {
             this.disposeObject(gltf.scene);
             return;
@@ -186,6 +189,14 @@ class InlineModelViewer {
         this.animationAccumulator = 0;
         this.container.classList.remove('is-loaded', 'has-error');
         await this.loadModel(modelUrl);
+    }
+
+    setAnimationSpeed(speed) {
+        const nextSpeed = Number(speed);
+        if (!Number.isFinite(nextSpeed)) return;
+        this.animationSpeed = Math.max(0, nextSpeed);
+        this.container.dataset.animationSpeed = String(this.animationSpeed);
+        if (this.mixer) this.mixer.timeScale = this.animationSpeed;
     }
 
     disposeObject(object) {

@@ -83,6 +83,10 @@ body[data-story-version] #story .model-placeholder:has(.model-viewport-info-popu
     position: relative;
 }
 
+body[data-story-version] #story .model-placeholder.flow-info-hidden .model-viewport-info-popup {
+    display: none;
+}
+
 body[data-story-version] #story .model-viewport-info-popup summary {
     position: relative;
     position: absolute;
@@ -129,6 +133,37 @@ body[data-story-version] #story .model-viewport-info-popup summary:focus-visible
 body[data-story-version] #story .model-viewport-info-popup .image-hotspot-popover {
     width: min(280px, calc(100vw - 32px));
     max-width: calc(100vw - 32px);
+}
+
+body[data-story-version] #story .flow-speed-control {
+    display: grid;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+body[data-story-version] #story .flow-speed-control label {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+body[data-story-version] #story .flow-speed-value {
+    font-variant-numeric: tabular-nums;
+}
+
+body[data-story-version] #story .flow-speed-slider {
+    width: 100%;
+    margin: 0;
+    accent-color: var(--color-accent);
+    cursor: pointer;
+}
+
+body[data-story-version] #story .flow-speed-slider:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
 }
 
 body[data-story-version] #story .image-hotspot-popover {

@@ -641,7 +641,8 @@ class ScrollytellingApp {
         document.addEventListener('click', (event) => {
             const flowButton = event.target.closest('.flow-variant-button');
             if (flowButton) {
-                const modelStage = flowButton.closest('.model-placeholder')?.querySelector('[data-inline-model]');
+                const modelFigure = flowButton.closest('.model-placeholder');
+                const modelStage = modelFigure?.querySelector('[data-inline-model]');
                 const viewer = modelStage?.inlineModelViewer;
                 if (!viewer) return;
                 const variantOptions = {};
@@ -650,6 +651,23 @@ class ScrollytellingApp {
                     if (Number.isFinite(value)) variantOptions[key] = value;
                 });
                 const controls = flowButton.closest('.flow-variant-controls');
+                const speedSlider = modelFigure?.querySelector('.flow-speed-slider');
+                if (speedSlider) {
+                    if (speedSlider.dataset.userAdjusted === 'true') {
+                        variantOptions.animationSpeed = Number(speedSlider.value);
+                    } else {
+                        const variantSpeed = Number(flowButton.dataset.flowAnimationSpeed);
+                        if (Number.isFinite(variantSpeed)) {
+                            speedSlider.value = String(variantSpeed);
+                            variantOptions.animationSpeed = variantSpeed;
+                            const speedOutput = speedSlider.closest('.flow-speed-control')?.querySelector('.flow-speed-value');
+                            if (speedOutput) speedOutput.textContent = `${variantSpeed}×`;
+                        }
+                    }
+                }
+                const showInfoPopup = flowButton.dataset.flowInfo !== 'false';
+                modelFigure?.classList.toggle('flow-info-hidden', !showInfoPopup);
+                if (!showInfoPopup) modelFigure?.querySelector('.model-viewport-info-popup')?.removeAttribute('open');
                 controls?.querySelectorAll('.flow-variant-button').forEach((button) => {
                     const isSelected = button === flowButton;
                     button.classList.toggle('active', isSelected);
@@ -714,6 +732,16 @@ class ScrollytellingApp {
 
             trigger.setAttribute('aria-expanded', String(!isOpen));
             popup.hidden = isOpen;
+        });
+        document.addEventListener('input', (event) => {
+            const speedSlider = event.target.closest('.flow-speed-slider');
+            if (!speedSlider) return;
+            const speed = Number(speedSlider.value);
+            speedSlider.dataset.userAdjusted = 'true';
+            const speedOutput = speedSlider.closest('.flow-speed-control')?.querySelector('.flow-speed-value');
+            if (speedOutput) speedOutput.textContent = `${speed}×`;
+            const modelStage = speedSlider.closest('.model-placeholder')?.querySelector('[data-inline-model]');
+            modelStage?.inlineModelViewer?.setAnimationSpeed(speed);
         });
         if (this.hasCompletedBothStories()) this.renderCompletionPrompt();
     }
