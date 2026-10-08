@@ -1,3 +1,7 @@
+const flowModelBase = ['localhost', '127.0.0.1'].includes(globalThis.location?.hostname)
+    ? 'assets/models/flow/optimized/'
+    : 'https://media.githubusercontent.com/media/LuisaSusanneFlaig/Aortaproject/changes-to-version-1/assets/models/flow/optimized/';
+
 export const aneurysmStory = {
 
     title: 'Aortic Aneurysm',
@@ -84,7 +88,7 @@ export const aneurysmStory = {
                     text: 'Alex\'s aorta is shown here as a 3D model. The actual shape of his aorta is captured using CTA imaging. The model you can see on the left is then extracted from that imaging. In Marfan syndrome, doctors follow that shape over time because a weakened wall can widen gradually. A single scan matters, but the trend matters even more: diameter, growth, and location are compared across follow-up visits.',
                     infoPopup: {
                         title: 'CTA',
-                        text: 'CT angiography uses computed tomography, often with iodinated contrast injected into a vein, to visualize blood vessels. Computer processing combines the scan slices into detailed, freely viewable 3D images.'
+                        text: 'Software combines the CTA scan slices into a 3D model, allowing the aorta to be viewed from different angles rather than as a single cross-section.'
                     }
                 },
                 {
@@ -139,7 +143,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Alex diagnosis pathway begins with known inherited risk. In Marfan syndrome, the aorta is checked before symptoms appear because enlargement can be silent. Planned imaging measures the aortic diameter over time, then the care team compares it with earlier scans, growth rate, family history, valve findings, and body size.',
+                    text: 'Because Alex has Marfan syndrome, doctors check his aorta even when he feels well: widening may cause no symptoms. They measure the aortic root and ascending aorta, assess the aortic valve, and compare each result with earlier scans. The change over time matters as much as one measurement. The team also considers family history, body size, and how quickly the aorta is growing when planning the next scan or specialist review.',
                     infoPopup: {
                         title: 'valve findings',
                         text: 'Heart valves act like one-way doors that keep blood moving through the heart in the right direction. The aortic valve sits between the heart’s main pumping chamber and the aorta, and scans can show whether it is opening and closing normally.'
@@ -151,28 +155,28 @@ export const aneurysmStory = {
                         {
                             icon: 'genetics_svg',
                             title: 'Marfan risk',
-                            info: 'Marfan syndrome can weaken the connective tissue in the aortic wall. That inherited risk is why Alex needs aortic follow-up even when he feels well.'
+                            info: 'Marfan syndrome can weaken the aortic wall. Regular checks can find enlargement before it causes symptoms; feeling well does not show whether the aorta has changed.'
                         },
                         {
                             icon: 'event_available_svg',
                             title: 'Surveillance',
-                            info: 'Surveillance means planned follow-up visits and imaging. Comparing measurements over time helps the care team see whether the aorta is stable or changing.'
+                            info: 'The first heart ultrasound measures the aortic root and ascending aorta. A repeat study after about six months can show the growth rate; if measurements are stable, yearly ultrasound is commonly used. CT or MRI may be needed when ultrasound cannot show the aorta clearly or to assess more of it.'
                         },
                         {
                             icon: 'radiology_aorta',
                             title: 'CTA imaging',
-                            info: 'CT angiography combines computed tomography with contrast dye to show the aorta clearly. It helps measure the vessel and map its shape.'
+                            info: 'CTA combines many X-ray views with contrast injected into a vein. The images show the aorta’s course and branches and let radiologists measure its widest points. Consistent measurement methods make comparisons between scans more useful.'
                         },
                         {
                             icon: 'compare_svg',
                             title: 'Aortic review',
-                            info: 'The team reviews the latest measurement alongside earlier scans, growth rate, family history, valve findings, and body size before deciding what happens next.'
+                            info: 'The team checks whether the aorta is stable or growing, reviews the family history and valve, and relates the measurements to Alex’s body size. These details help set the follow-up interval and decide when an aortic specialist should discuss treatment.'
                         }
                     ]
                 },
                 {
                     type: 'reference',
-                    text: 'Source: 2022 ACC/AHA Aortic Disease Guideline, Marfan imaging and risk assessment recommendations. DOI: 10.1161/CIR.0000000000001106. Alex case: VMR dataset 0021_H_AO_MFS, case 0129_0000.'
+                    text: 'Sources: [2022 ACC/AHA Aortic Disease Guideline](https://doi.org/10.1161/CIR.0000000000001106), Marfan imaging recommendations; [RadiologyInfo: CT Angiography](https://www.radiologyinfo.org/en/info/angioct). Alex case: VMR dataset 0021_H_AO_MFS, case 0129_0000.'
                 }
             ]
         },
@@ -184,7 +188,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'The CT angiography (CTA) image shows Alex\'s chest from the side. CTA uses computed tomography and contrast dye to make the blood-filled aorta appear bright, helping doctors assess its shape and size.'
+                    text: 'For a CT angiogram (CTA), a small tube is placed in a vein, usually in the arm, and iodine contrast is injected while the scanner takes a rapid series of X-ray images. The contrast makes blood-filled spaces stand out, so the team can trace the aorta, see its branches, and measure its diameter. A computer can combine the thin image slices into views from different angles. The aorta is colored red here during image editing; it was not red in the original scan.'
                 },
                 {
                     type: 'image',
@@ -192,7 +196,7 @@ export const aneurysmStory = {
                     alt: 'Sagittal CTA image of Alex\'s chest with the thoracic aorta highlighted in red',
                     aspect: '1 / 1',
                     hotspot: {
-                        x: '60%',
+                        x: '52%',
                         y: '30%',
                         title: 'Thoracic aortic aneurysm',
                         text: 'The widened section of Alex\'s thoracic aorta is the finding being measured and followed over time.'
@@ -208,7 +212,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'The treatment spectrum is not a timeline. It shows how the current level of risk can shift the decision from continued monitoring toward planned repair. If the aortic diameter and growth remain stable, doctors usually continue surveillance. Faster growth or added risk features can bring Alex to an aortic center earlier. If the point at which treatment is recommended is reached, aortic repair means planned surgery before an emergency occurs. Guidelines for Marfan-associated aortic root disease use diameter thresholds, often 5.0 cm or sometimes 4.5 cm with added risk factors.'
+                    text: 'This is a choice based on changing risk, not a fixed timeline. If Alex’s measurements are stable, the team continues planned scans and medical follow-up. Faster growth, a close relative who had a dissection, or other risk features can lead to an earlier discussion with a specialist aortic team. For Marfan syndrome, guidelines recommend surgery when the aortic root reaches 5.0 cm; surgery may be considered from 4.5 cm when specific high-risk features are present. These figures apply to the aortic root—not every part of the aorta—and are not a decision rule by themselves. Growth rate, body size, family history, valve findings, overall health, and the risks and benefits of surgery are considered together.'
                 },
                 {
                     type: 'treatmentDecision',
@@ -220,25 +224,25 @@ export const aneurysmStory = {
                             icon: 'circle_circle',
                             label: 'Stable diameter and growth',
                             treatment: 'Continue monitoring',
-                            info: 'When the aortic diameter and growth remain stable, the usual next step is continued surveillance with planned imaging and review by the care team.'
+                            info: 'If repeat measurements show little or no growth, follow-up imaging and visits continue at an interval chosen for Alex. Regular review matters because a change can happen before symptoms appear.'
                         },
                         {
                             icon: 'expand',
                             label: 'Faster growth or added risk',
                             treatment: 'Appointment at an aortic center',
-                            info: 'Faster enlargement or additional risk features can shift the decision toward earlier specialist review at an aortic center.'
+                            info: 'A faster increase in size, family history of early dissection, or other high-risk findings may prompt earlier review by a team experienced in inherited aortic disease. The team confirms measurements and discusses options; it does not mean surgery is automatic.'
                         },
                         {
                             icon: 'surgical',
                             label: 'Point at which treatment is recommended',
                             treatment: 'Aortic repair',
-                            info: 'If the aorta reaches a treatment threshold or other risk factors make repair advisable, planned aortic surgery may be discussed before an emergency occurs.'
+                            info: 'If the balance of risk favors repair, surgeons replace the enlarged aortic root and sometimes the ascending aorta. In selected patients the natural aortic valve can be preserved; in others it is repaired or replaced. The approach is planned by an experienced multidisciplinary team before an emergency develops.'
                         }
                     ]
                 },
                 {
                     type: 'reference',
-                    text: 'Source: 2022 ACC/AHA Guideline for the Diagnosis and Management of Aortic Disease, recommendations on Marfan syndrome, prophylactic aortic surgery thresholds, surveillance, and risk modifiers. DOI: 10.1161/CIR.0000000000001106. Alex case: VMR dataset 0021_H_AO_MFS, case 0129_0000.'
+                    text: 'Source: [2022 ACC/AHA Guideline for the Diagnosis and Management of Aortic Disease](https://doi.org/10.1161/CIR.0000000000001106), Marfan surveillance and aortic-root surgery recommendations. Alex case: VMR dataset 0021_H_AO_MFS, case 0129_0000.'
                 }
             ]
         },
@@ -250,15 +254,17 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'In the aorta, shape and blood flow are tightly connected. The lines you can see on the left show how the blood flows in Alex’s aorta. Color and motion make changes in speed and direction easier to see, especially where the blood vessel widens or curves. This is not a real-time scan of blood inside Alex, but a model built from his anatomy.'
+                    text: 'In the aorta, shape and blood flow are tightly connected. This model shows simulated blood flow through Alex’s aorta. It illustrates changes in speed and direction, especially where the vessel widens or curves. It is not a real-time scan, but a simulation based on his anatomy.'
                 },
                 {
                     type: 'modelPlaceholder',
                     id: 'alex-flow-overview-model',
-                    src: 'https://media.githubusercontent.com/media/LuisaSusanneFlaig/Aortaproject/v1.0-flow/assets/models/flow/aneurysm_lines_anim.glb',
+                    src: `${flowModelBase}aneurysm_lines_anim.glb`,
                     flowVariants: [
-                        { label: 'Pathlines', src: 'https://media.githubusercontent.com/media/LuisaSusanneFlaig/Aortaproject/v1.0-flow/assets/models/flow/aneurysm_lines_anim.glb', framingScale: 0.29, rotationY: 1.5708, animationFps: 20, animationSpeed: 1 },
-                        { label: 'Particle flow', src: 'https://media.githubusercontent.com/media/LuisaSusanneFlaig/Aortaproject/v1.0-flow/assets/models/flow/aneurysm_particles_anim.glb', framingScale: 0.35, rotationY: 1.5708, animationFps: 20, animationSpeed: 0.5 }
+                        { label: 'Pathlines', src: `${flowModelBase}aneurysm_lines_anim.glb`, framingScale: 0.29, rotationY: 1.5708, animationFps: 20, animationSpeed: 1 },
+                        { label: 'Particle flow', src: `${flowModelBase}aneurysm_particles_anim.glb`, framingScale: 0.35, rotationY: 1.5708, animationFps: 20, animationSpeed: 0.5 },
+                        { label: 'Healthy laminar flow · pathlines', src: `${flowModelBase}healthy_lines_anim.glb`, framingScale: 0.29, rotationY: -1.5708, animationFps: 20, animationSpeed: 1, showInfoPopup: false },
+                        { label: 'Healthy laminar flow · particles', src: `${flowModelBase}healthy_particle_anim.glb`, framingScale: 0.35, rotationY: -1.5708, animationFps: 20, animationSpeed: 0.5, showInfoPopup: false }
                     ],
                     modelMode: 'flow',
                     preload: true,
@@ -269,13 +275,13 @@ export const aneurysmStory = {
                     title: 'Flow-Vis - Overall Flow',
                     infoPopup: {
                         title: 'About this simulation',
-                        text: 'This animation is a computer model of blood-flow patterns reconstructed from Alex\'s aortic anatomy. It illustrates how the widened vessel can change the speed and direction of flow; it is not a live measurement or a prediction of an individual outcome.'
+                        text: 'Alex\'s aortic anatomy is reconstructed from medical imaging and divided into a computational mesh. Software calculates blood movement through that geometry, including how blood enters the aorta and leaves through its branches. The calculated results are then rendered as a 3D animation; color and motion help show flow direction and relative speed. This is simulated data, not blood recorded in the body or a prediction of Alex\'s individual outcome.'
                     },
                     rotationHint: true
                 },
                 {
                     type: 'text',
-                    text: 'The important point is not only where the aorta is wide, but how the wider shape reorganizes flow. Blood accelerates in the arch and creates a string swirling flow in the enlargement, called a vortex or turbulent flow. This differs from the organized, straight flow in healthy aortas called laminar flow. Those patterns matter because the vessel wall is exposed to the flow with every heartbeat.',
+                    text: 'The important point is not only where the aorta is wide, but how the wider shape reorganizes flow. Blood accelerates in the arch and can swirl in the enlargement, forming a vortex. This differs from the smoother, more orderly movement called laminar flow. For comparison, the healthy-flow reference uses a separate healthy aortic anatomy; it does not show Alex\'s aorta. These patterns matter because the vessel wall is exposed to the flow with every heartbeat.',
                     infoPopup: {
                         title: 'laminar flow',
                         text: 'Laminar flow moves in smooth layers, with little mixing or crosswise swirling between them. It can occur in the bloodstream and is an orderly flow that may become turbulent when disturbances grow beyond a critical point.'
@@ -283,7 +289,7 @@ export const aneurysmStory = {
                 },
                 {
                     type: 'reference',
-                    text: 'Data basis: open VMR dataset 0021_H_AO_MFS, case 0129_0000, with CT-based geometry and simulation files. The flow visualization is a model calculation, not a direct measurement in Alex\'s body.'
+                    text: 'Data basis: open VMR dataset 0021_H_AO_MFS, case 0129_0000, with CT-based geometry and simulation files. Methods reference: Wilson NM, Ortiz AK, Johnson AB. The Vascular Model Repository: A Public Resource of Medical Imaging Data and Blood Flow Simulation Results. J Med Devices. 2013;7(4):040923. DOI: 10.1115/1.4025983.'
                 }
             ]
         },

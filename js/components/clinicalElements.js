@@ -8,6 +8,7 @@ let diagnosticInfoId = 0;
 let decisionInfoId = 0;
 let preventionInfoId = 0;
 let imageHotspotId = 0;
+let flowSpeedSliderId = 0;
 
 const renderVisualIcon = (icon, className = 'story-inline-icon') => renderMaterialIcon(
     icon,
@@ -240,7 +241,7 @@ export function renderModelPlaceholder(element = {}) {
     const flowControls = flowVariants.length > 1 ? `
             <div class="flow-variant-controls" role="group" aria-label="Choose flow visualization">
                 ${flowVariants.map((variant, index) => `
-                    <button class="flow-variant-button${index === 0 ? ' active' : ''}" type="button" data-flow-url="${variant.src}"${variantAttribute(variant, 'framingScale')}${variantAttribute(variant, 'offsetX')}${variantAttribute(variant, 'offsetY')}${variantAttribute(variant, 'rotationX')}${variantAttribute(variant, 'rotationY')}${variantAttribute(variant, 'rotationZ')}${variantAttribute(variant, 'animationFps')}${variantAttribute(variant, 'animationSpeed')} aria-pressed="${index === 0}">${variant.label || ('View ' + (index + 1))}</button>
+                    <button class="flow-variant-button${index === 0 ? ' active' : ''}" type="button" data-flow-url="${variant.src}" data-flow-info="${variant.showInfoPopup !== false}"${variantAttribute(variant, 'framingScale')}${variantAttribute(variant, 'offsetX')}${variantAttribute(variant, 'offsetY')}${variantAttribute(variant, 'rotationX')}${variantAttribute(variant, 'rotationY')}${variantAttribute(variant, 'rotationZ')}${variantAttribute(variant, 'animationFps')}${variantAttribute(variant, 'animationSpeed')} aria-pressed="${index === 0}">${variant.label || ('View ' + (index + 1))}</button>
                 `).join('')}
             </div>` : '';
 
@@ -259,14 +260,23 @@ export function renderModelPlaceholder(element = {}) {
         `;
     }).join('');
 
+    const flowSpeedControl = flowVariants.length > 1 ? (() => {
+        const sliderId = `flow-speed-slider-${++flowSpeedSliderId}`;
+        return `
+                <div class="flow-speed-control">
+                    <label for="${sliderId}">Animation speed <output class="flow-speed-value" for="${sliderId}">1×</output></label>
+                    <input class="flow-speed-slider" id="${sliderId}" type="range" min="0.25" max="1" step="0.25" value="1" aria-label="Animation speed">
+                </div>`;
+    })() : '';
+
     const infoPopupMarkup = element.src ? `
             <details class="model-viewport-info-popup">
                 <summary aria-label="${element.infoPopup?.title || 'More information'}"></summary>
-                ${element.infoPopup?.text ? `<div class="image-hotspot-popover"><p>${element.infoPopup.text}</p></div>` : ''}
+                ${element.infoPopup?.text ? `<div class="image-hotspot-popover"><p>${element.infoPopup.text}</p>${flowSpeedControl}</div>` : ''}
             </details>` : '';
 
     return `
-        <figure class="model-placeholder${hotspots.length ? ' has-image-hotspot' : ''}" id="${element.id || ''}">
+        <figure class="model-placeholder${hotspots.length ? ' has-image-hotspot' : ''}${flowVariants[0]?.showInfoPopup === false ? ' flow-info-hidden' : ''}" id="${element.id || ''}">
             <div class="model-placeholder-stage${element.src ? ' inline-model-viewer' : ''}"${viewerAttributes}${flowVariants.length > 1 ? ' data-flow-switch' : ''} role="img" aria-label="${accessibleLabel}">
                 ${element.src
                     ? `${element.rotationHint ? '<span class="inline-model-360-hint material-symbols-rounded story-material-icon" aria-hidden="true">360</span>' : ''}<div class="inline-model-loading" aria-hidden="true"></div><span class="inline-model-error">Animation unavailable</span>`

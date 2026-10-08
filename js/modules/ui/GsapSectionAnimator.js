@@ -392,8 +392,7 @@ export class GsapSectionAnimator {
             const getRotationTarget = () => viewer.rotationPivot || viewer.model;
             const baseRotation = getRotationTarget().rotation.y;
             const rotationState = { value: 0 };
-            const rotationDirection = section.classList.contains('miriam-aorta-model-section')
-                || section.classList.contains('miriam-flow-section') ? -1 : 1;
+            const rotationDirection = section.classList.contains('miriam-aorta-model-section') ? -1 : 1;
             const rotationTween = gsap.to(rotationState, {
                 value: Math.PI * 2 * rotationDirection,
                 ease: 'none',
