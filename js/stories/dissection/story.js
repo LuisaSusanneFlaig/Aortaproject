@@ -1,6 +1,4 @@
-const flowModelBase = ['localhost', '127.0.0.1'].includes(globalThis.location?.hostname)
-    ? 'assets/models/flow/optimized/'
-    : 'https://media.githubusercontent.com/media/LuisaSusanneFlaig/Aortaproject/refs/heads/changes-to-version-1/assets/models/flow/optimized/';
+const flowModelBase = 'assets/models/flow/optimized/';
 
 export const dissectionStory = {
 
@@ -278,13 +276,14 @@ export const dissectionStory = {
                     id: 'flow-vis-subacute',
                     src: `${flowModelBase}dissection_lines_anim.glb`,
                     flowVariants: [
-                        { label: 'Pathlines', src: `${flowModelBase}dissection_lines_anim.glb`, framingScale: 0.42, rotationY: -1.5708, animationFps: 20, animationSpeed: 1 },
+                        { label: 'Pathlines', src: `${flowModelBase}dissection_lines_anim.glb`, framingScale: 0.75, rotationY: -1.5708, animationFps: 20, animationSpeed: 1 },
                         { label: 'Particle flow', src: `${flowModelBase}dissection_particles_anim.glb`, framingScale: 0.35, rotationY: -1.5708, animationFps: 20, animationSpeed: 0.5 },
                         { label: 'Healthy laminar flow · pathlines', src: `${flowModelBase}healthy_lines_anim.glb`, framingScale: 0.29, rotationY: -1.5708, animationFps: 20, animationSpeed: 1, showInfoPopup: false },
                         { label: 'Healthy laminar flow · particles', src: `${flowModelBase}healthy_particle_anim.glb`, framingScale: 0.35, rotationY: -1.5708, animationFps: 20, animationSpeed: 0.5, showInfoPopup: false }
                     ],
                     modelMode: 'flow',
                     preload: true,
+                    framingScale: 0.75,
                     animationFps: 20,
                     offsetX: 0,
                     offsetY: 0,

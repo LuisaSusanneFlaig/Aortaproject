@@ -1,6 +1,4 @@
-const flowModelBase = ['localhost', '127.0.0.1'].includes(globalThis.location?.hostname)
-    ? 'assets/models/flow/optimized/'
-    : 'https://media.githubusercontent.com/media/LuisaSusanneFlaig/Aortaproject/refs/heads/changes-to-version-1/assets/models/flow/optimized/';
+const flowModelBase = 'assets/models/flow/optimized/';
 
 export const aneurysmStory = {
 
@@ -269,7 +267,7 @@ export const aneurysmStory = {
                     modelMode: 'flow',
                     preload: true,
                     animationFps: 20,
-                    framingScale: 0.3,
+                    framingScale: 0.29,
                     alt: 'Animated pathlines representing simulated blood flow through Alex\'s Marfan-associated aneurysm model',
                     eyebrow: 'Patient-specific simulation',
                     title: 'Flow-Vis - Overall Flow',
