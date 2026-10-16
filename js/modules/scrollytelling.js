@@ -83,7 +83,7 @@ class ScrollytellingApp {
             <p class="story-completion-kicker">Both stories completed</p>
             <h2 id="story-completion-title">See the full picture</h2>
             <p>You have followed both an aortic aneurysm and an aortic dissection. Continue to the shared ending.</p>
-            <a class="story-completion-link" href="ending.html">Continue to ending <span aria-hidden="true">&rarr;</span></a>
+            <a class="story-completion-link" href="ending.html"><strong>Continue to ending</strong><span aria-hidden="true">&rarr;</span></a>
         `;
         // Keep the completion CTA outside the complete scrollytelling layout
         // so pin spacers and the last story step cannot absorb it.
@@ -639,17 +639,47 @@ class ScrollytellingApp {
         const navMenu = document.getElementById('nav-menu-mobile');
         if (navToggle && navMenu) navToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
         document.addEventListener('click', (event) => {
+            const flowViewButton = event.target.closest('.flow-view-button');
+            if (flowViewButton) {
+                const figure = flowViewButton.closest('.model-placeholder');
+                const modelSection = flowViewButton.closest('.alex-aorta-model-section');
+                const miriamModelSection = flowViewButton.closest('.miriam-aorta-model-section');
+                const showIllustration = flowViewButton.dataset.flowView === 'illustration';
+                figure?.classList.toggle('show-flow-illustration', showIllustration);
+                modelSection?.classList.toggle('show-anatomy-illustration', showIllustration);
+                miriamModelSection?.classList.toggle('show-anatomy-illustration', showIllustration);
+                (figure || modelSection || miriamModelSection)?.querySelectorAll('.flow-view-button').forEach((button) => {
+                    const selected = button === flowViewButton;
+                    button.classList.toggle('active', selected);
+                    button.setAttribute('aria-pressed', String(selected));
+                });
+                return;
+            }
+            const flowIllustrationButton = event.target.closest('.flow-illustration-button');
+            if (flowIllustrationButton) {
+                const figure = flowIllustrationButton.closest('.prevention-flow-illustrations');
+                if (!figure) return;
+                const selected = flowIllustrationButton.dataset.flowIllustration;
+                figure.querySelectorAll('.flow-illustration-button').forEach((button) => {
+                    const active = button === flowIllustrationButton;
+                    button.classList.toggle('active', active);
+                    button.setAttribute('aria-pressed', String(active));
+                });
+                figure.dataset.selectedFlow = selected;
+                return;
+            }
             const flowButton = event.target.closest('.flow-variant-button');
             if (flowButton) {
                 const modelFigure = flowButton.closest('.model-placeholder');
-                const modelStage = modelFigure?.querySelector('[data-inline-model]');
-                const viewer = modelStage?.inlineModelViewer;
-                if (!viewer) return;
+                const modelStages = [...(modelFigure?.querySelectorAll('[data-inline-model]') || [])];
+                if (!modelStages.length || modelStages.some((stage) => !stage.inlineModelViewer)) return;
                 const variantOptions = {};
                 ['framingScale', 'offsetX', 'offsetY', 'rotationX', 'rotationY', 'rotationZ', 'animationFps', 'animationSpeed'].forEach((key) => {
                     const value = Number(flowButton.dataset[`flow${key[0].toUpperCase()}${key.slice(1)}`]);
                     if (Number.isFinite(value)) variantOptions[key] = value;
                 });
+                const comparisonScale = Number(flowButton.dataset.flowComparisonFramingScale);
+                const comparisonRotationY = Number(flowButton.dataset.flowComparisonRotationY);
                 const controls = flowButton.closest('.flow-variant-controls');
                 const speedSlider = modelFigure?.querySelector('.flow-speed-slider');
                 if (speedSlider) {
@@ -674,7 +704,13 @@ class ScrollytellingApp {
                     button.setAttribute('aria-pressed', String(isSelected));
                     button.disabled = true;
                 });
-                viewer.switchModel(flowButton.dataset.flowUrl, variantOptions).finally(() => {
+                const switches = modelStages.map((stage, index) => {
+                    const options = { ...variantOptions };
+                    if (index === 0 && Number.isFinite(comparisonScale)) options.framingScale = comparisonScale;
+                    if (index === 0 && Number.isFinite(comparisonRotationY)) options.rotationY = comparisonRotationY;
+                    return stage.inlineModelViewer.switchModel(index === 0 ? flowButton.dataset.flowComparisonUrl : flowButton.dataset.flowUrl, options);
+                });
+                Promise.allSettled(switches).finally(() => {
                     controls?.querySelectorAll('.flow-variant-button').forEach((button) => { button.disabled = false; });
                 });
                 return;

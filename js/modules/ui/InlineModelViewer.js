@@ -5,6 +5,7 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 
 // Keep 3D mesh materials aligned with the UI accent token (--color-accent).
 const MODEL_ACCENT = 0xb62413;
+const animationSyncStarts = new Map();
 
 class InlineModelViewer {
     constructor(container) {
@@ -17,6 +18,7 @@ class InlineModelViewer {
         this.referenceModelDimension = null;
         this.animationFps = Math.max(1, Number(container.dataset.animationFps) || 30);
         this.animationSpeed = Math.max(0, Number(container.dataset.animationSpeed) || 1);
+        this.animationSyncGroup = container.dataset.animationSyncGroup || '';
         this.framingScale = Number(container.dataset.framingScale) || null;
         this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         this.startWhenNear();
@@ -476,7 +478,15 @@ class InlineModelViewer {
             this.animationAccumulator += delta;
             const animationInterval = 1 / this.animationFps;
             if (this.animationAccumulator >= animationInterval) {
-                this.mixer.update(this.animationAccumulator);
+                if (this.animationSyncGroup) {
+                    if (!animationSyncStarts.has(this.animationSyncGroup)) {
+                        animationSyncStarts.set(this.animationSyncGroup, frameTime);
+                    }
+                    const elapsed = Math.max(0, (frameTime - animationSyncStarts.get(this.animationSyncGroup)) / 1000);
+                    this.mixer.setTime(elapsed);
+                } else {
+                    this.mixer.update(this.animationAccumulator);
+                }
                 this.animationAccumulator = 0;
                 this.syncInstancedMeshes();
             }

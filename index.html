@@ -37,8 +37,15 @@
                 <h1 id="overview-title">A Matter of Flow</h1>
             </div>
             <div class="intro-columns">
-                <p>This application is a science-communication project about the aorta and the diseases that can change it. It translates medical imaging, computational models, and clinical knowledge into an interactive scrollytelling experience that can be explored at a human pace.</p>
+                <p>This application is a science-communication project about the aorta and the diseases that can change it. It translates medical imaging, computational models, and clinical knowledge into an interactive scrollytelling experience that can be explored at your own pace.</p>
                 <p>The underlying vascular models and datasets come from the <a href="https://www.vascularmodel.com/index.html" target="_blank" rel="noopener noreferrer">Vascular Model Repository</a>, an open-source database of computational models of normal and diseased cardiovascular anatomy. The repository is intended for research; this project creates a visual and narrative entry point for understanding what those models can show.</p>
+            </div>
+            <div class="intro-learning-objectives" aria-labelledby="learning-objectives-title">
+                <h2 id="learning-objectives-title">What we hope you’ll take away</h2>
+                <ul>
+                    <li><span class="material-symbols-rounded story-material-icon learning-objective-icon" aria-hidden="true">verified_user</span><span>Value transparent explanations as a basis for trust in medical visualizations: what the images and simulations are based on, what they show.</span></li>
+                </ul>
+                <p class="learning-objective-source">Our framing is informed by <a href="https://doi.org/10.1109/TVCG.2022.3209500" target="_blank" rel="noopener noreferrer">Lee-Robbins and Adar’s framework for affective learning objectives</a>.</p>
             </div>
         </section>
 
@@ -46,24 +53,24 @@
             <div class="anatomy-layout">
                 <div class="overview-copy anatomy-copy">
                     <h2 id="anatomy-title">A shared starting point</h2>
-                    <p>At the centre of the body, one vessel carries the force of every heartbeat. Before following disease, we first look at the healthy aorta: its route from the heart, its major branches, and the places where its shape matters. This shared map makes the later changes easier to recognize and understand. The aorta is continuous, but it passes through the chest and abdomen and supplies different parts of the body along the way. Use the markers to meet its main regions before entering either story.</p>
+                    <p>At the centre of the body, one vessel carries the force of every heartbeat. We first look at the healthy aorta: its route from the heart, its major branches, and the places where its shape matters. The aorta is continuous, passing through the chest and abdomen and supplying different parts of the body along the way. Use the markers to meet its main regions before entering either story.</p>
                 </div>
                 <div class="anatomy-explorer" aria-label="Interactive anatomy of the aorta">
                 <figure class="anatomy-figure">
                     <img class="anatomy-illustration" src="assets/story_images/dashboard_aorta_branches_ai_adapted.png" alt="Medical illustration of the human torso with the heart, full aorta, and major aortic branches">
-                    <button class="anatomy-hotspot" type="button" style="--x: 53%; --y: 37%; --i: 0;" aria-label="Show aortic arch" data-title="Aortic Arch" data-copy="The aortic arch curves above the heart. From this bend, the brachiocephalic trunk, left common carotid, and left subclavian artery carry blood toward the head, neck, and arms."></button>
+                    <button class="anatomy-hotspot" type="button" style="--x: 53%; --y: 37%; --i: 0;" aria-label="Show aortic arch" data-title="Aortic Arch" data-copy="The aortic arch curves above the heart."></button>
                     <button class="anatomy-hotspot" type="button" style="--x: 50%; --y: 44%; --i: 1;" aria-label="Show ascending aorta" data-title="Ascending Aorta" data-copy="The ascending aorta rises directly from the heart. This is where the force of the heartbeat first enters the main artery."></button>
                     <button class="anatomy-hotspot" type="button" style="--x: 56%; --y: 51%; --i: 2;" aria-label="Show heart" data-title="Heart" data-copy="The heart pumps oxygen-rich blood through the aortic valve into the aorta. Small coronary arteries branch off near the root to supply the heart muscle itself."></button>
                     <button class="anatomy-hotspot" type="button" style="--x: 53%; --y: 61%; --i: 3;" aria-label="Show descending thoracic aorta" data-title="Descending Thoracic Aorta" data-copy="The descending thoracic aorta runs down through the chest. It continues the main blood stream after the arch."></button>
                     <button class="anatomy-hotspot" type="button" style="--x: 53%; --y: 76%; --i: 4;" aria-label="Show abdominal aorta" data-title="Abdominal Aorta" data-copy="Below the diaphragm, the abdominal aorta gives branches to the digestive organs and kidneys before it reaches the pelvis."></button>
-                    <button class="anatomy-hotspot" type="button" style="--x: 52%; --y: 92%; --i: 5;" aria-label="Show aortic bifurcation" data-title="Aortic Bifurcation" data-copy="In the lower abdomen, the aorta divides into the common iliac arteries, which carry blood toward the pelvis and legs."></button>
+                    <button class="anatomy-hotspot" type="button" style="--x: 52%; --y: 92%; --i: 5;" aria-label="Show aortic bifurcation" data-title="Aortic Bifurcation" data-copy="In the lower abdomen, the aorta divides into the iliac arteries, which carry blood toward the pelvis and legs."></button>
                 </figure>
                 <details class="section-reference source-disclosure anatomy-source-disclosure">
                     <summary class="source-toggle">
                         <span class="source-toggle-show">Sources</span>
                         <span class="source-toggle-hide">Hide sources</span>
                     </summary>
-                    <div class="source-box">AI-adapted after <a href="https://commons.wikimedia.org/wiki/File:Aorta_es.svg" target="_blank" rel="noopener noreferrer">Branches of the aorta</a> by Edoarado, based on work by Mariana Ruiz Villarreal (LadyofHats), Fred the Oyster, Mikael Häggström, and Patrick J. Lynch. Original work licensed under <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.en" target="_blank" rel="noopener noreferrer">CC BY-SA 3.0</a>. Changes were made for the dashboard composition.</div>
+                    <div class="source-box">Aorta illustration: AI-adapted after <a href="https://commons.wikimedia.org/wiki/File:Aorta_es.svg" target="_blank" rel="noopener noreferrer">Branches of the aorta</a> by Edoarado, based on work by Mariana Ruiz Villarreal (LadyofHats), Fred the Oyster, Mikael Häggström, and Patrick J. Lynch. Original work licensed under <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.en" target="_blank" rel="noopener noreferrer">CC BY-SA 3.0</a>. Changes were made for the dashboard composition. Marfan syndrome and aortic disease: <a href="https://doi.org/10.1161/CIR.0000000000001106" target="_blank" rel="noopener noreferrer">2022 ACC/AHA Aortic Disease Guideline</a>.</div>
                 </details>
                 <aside class="anatomy-popover" id="anatomy-popover" hidden>
                     <button class="popover-close" type="button" aria-label="Close information"></button>
@@ -74,14 +81,14 @@
         </section>
 
         <section class="story-index" id="stories" aria-labelledby="stories-title">
-            <header class="section-heading"><h2 id="stories-title">Two Stories</h2><p>Both stories begin with the same vessel, but the circumstances are different: one follows a slow enlargement, while the other begins with a sudden tear.</p></header>
+            <header class="section-heading"><h2 id="stories-title">Two Stories</h2><p>The two stories display two different diseases that affect the aorta and come from Marfan syndrome, an inherited condition that affects connective tissue. In some people, it can make the aortic wall more likely to widen, particularly near the heart; changes vary from person to person.</p></header>
             <article class="story-entry">
                 <img src="assets/story_images/alex_portrait_photoreal_v1.png" alt="Portrait of Alex">
-                <div class="story-entry-copy"><h3>Alex</h3><p class="diagnosis-label">Aortic Aneurysm</p><p>Alex is young, feels well, and already knows that Marfan syndrome can make his aorta vulnerable. His scan turns that risk into something visible: a vessel that needs to be watched before it becomes dangerous.</p><a href="scrollytelling-aneurysm.html">Start Alex's story <span aria-hidden="true">&rarr;</span></a></div>
+                <div class="story-entry-copy"><h3>Alex</h3><p class="diagnosis-label">Aortic Aneurysm</p><p>Alex is young and feels well, but a planned scan finds a widening in his aorta.</p><a href="scrollytelling-aneurysm.html">Start Alex's story <span aria-hidden="true">&rarr;</span></a></div>
             </article>
             <article class="story-entry story-entry-reverse">
                 <img src="assets/story_images/miriam_portrait_photoreal_v1.png" alt="Portrait of Miriam">
-                <div class="story-entry-copy"><h3>Miriam</h3><p class="diagnosis-label">Aortic Dissection</p><p>Miriam's story begins abruptly, with pain that points to an emergency inside the vessel wall. From the first scan onward, the question becomes how the torn aorta changes over time.</p><a href="scrollytelling-dissection.html">Start Miriam's story <span aria-hidden="true">&rarr;</span></a></div>
+                <div class="story-entry-copy"><h3>Miriam</h3><p class="diagnosis-label">Aortic Dissection</p><p>Miriam's story begins abruptly, with pain that points to an emergency inside the vessel wall.</p><a href="scrollytelling-dissection.html">Start Miriam's story <span aria-hidden="true">&rarr;</span></a></div>
             </article>
         </section>
 

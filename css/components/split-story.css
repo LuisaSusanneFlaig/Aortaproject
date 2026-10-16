@@ -359,6 +359,211 @@ body[data-story-version] .flow-variant-controls {
     margin-top: 12px;
 }
 
+body[data-story-version] .flow-view-controls {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+body[data-story-version] .flow-view-button {
+    padding: 8px 14px;
+    border: 1px solid color-mix(in srgb, var(--color-accent) 58%, transparent);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--color-text);
+    font: inherit;
+    font-size: 0.82rem;
+    cursor: pointer;
+}
+
+body[data-story-version] .flow-view-button:hover,
+body[data-story-version] .flow-view-button:focus-visible,
+body[data-story-version] .flow-view-button.active {
+    background: var(--color-accent);
+    color: #fff;
+}
+
+body[data-story-version] .inline-model-view-controls {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+body[data-story-version] .inline-model-illustration {
+    display: none;
+    min-height: 350px;
+    margin: 0 0 12px;
+    align-items: center;
+    justify-content: center;
+}
+
+body[data-story-version] .inline-model-illustration :is(img, video) {
+    display: block;
+    width: min(100%, 520px);
+    height: min(58vh, 620px);
+    min-height: 350px;
+    object-fit: contain;
+}
+
+body[data-story-version] .prevention-flow-illustrations {
+    width: 100%;
+    margin: 0 0 18px;
+}
+
+body[data-story-version] .prevention-flow-illustrations :is(video, img) {
+    display: block;
+    width: 100%;
+    height: min(42vh, 400px);
+    min-height: 280px;
+    min-width: 0;
+    object-fit: contain;
+    mix-blend-mode: screen;
+}
+
+body[data-story-version] .prevention-flow-video-pair {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(8px, 1.5vw, 20px);
+}
+
+body[data-story-version] .prevention-flow-video-panel {
+    min-width: 0;
+    text-align: center;
+}
+
+body[data-story-version] .prevention-flow-video-panel h3 {
+    margin: 0 0 8px;
+    color: var(--color-text);
+    font-size: 0.95rem;
+}
+
+body[data-story-version] .prevention-flow-illustrations[data-selected-flow="affected"] .flow-illustration-affected,
+body[data-story-version] .prevention-flow-illustrations[data-selected-flow="healthy"] .flow-illustration-healthy {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+}
+
+body[data-story-version] .flow-illustration-switch {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 0 0 12px;
+}
+
+body[data-story-version] .flow-illustration-button {
+    padding: 8px 14px;
+    border: 1px solid color-mix(in srgb, var(--color-accent) 58%, transparent);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--color-text);
+    font: inherit;
+    cursor: pointer;
+}
+
+body[data-story-version] .flow-illustration-button.active,
+body[data-story-version] .flow-illustration-button:hover,
+body[data-story-version] .flow-illustration-button:focus-visible {
+    background: var(--color-accent);
+    color: #fff;
+}
+
+body[data-story-version] :is(.alex-aorta-model-section, .miriam-aorta-model-section).show-anatomy-illustration .inline-model-viewer,
+body[data-story-version] :is(.alex-aorta-model-section, .miriam-aorta-model-section).show-anatomy-illustration .inline-model-meta {
+    display: none;
+}
+
+body[data-story-version] :is(.alex-aorta-model-section, .miriam-aorta-model-section).show-anatomy-illustration .inline-model-illustration {
+    display: flex;
+}
+
+@media (max-width: 700px) {
+    body[data-story-version] .inline-model-illustration :is(img, video) {
+        height: min(52vh, 500px);
+        min-height: 280px;
+    }
+}
+
+body[data-story-version] .flow-illustration {
+    display: none;
+    width: 100%;
+    min-height: 340px;
+    margin: 0;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+body[data-story-version] .flow-illustration:has(.flow-illustration-panel) {
+    display: none;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(12px, 2vw, 28px);
+    align-items: start;
+}
+
+body[data-story-version] .flow-illustration-panel {
+    min-width: 0;
+    background: transparent;
+    text-align: center;
+}
+
+body[data-story-version] .flow-illustration-panel :is(video, img) {
+    display: block;
+    width: min(100%, 520px);
+    height: min(60vh, 620px);
+    min-height: 340px;
+    object-fit: contain;
+    mix-blend-mode: screen;
+}
+
+body[data-story-version] .flow-illustration-panel h3 {
+    margin: 0 0 10px;
+    color: var(--color-text);
+    font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+}
+
+body[data-story-version] .flow-illustration :is(img, video) {
+    display: block;
+    width: min(100%, 520px);
+    height: min(60vh, 620px);
+    min-height: 340px;
+    object-fit: contain;
+}
+
+body[data-story-version] .flow-illustration figcaption {
+    margin-top: 8px;
+    color: var(--color-text-muted, #aaa);
+    font-size: 0.82rem;
+}
+
+body[data-story-version] .model-placeholder.show-flow-illustration .model-placeholder-stage,
+body[data-story-version] .model-placeholder.show-flow-illustration .model-viewport-info-popup,
+body[data-story-version] .model-placeholder.show-flow-illustration .flow-variant-controls,
+body[data-story-version] .model-placeholder.show-flow-illustration .flow-comparison-viewers {
+    display: none;
+}
+
+body[data-story-version] .model-placeholder.show-flow-illustration .flow-illustration {
+    display: flex;
+}
+
+body[data-story-version] .model-placeholder.show-flow-illustration .flow-illustration:has(.flow-illustration-panel) {
+    display: grid;
+}
+
+@media (max-width: 700px) {
+    body[data-story-version] .flow-illustration:has(.flow-illustration-panel) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    body[data-story-version] .flow-illustration :is(img, video) {
+        height: min(58vh, 520px);
+        min-height: 200px;
+    }
+}
+
 body[data-story-version] .flow-variant-button {
     padding: 8px 14px;
     border: 1px solid color-mix(in srgb, var(--color-accent) 58%, transparent);

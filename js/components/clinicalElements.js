@@ -240,9 +240,24 @@ export function renderModelPlaceholder(element = {}) {
         : '';
     const flowControls = flowVariants.length > 1 ? `
             <div class="flow-variant-controls" role="group" aria-label="Choose flow visualization">
-                ${flowVariants.map((variant, index) => `
-                    <button class="flow-variant-button${index === 0 ? ' active' : ''}" type="button" data-flow-url="${variant.src}" data-flow-info="${variant.showInfoPopup !== false}"${variantAttribute(variant, 'framingScale')}${variantAttribute(variant, 'offsetX')}${variantAttribute(variant, 'offsetY')}${variantAttribute(variant, 'rotationX')}${variantAttribute(variant, 'rotationY')}${variantAttribute(variant, 'rotationZ')}${variantAttribute(variant, 'animationFps')}${variantAttribute(variant, 'animationSpeed')} aria-pressed="${index === 0}">${variant.label || ('View ' + (index + 1))}</button>
+                ${flowVariants.filter((variant) => variant.comparisonSrc).map((variant, index) => `
+                    <button class="flow-variant-button${index === 0 ? ' active' : ''}" type="button" data-flow-url="${variant.src}" data-flow-comparison-url="${variant.comparisonSrc}" data-flow-info="${variant.showInfoPopup !== false}"${variantAttribute(variant, 'framingScale')}${variantAttribute(variant, 'comparisonFramingScale')}${variantAttribute(variant, 'offsetX')}${variantAttribute(variant, 'offsetY')}${variantAttribute(variant, 'rotationX')}${variantAttribute(variant, 'rotationY')}${variantAttribute(variant, 'comparisonRotationY')}${variantAttribute(variant, 'rotationZ')}${variantAttribute(variant, 'animationFps')}${variantAttribute(variant, 'animationSpeed')} aria-pressed="${index === 0}">${variant.label || ('View ' + (index + 1))}</button>
                 `).join('')}
+            </div>` : '';
+    const pairedFlowView = flowVariants.some((variant) => variant.comparisonSrc) ? `
+            <div class="flow-comparison-viewers" aria-label="Affected and healthy aorta flow comparison">
+                <section class="flow-comparison-panel"><h3>Healthy aorta</h3><div class="model-placeholder-stage inline-model-viewer" data-inline-model data-model-url="${flowVariants.find((variant) => variant.comparisonSrc)?.comparisonSrc}" data-model-mode="flow" data-animation-sync-group="${element.id || 'flow-comparison'}" data-animation-fps="20" data-framing-scale="${flowVariants.find((variant) => variant.comparisonSrc)?.comparisonFramingScale || flowVariants.find((variant) => variant.comparisonSrc)?.framingScale || 0.35}" data-rotation-y="${flowVariants.find((variant) => variant.comparisonSrc)?.comparisonRotationY ?? flowVariants.find((variant) => variant.comparisonSrc)?.rotationY ?? 0}" role="img" aria-label="Animated flow in healthy aorta"><div class="inline-model-loading" aria-hidden="true"></div><span class="inline-model-error">Animation unavailable</span></div></section>
+                <section class="flow-comparison-panel"><h3>Affected aorta</h3><div class="model-placeholder-stage inline-model-viewer" data-inline-model data-model-url="${flowVariants.find((variant) => variant.comparisonSrc)?.src}" data-model-mode="flow" data-animation-sync-group="${element.id || 'flow-comparison'}" data-animation-fps="20" data-framing-scale="${flowVariants.find((variant) => variant.comparisonSrc)?.framingScale || 0.35}" role="img" aria-label="Animated flow in affected aorta"><div class="inline-model-loading" aria-hidden="true"></div><span class="inline-model-error">Animation unavailable</span></div></section>
+            </div>` : '';
+    const flowIllustration = element.flowIllustration ? `
+            <figure class="flow-illustration" hidden>
+                ${element.flowIllustration.healthySrc ? `<section class="flow-illustration-panel"><h3>Healthy aorta</h3>${/\.(png|jpe?g|webp|gif|svg)$/i.test(element.flowIllustration.healthySrc) ? `<img src="${element.flowIllustration.healthySrc}" alt="${element.flowIllustration.healthyAlt || 'Illustration of blood flow through a healthy aorta'}">` : `<video src="${element.flowIllustration.healthySrc}" autoplay muted loop playsinline aria-label="${element.flowIllustration.healthyAlt || 'Animation of blood flowing through a healthy aorta'}"></video>`}</section><section class="flow-illustration-panel"><h3>Affected aorta</h3>${/\.(png|jpe?g|webp|gif|svg)$/i.test(element.flowIllustration.src) ? `<img src="${element.flowIllustration.src}" alt="${element.flowIllustration.alt || 'Affected aortic flow illustration'}">` : `<video src="${element.flowIllustration.src}" autoplay muted loop playsinline aria-label="${element.flowIllustration.alt || 'Animation of affected blood flow'}"></video>`}</section>` : `${/\.(png|jpe?g|webp|gif|svg)$/i.test(element.flowIllustration.src) ? `<img src="${element.flowIllustration.src}" alt="${element.flowIllustration.alt || ''}">` : `<video src="${element.flowIllustration.src}" autoplay muted loop playsinline aria-label="${element.flowIllustration.alt || ''}"></video>`}`}
+                ${element.flowIllustration.caption ? `<figcaption>${element.flowIllustration.caption}</figcaption>` : ''}
+            </figure>` : '';
+    const flowViewControl = element.flowIllustration ? `
+            <div class="flow-view-controls" role="group" aria-label="Choose flow view">
+                <button class="flow-view-button active" type="button" data-flow-view="animation" aria-pressed="true">Flow animation</button>
+                <button class="flow-view-button" type="button" data-flow-view="illustration" aria-pressed="false">Illustration</button>
             </div>` : '';
 
     const hotspots = Array.isArray(element.hotspots)
@@ -276,15 +291,18 @@ export function renderModelPlaceholder(element = {}) {
             </details>` : '';
 
     return `
-        <figure class="model-placeholder${hotspots.length ? ' has-image-hotspot' : ''}${flowVariants[0]?.showInfoPopup === false ? ' flow-info-hidden' : ''}" id="${element.id || ''}">
-            <div class="model-placeholder-stage${element.src ? ' inline-model-viewer' : ''}"${viewerAttributes}${flowVariants.length > 1 ? ' data-flow-switch' : ''} role="img" aria-label="${accessibleLabel}">
+        <figure class="model-placeholder${hotspots.length ? ' has-image-hotspot' : ''}${flowVariants[0]?.showInfoPopup === false ? ' flow-info-hidden' : ''}${pairedFlowView ? ' has-flow-comparison' : ''}" id="${element.id || ''}">
+            ${pairedFlowView || `<div class="model-placeholder-stage${element.src ? ' inline-model-viewer' : ''}"${viewerAttributes}${flowVariants.length > 1 ? ' data-flow-switch' : ''} role="img" aria-label="${accessibleLabel}">
                 ${element.src
                     ? `${element.rotationHint ? '<span class="inline-model-360-hint material-symbols-rounded story-material-icon" aria-hidden="true">360</span>' : ''}<div class="inline-model-loading" aria-hidden="true"></div><span class="inline-model-error">Animation unavailable</span>`
                     : '<span>GLTF / ANIMATION</span>'}
-            </div>
+            </div>`}
+            ${pairedFlowView ? '' : flowIllustration}
+            ${flowIllustration}
             ${infoPopupMarkup}
             ${hotspotMarkup}
             ${flowControls}
+            ${flowViewControl}
             ${element.note ? `<p class="symptom-note model-placeholder-note">${element.note}</p>` : ''}
         </figure>
     `;
