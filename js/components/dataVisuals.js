@@ -166,7 +166,7 @@ export function renderAneurysmBurden(element = {}) {
         <figure class="aneurysm-burden" aria-label="Aortic aneurysm burden from 1990 to 2030">
             <div class="aneurysm-burden-heading">
                 ${element.title ? `<strong id="aneurysm-burden-title">${element.title}</strong>` : ''}
-                <span>Worlwide 1990-2030</span>
+                <span>Worldwide 1990-2030</span>
             </div>
             <svg viewBox="0 0 920 470" role="img" aria-label="Deaths rise from 88.353 in 1990 to 153.927 in 2021 and a projected 174.611 in 2030. The age-standardized mortality rate falls from 2.54 to 1.86 and a projected 1.70 per 100,000 people.">
                 <g class="burden-panel burden-panel-deaths">

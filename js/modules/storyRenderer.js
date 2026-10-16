@@ -122,7 +122,7 @@ function renderPlaceholder(section) {
     `;
 }
 
-function renderInlineModel(model) {
+function renderInlineModel(model, illustration = null) {
     if (!model?.url) return '';
     const label = model.label || '3D model';
     const modelMode = model.mode || 'layers';
@@ -138,6 +138,7 @@ function renderInlineModel(model) {
         </div>`;
     return `
         <figure class="inline-model-figure">
+            ${illustration ? `<div class="inline-model-view-controls" role="group" aria-label="Choose anatomy view"><button class="flow-view-button active" type="button" data-flow-view="animation" aria-pressed="true">3D model</button><button class="flow-view-button" type="button" data-flow-view="illustration" aria-pressed="false">Illustration</button></div><figure class="inline-model-illustration" hidden><img src="${illustration.src}" alt="${illustration.alt || ''}"></figure>` : ''}
             <div class="inline-model-viewer" data-inline-model data-model-url="${model.url}" data-model-mode="${modelMode}"${rotationX}${rotationY}${rotationZ}${framingScale} role="img" aria-label="${label}">
                 <span class="inline-model-plus-icon" aria-hidden="true">+</span>
                 ${model.rotationHint ? '<span class="inline-model-360-hint material-symbols-rounded story-material-icon" aria-hidden="true">360</span>' : ''}
@@ -181,7 +182,8 @@ function renderSections(sections = [], navItems = []) {
         const visualElements = renderElements(section.elements, (element) => !isNarrativeElement(element));
         const visualContent = [
             section.layout !== 'full' ? renderPlaceholder(section) : '',
-            renderInlineModel(section.inlineModel),
+            renderInlineModel(section.inlineModel, section.inlineIllustration),
+            section.preventionFlowIllustrations ? `<figure class="prevention-flow-illustrations"><div class="flow-illustration-switch" role="group" aria-label="Highlight a flow animation"><button type="button" class="flow-illustration-button active" data-flow-illustration="affected" aria-pressed="true">Affected flow</button><button type="button" class="flow-illustration-button" data-flow-illustration="healthy" aria-pressed="false">Healthy flow</button></div><div class="prevention-flow-video-pair"><section class="prevention-flow-video-panel"><h3>Affected aorta</h3>${/\.(png|jpe?g|webp|gif|svg)$/i.test(section.preventionFlowIllustrations.affectedSrc) ? `<img class="flow-illustration-affected" src="${section.preventionFlowIllustrations.affectedSrc}" alt="${section.preventionFlowIllustrations.affectedAlt}">` : `<video class="flow-illustration-affected" src="${section.preventionFlowIllustrations.affectedSrc}" autoplay muted loop playsinline aria-label="${section.preventionFlowIllustrations.affectedAlt}"></video>`}</section><section class="prevention-flow-video-panel"><h3>Healthy aorta</h3>${/\.(png|jpe?g|webp|gif|svg)$/i.test(section.preventionFlowIllustrations.healthySrc) ? `<img class="flow-illustration-healthy" src="${section.preventionFlowIllustrations.healthySrc}" alt="${section.preventionFlowIllustrations.healthyAlt}">` : `<video class="flow-illustration-healthy" src="${section.preventionFlowIllustrations.healthySrc}" autoplay muted loop playsinline aria-label="${section.preventionFlowIllustrations.healthyAlt}"></video>`}</section></div></figure>` : '',
             visualElements
         ].filter(Boolean).join('');
         const narrativeContent = renderElements(section.elements, isNarrativeElement);

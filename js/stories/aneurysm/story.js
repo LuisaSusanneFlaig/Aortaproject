@@ -33,15 +33,7 @@ export const aneurysmStory = {
                 },
                 {
                     type: 'text',
-                    text: 'Alex lives with Marfan syndrome, an inherited condition that can weaken connective tissue. The aorta, the large artery that carries blood away from the heart, depends on strong connective tissue in its wall. When that wall stretches and widens, the enlargement is called an aortic aneurysm.',
-                    infoPopup: {
-                        title: 'Marfan syndrome',
-                        text: 'Marfan syndrome is relatively rare, affecting about 1 in 5,000 to 10,000 people. It can affect different parts of the body, including the skeleton, eyes, heart, and blood vessels People with Marfan syndrome are often taller than average, with long arms and legs and slender hands and feet.'
-                    }
-                },
-                {
-                    type: 'text',
-                    text: 'His story begins before an emergency. A planned scan turns an invisible risk into a shape doctors can measure, compare, and follow. From there, the central question is simple: when is careful observation enough, and when should treatment be discussed before the blood vessel becomes at risk of tearing?'
+                    text: 'A planned scan finds that Alex’s aorta has widened, a change called an aortic aneurysm. From there, the central question is simple: when is careful observation enough, and when should treatment be discussed before the blood vessel becomes at risk of tearing?'
                 }
             ]
         },
@@ -56,7 +48,7 @@ export const aneurysmStory = {
                     text: 'Before Alex\'s scan becomes personal, the statistics set the wider scene. More people worldwide are dying with aortic aneurysm than in earlier decades, partly because populations are growing and aging. At the same time, after adjusting for age, the risk of death is decreasing (standardized death rate). This shows that diagnostics and treatment methods are improving. The values for 2030 are estimates, not measurements.',
                     infoPopup: {
                         title: 'standardized death rate',
-                        text: 'A standardized mortality rate adjusts mortality figures to a common population structure, often by age, so populations or years can be compared more fairly. It estimates the death rate that would be seen if the population had the same age distribution as the reference population.'
+                        text: 'A standardized death rate adjusts mortality figures to a common population structure, often by age, so populations or years can be compared more fairly. It estimates the death rate that would be seen if the population had the same age distribution as the reference population.'
                     }
                 },
                 {
@@ -73,21 +65,23 @@ export const aneurysmStory = {
             title: 'Alex\'s Aorta',
             className: 'model-section alex-aorta-model-section',
             scrollMode: 'sticky',
+            inlineIllustration: {
+                src: 'assets/story_images/alex_aneurysm_illustration.png',
+                alt: 'Illustration of Alex’s aortic arch and descending aorta, with widening in the arch.'
+            },
             inlineModel: {
-                url: 'assets/models/alex_aneurysm_aorta_0021.glb',
+                url: `${flowModelBase}aneurysm_anatomy.glb`,
                 label: 'Patient-specific aortic geometry of Alex',
-                mode: 'surface',
+                mode: 'flow',
+                rotationY: 1.5708,
+                framingScale: 0.72,
                 legend: false,
                 rotationHint: true
             },
             elements: [
                 {
                     type: 'text',
-                    text: 'Alex\'s aorta is shown here as a 3D model. The actual shape of his aorta is captured using CTA imaging. The model you can see on the left is then extracted from that imaging. In Marfan syndrome, doctors follow that shape over time because a weakened wall can widen gradually. A single scan matters, but the trend matters even more: diameter, growth, and location are compared across follow-up visits.',
-                    infoPopup: {
-                        title: 'CTA',
-                        text: 'Software combines the CTA scan slices into a 3D model, allowing the aorta to be viewed from different angles rather than as a single cross-section.'
-                    }
+                    text: 'Alex\'s aorta is shown here. The aorta has widened in the thoracic part. That\'s why it is called a thoracic aortic aneurysm. The diameter, growth, and location are compared across follow-up visits.'
                 },
                 {
                     type: 'reference',
@@ -103,7 +97,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'The difficult part of a thoracic aortic aneurysm is that it can stay quiet for a long time. Clinical sources describe most people as having no symptoms before an sudden serious event; one review gives roughly 95% without warning signs and about 5% with symptoms beforehand. If the widened vessel presses on nearby parts of the body , it may cause chest or back pain, a change in the voice, trouble swallowing, or shortness of breath. Sudden severe pain, fainting, breathlessness, or neurological symptoms can signal a tear in the wall of the aorta or a burst blood vessel.',
+                    text: 'The difficult part of a thoracic aortic aneurysm is that it can stay quiet for a long time. Clinical sources describe most people as having no symptoms before a sudden serious event; one review gives roughly 95% without warning signs and about 5% with symptoms beforehand. If the widened vessel presses on nearby parts of the body, it may cause chest or back pain, a change in the voice, trouble swallowing, or shortness of breath. Sudden severe pain, fainting, breathlessness, or neurological symptoms can signal a tear in the wall of the aorta or a burst blood vessel.',
                     infoPopup: {
                         title: 'thoracic aortic aneurysm',
                         text: 'A thoracic aortic aneurysm is a bulge or widening in the part of the aorta that runs through the chest.'
@@ -153,22 +147,22 @@ export const aneurysmStory = {
                         {
                             icon: 'genetics_svg',
                             title: 'Marfan risk',
-                            info: 'Marfan syndrome can weaken the aortic wall. Regular checks can find enlargement before it causes symptoms; feeling well does not show whether the aorta has changed.'
+                            info: 'Marfan syndrome can weaken the aortic wall.'
                         },
                         {
                             icon: 'event_available_svg',
                             title: 'Surveillance',
-                            info: 'The first heart ultrasound measures the aortic root and ascending aorta. A repeat study after about six months can show the growth rate; if measurements are stable, yearly ultrasound is commonly used. CT or MRI may be needed when ultrasound cannot show the aorta clearly or to assess more of it.'
+                            info: 'Regular checks can find enlargement before it causes symptoms.'
                         },
                         {
                             icon: 'radiology_aorta',
-                            title: 'CTA imaging',
-                            info: 'CTA combines many X-ray views with contrast injected into a vein. The images show the aorta’s course and branches and let radiologists measure its widest points. Consistent measurement methods make comparisons between scans more useful.'
+                            title: 'Imaging',
+                            info: 'The images show the aorta’s course and branches and let radiologists measure its widest points.'
                         },
                         {
                             icon: 'compare_svg',
                             title: 'Aortic review',
-                            info: 'The team checks whether the aorta is stable or growing, reviews the family history and valve, and relates the measurements to Alex’s body size. These details help set the follow-up interval and decide when an aortic specialist should discuss treatment.'
+                            info: 'The team checks whether the aorta is stable or growing, reviews the family history and valve, and relates the measurements to Alex’s body size.'
                         }
                     ]
                 },
@@ -210,7 +204,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'This is a choice based on changing risk, not a fixed timeline. If Alex’s measurements are stable, the team continues planned scans and medical follow-up. Faster growth, a close relative who had a dissection, or other risk features can lead to an earlier discussion with a specialist aortic team. For Marfan syndrome, guidelines recommend surgery when the aortic root reaches 5.0 cm; surgery may be considered from 4.5 cm when specific high-risk features are present. These figures apply to the aortic root—not every part of the aorta—and are not a decision rule by themselves. Growth rate, body size, family history, valve findings, overall health, and the risks and benefits of surgery are considered together.'
+                    text: 'This is a choice based on changing risk, not a fixed timeline. If Alex’s measurements are stable, the team continues planned scans and medical follow-up. Faster growth or other risk features can lead to an earlier discussion with a specialist aortic team. For Marfan syndrome, guidelines recommend surgery when the aortic root reaches 5.0 cm; surgery may be considered from 4.5 cm when specific high-risk features are present. These figures apply to the aortic root—not every part of the aorta—and are not a decision rule by themselves. Growth rate, body size, family history, valve findings, overall health, and the risks and benefits of surgery are considered together.'
                 },
                 {
                     type: 'treatmentDecision',
@@ -228,13 +222,13 @@ export const aneurysmStory = {
                             icon: 'expand',
                             label: 'Faster growth or added risk',
                             treatment: 'Appointment at an aortic center',
-                            info: 'A faster increase in size, family history of early dissection, or other high-risk findings may prompt earlier review by a team experienced in inherited aortic disease. The team confirms measurements and discusses options; it does not mean surgery is automatic.'
+                            info: 'A faster increase in size, family history, or other high-risk findings may prompt earlier review by a team experienced in inherited aortic disease. The team confirms measurements and discusses options; it does not mean surgery is automatic.'
                         },
                         {
                             icon: 'surgical',
                             label: 'Point at which treatment is recommended',
                             treatment: 'Aortic repair',
-                            info: 'If the balance of risk favors repair, surgeons replace the enlarged aortic root and sometimes the ascending aorta. In selected patients the natural aortic valve can be preserved; in others it is repaired or replaced. The approach is planned by an experienced multidisciplinary team before an emergency develops.'
+                            info: 'If the balance of risk favors repair, surgeons replace the enlarged aortic root and sometimes the ascending aorta. In selected patients the natural aortic valve can be preserved; in others it is repaired or replaced.'
                         }
                     ]
                 },
@@ -258,11 +252,16 @@ export const aneurysmStory = {
                     type: 'modelPlaceholder',
                     id: 'alex-flow-overview-model',
                     src: `${flowModelBase}aneurysm_lines_anim.glb`,
+                    flowIllustration: {
+                        type: 'video',
+                        src: 'assets/story_images/aneurysm_flow_illustration.gif',
+                        healthySrc: 'assets/story_images/healthy_flow_illustration.gif',
+                        healthyAlt: 'Illustration of blood flowing through a healthy aorta.',
+                        alt: 'Illustration of the aorta showing blood flow through the arch and descending vessel.'
+                    },
                     flowVariants: [
-                        { label: 'Pathlines', src: `${flowModelBase}aneurysm_lines_anim.glb`, framingScale: 0.29, rotationY: 1.5708, animationFps: 20, animationSpeed: 1 },
-                        { label: 'Particle flow', src: `${flowModelBase}aneurysm_particles_anim.glb`, framingScale: 0.35, rotationY: 1.5708, animationFps: 20, animationSpeed: 0.5 },
-                        { label: 'Healthy laminar flow · pathlines', src: `${flowModelBase}healthy_lines_anim.glb`, framingScale: 0.29, rotationY: -1.5708, animationFps: 20, animationSpeed: 1, showInfoPopup: false },
-                        { label: 'Healthy laminar flow · particles', src: `${flowModelBase}healthy_particle_anim.glb`, framingScale: 0.35, rotationY: -1.5708, animationFps: 20, animationSpeed: 0.5, showInfoPopup: false }
+                        { label: 'Pathlines', src: `${flowModelBase}aneurysm_lines_anim.glb`, comparisonSrc: `${flowModelBase}healthy_lines_anim.glb`, framingScale: 0.29, comparisonFramingScale: 0.29, rotationY: 1.5708, comparisonRotationY: -1.5708, animationFps: 20, animationSpeed: 1 },
+                        { label: 'Particle flow', src: `${flowModelBase}aneurysm_particles_anim.glb`, comparisonSrc: `${flowModelBase}healthy_particle_anim.glb`, framingScale: 0.35, comparisonFramingScale: 0.35, rotationY: 1.5708, comparisonRotationY: -1.5708, animationFps: 20, animationSpeed: 0.5 }
                     ],
                     modelMode: 'flow',
                     preload: true,
@@ -322,12 +321,12 @@ export const aneurysmStory = {
                         {
                             eyebrow: 'Long term',
                             title: 'Regular imaging',
-                            info: 'Follow-up imaging tracks aortic size and shape over time. Comparing scans helps the care team identify meaningful changes early.'
+                            info: 'Attending follow-up imaging to track aortic size and shape over time.'
                         },
                         {
                             eyebrow: 'In the family',
                             title: 'Genetic risk',
-                            info: 'Inherited connective-tissue conditions can affect relatives. Genetic counseling and family assessment can help determine who may benefit from follow-up.'
+                            info: 'Genetic counseling and family assessment can help determine who may benefit from follow-up.'
                         }
                     ]
                 },
@@ -353,10 +352,6 @@ export const aneurysmStory = {
                 {
                     type: 'text',
                     text: 'Alex leaves the scan with a plan rather than a final answer. His future depends on regular imaging, attention to warning signs, and decisions made early enough to avoid an emergency. The flow view cannot predict what will happen to him, but it makes the need for careful follow-up easier to understand.'
-                },
-                {
-                    type: 'closingStatement',
-                    text: 'The story ends with observation, not certainty.'
                 }
             ]
         }

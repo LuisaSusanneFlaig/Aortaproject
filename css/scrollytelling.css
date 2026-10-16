@@ -4548,6 +4548,74 @@ body[data-story-version] .flow-research-section .model-placeholder-stage span {
     font-size: 1.05rem;
 }
 
+body[data-story-version] .flow-research-section .flow-comparison-viewers {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(12px, 2vw, 28px);
+    width: 100%;
+    min-height: 0;
+}
+
+body[data-story-version] .flow-research-section .flow-comparison-panel {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: center;
+}
+
+body[data-story-version] .flow-research-section .flow-comparison-panel h3 {
+    position: relative;
+    z-index: 2;
+    margin: 0 0 10px;
+    color: var(--color-text);
+    font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+}
+
+body[data-story-version] .flow-research-section .flow-comparison-panel .model-placeholder-stage {
+    height: min(58vh, 620px);
+    min-height: 360px;
+}
+
+body[data-story-version] .flow-research-section .flow-comparison-panel .inline-model-viewer {
+    aspect-ratio: 3 / 4;
+}
+
+body[data-story-version] .flow-research-section .flow-comparison-viewers:has(.flow-healthy-illustration) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+body[data-story-version] .flow-research-section .flow-healthy-illustration video {
+    display: block;
+    width: 100%;
+    height: min(58vh, 620px);
+    object-fit: contain;
+}
+
+@media (max-width: 700px) {
+    body[data-story-version] .flow-research-section .flow-comparison-viewers {
+        gap: 8px;
+    }
+
+    body[data-story-version] .flow-research-section .flow-comparison-viewers:has(.flow-healthy-illustration) {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    body[data-story-version] .flow-research-section .flow-comparison-panel .model-placeholder-stage {
+        height: min(48vh, 460px);
+        min-height: 260px;
+    }
+
+    body[data-story-version] .flow-research-section .flow-comparison-panel h3 {
+        font-size: 0.85rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body[data-story-version] video {
+        animation-play-state: paused;
+    }
+}
+
 .inline-model-error {
     display: none;
 }

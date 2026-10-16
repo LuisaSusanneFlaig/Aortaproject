@@ -70,7 +70,7 @@ body.light-mode.dashboard-page .nav-menu-mobile a {
     border: 0;
 }
 .dashboard-intro, .overview-hero, .story-index, .topic-index { position: relative; z-index: 1; width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
-.dashboard-intro { min-height: min(1200px, 115vh); padding: calc(var(--nav-height) + clamp(96px, 12vw, 160px)) 0 clamp(180px, 20vw, 260px); display: block; overflow: visible; }
+.dashboard-intro { min-height: 0; padding: calc(var(--nav-height) + clamp(96px, 12vw, 160px)) 0 clamp(72px, 8vw, 104px); display: block; overflow: visible; }
 .intro-heading, .intro-columns { position: relative; z-index: 1; }
 .intro-heading { padding: clamp(32px, 5vw, 72px) 0; text-align: center; }
 .header-line-pattern { position: absolute; inset: 0 auto auto 50%; z-index: -1; width: 100vw; height: 100%; overflow: visible; transform: translateX(-50%); pointer-events: none; }
@@ -82,7 +82,15 @@ body:not(.light-mode).dashboard-page .section-kicker { color: #fff; }
 .intro-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(24px, 4vw, 56px); max-width: 920px; margin: clamp(42px, 6vw, 68px) auto 0; }
 .intro-columns p { margin: 0; color: color-mix(in srgb, var(--color-text) 72%, transparent); font-size: 1.05rem; line-height: 1.7; }
 .intro-columns a { color: var(--color-text); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.intro-learning-objectives { position: relative; z-index: 1; max-width: 920px; margin: clamp(36px, 5vw, 56px) auto 0; }
+.intro-learning-objectives h2 { margin: 0 0 18px; font-size: clamp(1.2rem, 2vw, 1.45rem); font-weight: 600; }
+.intro-learning-objectives ul { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; margin: 0; padding: 0; list-style: none; }
+.intro-learning-objectives li { display: flex; align-items: flex-start; gap: 16px; min-height: 100%; padding: 16px 14px 16px 0; border-top: 1px solid color-mix(in srgb, var(--color-text) 28%, transparent); color: color-mix(in srgb, var(--color-text) 76%, transparent); font-size: .98rem; line-height: 1.6; }
+.learning-objective-icon { flex: 0 0 auto; margin-top: 1px; color: var(--color-accent); font-family: 'Material Symbols Rounded'; font-size: 1.8rem; font-feature-settings: 'liga'; font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 32; line-height: 1.25; }
+.learning-objective-source { margin: 18px 0 0; color: color-mix(in srgb, var(--color-text) 60%, transparent); font-size: .82rem; line-height: 1.5; }
+.learning-objective-source a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; }
 .overview-hero { min-height: 100vh; padding: clamp(88px, 12vw, 156px) 0 clamp(72px, 9vw, 112px); display: flex; flex-direction: column; align-items: center; }
+.overview-hero.anatomy-section { min-height: 0; padding-top: clamp(48px, 6vw, 80px); }
 .overview-copy { text-align: left; max-width: 760px; margin-right: auto; }
 .overview-copy h2 { margin: 0; font-size: clamp(2.25rem, 5vw, 4.25rem); font-weight: 500; line-height: 1; }
 .overview-copy p, .section-heading p, .story-entry-copy > p:not(.diagnosis-label), .state-description p { color: color-mix(in srgb, var(--color-text) 68%, transparent); line-height: 1.65; }
@@ -149,11 +157,15 @@ body:not(.light-mode).dashboard-page .section-kicker { color: #fff; }
 .dashboard-page .nav-toggle { padding: 8px; border: 0; background: transparent; color: var(--color-text); }
 @media (max-width: 760px) {
   .dashboard-intro, .overview-hero, .story-index, .topic-index { width: min(calc(100% - 32px), 1120px); }
-  .dashboard-intro { min-height: 0; padding-top: calc(var(--nav-height) + 42px); padding-bottom: 96px; }
+  .dashboard-intro { min-height: 0; padding-top: calc(var(--nav-height) + 42px); padding-bottom: 48px; }
   .intro-heading { padding: 28px 0 42px; }
   .intro-columns { grid-template-columns: 1fr; gap: 18px; }
+  .intro-learning-objectives { margin-top: 32px; }
+  .intro-learning-objectives ol { grid-template-columns: 1fr; gap: 8px; }
+  .intro-learning-objectives li { min-height: 0; padding-top: 12px; padding-bottom: 12px; }
   .overview-hero { align-items: stretch; } .overview-copy { text-align: left; }
-  .anatomy-layout { grid-template-columns: 1fr; gap: 12px; margin-top: 42px; }
+  .overview-hero.anatomy-section { padding-top: 36px; }
+  .anatomy-layout { grid-template-columns: 1fr; gap: 12px; margin-top: 28px; }
   .anatomy-context { padding-top: 0; }
   .anatomy-context p { max-width: 54ch; }
   .anatomy-figure { width: min(100%, 480px); }
