@@ -14,36 +14,6 @@ export const dissectionStory = {
     ],
     sections: [
         {
-            id: 's1',
-            title: 'Dissection Story',
-            scrollMode: 'sticky',
-            timelineLabel: 'Miriam - age 25',
-            className: 'story-intro',
-            columns: '2',
-            paragraphs: [],
-            elements: [
-                {
-                    type: 'image',
-                    src: 'assets/story_images/miriam_portrait_photoreal_v1.png',
-                    eyebrow: 'Patient story',
-                    aspect: '4 / 5',
-                    alt: 'Portrait of Miriam'
-                },
-                {
-                    type: 'pullQuote',
-                    text: 'Miriam is 25 when the pain begins.'
-                },
-                {
-                    type: 'text',
-                    text: 'Her story begins when the inner lining of her aorta tears. Blood pushes into the wall and creates a second channel. This is an aortic dissection, and it can be life-threatening.'
-                },
-                {
-                    type: 'text',
-                    text: 'The first task is to understand what has happened inside the vessel wall; the next is to follow how that injured aorta changes over months and years.'
-                }
-            ]
-        },
-        {
             id: 'definition-statistics',
             title: 'Aortic Dissection in Numbers',
             scrollMode: 'sequence',
@@ -66,43 +36,6 @@ export const dissectionStory = {
                 {
                     type: 'reference',
                     text: 'Context sources: Gouveia e Melo et al.; Kurz et al.; Wundram et al.; Obel et al.; Smedberg et al.; clinical guideline summaries.'
-                }
-            ]
-        },
-        {
-            id: 'how-to-read-blood-flow',
-            title: 'How to Read Blood Flow',
-            scrollMode: 'sticky',
-            timelineLabel: 'Context',
-            className: 'model-section miriam-flow-reading-section',
-            inlineModel: {
-                url: `${flowModelBase}healthy_lines_anim.glb`,
-                label: 'Simulated blood flow through a healthy reference aorta, shown as colored lines',
-                mode: 'flow',
-                legend: false,
-                sourceColors: true,
-                speedLegend: true,
-                rotationX: 0,
-                rotationY: -1.5708,
-                rotationZ: 0,
-                framingScale: 0.4,
-                animationFps: 20,
-                animationSpeed: 1,
-                rotationHint: true
-            },
-            paragraphs: [],
-            elements: [
-                {
-                    type: 'text',
-                    text: 'Before we look at Miriam\'s aorta, it helps to learn how blood flow is shown in this story. The model shows a healthy aorta from a separate reference case, not Miriam\'s. Each line traces the path that blood takes through the vessel, and its color shows how fast the blood moves there.'
-                },
-                {
-                    type: 'text',
-                    text: 'In a healthy aorta, the lines run side by side in smooth, orderly layers, from the heart through the arch and down into the body. This is called laminar flow. Later in the story, the same kind of image shows how a dissection disturbs this order.',
-                    infoPopup: {
-                        title: 'laminar flow',
-                        text: 'Laminar flow moves in smooth layers, with little mixing or crosswise swirling between them. It can occur in the bloodstream and is an orderly flow that may become turbulent when disturbances grow beyond a critical point.'
-                    }
                 }
             ]
         },
@@ -152,6 +85,43 @@ export const dissectionStory = {
                 {
                     type: 'reference',
                     text: 'Anatomy and case source: VMR dataset 0246_H_AO_AOD, pre-dissection aortic geometry and follow-up case material; patient course described in Baeumler et al., IEEE TBME 2025, DOI 10.1109/TBME.2024.3480362.'
+                }
+            ]
+        },
+        {
+            id: 'how-to-read-blood-flow',
+            title: 'How to Read Blood Flow',
+            scrollMode: 'sticky',
+            timelineLabel: 'Dissected aorta',
+            className: 'model-section miriam-flow-reading-section',
+            inlineModel: {
+                url: `${flowModelBase}healthy_lines_anim.glb`,
+                label: 'Simulated blood flow through a healthy reference aorta, shown as colored lines',
+                mode: 'flow',
+                legend: false,
+                sourceColors: true,
+                speedLegend: true,
+                rotationX: 0,
+                rotationY: -1.5708,
+                rotationZ: 0,
+                framingScale: 0.4,
+                animationFps: 20,
+                animationSpeed: 1,
+                rotationHint: true
+            },
+            paragraphs: [],
+            elements: [
+                {
+                    type: 'text',
+                    text: 'Before we look at the blood flow in Miriam\'s aorta, it helps to learn how blood flow is shown in this story. The model shows a healthy aorta from a separate reference case, not Miriam\'s. Each line traces the path that blood takes through the vessel, and its color shows how fast the blood moves there.'
+                },
+                {
+                    type: 'text',
+                    text: 'In a healthy aorta, the lines run side by side in smooth, orderly layers, from the heart through the arch and down into the body. This is called laminar flow. Later in the story, the same kind of image shows how a dissection disturbs this order.',
+                    infoPopup: {
+                        title: 'laminar flow',
+                        text: 'Laminar flow moves in smooth layers, with little mixing or crosswise swirling between them. It can occur in the bloodstream and is an orderly flow that may become turbulent when disturbances grow beyond a critical point.'
+                    }
                 }
             ]
         },

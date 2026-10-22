@@ -84,7 +84,7 @@ body[data-story-version] #story :is(
     height: clamp(8px, 0.9vw, 12px);
     overflow: visible;
     border-radius: 999px;
-    background-color: var(--color-accent) !important;
+    background-color: var(--color-text) !important;
 }
 
 body[data-story-version] #story :is(
@@ -98,7 +98,7 @@ body[data-story-version] #story :is(
     height: 0;
     border-top: clamp(8px, 0.95vw, 12px) solid transparent;
     border-bottom: clamp(8px, 0.95vw, 12px) solid transparent;
-    border-left: clamp(14px, 1.5vw, 20px) solid var(--color-accent);
+    border-left: clamp(14px, 1.5vw, 20px) solid var(--color-text);
     transform: translate(70%, -50%);
 }
 

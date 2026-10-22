@@ -32,7 +32,6 @@ body[data-story-version] #story .process-step {
 }
 
 body[data-story-version] #story .process-stage {
-    position: relative;
     display: grid;
     width: min(var(--process-stage-size), 100%);
     height: var(--process-stage-size);
@@ -50,38 +49,44 @@ body[data-story-version] #story .process-step h3 {
     font-weight: 700;
 }
 
-/* + badge on each visual opens the step text, styled like the diagnosis path. */
+/* The step number opens the step text, like the + badges of the diagnosis path. */
 body[data-story-version] #story .process-info-trigger {
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 2;
     display: grid;
-    width: 20px;
-    height: 20px;
-    padding: 0;
-    place-items: center;
-    border: 1px solid var(--color-accent);
-    border-radius: 50%;
-    background: var(--color-bg);
-    color: var(--color-accent);
-    font-family: Arial, sans-serif;
-    font-size: 15px;
-    font-weight: 500;
-    line-height: 1;
+    justify-items: center;
+    gap: 6px;
+    padding: 2px 4px;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
     cursor: pointer;
 }
 
-body[data-story-version] #story .process-info-trigger:hover,
-body[data-story-version] #story .process-info-trigger:focus-visible,
-body[data-story-version] #story .process-info-trigger[aria-expanded="true"] {
+body[data-story-version] #story .process-info-trigger .process-number {
+    width: 24px;
+    height: 24px;
+    border: 1px solid var(--color-accent);
+    background: var(--color-bg);
+    color: var(--color-accent);
+    font-size: 0.75rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+body[data-story-version] #story .process-info-trigger:hover .process-number,
+body[data-story-version] #story .process-info-trigger:focus-visible .process-number,
+body[data-story-version] #story .process-info-trigger[aria-expanded="true"] .process-number {
     background: var(--color-accent);
     color: #fff;
 }
 
-body[data-story-version] #story .process-info-trigger:focus-visible {
+body[data-story-version] #story .process-info-trigger[aria-expanded="true"] .process-number {
     outline: 3px solid color-mix(in srgb, var(--color-accent) 22%, transparent);
     outline-offset: 3px;
+}
+
+body[data-story-version] #story .process-info-trigger:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--color-accent) 45%, transparent);
+    outline-offset: 4px;
 }
 
 /* On desktop the box opens in the free space above the steps, because a
@@ -201,7 +206,8 @@ body[data-story-version] #story .story-visual-column .process-steps .process-vie
 }
 
 @media (prefers-reduced-motion: reduce) {
-    body[data-story-version] #story .process-slice-stack .process-slice {
+    body[data-story-version] #story .process-slice-stack .process-slice,
+    body[data-story-version] #story .process-info-trigger .process-number {
         transition: none;
     }
 }

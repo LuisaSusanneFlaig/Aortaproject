@@ -2,8 +2,8 @@ import { renderMaterialIcon } from './icons.js';
 
 // Step-by-step infographic (e.g. scan -> 3D model, 3D model -> flow simulation).
 // Each step has a title, a text and a visual; all copy comes from story data.
-// The step text stays hidden until the + badge on its visual is clicked, like
-// the info boxes of the diagnosis path.
+// The step text stays hidden until the step number is clicked, like the info
+// boxes of the diagnosis path.
 const SLICE_COUNT = 6;
 let processInfoId = 0;
 
@@ -38,16 +38,17 @@ export function renderProcessSteps(element = {}) {
     const infoBoxes = [];
     const items = steps.map((step, index) => {
         const renderVisual = visualRenderers[step.visual?.kind];
-        let trigger = '';
+        const number = `<span class="process-number" aria-hidden="true">${index + 1}</span>`;
+        let title = `${number}${step.title || ''}`;
         if (step.text) {
             const infoId = `process-info-${++processInfoId}`;
             infoBoxes.push(`<div class="symptom-info-box process-info-box" id="${infoId}" hidden><strong>${step.title || ''}</strong> ${step.text}</div>`);
-            trigger = `<button class="process-info-trigger" type="button" aria-label="More information about ${step.title || `step ${index + 1}`}" aria-expanded="false" aria-controls="${infoId}">+</button>`;
+            title = `<button class="process-info-trigger" type="button" aria-label="More information about ${step.title || `step ${index + 1}`}" aria-expanded="false" aria-controls="${infoId}">${number}${step.title || ''}</button>`;
         }
         return `
         <li class="process-step">
-            <div class="process-stage">${renderVisual ? renderVisual(step.visual) : ''}${trigger}</div>
-            <h3><span class="process-number" aria-hidden="true">${index + 1}</span>${step.title || ''}</h3>
+            <div class="process-stage">${renderVisual ? renderVisual(step.visual) : ''}</div>
+            <h3>${title}</h3>
             ${index < steps.length - 1 ? `<span class="process-arrow" aria-hidden="true">${renderMaterialIcon('arrow_forward')}</span>` : ''}
         </li>`;
     }).join('');

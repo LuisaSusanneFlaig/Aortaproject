@@ -14,30 +14,6 @@ export const aneurysmStory = {
     ],
     sections: [
         {
-            id: 'definition',
-            title: 'Aneurysm Story',
-            timelineLabel: 'Alex - age 18',
-            className: 'story-intro aneurysm-intro',
-            columns: '2',
-            scrollMode: 'sticky',
-            elements: [
-                {
-                    type: 'image',
-                    src: 'assets/story_images/alex_portrait_photoreal_v1.png',
-                    aspect: '4 / 5',
-                    alt: 'Portrait of Alex'
-                },
-                {
-                    type: 'pullQuote',
-                    text: 'Alex is 18 when a known risk becomes a visible finding.'
-                },
-                {
-                    type: 'text',
-                    text: 'A planned scan finds that Alex’s aorta has widened, a change called an aortic aneurysm. From there, the central question is simple: when is careful observation enough, and when should treatment be discussed before the blood vessel becomes at risk of tearing?'
-                }
-            ]
-        },
-        {
             id: 'definition-statistics',
             title: 'Aortic Aneurysm in Numbers',
             className: 'aneurysm-burden-section',
