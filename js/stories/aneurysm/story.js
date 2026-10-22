@@ -21,10 +21,10 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Before Alex\'s scan becomes personal, the statistics set the wider scene. The “Deaths” chart shows that more people worldwide are dying with aortic aneurysm than in earlier decades: the number rose by 74%, from 88,353 in 1990 to 153,927 in 2021. This is partly because populations are growing and aging. At the same time, the “Mortality rate per 100,000” chart shows that, after adjusting for age, the risk of death fell by 27%, from 2.54 to 1.86. This age-adjusted figure is the standardized death rate. This suggests that diagnostics and treatment methods are improving. The last point in each chart, for 2030, is an estimate, not a measurement.',
+                    text: 'Before Alex\'s scan becomes personal, the two charts on the left set the wider scene. The left chart, “Deaths”, shows that more people worldwide are dying with aortic aneurysm than in earlier decades: its line rises by 74%, from 88,353 in 1990 to 153,927 in 2021. This is partly because populations are growing and aging. The right chart, “Standardized death rate per 100,000”, shows the opposite trend. A standardized death rate adjusts for age, and by this measure the risk of dying fell by 27%, from 2.54 to 1.86 per 100,000 people. This suggests that diagnostics and treatment methods are improving. In both charts, the dotted line to 2030 is a projection, not a measurement.',
                     infoPopup: {
                         title: 'standardized death rate',
-                        text: 'A standardized death rate adjusts mortality figures to a common population structure, often by age, so populations or years can be compared more fairly. It estimates the death rate that would be seen if the population had the same age distribution as the reference population.'
+                        text: 'A standardized death rate adjusts death figures to a common population structure, often by age, so populations or years can be compared more fairly. It estimates the death rate that would be seen if the population had the same age distribution as the reference population.'
                     }
                 },
                 {
@@ -162,7 +162,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'For a CT angiogram (CTA), a small tube is placed in a vein, usually in the arm, and iodine contrast is injected while the scanner takes a rapid series of X-ray images. The contrast makes blood-filled spaces stand out, so the team can trace the aorta, see its branches, and measure its diameter. The aorta is colored red here during image editing; it was not red in the original scan.'
+                    text: 'A CT angiogram (CTA) is a CT scan that shows the blood vessels. A contrast agent is injected into a vein in the arm while the scanner takes a rapid series of X-ray images. The contrast makes the blood inside the vessels stand out, so the team can trace the aorta, see its branches, and measure its diameter. The aorta is colored red here during image editing; it was not red in the original scan.'
                 },
                 {
                     type: 'image',

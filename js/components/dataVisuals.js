@@ -168,7 +168,7 @@ export function renderAneurysmBurden(element = {}) {
                 ${element.title ? `<strong id="aneurysm-burden-title">${element.title}</strong>` : ''}
                 <span>Worldwide 1990-2030</span>
             </div>
-            <svg viewBox="0 0 920 470" role="img" aria-label="Deaths rise from 88,353 in 1990 to 153,927 in 2021 and a projected 174,611 in 2030. The age-standardized mortality rate falls from 2.54 to 1.86 and a projected 1.70 per 100,000 people.">
+            <svg viewBox="0 0 920 470" role="img" aria-label="Deaths rise from 88,353 in 1990 to 153,927 in 2021 and a projected 174,611 in 2030. The age-standardized death rate falls from 2.54 to 1.86 and a projected 1.70 per 100,000 people.">
                 <g class="burden-panel burden-panel-deaths">
                     <text x="48" y="48" class="burden-panel-title">Deaths</text>
                     <text x="48" y="78" class="burden-panel-change">+74%</text>
@@ -192,7 +192,7 @@ export function renderAneurysmBurden(element = {}) {
                 </g>
                 <line x1="460" y1="42" x2="460" y2="405" class="burden-divider"></line>
                 <g class="burden-panel burden-panel-rate">
-                    <text x="500" y="48" class="burden-panel-title">Mortality rate per 100,000</text>
+                    <text x="500" y="48" class="burden-panel-title">Standardized death rate per 100,000</text>
                     <text x="500" y="78" class="burden-panel-change">-27%</text>
                     <line x1="500" y1="360" x2="872" y2="360" class="burden-axis"></line>
                     <line x1="500" y1="140" x2="500" y2="360" class="burden-axis"></line>
