@@ -266,6 +266,38 @@ export const dissectionStory = {
             ]
         },
         {
+            id: 'miriam-scan-to-model',
+            title: 'From Scan to 3D Model',
+            scrollMode: 'sequence',
+            timelineLabel: 'Acute - CTA',
+            className: 'scan-to-model-section',
+            paragraphs: [],
+            elements: [
+                {
+                    type: 'text',
+                    text: 'A CTA is not one single picture. The scanner records the chest as a stack of hundreds of thin cross-sectional images, called slices. In every slice, the contrast makes the blood inside the aorta appear bright. On a computer, software traces the outline of the aorta in each slice and joins these outlines into a three-dimensional model. In Miriam\'s case, the model also has to capture the flap that divides the aorta into two channels. This is how the model shown earlier was built, and it is also the starting point for the flow simulation later in the story.'
+                },
+                {
+                    type: 'scanToModel',
+                    label: 'From CTA slices to a 3D model of Miriam\'s aorta',
+                    sliceSrc: 'assets/story_images/miriam_cta_axial_0246.png',
+                    sliceAlt: 'Axial CTA slice through Miriam\'s chest, shown as the top image of a stack of slices',
+                    flipSlice: true,
+                    steps: [
+                        { title: 'CTA slices', text: 'The scan is a stack of thin cross-sectional images through the chest.' },
+                        { title: 'Computer and software', text: 'Software traces the aorta in every slice and joins the outlines.' },
+                        { title: '3D model', text: 'Miriam\'s aorta as a model that can be turned and used for a flow simulation.' }
+                    ],
+                    model: {
+                        url: `${flowModelBase}dissection_anatomy.glb`,
+                        label: '3D model of Miriam\'s aorta built from the CTA slices',
+                        rotationY: -1.5708,
+                        framingScale: 0.9
+                    }
+                }
+            ]
+        },
+        {
             id: 's13',
             title: 'Current-risk decision spectrum',
             scrollMode: 'sequence',

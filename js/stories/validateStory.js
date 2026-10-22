@@ -35,6 +35,12 @@ function validateElement(element, path, errors) {
         });
     }
 
+    if (element.type === 'scanToModel') {
+        if (!element.sliceSrc) addError(errors, `${path}.sliceSrc`, 'CTA slice image is required');
+        if (!element.sliceAlt?.trim()) addError(errors, `${path}.sliceAlt`, 'meaningful alternative text is required');
+        if (!element.model?.url) addError(errors, `${path}.model.url`, '3D model URL is required');
+    }
+
     if (element.type === 'modelPlaceholder' && element.src && !element.alt?.trim()) {
         addError(errors, `${path}.alt`, 'animated model alternative text is required');
     }
