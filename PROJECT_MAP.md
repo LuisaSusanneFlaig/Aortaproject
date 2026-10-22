@@ -48,6 +48,7 @@ npm run screenshots
 | Dashboard / story selection | `index.html` |
 | Alex aneurysm story | `scrollytelling-aneurysm.html` |
 | Miriam dissection story | `scrollytelling-dissection.html` |
+| Shared ending with both outlooks | `ending.html`, `css/components/ending-page.css`, `css/components/ending-outlooks.css` |
 | Imprint | `impressum.html` |
 | Privacy policy | `datenschutz.html` |
 

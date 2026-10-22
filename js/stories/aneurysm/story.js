@@ -363,25 +363,6 @@ export const aneurysmStory = {
                     text: 'Sources: 2022 ACC/AHA Guideline for the Diagnosis and Management of Aortic Disease, recommendations on Marfan syndrome, medical therapy, activity, surveillance imaging, and genetic evaluation. DOI: 10.1161/CIR.0000000000001106.'
                 }
             ]
-        },
-        {
-            id: 'praevention-marfan',
-            title: 'Alex\'s Outlook',
-            className: 'alex-outlook-section alex-consultation-section',
-            scrollMode: 'sequence',
-            columns: '2',
-            elements: [
-                {
-                    type: 'image',
-                    src: 'assets/story_images/alex_doctor_talk_photoreal_v1.png',
-                    aspect: '3 / 2',
-                    alt: 'Alex talks with a doctor about long-term aortic follow-up'
-                },
-                {
-                    type: 'text',
-                    text: 'Alex leaves the scan with a plan rather than a final answer. His future depends on regular imaging, attention to warning signs, and decisions made early enough to avoid an emergency. The flow view cannot predict what will happen to him, but it makes the need for careful follow-up easier to understand.'
-                }
-            ]
         }
     ]
 };

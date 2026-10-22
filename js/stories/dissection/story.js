@@ -477,27 +477,6 @@ export const dissectionStory = {
                     text: 'Sources: [2022 German S2k Guideline on Type B Aortic Dissection](https://register.awmf.org/assets/guidelines/004-034l_S2k_Typ_B_Aortendissektion_2022-05.pdf), follow-up and rehabilitation; [2022 ACC/AHA Aortic Disease Guideline](https://doi.org/10.1161/CIR.0000000000001106), imaging after dissection, Marfan syndrome, and family assessment.'
                 }
             ]
-        },
-        {
-            id: 's18',
-            title: 'Miriam\'s Outlook',
-            scrollMode: 'sequence',
-            timelineLabel: 'Outlook',
-            className: 'miriam-consultation-section',
-            columns: '2',
-            paragraphs: [],
-            elements: [
-                {
-                    type: 'image',
-                    src: 'assets/story_images/miriam_consultation_photoreal_v1.png',
-                    aspect: '3 / 2',
-                    alt: 'Miriam discusses long-term aortic follow-up with a physician'
-                },
-                {
-                    type: 'text',
-                    text: 'Miriam\'s future cannot be decided from one scan or one simulation. What remains after the emergency is a long relationship with follow-up care. The aorta is a living vessel, its shape can change, and blood flow can keep influencing the wall long after the first tear.'
-                }
-            ]
         }
     ]
 };
