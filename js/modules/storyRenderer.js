@@ -151,6 +151,7 @@ function modelViewConfig(view) {
     const keys = ['url', 'label', 'framingScale', 'rotationX', 'rotationY', 'rotationZ', 'animationFps', 'animationSpeed'];
     const config = Object.fromEntries(keys.filter((key) => view[key] !== undefined).map((key) => [key, view[key]]));
     config.labels = Array.isArray(view.labels) ? view.labels : [];
+    config.sourceColors = Boolean(view.sourceColors);
     return config;
 }
 

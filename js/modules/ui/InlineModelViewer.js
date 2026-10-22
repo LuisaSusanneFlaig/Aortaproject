@@ -6,6 +6,10 @@ import { ModelLabels, parseModelLabels } from './ModelLabels.js';
 
 // Keep 3D mesh materials aligned with the UI accent token (--color-accent).
 const MODEL_ACCENT = 0xb62413;
+// Wall tint behind flow exports that keep their own colors.
+const NEUTRAL_WALL = 0x8a8f96;
+// Particle diameter as a fraction of the model's largest dimension.
+const PARTICLE_SIZE = 0.004;
 const animationSyncStarts = new Map();
 
 class InlineModelViewer {
@@ -131,14 +135,18 @@ class InlineModelViewer {
             if (modelMode === 'flow') this.markTransparentSourceMeshes(this.originalModel);
             if (modelMode === 'surface') this.applySurfaceMaterial(this.originalModel);
             this.prepareMaterials(this.originalModel);
-            if (modelMode === 'flow') this.applyTransparentFlowSurfaceMaterial(this.originalModel);
-            if (modelMode === 'flow') this.applyFlowAccentColor(this.originalModel);
+            // Exports that encode meaning in their colors (data-source-colors)
+            // keep them instead of the uniform accent, over a neutral wall.
+            const keepSourceColors = this.container.dataset.sourceColors === 'true';
+            if (modelMode === 'flow') this.applyTransparentFlowSurfaceMaterial(this.originalModel, keepSourceColors ? NEUTRAL_WALL : MODEL_ACCENT);
+            if (modelMode === 'flow' && !keepSourceColors) this.applyFlowAccentColor(this.originalModel);
             this.layeredModel = modelMode === 'layers'
                 ? this.createLayeredModel(this.originalModel)
                 : null;
             this.model = this.layeredModel || this.originalModel;
             this.scene.add(this.model);
             this.fitModel(this.model, modelMode);
+            this.sizeParticles(this.model);
             if (modelMode === 'surface' || modelMode === 'flow') {
                 this.rotationPivot = new THREE.Group();
                 this.rotationPivot.name = 'ScrollRotationPivot';
@@ -270,15 +278,26 @@ class InlineModelViewer {
         });
     }
 
-    applyTransparentFlowSurfaceMaterial(model) {
+    // Point-cloud exports arrive with 1px points; give them a size relative
+    // to the model so particles stay visible at every framing.
+    sizeParticles(model) {
+        model.traverse((child) => {
+            if (!child.isPoints || !child.material) return;
+            child.material.size = this.referenceModelDimension * PARTICLE_SIZE;
+            child.material.sizeAttenuation = true;
+            child.material.needsUpdate = true;
+        });
+    }
+
+    applyTransparentFlowSurfaceMaterial(model, color = MODEL_ACCENT) {
         model.traverse((child) => {
             if (!child.isMesh || !child.userData.isFlowSurface) return;
             if (child.geometry && !child.geometry.attributes.normal) child.geometry.computeVertexNormals();
             child.material = new THREE.MeshStandardMaterial({
-                color: MODEL_ACCENT,
+                color,
                 roughness: 0.64,
                 metalness: 0.02,
-                emissive: MODEL_ACCENT,
+                emissive: color,
                 emissiveIntensity: 0.08,
                 transparent: true,
                 opacity: 0.16,

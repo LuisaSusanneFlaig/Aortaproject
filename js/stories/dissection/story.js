@@ -98,18 +98,19 @@ export const dissectionStory = {
                     { text: 'End of the flap', anchor: [0.42, 0.165, 0.615], side: 'left' }
                 ],
                 flowView: {
-                    url: `${flowModelBase}dissection_lines_anim.glb`,
+                    url: `${flowModelBase}dissection_streaklines_anim.glb`,
                     label: 'Simulated blood flow through Miriam\'s dissected aorta',
+                    sourceColors: true,
                     rotationX: 0,
-                    rotationY: -1.5708,
+                    rotationY: 0,
                     rotationZ: 0,
-                    framingScale: 0.62,
+                    framingScale: 0.42,
                     animationFps: 20,
                     animationSpeed: 1,
                     labels: [
-                        { text: 'Blood arrives from the heart', anchor: [0.254, 0.589, 0.337], side: 'left' },
-                        { text: 'Swirling flow where the flap begins', anchor: [0.597, 0.67, 0.544], side: 'right' },
-                        { text: 'Descending aorta', anchor: [0.605, 0.381, 0.58], side: 'right' }
+                        { text: 'Blood arrives from the heart', anchor: [0.372, 0.57, 0.729], side: 'left' },
+                        { text: 'Where the flap begins', anchor: [0.615, 0.614, 0.493], side: 'right' },
+                        { text: 'Descending aorta', anchor: [0.59, 0.436, 0.574], side: 'right' }
                     ]
                 }
             },
@@ -129,7 +130,7 @@ export const dissectionStory = {
                 },
                 {
                     type: 'text',
-                    text: 'Switch to “Blood flow” to see the same aorta with simulated paths of blood. The lines enter through the ascending aorta and run fairly evenly through the arch. Where the flap begins, they lose this order and swirl, right where blood now divides between two channels. The simulation is based on Miriam\'s aorta about six weeks after the dissection.'
+                    text: 'Switch to “Blood flow” to see the same aorta with simulated blood particles. They enter through the ascending aorta and gather in the arch, where the flap begins and blood now divides between two channels. The simulation is based on Miriam\'s aorta about six weeks after the dissection.'
                 },
                 {
                     type: 'reference',
