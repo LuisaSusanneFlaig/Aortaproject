@@ -347,8 +347,7 @@ export const dissectionStory = {
                     eyebrow: '+1.5 months',
                     title: 'Flow-Vis - Subacute Phase',
                     infoPopup: {
-                        title: 'About this simulation',
-                        text: 'Miriam\'s dissected aorta is reconstructed from medical imaging and divided into a computational mesh that includes both channels. Software calculates blood movement through that geometry, including how blood enters the aorta and leaves through its branches. The calculated results are then rendered as a 3D animation; color and motion help show flow direction and relative speed. This is simulated data, not blood recorded in the body or a prediction of Miriam\'s individual outcome.'
+                        title: 'Animation speed'
                     }
                 },
                 {
@@ -358,6 +357,30 @@ export const dissectionStory = {
                 {
                     type: 'reference',
                     text: 'Context: patient-specific simulation based on the subacute CTA anatomy. Source: Zimmermann et al. (2023), DOI 10.1038/s41598-023-49942-0. Methods reference: Wilson NM, Ortiz AK, Johnson AB. The Vascular Model Repository: A Public Resource of Medical Imaging Data and Blood Flow Simulation Results. J Med Devices. 2013;7(4):040923. DOI: 10.1115/1.4025983.'
+                }
+            ]
+        },
+        {
+            id: 'miriam-simulation-method',
+            title: 'How the Flow Is Simulated',
+            scrollMode: 'sequence',
+            timelineLabel: 'Flow simulation',
+            className: 'simulation-method-section',
+            placeholderId: 'miriam-simulation-method-graphic',
+            placeholderText: 'Graphic placeholder',
+            paragraphs: [],
+            elements: [
+                {
+                    type: 'text',
+                    text: 'Miriam\'s dissected aorta is reconstructed from medical imaging and divided into a computational mesh that includes both channels. Software calculates blood movement through that geometry, including how blood enters the aorta and leaves through its branches.'
+                },
+                {
+                    type: 'text',
+                    text: 'The calculated results are then rendered as a 3D animation; color and motion help show flow direction and relative speed. This is simulated data, not blood recorded in the body or a prediction of Miriam\'s individual outcome.'
+                },
+                {
+                    type: 'reference',
+                    text: 'Methods reference: Wilson NM, Ortiz AK, Johnson AB. The Vascular Model Repository: A Public Resource of Medical Imaging Data and Blood Flow Simulation Results. J Med Devices. 2013;7(4):040923. DOI: 10.1115/1.4025983. Simulation source: Zimmermann et al. (2023), DOI 10.1038/s41598-023-49942-0.'
                 }
             ]
         },
