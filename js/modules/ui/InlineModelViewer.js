@@ -140,6 +140,7 @@ class InlineModelViewer {
             const keepSourceColors = this.container.dataset.sourceColors === 'true';
             if (modelMode === 'flow') this.applyTransparentFlowSurfaceMaterial(this.originalModel, keepSourceColors ? NEUTRAL_WALL : MODEL_ACCENT);
             if (modelMode === 'flow' && !keepSourceColors) this.applyFlowAccentColor(this.originalModel);
+            if (modelMode === 'flow' && keepSourceColors) this.applyUnlitSourceColors(this.originalModel);
             this.layeredModel = modelMode === 'layers'
                 ? this.createLayeredModel(this.originalModel)
                 : null;
@@ -275,6 +276,15 @@ class InlineModelViewer {
                 material.vertexColors = false;
                 material.needsUpdate = true;
             });
+        });
+    }
+
+    // Colors that encode data (e.g. speed) must not be tinted by the scene
+    // lights, so those lines are drawn unlit.
+    applyUnlitSourceColors(model) {
+        model.traverse((child) => {
+            if (!child.isMesh || child.userData.isFlowSurface || !child.geometry?.attributes?.color) return;
+            child.material = new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.DoubleSide });
         });
     }
 

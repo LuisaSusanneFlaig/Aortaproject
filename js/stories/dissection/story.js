@@ -70,6 +70,43 @@ export const dissectionStory = {
             ]
         },
         {
+            id: 'how-to-read-blood-flow',
+            title: 'How to Read Blood Flow',
+            scrollMode: 'sticky',
+            timelineLabel: 'Context',
+            className: 'model-section miriam-flow-reading-section',
+            inlineModel: {
+                url: `${flowModelBase}healthy_lines_anim.glb`,
+                label: 'Simulated blood flow through a healthy reference aorta, shown as colored lines',
+                mode: 'flow',
+                legend: false,
+                sourceColors: true,
+                speedLegend: true,
+                rotationX: 0,
+                rotationY: -1.5708,
+                rotationZ: 0,
+                framingScale: 0.4,
+                animationFps: 20,
+                animationSpeed: 1,
+                rotationHint: true
+            },
+            paragraphs: [],
+            elements: [
+                {
+                    type: 'text',
+                    text: 'Before we look at Miriam\'s aorta, it helps to learn how blood flow is shown in this story. The model shows a healthy aorta from a separate reference case, not Miriam\'s. Each line traces the path that blood takes through the vessel, and its color shows how fast the blood moves there.'
+                },
+                {
+                    type: 'text',
+                    text: 'In a healthy aorta, the lines run side by side in smooth, orderly layers, from the heart through the arch and down into the body. This is called laminar flow. Later in the story, the same kind of image shows how a dissection disturbs this order.',
+                    infoPopup: {
+                        title: 'laminar flow',
+                        text: 'Laminar flow moves in smooth layers, with little mixing or crosswise swirling between them. It can occur in the bloodstream and is an orderly flow that may become turbulent when disturbances grow beyond a critical point.'
+                    }
+                }
+            ]
+        },
+        {
             id: 's2',
             title: 'Aortic Anatomy',
             scrollMode: 'sticky',
@@ -96,23 +133,7 @@ export const dissectionStory = {
                     { text: 'True and false lumen', anchor: [0.888, 0.645, 0.791], side: 'right' },
                     { text: 'Descending aorta', anchor: [0.677, 0.422, 0.798], side: 'right' },
                     { text: 'End of the flap', anchor: [0.42, 0.165, 0.615], side: 'left' }
-                ],
-                flowView: {
-                    url: `${flowModelBase}dissection_streaklines_anim.glb`,
-                    label: 'Simulated blood flow through Miriam\'s dissected aorta',
-                    sourceColors: true,
-                    rotationX: 0,
-                    rotationY: 0,
-                    rotationZ: 0,
-                    framingScale: 0.42,
-                    animationFps: 20,
-                    animationSpeed: 1,
-                    labels: [
-                        { text: 'Blood arrives from the heart', anchor: [0.372, 0.57, 0.729], side: 'left' },
-                        { text: 'Where the flap begins', anchor: [0.615, 0.614, 0.493], side: 'right' },
-                        { text: 'Descending aorta', anchor: [0.59, 0.436, 0.574], side: 'right' }
-                    ]
-                }
+                ]
             },
             paragraphs: [],
             elements: [
@@ -127,10 +148,6 @@ export const dissectionStory = {
                 {
                     type: 'text',
                     text: 'The labels in the model trace this route. Blood leaves the heart through the ascending aorta and curves through the aortic arch. Just beyond the arch, the entry tear marks where the flap begins. From there, the flap divides the descending aorta into the true and false lumen until it ends further down.'
-                },
-                {
-                    type: 'text',
-                    text: 'Switch to “Blood flow” to see the same aorta with simulated blood particles. They enter through the ascending aorta and gather in the arch, where the flap begins and blood now divides between two channels. The simulation is based on Miriam\'s aorta about six weeks after the dissection.'
                 },
                 {
                     type: 'reference',

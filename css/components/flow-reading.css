@@ -1,0 +1,44 @@
+/* Legend for the "How to Read Blood Flow" model (speedLegend in story data).
+   The gradient mirrors the export's line colors: light = slower, saturated = faster.
+   Selectors include #story to outrank the flat theme's background-image reset. */
+:root {
+    --flow-speed-slow: #ffe6e6;
+    --flow-speed-fast: #ff3333;
+}
+
+body[data-story-version] #story .flow-reading-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 22px;
+    align-items: center;
+    color: color-mix(in srgb, var(--color-text) 78%, transparent);
+    font-size: 0.78rem;
+}
+
+body[data-story-version] #story .flow-reading-legend-item,
+body[data-story-version] #story .flow-reading-scale {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+body[data-story-version] #story .flow-reading-line {
+    display: block;
+    width: 28px;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--flow-speed-fast);
+}
+
+body[data-story-version] #story .flow-reading-gradient {
+    display: block;
+    width: 72px;
+    height: 8px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--flow-speed-slow), var(--flow-speed-fast));
+}
+
+body[data-story-version] #story .flow-reading-scale small {
+    font-size: 0.7rem;
+    opacity: 0.8;
+}

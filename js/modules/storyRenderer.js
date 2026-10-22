@@ -172,6 +172,11 @@ function renderInlineModel(model, illustration = null) {
     const rotationY = Number.isFinite(model.rotationY) ? ` data-rotation-y="${model.rotationY}"` : '';
     const rotationZ = Number.isFinite(model.rotationZ) ? ` data-rotation-z="${model.rotationZ}"` : '';
     const framingScale = Number.isFinite(model.framingScale) ? ` data-framing-scale="${model.framingScale}"` : '';
+    const animation = ['animationFps', 'animationSpeed']
+        .filter((key) => Number.isFinite(model[key]))
+        .map((key) => ` data-${key.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}="${model[key]}"`)
+        .join('');
+    const sourceColors = model.sourceColors ? ' data-source-colors="true"' : '';
     const labels = Array.isArray(model.labels) ? model.labels : [];
     const labelData = labels.length
         ? ` data-model-labels="${toDataAttribute(labels)}"`
@@ -186,17 +191,24 @@ function renderInlineModel(model, illustration = null) {
             <span><i class="media"></i>Media</span>
             <span><i class="adventitia"></i>Adventitia</span>
         </div>`;
+    // Explains the flow encoding: line = path of blood, color = speed.
+    const speedLegend = model.speedLegend ? `
+        <div class="flow-reading-legend" aria-label="How to read the flow lines">
+            <span class="flow-reading-legend-item"><i class="flow-reading-line" aria-hidden="true"></i>Line: path of blood</span>
+            <span class="flow-reading-legend-item">Color: speed <span class="flow-reading-scale"><small>slower</small><i class="flow-reading-gradient" aria-hidden="true"></i><small>faster</small></span></span>
+        </div>` : '';
     return `
         <figure class="inline-model-figure">
             ${renderModelViewControls(model, illustration)}
             ${illustration ? `<figure class="inline-model-illustration" hidden><img src="${illustration.src}" alt="${illustration.alt || ''}"></figure>` : ''}
-            <div class="inline-model-viewer" data-inline-model data-model-url="${model.url}" data-model-mode="${modelMode}"${rotationX}${rotationY}${rotationZ}${framingScale}${labelData} role="img" aria-label="${label}">
+            <div class="inline-model-viewer" data-inline-model data-model-url="${model.url}" data-model-mode="${modelMode}"${rotationX}${rotationY}${rotationZ}${framingScale}${animation}${sourceColors}${labelData} role="img" aria-label="${label}">
                 <span class="inline-model-plus-icon" aria-hidden="true">+</span>
                 ${model.rotationHint ? '<span class="inline-model-360-hint material-symbols-rounded story-material-icon" aria-hidden="true">360</span>' : ''}
                 <div class="inline-model-loading" aria-hidden="true"></div>
             </div>
             <div class="inline-model-meta">
                 ${labelKey}
+                ${speedLegend}
                 ${legend}
             </div>
         </figure>
