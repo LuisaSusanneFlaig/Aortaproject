@@ -1,0 +1,40 @@
+/* Two-column copy for sections with long running text (`has-long-copy`,
+   set by storyRenderer). The visual stage narrows to make room; where two
+   readable columns still do not fit, `columns` falls back to one. */
+body[data-story-version] #story .story-copy-flow {
+    grid-column: 1 / -1;
+    width: 100%;
+    min-width: 0;
+}
+
+@media (min-width: 1101px) {
+    body[data-story-version] #story .step.has-long-copy {
+        --story-visual-width: 46vw;
+    }
+
+    body[data-story-version] #story .step.has-long-copy .story-visual-column {
+        width: var(--story-visual-width);
+    }
+
+    body[data-story-version] #story .step.has-long-copy .story-copy-column {
+        width: min(80ch, calc(100vw - var(--story-visual-width) - clamp(44px, 6vw, 112px)));
+    }
+
+    /* Flow sections add horizontal padding (flat-foundation.css). */
+    body[data-story-version] #story .flow-research-section.has-long-copy .story-copy-column {
+        width: min(80ch, calc(100vw - var(--story-visual-width) - 2 * clamp(22px, 4vw, 72px) - clamp(24px, 3vw, 48px)));
+    }
+
+    body[data-story-version] #story .story-copy-flow {
+        columns: 2 28ch;
+        column-gap: clamp(28px, 3vw, 48px);
+    }
+
+    body[data-story-version] #story .story-copy-flow > .element-wrapper:first-child {
+        margin-top: 0;
+    }
+
+    body[data-story-version] #story .story-copy-flow :is(.story-info-popup, .infographic-popup, details) {
+        break-inside: avoid;
+    }
+}

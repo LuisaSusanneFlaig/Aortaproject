@@ -50,6 +50,26 @@ function isNarrativeElement(element = {}) {
     return narrativeElementTypes.has(element.type);
 }
 
+// Sections with more running text than this set their copy in two columns
+// on wide screens. A section can force it with `copyColumns: 1` or `2`.
+const LONG_COPY_CHARACTERS = 700;
+
+function hasLongCopy(section) {
+    if (section.copyColumns) return section.copyColumns === 2;
+    const length = (section.elements || [])
+        .filter((element) => isNarrativeElement(element) && element.type !== 'reference')
+        .reduce((total, element) => total + (element.text || '').length, 0);
+    return length >= LONG_COPY_CHARACTERS;
+}
+
+function renderNarrative(section) {
+    if (!hasLongCopy(section)) return renderElements(section.elements, isNarrativeElement);
+    // Sources stay full width below the two-column text.
+    const flow = renderElements(section.elements, (element) => isNarrativeElement(element) && element.type !== 'reference');
+    const references = renderElements(section.elements, (element) => element.type === 'reference');
+    return `<div class="story-copy-flow">${flow}</div>${references}`;
+}
+
 function renderElement(element, index) {
     let content = renderBasicElement(element);
     if (content === null) switch (element.type) {
@@ -204,7 +224,7 @@ function renderSections(sections = [], navItems = []) {
 
     return sections.map((section, index) => {
         const layoutClass = section.layout === 'full' ? ' layout-full' : '';
-        const customClass = section.className ? ` ${section.className}` : '';
+        const customClass = `${section.className ? ` ${section.className}` : ''}${hasLongCopy(section) ? ' has-long-copy' : ''}`;
         const chapterClass = chapterIds.has(section.id) ? ' chapter-start' : ' chapter-continuation';
         const chapter = chapters.get(section.id);
         const scrollMode = section.scrollMode || 'flow';
@@ -217,7 +237,7 @@ function renderSections(sections = [], navItems = []) {
             section.preventionFlowIllustrations ? `<figure class="prevention-flow-illustrations"><div class="flow-illustration-switch" role="group" aria-label="Highlight a flow animation"><button type="button" class="flow-illustration-button active" data-flow-illustration="affected" aria-pressed="true">Affected flow</button><button type="button" class="flow-illustration-button" data-flow-illustration="healthy" aria-pressed="false">Healthy flow</button></div><div class="prevention-flow-video-pair"><section class="prevention-flow-video-panel"><h3>Affected aorta</h3>${/\.(png|jpe?g|webp|gif|svg)$/i.test(section.preventionFlowIllustrations.affectedSrc) ? `<img class="flow-illustration-affected" src="${section.preventionFlowIllustrations.affectedSrc}" alt="${section.preventionFlowIllustrations.affectedAlt}">` : `<video class="flow-illustration-affected" src="${section.preventionFlowIllustrations.affectedSrc}" autoplay muted loop playsinline aria-label="${section.preventionFlowIllustrations.affectedAlt}"></video>`}</section><section class="prevention-flow-video-panel"><h3>Healthy aorta</h3>${/\.(png|jpe?g|webp|gif|svg)$/i.test(section.preventionFlowIllustrations.healthySrc) ? `<img class="flow-illustration-healthy" src="${section.preventionFlowIllustrations.healthySrc}" alt="${section.preventionFlowIllustrations.healthyAlt}">` : `<video class="flow-illustration-healthy" src="${section.preventionFlowIllustrations.healthySrc}" autoplay muted loop playsinline aria-label="${section.preventionFlowIllustrations.healthyAlt}"></video>`}</section></div></figure>` : '',
             visualElements
         ].filter(Boolean).join('');
-        const narrativeContent = renderElements(section.elements, isNarrativeElement);
+        const narrativeContent = renderNarrative(section);
         
         const customStyle = [
             style.opacity !== undefined ? `background-color: rgba(12, 12, 14, ${style.opacity / 100});` : '',
