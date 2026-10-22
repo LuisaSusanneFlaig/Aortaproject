@@ -160,13 +160,12 @@ body[data-story-version] #story .process-icon {
     width: 70%;
     aspect-ratio: 1;
     place-items: center;
-    border: 1px solid color-mix(in srgb, var(--color-accent) 60%, transparent);
-    border-radius: 50%;
-    color: var(--color-accent);
 }
 
-body[data-story-version] #story .process-icon .story-material-icon {
-    font-size: calc(var(--process-stage-size) * 0.34);
+/* .step raises specificity above the theme rule that colors every span in the text color. */
+body[data-story-version] #story .step .process-icon .story-material-icon {
+    color: var(--color-accent);
+    font-size: calc(var(--process-stage-size) * 0.5);
 }
 
 /* Small 3D viewers without the usual frame. */

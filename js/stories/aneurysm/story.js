@@ -249,7 +249,7 @@ export const aneurysmStory = {
                         {
                             title: 'Mesh',
                             text: 'The 3D model is divided into many small elements, where the flow is calculated.',
-                            visual: { kind: 'model', mode: 'wireframe', url: `${flowModelBase}aneurysm_anatomy.glb`, label: 'Close-up of Alex\'s aortic model shown as a triangle mesh', rotationY: 1.5708, framingScale: 0.05 }
+                            visual: { kind: 'model', mode: 'wireframe', url: `${flowModelBase}aneurysm_anatomy.glb`, label: 'Close-up of Alex\'s aortic model shown as a triangle mesh', rotationX: 0, rotationY: 1.5708, rotationZ: 0, framingScale: 0.72 }
                         },
                         {
                             title: 'In- and outflow',

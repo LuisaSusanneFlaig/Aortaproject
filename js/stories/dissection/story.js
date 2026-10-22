@@ -306,7 +306,7 @@ export const dissectionStory = {
                         {
                             title: 'Mesh',
                             text: 'The 3D model is divided into many small elements, where the flow is calculated.',
-                            visual: { kind: 'model', mode: 'wireframe', url: `${flowModelBase}dissection_anatomy.glb`, label: 'Close-up of Miriam\'s aortic model shown as a triangle mesh', rotationX: 0, rotationY: -1.5708, rotationZ: 0, framingScale: 0.12 }
+                            visual: { kind: 'model', mode: 'wireframe', url: `${flowModelBase}dissection_anatomy.glb`, label: 'Close-up of Miriam\'s aortic model shown as a triangle mesh', rotationX: 0, rotationY: -1.5708, rotationZ: 0, framingScale: 0.9 }
                         },
                         {
                             title: 'In- and outflow',
