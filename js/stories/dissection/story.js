@@ -280,12 +280,20 @@ export const dissectionStory = {
                 {
                     type: 'scanToModel',
                     label: 'From CTA slices to a 3D model of Miriam\'s aorta',
-                    sliceSrc: 'assets/story_images/miriam_cta_axial_0246.png',
-                    sliceAlt: 'Axial CTA slice through Miriam\'s chest, shown as the top image of a stack of slices',
-                    flipSlice: true,
+                    sliceSrc: 'assets/story_images/miriam_cta.png',
+                    sliceAspect: '955 / 1280',
+                    sliceAlt: 'Miriam\'s CTA image with the dissected aorta highlighted in red, shown as the front image of a stack of slices',
+                    scanner: {
+                        url: 'assets/models/ct_scanner.glb',
+                        label: '3D model of a CT scanner',
+                        rotationX: 0,
+                        rotationY: 0.6,
+                        framingScale: 0.62
+                    },
                     steps: [
-                        { title: 'CTA slices', text: 'The scan is a stack of thin cross-sectional images through the chest.' },
-                        { title: 'Computer and software', text: 'Software traces the aorta in every slice and joins the outlines.' },
+                        { title: 'CT scanner', text: 'The patient lies on a table that moves through the ring of the scanner.' },
+                        { title: 'CTA slices', text: 'The scan is a stack of thin images through the chest.' },
+                        { title: 'Software', text: 'On a computer, software traces the aorta in every slice and joins the outlines.' },
                         { title: '3D model', text: 'Miriam\'s aorta as a model that can be turned and used for a flow simulation.' }
                     ],
                     model: {
@@ -294,6 +302,10 @@ export const dissectionStory = {
                         rotationY: -1.5708,
                         framingScale: 0.9
                     }
+                },
+                {
+                    type: 'reference',
+                    text: 'CT scanner 3D model: “CT Scanner” by Ng Jun Wei, https://skfb.ly/ornOu, licensed under Creative Commons Attribution 4.0, http://creativecommons.org/licenses/by/4.0/. CTA image and aortic model: VMR dataset 0246_H_AO_AOD.'
                 }
             ]
         },
