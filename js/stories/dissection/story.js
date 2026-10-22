@@ -306,12 +306,12 @@ export const dissectionStory = {
                         {
                             title: 'Mesh',
                             text: 'The 3D model is divided into many small elements, where the flow is calculated.',
-                            visual: { kind: 'model', mode: 'wireframe', url: `${flowModelBase}dissection_anatomy.glb`, label: 'Close-up of Miriam\'s aortic model shown as a triangle mesh', rotationX: 0, rotationY: -1.5708, rotationZ: 0, framingScale: 0.9 }
+                            visual: { kind: 'image', src: 'assets/story_images/miriam_mesh_closeup.png', alt: 'Close-up of the wall of Miriam\'s aortic model, divided into a mesh of small triangles' }
                         },
                         {
                             title: 'In- and outflow',
-                            text: 'At each open end, the team sets how blood enters from the heart (red) and leaves the model (white).',
-                            visual: { kind: 'model', url: `${flowModelBase}dissection_anatomy.glb`, label: 'Miriam\'s aortic model with a red inflow plane at the ascending aorta and white outflow planes at the other open ends', rotationX: 0, rotationY: -1.5708, rotationZ: 0, framingScale: 0.9,
+                            text: 'At each open end, the team sets how blood enters from the heart and leaves the model. The red planes mark these openings.',
+                            visual: { kind: 'model', url: `${flowModelBase}dissection_anatomy.glb`, label: 'Miriam\'s aortic model with red planes at the inflow in the ascending aorta and at the outflows of the other open ends', rotationX: 0, rotationY: -1.5708, rotationZ: 0, framingScale: 0.9,
                                 boundaryPlanes: [
                                     { type: 'inflow', at: [0.131, 0.714, 0.239], toward: [0.218, 0.794, 0.241] },
                                     { type: 'outflow', at: [0.509, 0.983, 0.497], toward: [0.529, 0.911, 0.599] },

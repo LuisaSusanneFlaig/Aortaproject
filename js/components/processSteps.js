@@ -30,6 +30,7 @@ function renderModel(visual) {
 const visualRenderers = {
     model: renderModel,
     slices: renderSlices,
+    image: (visual) => `<img class="process-image" src="${visual.src}" alt="${visual.alt}">`,
     icon: (visual) => `<div class="process-icon">${renderMaterialIcon(visual.icon || 'computer')}</div>`
 };
 

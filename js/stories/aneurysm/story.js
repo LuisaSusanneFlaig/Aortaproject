@@ -249,12 +249,12 @@ export const aneurysmStory = {
                         {
                             title: 'Mesh',
                             text: 'The 3D model is divided into many small elements, where the flow is calculated.',
-                            visual: { kind: 'model', mode: 'wireframe', url: `${flowModelBase}aneurysm_anatomy.glb`, label: 'Close-up of Alex\'s aortic model shown as a triangle mesh', rotationX: 0, rotationY: 1.5708, rotationZ: 0, framingScale: 0.72 }
+                            visual: { kind: 'image', src: 'assets/story_images/alex_mesh_closeup.png', alt: 'Close-up of the wall of Alex\'s aortic model, divided into a mesh of small triangles' }
                         },
                         {
                             title: 'In- and outflow',
-                            text: 'At each open end, the team sets how blood enters from the heart (red) and leaves the model (white).',
-                            visual: { kind: 'model', url: `${flowModelBase}aneurysm_anatomy.glb`, label: 'Alex\'s aortic model with a red inflow plane at the aortic root and white outflow planes at the branches and the descending aorta', rotationY: 1.5708, framingScale: 1.05,
+                            text: 'At each open end, the team sets how blood enters from the heart and leaves the model. The red planes mark these openings.',
+                            visual: { kind: 'model', url: `${flowModelBase}aneurysm_anatomy.glb`, label: 'Alex\'s aortic model with red planes at the inflow in the aortic root and at the outflows of the branches and the descending aorta', rotationY: 1.5708, framingScale: 1.05,
                                 boundaryPlanes: [
                                     { type: 'inflow', at: [0.2, 0.498, 0.494], toward: [0.173, 0.587, 0.417] },
                                     { type: 'outflow', at: [0.656, 0.005, 0.586], toward: [0.681, 0.053, 0.607] },

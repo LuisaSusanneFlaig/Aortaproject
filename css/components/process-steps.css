@@ -155,6 +155,15 @@ body[data-story-version] #story .process-slice-stack .process-slice {
     transform: rotateY(-42deg) translateZ(calc(var(--slice-index) * var(--slice-gap)));
 }
 
+body[data-story-version] #story .process-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    max-width: none;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
 body[data-story-version] #story .process-icon {
     display: grid;
     width: 70%;

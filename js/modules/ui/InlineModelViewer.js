@@ -405,7 +405,7 @@ class InlineModelViewer {
         } catch (error) {
             console.error('[InlineModelViewer] Invalid boundary planes', error);
         }
-        if (Array.isArray(planes)) addBoundaryPlanes(this.rotationPivot || this.model, planes, { inflowColor: MODEL_ACCENT, outflowColor: 0xf4f2f2 });
+        if (Array.isArray(planes)) addBoundaryPlanes(this.rotationPivot || this.model, planes, { inflowColor: MODEL_ACCENT, outflowColor: MODEL_ACCENT });
     }
 
     applySurfaceMaterial(model) {

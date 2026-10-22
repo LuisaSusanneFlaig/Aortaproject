@@ -40,6 +40,8 @@ function validateElement(element, path, errors) {
             const visual = step.visual || {};
             const visualPath = `${path}.steps[${stepIndex}].visual`;
             if (!step.title?.trim()) addError(errors, `${path}.steps[${stepIndex}].title`, 'step title is required');
+            if (visual.kind === 'image' && !visual.src) addError(errors, `${visualPath}.src`, 'image is required');
+            if (visual.kind === 'image' && !visual.alt?.trim()) addError(errors, `${visualPath}.alt`, 'meaningful alternative text is required');
             if (visual.kind === 'slices' && !visual.src) addError(errors, `${visualPath}.src`, 'slice image is required');
             if (visual.kind === 'slices' && !visual.alt?.trim()) addError(errors, `${visualPath}.alt`, 'meaningful alternative text is required');
             if (visual.kind === 'model' && !visual.url) addError(errors, `${visualPath}.url`, '3D model URL is required');
