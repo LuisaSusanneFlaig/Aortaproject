@@ -8,8 +8,8 @@ export const dissectionStory = {
         { href: '#s2', label: 'Anatomy' },
         { href: '#s8', label: 'Symptoms' },
         { href: '#s9', label: 'Diagnosis' },
-        { href: '#s13', label: 'Treatment' },
         { href: '#s11', label: 'Prognosis' },
+        { href: '#s13', label: 'Treatment' },
         { href: '#s17', label: 'Prevention' }
     ],
     sections: [
@@ -310,48 +310,6 @@ export const dissectionStory = {
             ]
         },
         {
-            id: 's13',
-            title: 'Current-risk decision spectrum',
-            scrollMode: 'sequence',
-            timelineLabel: 'Acute',
-            className: 'miriam-treatment-infographic-section',
-            paragraphs: [],
-            elements: [
-                {
-                    type: 'text',
-                    text: 'Treatment depends on whether the dissection is causing complications. For an uncomplicated Type B dissection, the first step is usually hospital care with medicine to lower heart rate and blood pressure, pain relief, and close checks of pulses, organ function, and repeat images. If blood flow to an organ is reduced, the aorta is enlarging or leaking, pain persists, or blood pressure cannot be controlled, the team may recommend repair. TEVAR places a fabric-covered support inside the aorta through an artery, usually in the groin, to cover the main tear and redirect blood. It is not suitable for every anatomy or every person.',
-                    infoPopup: {
-                        title: 'TEVAR',
-                        text: 'TEVAR means thoracic endovascular aortic repair. Through an artery, usually in the groin, doctors guide a catheter carrying a fabric-covered metal stent graft to the chest aorta. Once opened, it lines the inside of the vessel and covers the main tear, helping blood flow through the intended channel. Suitability depends on the tear\'s position, branch vessels, and the strength of the aortic wall; people with Marfan syndrome may need a different balance of endovascular and open repair.'
-                    }
-                },
-                {
-                    type: 'treatmentDecision',
-                    variant: 'decisionMap',
-                    axisStart: 'Lower urgency',
-                    axisEnd: 'Higher urgency',
-                    items: [
-                        {
-                            icon: 'prescriptions',
-                            label: 'Uncomplicated Type B',
-                            treatment: 'Medical therapy',
-                            info: 'If there is no rupture, organ blood-flow problem, ongoing severe pain, or uncontrolled blood pressure, treatment generally begins with medicines in hospital. The team controls heart rate and blood pressure, treats pain, watches organ function, and repeats imaging to check for change.'
-                        },
-                        {
-                            icon: 'medical_services',
-                            label: 'Complicated Type B',
-                            treatment: 'Aortic treatment',
-                            info: 'A blocked branch artery, reduced blood supply to an organ, bleeding or rupture, ongoing pain, or blood pressure that remains high despite treatment can make the dissection complicated. The aortic team then weighs urgent repair options, including TEVAR or open surgery, based on anatomy and connective-tissue disease.'
-                        }
-                    ]
-                },
-                {
-                    type: 'reference',
-                    text: 'Sources: [2022 German S2k Guideline on Type B Aortic Dissection](https://register.awmf.org/assets/guidelines/004-034l_S2k_Typ_B_Aortendissektion_2022-05.pdf), treatment chapters; [2022 ACC/AHA Aortic Disease Guideline](https://doi.org/10.1161/CIR.0000000000001106), acute aortic syndrome management. Miriam case: VMR dataset 0246_H_AO_AOD.'
-                }
-            ]
-        },
-        {
             id: 's11',
             title: 'After the Acute Event',
             scrollMode: 'sticky',
@@ -400,6 +358,48 @@ export const dissectionStory = {
                 {
                     type: 'reference',
                     text: 'Context: patient-specific simulation based on the subacute CTA anatomy. Source: Zimmermann et al. (2023), DOI 10.1038/s41598-023-49942-0. Methods reference: Wilson NM, Ortiz AK, Johnson AB. The Vascular Model Repository: A Public Resource of Medical Imaging Data and Blood Flow Simulation Results. J Med Devices. 2013;7(4):040923. DOI: 10.1115/1.4025983.'
+                }
+            ]
+        },
+        {
+            id: 's13',
+            title: 'Current-risk decision spectrum',
+            scrollMode: 'sequence',
+            timelineLabel: 'Acute',
+            className: 'miriam-treatment-infographic-section',
+            paragraphs: [],
+            elements: [
+                {
+                    type: 'text',
+                    text: 'Treatment depends on whether the dissection is causing complications. For an uncomplicated Type B dissection, the first step is usually hospital care with medicine to lower heart rate and blood pressure, pain relief, and close checks of pulses, organ function, and repeat images. If blood flow to an organ is reduced, the aorta is enlarging or leaking, pain persists, or blood pressure cannot be controlled, the team may recommend repair. TEVAR places a fabric-covered support inside the aorta through an artery, usually in the groin, to cover the main tear and redirect blood. It is not suitable for every anatomy or every person.',
+                    infoPopup: {
+                        title: 'TEVAR',
+                        text: 'TEVAR means thoracic endovascular aortic repair. Through an artery, usually in the groin, doctors guide a catheter carrying a fabric-covered metal stent graft to the chest aorta. Once opened, it lines the inside of the vessel and covers the main tear, helping blood flow through the intended channel. Suitability depends on the tear\'s position, branch vessels, and the strength of the aortic wall; people with Marfan syndrome may need a different balance of endovascular and open repair.'
+                    }
+                },
+                {
+                    type: 'treatmentDecision',
+                    variant: 'decisionMap',
+                    axisStart: 'Lower urgency',
+                    axisEnd: 'Higher urgency',
+                    items: [
+                        {
+                            icon: 'prescriptions',
+                            label: 'Uncomplicated Type B',
+                            treatment: 'Medical therapy',
+                            info: 'If there is no rupture, organ blood-flow problem, ongoing severe pain, or uncontrolled blood pressure, treatment generally begins with medicines in hospital. The team controls heart rate and blood pressure, treats pain, watches organ function, and repeats imaging to check for change.'
+                        },
+                        {
+                            icon: 'medical_services',
+                            label: 'Complicated Type B',
+                            treatment: 'Aortic treatment',
+                            info: 'A blocked branch artery, reduced blood supply to an organ, bleeding or rupture, ongoing pain, or blood pressure that remains high despite treatment can make the dissection complicated. The aortic team then weighs urgent repair options, including TEVAR or open surgery, based on anatomy and connective-tissue disease.'
+                        }
+                    ]
+                },
+                {
+                    type: 'reference',
+                    text: 'Sources: [2022 German S2k Guideline on Type B Aortic Dissection](https://register.awmf.org/assets/guidelines/004-034l_S2k_Typ_B_Aortendissektion_2022-05.pdf), treatment chapters; [2022 ACC/AHA Aortic Disease Guideline](https://doi.org/10.1161/CIR.0000000000001106), acute aortic syndrome management. Miriam case: VMR dataset 0246_H_AO_AOD.'
                 }
             ]
         },

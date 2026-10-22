@@ -8,8 +8,8 @@ export const aneurysmStory = {
         { href: '#anatomie', label: 'Anatomy' },
         { href: '#symptome', label: 'Symptoms' },
         { href: '#diagnose-procedure', label: 'Diagnosis' },
-        { href: '#behandlung', label: 'Treatment' },
         { href: '#alex-flow-overview', label: 'Prognosis' },
+        { href: '#behandlung', label: 'Treatment' },
         { href: '#praevention', label: 'Prevention' }
     ],
     sections: [
@@ -249,48 +249,6 @@ export const aneurysmStory = {
             ]
         },
         {
-            id: 'behandlung',
-            title: 'Current-risk decision spectrum',
-            className: 'alex-treatment-infographic-section',
-            scrollMode: 'sequence',
-            elements: [
-                {
-                    type: 'text',
-                    text: 'This is a choice based on changing risk, not a fixed timeline. If Alex’s measurements are stable, the team continues planned scans and medical follow-up. Faster growth or other risk features can lead to an earlier discussion with a specialist aortic team. For Marfan syndrome, guidelines recommend surgery when the aortic root reaches 5.0 cm; surgery may be considered from 4.5 cm when specific high-risk features are present. These figures apply to the aortic root—not every part of the aorta—and are not a decision rule by themselves. Growth rate, body size, family history, valve findings, overall health, and the risks and benefits of surgery are considered together.'
-                },
-                {
-                    type: 'treatmentDecision',
-                    variant: 'decisionMap',
-                    axisStart: 'Lower urgency',
-                    axisEnd: 'Higher urgency',
-                    items: [
-                        {
-                            icon: 'circle_circle',
-                            label: 'Stable diameter and growth',
-                            treatment: 'Continue monitoring',
-                            info: 'If repeat measurements show little or no growth, follow-up imaging and visits continue at an interval chosen for Alex. Regular review matters because a change can happen before symptoms appear.'
-                        },
-                        {
-                            icon: 'expand',
-                            label: 'Faster growth or added risk',
-                            treatment: 'Appointment at an aortic center',
-                            info: 'A faster increase in size, family history, or other high-risk findings may prompt earlier review by a team experienced in inherited aortic disease. The team confirms measurements and discusses options; it does not mean surgery is automatic.'
-                        },
-                        {
-                            icon: 'surgical',
-                            label: 'Point at which treatment is recommended',
-                            treatment: 'Aortic repair',
-                            info: 'If the balance of risk favors repair, surgeons replace the enlarged aortic root and sometimes the ascending aorta. In selected patients the natural aortic valve can be preserved; in others it is repaired or replaced.'
-                        }
-                    ]
-                },
-                {
-                    type: 'reference',
-                    text: 'Source: [2022 ACC/AHA Guideline for the Diagnosis and Management of Aortic Disease](https://doi.org/10.1161/CIR.0000000000001106), Marfan surveillance and aortic-root surgery recommendations. Alex case: VMR dataset 0021_H_AO_MFS, case 0129_0000.'
-                }
-            ]
-        },
-        {
             id: 'alex-flow-overview',
             title: 'Flow in Alex\'s Aorta',
             className: 'flow-research-section alex-flow-section',
@@ -339,6 +297,48 @@ export const aneurysmStory = {
                 {
                     type: 'reference',
                     text: 'Data basis: open VMR dataset 0021_H_AO_MFS, case 0129_0000, with CT-based geometry and simulation files. Methods reference: Wilson NM, Ortiz AK, Johnson AB. The Vascular Model Repository: A Public Resource of Medical Imaging Data and Blood Flow Simulation Results. J Med Devices. 2013;7(4):040923. DOI: 10.1115/1.4025983.'
+                }
+            ]
+        },
+        {
+            id: 'behandlung',
+            title: 'Current-risk decision spectrum',
+            className: 'alex-treatment-infographic-section',
+            scrollMode: 'sequence',
+            elements: [
+                {
+                    type: 'text',
+                    text: 'This is a choice based on changing risk, not a fixed timeline. If Alex’s measurements are stable, the team continues planned scans and medical follow-up. Faster growth or other risk features can lead to an earlier discussion with a specialist aortic team. For Marfan syndrome, guidelines recommend surgery when the aortic root reaches 5.0 cm; surgery may be considered from 4.5 cm when specific high-risk features are present. These figures apply to the aortic root—not every part of the aorta—and are not a decision rule by themselves. Growth rate, body size, family history, valve findings, overall health, and the risks and benefits of surgery are considered together.'
+                },
+                {
+                    type: 'treatmentDecision',
+                    variant: 'decisionMap',
+                    axisStart: 'Lower urgency',
+                    axisEnd: 'Higher urgency',
+                    items: [
+                        {
+                            icon: 'circle_circle',
+                            label: 'Stable diameter and growth',
+                            treatment: 'Continue monitoring',
+                            info: 'If repeat measurements show little or no growth, follow-up imaging and visits continue at an interval chosen for Alex. Regular review matters because a change can happen before symptoms appear.'
+                        },
+                        {
+                            icon: 'expand',
+                            label: 'Faster growth or added risk',
+                            treatment: 'Appointment at an aortic center',
+                            info: 'A faster increase in size, family history, or other high-risk findings may prompt earlier review by a team experienced in inherited aortic disease. The team confirms measurements and discusses options; it does not mean surgery is automatic.'
+                        },
+                        {
+                            icon: 'surgical',
+                            label: 'Point at which treatment is recommended',
+                            treatment: 'Aortic repair',
+                            info: 'If the balance of risk favors repair, surgeons replace the enlarged aortic root and sometimes the ascending aorta. In selected patients the natural aortic valve can be preserved; in others it is repaired or replaced.'
+                        }
+                    ]
+                },
+                {
+                    type: 'reference',
+                    text: 'Source: [2022 ACC/AHA Guideline for the Diagnosis and Management of Aortic Disease](https://doi.org/10.1161/CIR.0000000000001106), Marfan surveillance and aortic-root surgery recommendations. Alex case: VMR dataset 0021_H_AO_MFS, case 0129_0000.'
                 }
             ]
         },
