@@ -51,16 +51,10 @@ function isNarrativeElement(element = {}) {
     return narrativeElementTypes.has(element.type);
 }
 
-// Sections with more running text than this set their copy in two columns
-// on wide screens. A section can force it with `copyColumns: 1` or `2`.
-const LONG_COPY_CHARACTERS = 700;
-
+// Copy stays one column so every section keeps the same split between
+// visual and text. A section can opt into two columns with `copyColumns: 2`.
 function hasLongCopy(section) {
-    if (section.copyColumns) return section.copyColumns === 2;
-    const length = (section.elements || [])
-        .filter((element) => isNarrativeElement(element) && element.type !== 'reference')
-        .reduce((total, element) => total + (element.text || '').length, 0);
-    return length >= LONG_COPY_CHARACTERS;
+    return section.copyColumns === 2;
 }
 
 function renderNarrative(section) {

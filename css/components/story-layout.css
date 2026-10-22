@@ -11,6 +11,13 @@ body[data-story-version] .step .story-split-shell {
     margin: 0;
 }
 
+/* Older flow-section styles pad their text box (scrollytelling.css), which
+   pushed the copy column out of line with every other section. */
+body[data-story-version] #story .flow-research-section .story-split-shell {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+}
+
 body[data-story-version] .step .story-copy-column {
     box-sizing: border-box;
     display: grid;
