@@ -77,6 +77,41 @@ export const aneurysmStory = {
             ]
         },
         {
+            id: 'alex-how-to-read-blood-flow',
+            title: 'How to Read Blood Flow',
+            scrollMode: 'sticky',
+            className: 'model-section alex-flow-reading-section',
+            inlineModel: {
+                url: `${flowModelBase}healthy_lines_anim.glb`,
+                label: 'Simulated blood flow through a healthy reference aorta, shown as colored lines',
+                mode: 'flow',
+                legend: false,
+                sourceColors: true,
+                speedLegend: true,
+                rotationX: 0,
+                rotationY: -1.5708,
+                rotationZ: 0,
+                framingScale: 0.4,
+                animationFps: 20,
+                animationSpeed: 1,
+                rotationHint: true
+            },
+            elements: [
+                {
+                    type: 'text',
+                    text: 'Before we look at the blood flow in Alex\'s aorta, it helps to learn how blood flow is shown in this story. The model shows a healthy aorta from a separate reference case, not Alex\'s. Each line traces the path that blood takes through the vessel, and its color shows how fast the blood moves there.'
+                },
+                {
+                    type: 'text',
+                    text: 'In a healthy aorta, the lines run side by side, smooth and orderly, from the heart through the arch and down into the body. This is called laminar flow. Later in the story, the same kind of image shows how the widened section of Alex\'s aorta disturbs this order.',
+                    infoPopup: {
+                        title: 'laminar flow',
+                        text: 'In laminar flow, blood moves smoothly in one direction and swirls only very little; no large swirls form. When the flow is disturbed, for example where the vessel widens or splits, larger swirls can develop.'
+                    }
+                }
+            ]
+        },
+        {
             id: 'symptome',
             title: 'Long Without Warning Signs',
             className: 'alex-symptoms-section',
@@ -233,7 +268,7 @@ export const aneurysmStory = {
                 },
                 {
                     type: 'text',
-                    text: 'The results are rendered as a 3D animation; color and motion help show flow direction and relative speed. This is simulated data, not blood recorded in the body or a prediction of Alex\'s individual outcome.'
+                    text: 'The results are shown as the moving lines introduced earlier: each line follows the path of the blood, and its color shows the speed. This is simulated data, not blood recorded in the body or a prediction of Alex\'s individual outcome.'
                 },
                 {
                     type: 'text',
@@ -310,11 +345,7 @@ export const aneurysmStory = {
                 },
                 {
                     type: 'text',
-                    text: 'The important point is not only where the aorta is wide, but how the wider shape reorganizes flow. Blood accelerates in the arch and can swirl in the enlargement, forming a vortex. This differs from the smoother, more orderly movement called laminar flow. For comparison, the healthy-flow reference uses a separate healthy aortic anatomy; it does not show Alex\'s aorta. These patterns matter because the vessel wall is exposed to the flow with every heartbeat.',
-                    infoPopup: {
-                        title: 'laminar flow',
-                        text: 'In laminar flow, blood moves smoothly in one direction and swirls only very little; no large swirls form. When the flow is disturbed, for example where the vessel widens or splits, larger swirls can develop.'
-                    }
+                    text: 'The important point is not only where the aorta is wide, but how the wider shape reorganizes flow. Blood accelerates in the arch and can swirl in the enlargement, forming a vortex. This differs from the orderly laminar flow of the healthy reference aorta shown earlier, which the comparison view shows again. These patterns matter because the vessel wall is exposed to the flow with every heartbeat.'
                 },
                 {
                     type: 'reference',
