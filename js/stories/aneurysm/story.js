@@ -196,7 +196,7 @@ export const aneurysmStory = {
                         {
                             title: 'CT scanner',
                             text: 'The patient lies on a table that moves through the ring of the scanner.',
-                            visual: { kind: 'model', mode: 'textured', url: 'assets/models/ct_scanner.glb', label: '3D model of a CT scanner', rotationX: 0, rotationY: 0.6, framingScale: 0.62 }
+                            visual: { kind: 'image', fit: 'contain', src: 'assets/story_images/process/ct_scanner.png', alt: 'A CT scanner with its ring and patient table' }
                         },
                         {
                             title: 'CTA slices',
@@ -211,7 +211,7 @@ export const aneurysmStory = {
                         {
                             title: '3D model',
                             text: 'Alex\'s aorta as a model that can be turned and used for a flow simulation.',
-                            visual: { kind: 'model', url: `${flowModelBase}aneurysm_anatomy.glb`, label: '3D model of Alex\'s aorta built from the CTA slices', rotationY: 1.5708, framingScale: 0.72 }
+                            visual: { kind: 'image', fit: 'contain', src: 'assets/story_images/process/alex_model.png', alt: '3D model of Alex\'s aorta built from the CTA slices' }
                         }
                     ]
                 },
@@ -251,15 +251,7 @@ export const aneurysmStory = {
                         {
                             title: 'In- and outflow',
                             text: 'At each open end, the team sets how blood enters from the heart and leaves the model. The red planes mark these openings.',
-                            visual: { kind: 'model', url: `${flowModelBase}aneurysm_anatomy.glb`, label: 'Alex\'s aortic model with red planes at the inflow in the aortic root and at the outflows of the branches and the descending aorta', rotationY: 1.5708, framingScale: 1.05,
-                                boundaryPlanes: [
-                                    { type: 'inflow', at: [0.2, 0.498, 0.494], toward: [0.173, 0.587, 0.417] },
-                                    { type: 'outflow', at: [0.656, 0.005, 0.586], toward: [0.681, 0.053, 0.607] },
-                                    { type: 'outflow', at: [0.426, 0.911, 0.016], toward: [0.41, 0.904, 0.094] },
-                                    { type: 'outflow', at: [0.41, 0.927, 0.869], toward: [0.414, 0.912, 0.824] },
-                                    { type: 'outflow', at: [0.359, 0.999, 0.686], toward: [0.367, 0.981, 0.692] }
-                                ]
-                            }
+                            visual: { kind: 'image', fit: 'contain', src: 'assets/story_images/process/alex_planes.png', alt: 'Alex\'s aortic model with red planes at the inflow in the aortic root and at the outflows of the branches and the descending aorta' }
                         },
                         {
                             title: 'Calculation',
@@ -269,7 +261,7 @@ export const aneurysmStory = {
                         {
                             title: 'Visualization',
                             text: 'The results become pathlines that show where blood moves and how fast.',
-                            visual: { kind: 'model', url: `${flowModelBase}aneurysm_lines_anim.glb`, label: 'Animated pathlines of the simulated blood flow in Alex\'s aorta', rotationY: 1.5708, framingScale: 0.29, animationFps: 20 }
+                            visual: { kind: 'image', fit: 'contain', src: 'assets/story_images/process/alex_pathlines.png', alt: 'Pathlines of the simulated blood flow in Alex\'s aorta' }
                         }
                     ]
                 },

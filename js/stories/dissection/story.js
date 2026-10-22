@@ -254,7 +254,7 @@ export const dissectionStory = {
                         {
                             title: 'CT scanner',
                             text: 'The patient lies on a table that moves through the ring of the scanner.',
-                            visual: { kind: 'model', mode: 'textured', url: 'assets/models/ct_scanner.glb', label: '3D model of a CT scanner', rotationX: 0, rotationY: 0.6, framingScale: 0.62 }
+                            visual: { kind: 'image', fit: 'contain', src: 'assets/story_images/process/ct_scanner.png', alt: 'A CT scanner with its ring and patient table' }
                         },
                         {
                             title: 'CTA slices',
@@ -269,7 +269,7 @@ export const dissectionStory = {
                         {
                             title: '3D model',
                             text: 'Miriam\'s aorta as a model that can be turned and used for a flow simulation.',
-                            visual: { kind: 'model', url: `${flowModelBase}dissection_anatomy.glb`, label: '3D model of Miriam\'s aorta built from the CTA slices', rotationY: -1.5708, framingScale: 0.9 }
+                            visual: { kind: 'image', fit: 'contain', src: 'assets/story_images/process/miriam_model.png', alt: '3D model of Miriam\'s aorta built from the CTA slices' }
                         }
                     ]
                 },
@@ -311,13 +311,7 @@ export const dissectionStory = {
                         {
                             title: 'In- and outflow',
                             text: 'At each open end, the team sets how blood enters from the heart and leaves the model. The red planes mark these openings.',
-                            visual: { kind: 'model', url: `${flowModelBase}dissection_anatomy.glb`, label: 'Miriam\'s aortic model with red planes at the inflow in the ascending aorta and at the outflows of the other open ends', rotationX: 0, rotationY: -1.5708, rotationZ: 0, framingScale: 0.9,
-                                boundaryPlanes: [
-                                    { type: 'inflow', at: [0.131, 0.714, 0.239], toward: [0.218, 0.794, 0.241] },
-                                    { type: 'outflow', at: [0.509, 0.983, 0.497], toward: [0.529, 0.911, 0.599] },
-                                    { type: 'outflow', at: [0.29, 0.014, 0.563], toward: [0.312, 0.095, 0.467] }
-                                ]
-                            }
+                            visual: { kind: 'image', fit: 'contain', src: 'assets/story_images/process/miriam_planes.png', alt: 'Miriam\'s aortic model with red planes at the inflow in the ascending aorta and at the outflows of the other open ends' }
                         },
                         {
                             title: 'Calculation',
@@ -327,7 +321,7 @@ export const dissectionStory = {
                         {
                             title: 'Visualization',
                             text: 'The results become pathlines that show where blood moves and how fast.',
-                            visual: { kind: 'model', url: `${flowModelBase}dissection_lines_anim.glb`, label: 'Animated pathlines of the simulated blood flow in Miriam\'s aorta', rotationY: -1.5708, framingScale: 0.75, animationFps: 20 }
+                            visual: { kind: 'image', fit: 'contain', src: 'assets/story_images/process/miriam_pathlines.png', alt: 'Pathlines of the simulated blood flow in Miriam\'s aorta' }
                         }
                     ]
                 },

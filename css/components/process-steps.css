@@ -164,6 +164,14 @@ body[data-story-version] #story .process-image {
     border-radius: 6px;
 }
 
+/* Rendered snapshots of the 3D models: shown whole, without a frame. */
+body[data-story-version] #story .process-image.process-image-contain {
+    height: 100%;
+    aspect-ratio: auto;
+    object-fit: contain;
+    border-radius: 0;
+}
+
 body[data-story-version] #story .process-icon {
     display: grid;
     width: 70%;
