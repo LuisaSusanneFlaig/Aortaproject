@@ -20,7 +20,7 @@ export const supportedElementTypes = new Set([
     'preventionTimeline',
     'closingStatement',
     'imagingComparison',
-    'scanToModel',
+    'processSteps',
     'modelPlaceholder',
     'pairedPrognosis',
     'reference',

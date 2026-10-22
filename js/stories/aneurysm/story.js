@@ -217,30 +217,30 @@ export const aneurysmStory = {
                     text: 'A CTA is not one single picture. The scanner records the chest as a stack of hundreds of thin cross-sectional images, called slices. In every slice, the contrast makes the blood inside the aorta appear bright. On a computer, software traces the outline of the aorta in each slice and joins these outlines into a three-dimensional model. This is how the model of Alex\'s aorta shown earlier was built, and it is also the starting point for the flow simulation later in the story.'
                 },
                 {
-                    type: 'scanToModel',
+                    type: 'processSteps',
                     label: 'From CTA slices to a 3D model of Alex\'s aorta',
-                    sliceSrc: 'assets/story_images/alex_cta_sagittal.png',
-                    sliceAspect: '1212 / 1193',
-                    sliceAlt: 'Alex\'s sagittal CTA image with the aorta highlighted in red, shown as the front image of a stack of slices',
-                    scanner: {
-                        url: 'assets/models/ct_scanner.glb',
-                        label: '3D model of a CT scanner',
-                        rotationX: 0,
-                        rotationY: 0.6,
-                        framingScale: 0.62
-                    },
                     steps: [
-                        { title: 'CT scanner', text: 'The patient lies on a table that moves through the ring of the scanner.' },
-                        { title: 'CTA slices', text: 'The scan is a stack of thin images through the chest.' },
-                        { title: 'Software', text: 'On a computer, software traces the aorta in every slice and joins the outlines.' },
-                        { title: '3D model', text: 'Alex\'s aorta as a model that can be turned and used for a flow simulation.' }
-                    ],
-                    model: {
-                        url: `${flowModelBase}aneurysm_anatomy.glb`,
-                        label: '3D model of Alex\'s aorta built from the CTA slices',
-                        rotationY: 1.5708,
-                        framingScale: 0.72
-                    }
+                        {
+                            title: 'CT scanner',
+                            text: 'The patient lies on a table that moves through the ring of the scanner.',
+                            visual: { kind: 'model', mode: 'textured', url: 'assets/models/ct_scanner.glb', label: '3D model of a CT scanner', rotationX: 0, rotationY: 0.6, framingScale: 0.62 }
+                        },
+                        {
+                            title: 'CTA slices',
+                            text: 'The scan is a stack of thin images through the chest.',
+                            visual: { kind: 'slices', src: 'assets/story_images/alex_cta_sagittal.png', aspect: '1212 / 1193', alt: 'Alex\'s sagittal CTA image with the aorta highlighted in red, shown as the front image of a stack of slices' }
+                        },
+                        {
+                            title: 'Software',
+                            text: 'On a computer, software traces the aorta in every slice and joins the outlines.',
+                            visual: { kind: 'icon', icon: 'computer' }
+                        },
+                        {
+                            title: '3D model',
+                            text: 'Alex\'s aorta as a model that can be turned and used for a flow simulation.',
+                            visual: { kind: 'model', url: `${flowModelBase}aneurysm_anatomy.glb`, label: '3D model of Alex\'s aorta built from the CTA slices', rotationY: 1.5708, framingScale: 0.72 }
+                        }
+                    ]
                 },
                 {
                     type: 'reference',

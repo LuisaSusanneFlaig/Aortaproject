@@ -20,7 +20,7 @@ import {
     renderTreatmentDecision,
     renderTreatmentSteps
 } from '../components/clinicalElements.js';
-import { renderScanToModel } from '../components/scanToModel.js';
+import { renderProcessSteps } from '../components/processSteps.js';
 
 /**
  * StoryRenderer converts validated story configuration into HTML.
@@ -31,7 +31,7 @@ function getPresentationType(section = {}) {
     if (section.columns === '2' || section.inlineModel) return 'media';
 
     const elementTypes = new Set((section.elements || []).map((element) => element.type));
-    const mediaTypes = ['image', 'video', 'imagingComparison', 'modelPlaceholder', 'scanToModel'];
+    const mediaTypes = ['image', 'video', 'imagingComparison', 'modelPlaceholder', 'processSteps'];
     const dataTypes = [
         'chart', 'aorticStat', 'symptomBars', 'diagnosticPath', 'treatmentDecision',
         'treatmentSteps', 'treatmentBalance', 'preventionTimeline', 'aneurysmBurden',
@@ -80,8 +80,8 @@ function renderElement(element, index) {
             case 'aorticStat':
                 content = renderAorticStatGraphic(element);
                 break;
-            case 'scanToModel':
-                content = renderScanToModel(element);
+            case 'processSteps':
+                content = renderProcessSteps(element);
                 break;
             case 'aneurysmBurden':
                 content = renderAneurysmBurden(element);

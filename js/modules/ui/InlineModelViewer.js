@@ -3,6 +3,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 import { ModelLabels, parseModelLabels } from './ModelLabels.js';
+import { addBoundaryPlanes } from './boundaryPlanes.js';
 
 // Keep 3D mesh materials aligned with the UI accent token (--color-accent).
 const MODEL_ACCENT = 0xb62413;
@@ -135,6 +136,7 @@ class InlineModelViewer {
             if (modelMode === 'flow') this.markTransparentSourceMeshes(this.originalModel);
             if (modelMode === 'surface') this.applySurfaceMaterial(this.originalModel);
             this.prepareMaterials(this.originalModel);
+            if (modelMode === 'wireframe') this.applyWireframeMaterial(this.originalModel);
             if (modelMode === 'flow') this.applyTransparentFlowSurfaceMaterial(this.originalModel);
             // Exports that encode speed in their colors (data-source-colors)
             // keep that scale, re-tinted to the accent red.
@@ -148,7 +150,7 @@ class InlineModelViewer {
             this.scene.add(this.model);
             this.fitModel(this.model, modelMode);
             this.sizeParticles(this.model);
-            if (modelMode === 'surface' || modelMode === 'flow') {
+            if (['surface', 'flow', 'wireframe'].includes(modelMode)) {
                 this.rotationPivot = new THREE.Group();
                 this.rotationPivot.name = 'ScrollRotationPivot';
                 this.scene.remove(this.model);
@@ -167,6 +169,7 @@ class InlineModelViewer {
                 );
                 this.scene.add(this.rotationPivot);
             }
+            if (this.container.dataset.boundaryPlanes) this.addBoundaryPlanes();
             this.instancedGroups = modelMode === 'flow'
                 ? this.collapseRepeatedMeshes(this.originalModel)
                 : [];
@@ -384,6 +387,25 @@ class InlineModelViewer {
             });
             instancedMesh.instanceMatrix.needsUpdate = true;
         });
+    }
+
+    // Shows the vessel surface as its triangle mesh, the way a simulation
+    // divides the geometry into small elements.
+    applyWireframeMaterial(model) {
+        model.traverse((child) => {
+            if (!child.isMesh) return;
+            child.material = new THREE.MeshBasicMaterial({ color: MODEL_ACCENT, wireframe: true, transparent: true, opacity: 0.3, depthWrite: false });
+        });
+    }
+
+    addBoundaryPlanes() {
+        let planes = [];
+        try {
+            planes = JSON.parse(this.container.dataset.boundaryPlanes);
+        } catch (error) {
+            console.error('[InlineModelViewer] Invalid boundary planes', error);
+        }
+        if (Array.isArray(planes)) addBoundaryPlanes(this.rotationPivot || this.model, planes, { inflowColor: MODEL_ACCENT, outflowColor: 0xf4f2f2 });
     }
 
     applySurfaceMaterial(model) {

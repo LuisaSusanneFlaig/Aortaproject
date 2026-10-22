@@ -35,10 +35,16 @@ function validateElement(element, path, errors) {
         });
     }
 
-    if (element.type === 'scanToModel') {
-        if (!element.sliceSrc) addError(errors, `${path}.sliceSrc`, 'CTA slice image is required');
-        if (!element.sliceAlt?.trim()) addError(errors, `${path}.sliceAlt`, 'meaningful alternative text is required');
-        if (!element.model?.url) addError(errors, `${path}.model.url`, '3D model URL is required');
+    if (element.type === 'processSteps') {
+        (element.steps || []).forEach((step, stepIndex) => {
+            const visual = step.visual || {};
+            const visualPath = `${path}.steps[${stepIndex}].visual`;
+            if (!step.title?.trim()) addError(errors, `${path}.steps[${stepIndex}].title`, 'step title is required');
+            if (visual.kind === 'slices' && !visual.src) addError(errors, `${visualPath}.src`, 'slice image is required');
+            if (visual.kind === 'slices' && !visual.alt?.trim()) addError(errors, `${visualPath}.alt`, 'meaningful alternative text is required');
+            if (visual.kind === 'model' && !visual.url) addError(errors, `${visualPath}.url`, '3D model URL is required');
+            if (visual.kind === 'model' && !visual.label?.trim()) addError(errors, `${visualPath}.label`, 'accessible model label is required');
+        });
     }
 
     if (element.type === 'modelPlaceholder' && element.src && !element.alt?.trim()) {

@@ -278,30 +278,30 @@ export const dissectionStory = {
                     text: 'A CTA is not one single picture. The scanner records the chest as a stack of hundreds of thin cross-sectional images, called slices. In every slice, the contrast makes the blood inside the aorta appear bright. On a computer, software traces the outline of the aorta in each slice and joins these outlines into a three-dimensional model. In Miriam\'s case, the model also has to capture the flap that divides the aorta into two channels. This is how the model shown earlier was built, and it is also the starting point for the flow simulation later in the story.'
                 },
                 {
-                    type: 'scanToModel',
+                    type: 'processSteps',
                     label: 'From CTA slices to a 3D model of Miriam\'s aorta',
-                    sliceSrc: 'assets/story_images/miriam_cta.png',
-                    sliceAspect: '955 / 1280',
-                    sliceAlt: 'Miriam\'s CTA image with the dissected aorta highlighted in red, shown as the front image of a stack of slices',
-                    scanner: {
-                        url: 'assets/models/ct_scanner.glb',
-                        label: '3D model of a CT scanner',
-                        rotationX: 0,
-                        rotationY: 0.6,
-                        framingScale: 0.62
-                    },
                     steps: [
-                        { title: 'CT scanner', text: 'The patient lies on a table that moves through the ring of the scanner.' },
-                        { title: 'CTA slices', text: 'The scan is a stack of thin images through the chest.' },
-                        { title: 'Software', text: 'On a computer, software traces the aorta in every slice and joins the outlines.' },
-                        { title: '3D model', text: 'Miriam\'s aorta as a model that can be turned and used for a flow simulation.' }
-                    ],
-                    model: {
-                        url: `${flowModelBase}dissection_anatomy.glb`,
-                        label: '3D model of Miriam\'s aorta built from the CTA slices',
-                        rotationY: -1.5708,
-                        framingScale: 0.9
-                    }
+                        {
+                            title: 'CT scanner',
+                            text: 'The patient lies on a table that moves through the ring of the scanner.',
+                            visual: { kind: 'model', mode: 'textured', url: 'assets/models/ct_scanner.glb', label: '3D model of a CT scanner', rotationX: 0, rotationY: 0.6, framingScale: 0.62 }
+                        },
+                        {
+                            title: 'CTA slices',
+                            text: 'The scan is a stack of thin images through the chest.',
+                            visual: { kind: 'slices', src: 'assets/story_images/miriam_cta.png', aspect: '955 / 1280', alt: 'Miriam\'s CTA image with the dissected aorta highlighted in red, shown as the front image of a stack of slices' }
+                        },
+                        {
+                            title: 'Software',
+                            text: 'On a computer, software traces the aorta in every slice and joins the outlines.',
+                            visual: { kind: 'icon', icon: 'computer' }
+                        },
+                        {
+                            title: '3D model',
+                            text: 'Miriam\'s aorta as a model that can be turned and used for a flow simulation.',
+                            visual: { kind: 'model', url: `${flowModelBase}dissection_anatomy.glb`, label: '3D model of Miriam\'s aorta built from the CTA slices', rotationY: -1.5708, framingScale: 0.9 }
+                        }
+                    ]
                 },
                 {
                     type: 'reference',
@@ -315,8 +315,6 @@ export const dissectionStory = {
             scrollMode: 'sequence',
             timelineLabel: 'Flow simulation',
             className: 'simulation-method-section',
-            placeholderId: 'miriam-simulation-method-graphic',
-            placeholderText: 'Graphic placeholder',
             paragraphs: [],
             elements: [
                 {
@@ -328,8 +326,49 @@ export const dissectionStory = {
                     text: 'The calculated results are then rendered as a 3D animation; color and motion help show flow direction and relative speed. This is simulated data, not blood recorded in the body or a prediction of Miriam\'s individual outcome.'
                 },
                 {
+                    type: 'processSteps',
+                    label: 'How a flow simulation is built from Miriam\'s 3D model',
+                    steps: [
+                        {
+                            title: 'Mesh',
+                            text: 'The 3D model is divided into many small elements, where the flow is calculated.',
+                            visual: { kind: 'model', mode: 'wireframe', url: `${flowModelBase}dissection_anatomy.glb`, label: 'Close-up of Miriam\'s aortic model shown as a triangle mesh', rotationX: 0, rotationY: -1.5708, rotationZ: 0, framingScale: 0.12 }
+                        },
+                        {
+                            title: 'In- and outflow',
+                            text: 'At each open end, the team sets how blood enters from the heart (red) and leaves the model (white).',
+                            visual: { kind: 'model', url: `${flowModelBase}dissection_anatomy.glb`, label: 'Miriam\'s aortic model with a red inflow plane at the ascending aorta and white outflow planes at the other open ends', rotationX: 0, rotationY: -1.5708, rotationZ: 0, framingScale: 0.9,
+                                boundaryPlanes: [
+                                    { type: 'inflow', at: [0.131, 0.714, 0.239], toward: [0.218, 0.794, 0.241] },
+                                    { type: 'outflow', at: [0.509, 0.983, 0.497], toward: [0.529, 0.911, 0.599] },
+                                    { type: 'outflow', at: [0.29, 0.014, 0.563], toward: [0.312, 0.095, 0.467] }
+                                ]
+                            }
+                        },
+                        {
+                            title: 'Calculation',
+                            text: 'A computer solves the equations of fluid motion for every element, step by step in time.',
+                            visual: { kind: 'icon', icon: 'calculate' }
+                        },
+                        {
+                            title: 'Visualization',
+                            text: 'The results become pathlines that show where blood moves and how fast.',
+                            visual: { kind: 'model', url: `${flowModelBase}dissection_lines_anim.glb`, label: 'Animated pathlines of the simulated blood flow in Miriam\'s aorta', rotationY: -1.5708, framingScale: 0.75, animationFps: 20 }
+                        }
+                    ],
+                    notes: {
+                        title: 'What the simulation assumes',
+                        items: [
+                            'The vessel wall is usually treated as rigid, although real vessels stretch with every heartbeat.',
+                            'Inflow and outflow are based on measurements, population averages or estimates.',
+                            'Small differences in how the aorta is traced in the scan can change the result.',
+                            'The flow is calculated, not measured. 4D-flow MRI can measure blood flow in the body, but with less detail.'
+                        ]
+                    }
+                },
+                {
                     type: 'reference',
-                    text: 'Methods reference: Wilson NM, Ortiz AK, Johnson AB. The Vascular Model Repository: A Public Resource of Medical Imaging Data and Blood Flow Simulation Results. J Med Devices. 2013;7(4):040923. DOI: 10.1115/1.4025983. Simulation source: Zimmermann et al. (2023), DOI 10.1038/s41598-023-49942-0.'
+                    text: 'Simulation steps and assumptions: Kamada H, Nakamura M, Ota H, Higuchi S, Takase K. Blood flow analysis with computational fluid dynamics and 4D-flow MRI for vascular diseases. J Cardiol. 2022;80:386–396. DOI 10.1016/j.jjcc.2022.05.007. Methods reference: Wilson NM, Ortiz AK, Johnson AB. The Vascular Model Repository: A Public Resource of Medical Imaging Data and Blood Flow Simulation Results. J Med Devices. 2013;7(4):040923. DOI: 10.1115/1.4025983. Simulation source: Zimmermann et al. (2023), DOI 10.1038/s41598-023-49942-0.'
                 }
             ]
         },
