@@ -8,7 +8,7 @@ export const aneurysmStory = {
         { href: '#anatomie', label: 'Anatomy' },
         { href: '#symptome', label: 'Symptoms' },
         { href: '#diagnose-procedure', label: 'Diagnosis' },
-        { href: '#alex-flow-overview', label: 'Prognosis' },
+        { href: '#alex-simulation-method', label: 'Prognosis' },
         { href: '#behandlung', label: 'Treatment' },
         { href: '#praevention', label: 'Prevention' }
     ],
@@ -225,6 +225,64 @@ export const aneurysmStory = {
             ]
         },
         {
+            id: 'alex-simulation-method',
+            title: 'How the Flow Is Simulated',
+            scrollMode: 'sequence',
+            className: 'simulation-method-section',
+            elements: [
+                {
+                    type: 'text',
+                    text: 'Alex\'s aortic anatomy is reconstructed from medical imaging and divided into a computational mesh. Software calculates blood movement through that geometry, including how blood enters the aorta and leaves through its branches.'
+                },
+                {
+                    type: 'text',
+                    text: 'The calculated results are then rendered as a 3D animation; color and motion help show flow direction and relative speed. This is simulated data, not blood recorded in the body or a prediction of Alex\'s individual outcome.'
+                },
+                {
+                    type: 'text',
+                    text: 'Every simulation rests on assumptions. The vessel wall is usually treated as rigid, although real vessels stretch with every heartbeat. Inflow and outflow are based on measurements, population averages or estimates, and small differences in how the aorta is traced in the scan can change the result. Above all, the flow is calculated, not measured: 4D-flow MRI can measure blood flow in the body, but with less detail.'
+                },
+                {
+                    type: 'processSteps',
+                    label: 'How a flow simulation is built from Alex\'s 3D model',
+                    steps: [
+                        {
+                            title: 'Mesh',
+                            text: 'The 3D model is divided into many small elements, where the flow is calculated.',
+                            visual: { kind: 'model', mode: 'wireframe', url: `${flowModelBase}aneurysm_anatomy.glb`, label: 'Close-up of Alex\'s aortic model shown as a triangle mesh', rotationY: 1.5708, framingScale: 0.05 }
+                        },
+                        {
+                            title: 'In- and outflow',
+                            text: 'At each open end, the team sets how blood enters from the heart (red) and leaves the model (white).',
+                            visual: { kind: 'model', url: `${flowModelBase}aneurysm_anatomy.glb`, label: 'Alex\'s aortic model with a red inflow plane at the aortic root and white outflow planes at the branches and the descending aorta', rotationY: 1.5708, framingScale: 1.05,
+                                boundaryPlanes: [
+                                    { type: 'inflow', at: [0.2, 0.498, 0.494], toward: [0.173, 0.587, 0.417] },
+                                    { type: 'outflow', at: [0.656, 0.005, 0.586], toward: [0.681, 0.053, 0.607] },
+                                    { type: 'outflow', at: [0.426, 0.911, 0.016], toward: [0.41, 0.904, 0.094] },
+                                    { type: 'outflow', at: [0.41, 0.927, 0.869], toward: [0.414, 0.912, 0.824] },
+                                    { type: 'outflow', at: [0.359, 0.999, 0.686], toward: [0.367, 0.981, 0.692] }
+                                ]
+                            }
+                        },
+                        {
+                            title: 'Calculation',
+                            text: 'A computer solves the equations of fluid motion for every element, step by step in time.',
+                            visual: { kind: 'icon', icon: 'calculate' }
+                        },
+                        {
+                            title: 'Visualization',
+                            text: 'The results become pathlines that show where blood moves and how fast.',
+                            visual: { kind: 'model', url: `${flowModelBase}aneurysm_lines_anim.glb`, label: 'Animated pathlines of the simulated blood flow in Alex\'s aorta', rotationY: 1.5708, framingScale: 0.29, animationFps: 20 }
+                        }
+                    ]
+                },
+                {
+                    type: 'reference',
+                    text: 'Simulation steps and assumptions: Kamada H, Nakamura M, Ota H, Higuchi S, Takase K. Blood flow analysis with computational fluid dynamics and 4D-flow MRI for vascular diseases. J Cardiol. 2022;80:386–396. DOI 10.1016/j.jjcc.2022.05.007. Methods reference: Wilson NM, Ortiz AK, Johnson AB. The Vascular Model Repository: A Public Resource of Medical Imaging Data and Blood Flow Simulation Results. J Med Devices. 2013;7(4):040923. DOI: 10.1115/1.4025983. Data basis: VMR dataset 0021_H_AO_MFS, case 0129_0000.'
+                }
+            ]
+        },
+        {
             id: 'alex-flow-overview',
             title: 'Flow in Alex\'s Aorta',
             className: 'flow-research-section alex-flow-section',
@@ -257,8 +315,7 @@ export const aneurysmStory = {
                     eyebrow: 'Patient-specific simulation',
                     title: 'Flow-Vis - Overall Flow',
                     infoPopup: {
-                        title: 'About this simulation',
-                        text: 'Alex\'s aortic anatomy is reconstructed from medical imaging and divided into a computational mesh. Software calculates blood movement through that geometry, including how blood enters the aorta and leaves through its branches. The calculated results are then rendered as a 3D animation; color and motion help show flow direction and relative speed. This is simulated data, not blood recorded in the body or a prediction of Alex\'s individual outcome.'
+                        title: 'Animation speed'
                     },
                     rotationHint: true
                 },
