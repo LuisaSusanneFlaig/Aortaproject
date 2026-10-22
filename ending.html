@@ -5,14 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aorta Project - Conclusion</title>
     <link rel="stylesheet" href="css/style.css">
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "./vendor/three/three.module.js",
-                "three/addons/": "./vendor/three/addons/"
-            }
-        }
-    </script>
 </head>
 <body class="ending-page">
     <nav class="navbar">
@@ -47,7 +39,6 @@
                         <h3>Alex</h3>
                         <p class="ending-outlook-condition">Aortic aneurysm</p>
                     </header>
-                    <div class="inline-model-viewer ending-outlook-model" data-inline-model data-model-url="assets/models/flow/optimized/aneurysm_lines_anim.glb" data-model-mode="flow" data-framing-scale="0.29" data-rotation-y="1.5708" data-animation-fps="20" role="img" aria-label="Animated pathlines of the simulated blood flow in Alex's aorta"><span class="inline-model-360-hint material-symbols-rounded story-material-icon" aria-hidden="true">360</span><div class="inline-model-loading" aria-hidden="true"></div></div>
                     <p class="ending-outlook-flow"><strong>In the simulation</strong> Blood speeds up in Alex's widened aortic arch and can swirl into a vortex instead of moving in smooth layers.</p>
                     <img class="ending-outlook-photo" src="assets/story_images/alex_doctor_talk_photoreal_v1.png" alt="Alex talks with a doctor about long-term aortic follow-up">
                     <p class="ending-outlook-text"><strong>Alex's outlook</strong> Alex leaves the scan with a plan rather than a final answer. His future depends on regular imaging, attention to warning signs, and decisions made early enough to avoid an emergency. The flow view cannot predict what will happen to him, but it makes the need for careful follow-up easier to understand.</p>
@@ -57,7 +48,6 @@
                         <h3>Miriam</h3>
                         <p class="ending-outlook-condition">Aortic dissection</p>
                     </header>
-                    <div class="inline-model-viewer ending-outlook-model" data-inline-model data-model-url="assets/models/flow/optimized/dissection_lines_anim.glb" data-model-mode="flow" data-framing-scale="0.65" data-rotation-y="-1.5708" data-animation-fps="20" role="img" aria-label="Animated pathlines of the simulated blood flow in Miriam's dissected aorta"><span class="inline-model-360-hint material-symbols-rounded story-material-icon" aria-hidden="true">360</span><div class="inline-model-loading" aria-hidden="true"></div></div>
                     <p class="ending-outlook-flow"><strong>In the simulation</strong> Blood in Miriam's dissected aorta no longer follows one route: it moves through both the true and the false lumen.</p>
                     <img class="ending-outlook-photo" src="assets/story_images/miriam_consultation_photoreal_v1.png" alt="Miriam discusses long-term aortic follow-up with a physician">
                     <p class="ending-outlook-text"><strong>Miriam's outlook</strong> Miriam's future cannot be decided from one scan or one simulation. What remains after the emergency is a long relationship with follow-up care. The aorta is a living vessel, its shape can change, and blood flow can keep influencing the wall long after the first tear.</p>
@@ -73,10 +63,6 @@
 
     <footer class="overview-footer"><span>Aorta Project</span><nav aria-label="Legal navigation"><a href="impressum.html">Imprint</a><a href="datenschutz.html">Privacy Policy</a></nav></footer>
 
-    <script type="module">
-        import { initInlineModelViewers } from './js/modules/ui/InlineModelViewer.js';
-        initInlineModelViewers();
-    </script>
     <script>
         const themeToggle = document.querySelector('.theme-toggle');
         const applyTheme = () => document.body.classList.toggle('light-mode', localStorage.getItem('theme') === 'light');
