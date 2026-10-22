@@ -3,7 +3,7 @@
    The flat theme disables pseudo-elements, so arrows and numbers are elements. */
 body[data-story-version] #story .process-steps {
     --process-stage-size: clamp(110px, 10.5vw, 190px);
-    --process-gap: clamp(24px, 2.6vw, 44px);
+    --process-gap: clamp(18px, 2.2vw, 44px);
     --slice-gap: 4px;
     width: 100%;
     margin: 0;
@@ -25,35 +25,85 @@ body[data-story-version] #story .process-step-list {
 body[data-story-version] #story .process-step {
     position: relative;
     display: grid;
-    grid-template-rows: auto auto 1fr;
+    grid-template-rows: auto auto;
     gap: 10px;
     justify-items: center;
     text-align: center;
 }
 
 body[data-story-version] #story .process-stage {
+    position: relative;
     display: grid;
-    width: var(--process-stage-size);
+    width: min(var(--process-stage-size), 100%);
     height: var(--process-stage-size);
     place-items: center;
 }
 
 body[data-story-version] #story .process-step h3 {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
+    display: grid;
+    justify-items: center;
+    gap: 6px;
     margin: 6px 0 0;
     color: var(--color-text);
-    font-size: 0.95rem;
+    font-size: clamp(0.82rem, 0.95vw, 0.95rem);
+    line-height: 1.25;
     font-weight: 700;
 }
 
-body[data-story-version] #story .process-step p {
-    max-width: 24ch;
-    margin: 0;
-    color: color-mix(in srgb, var(--color-text) 72%, transparent);
-    font-size: 0.8rem;
-    line-height: 1.45;
+/* + badge on each visual opens the step text, styled like the diagnosis path. */
+body[data-story-version] #story .process-info-trigger {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    display: grid;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    place-items: center;
+    border: 1px solid var(--color-accent);
+    border-radius: 50%;
+    background: var(--color-bg);
+    color: var(--color-accent);
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1;
+    cursor: pointer;
+}
+
+body[data-story-version] #story .process-info-trigger:hover,
+body[data-story-version] #story .process-info-trigger:focus-visible,
+body[data-story-version] #story .process-info-trigger[aria-expanded="true"] {
+    background: var(--color-accent);
+    color: #fff;
+}
+
+body[data-story-version] #story .process-info-trigger:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--color-accent) 22%, transparent);
+    outline-offset: 3px;
+}
+
+/* On desktop the box opens in the free space above the steps, because a
+   following chapter opener can cover the area below the pinned figure. */
+body[data-story-version] #story .process-steps {
+    position: relative;
+}
+
+body[data-story-version] #story .process-info-row {
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + clamp(18px, 2.4vw, 30px));
+    left: 0;
+    z-index: 8;
+}
+
+body[data-story-version] #story .process-info-box {
+    margin-top: 0;
+}
+
+body[data-story-version] #story .story-visual-column-inner:has(.process-steps) {
+    overflow: visible;
 }
 
 body[data-story-version] #story .process-number {
@@ -125,33 +175,15 @@ body[data-story-version] #story .story-visual-column .process-steps .process-vie
     background: transparent;
 }
 
-body[data-story-version] #story .process-notes {
-    margin-top: clamp(24px, 3vw, 40px);
-    padding: 16px 20px;
-    border: 1px solid color-mix(in srgb, var(--color-text) 18%, transparent);
-    border-radius: 6px;
-}
-
-body[data-story-version] #story .process-notes h3 {
-    margin: 0 0 8px;
-    color: var(--color-text);
-    font-size: 0.9rem;
-    font-weight: 700;
-}
-
-body[data-story-version] #story .process-notes ul {
-    display: grid;
-    gap: 6px;
-    margin: 0;
-    padding-left: 1.1rem;
-    color: color-mix(in srgb, var(--color-text) 72%, transparent);
-    font-size: 0.8rem;
-    line-height: 1.45;
-}
-
 @media (max-width: 900px) {
     body[data-story-version] #story .process-steps {
         --process-stage-size: min(46vw, 200px);
+    }
+
+    body[data-story-version] #story .process-info-row {
+        position: relative;
+        bottom: auto;
+        margin-top: 30px;
     }
 
     body[data-story-version] #story .process-step-list {

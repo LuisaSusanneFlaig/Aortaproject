@@ -734,15 +734,16 @@ class ScrollytellingApp {
             const decisionButton = event.target.closest('.decision-info-trigger');
             const preventionButton = event.target.closest('.prevention-info-trigger');
             const imageHotspot = event.target.closest('.image-hotspot');
-            if (!button && !symptomButton && !diagnosticButton && !decisionButton && !preventionButton && !imageHotspot) return;
+            const processButton = event.target.closest('.process-info-trigger');
+            if (!button && !symptomButton && !diagnosticButton && !decisionButton && !preventionButton && !imageHotspot && !processButton) return;
 
-            const trigger = button || symptomButton || diagnosticButton || decisionButton || preventionButton || imageHotspot;
+            const trigger = button || symptomButton || diagnosticButton || decisionButton || preventionButton || imageHotspot || processButton;
             const popup = document.getElementById(trigger.getAttribute('aria-controls'));
             if (!popup) return;
 
             const isOpen = trigger.getAttribute('aria-expanded') === 'true';
 
-            if ((symptomButton || diagnosticButton || decisionButton || preventionButton || imageHotspot) && !isOpen) {
+            if ((symptomButton || diagnosticButton || decisionButton || preventionButton || imageHotspot || processButton) && !isOpen) {
                 const exclusiveGroup = symptomButton
                     ? trigger.closest('.symptom-bars')
                     : diagnosticButton
@@ -751,7 +752,9 @@ class ScrollytellingApp {
                             ? trigger.closest('.treatment-decision-map')
                             : preventionButton
                                 ? trigger.closest('.prevention-timeline')
-                                : trigger.closest('.has-image-hotspot');
+                                : processButton
+                                    ? trigger.closest('.process-steps')
+                                    : trigger.closest('.has-image-hotspot');
                 const triggerSelector = symptomButton
                     ? '.symptom-info-trigger[aria-expanded="true"]'
                     : diagnosticButton
@@ -760,7 +763,9 @@ class ScrollytellingApp {
                             ? '.decision-info-trigger[aria-expanded="true"]'
                             : preventionButton
                                 ? '.prevention-info-trigger[aria-expanded="true"]'
-                                : '.image-hotspot[aria-expanded="true"]';
+                                : processButton
+                                    ? '.process-info-trigger[aria-expanded="true"]'
+                                    : '.image-hotspot[aria-expanded="true"]';
                 exclusiveGroup?.querySelectorAll(triggerSelector).forEach((openTrigger) => {
                     openTrigger.setAttribute('aria-expanded', 'false');
                     const openPopup = document.getElementById(openTrigger.getAttribute('aria-controls'));
