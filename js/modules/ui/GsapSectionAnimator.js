@@ -20,6 +20,7 @@ export class GsapSectionAnimator {
                 gsap.set(section.querySelector('.text-box'), { clearProps: 'all' });
             });
             openers.forEach((opener) => gsap.set(opener.querySelectorAll('*'), { clearProps: 'all' }));
+            this.root.querySelectorAll('.chapter-opener-art-reveal').forEach((reveal) => reveal.setAttribute('width', '1200'));
             return;
         }
 
@@ -42,6 +43,7 @@ export class GsapSectionAnimator {
                 const eyebrow = opener.querySelector('.chapter-opener-eyebrow');
                 const title = opener.querySelector('.chapter-opener-title');
                 const rule = opener.querySelector('.chapter-opener-rule');
+                const artReveal = opener.querySelector('.chapter-opener-art-reveal');
                 if (!inner) return;
 
                 const openerTimeline = gsap.timeline({
@@ -54,6 +56,16 @@ export class GsapSectionAnimator {
                         }
                     }
                 });
+
+                if (artReveal) {
+                    openerTimeline.fromTo(artReveal, {
+                        attr: { width: 0 }
+                    }, {
+                        attr: { width: 1200 },
+                        duration: 1.6,
+                        ease: 'power1.inOut'
+                    }, 0);
+                }
 
                 openerTimeline.fromTo(inner, {
                     autoAlpha: 0,
@@ -120,18 +132,19 @@ export class GsapSectionAnimator {
                 const content = section.querySelector('.text-box');
                 if (!content) return;
 
-                this.addInlineModelRotation(section, gsap, localAnimations);
-
                 if (content.classList.contains('story-split-shell')) {
                     const copy = content.querySelector('.story-copy-column');
+                    // Adjacent sections must hand over at the same line, or two
+                    // fixed visual stages are active at once and overlap. The
+                    // default matches the mid-screen marker of setActiveStep.
                     const visualTriggerStart = section.classList.contains('miriam-diagnosis-infographic-section')
                         || section.classList.contains('miriam-imaging-section')
                         ? 'top 30%'
-                        : 'top 62%';
+                        : 'top 50%';
                     const visualTriggerEnd = section.classList.contains('miriam-symptoms-section')
                         || section.classList.contains('miriam-diagnosis-infographic-section')
                         ? 'bottom 30%'
-                        : 'bottom 38%';
+                        : 'bottom 50%';
                     const activeTrigger = ScrollTrigger.create({
                         trigger: section,
                         start: visualTriggerStart,
@@ -302,8 +315,6 @@ export class GsapSectionAnimator {
                 sections.forEach((section) => {
                     section.classList.remove('is-gsap-active');
                     delete section.dataset.gsapProgress;
-                    const modelContainer = section.querySelector('[data-inline-model]');
-                    if (modelContainer) delete modelContainer.dataset.scrollRotationBound;
                 });
                 openers.forEach((opener) => opener.classList.remove('is-chapter-active'));
             };
@@ -370,57 +381,6 @@ export class GsapSectionAnimator {
             localAnimations.push(shine);
             this.animations.push(shine);
         });
-    }
-
-    addInlineModelRotation(section, gsap, localAnimations) {
-        if (!section.classList.contains('alex-aorta-model-section')
-            && !section.classList.contains('alex-flow-section')
-            && !section.classList.contains('miriam-aorta-model-section')
-            && !section.classList.contains('miriam-flow-section')) return;
-        const modelContainer = section.querySelector('[data-inline-model]');
-        if (!modelContainer || modelContainer.dataset.scrollRotationBound === 'true') return;
-
-        const setupRotation = () => {
-            const viewer = modelContainer.inlineModelViewer;
-            if (!viewer?.model || modelContainer.dataset.scrollRotationBound === 'true') return;
-
-            modelContainer.dataset.scrollRotationBound = 'true';
-            // Rotate a centered parent around the world Y axis so the model's
-            // fitted X/Z orientation and position remain unchanged. Resolve
-            // the target on every update because flow buttons replace the
-            // model and create a new rotation pivot.
-            const getRotationTarget = () => viewer.rotationPivot || viewer.model;
-            const baseRotation = getRotationTarget().rotation.y;
-            const rotationState = { value: 0 };
-            const rotationDirection = section.classList.contains('miriam-aorta-model-section') ? -1 : 1;
-            const rotationTween = gsap.to(rotationState, {
-                value: Math.PI * 2 * rotationDirection,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: section,
-                    start: 'top 80%',
-                    end: 'bottom 20%',
-                    scrub: true,
-                    onUpdate: () => {
-                        const rotationTarget = getRotationTarget();
-                        if (rotationTarget) rotationTarget.rotation.y = baseRotation + rotationState.value;
-                    }
-                },
-                onUpdate: () => {
-                    const rotationTarget = getRotationTarget();
-                    if (rotationTarget) rotationTarget.rotation.y = baseRotation + rotationState.value;
-                }
-            });
-
-            localAnimations.push(rotationTween);
-            this.animations.push(rotationTween);
-        };
-
-        if (modelContainer.inlineModelViewer?.model) {
-            setupRotation();
-        } else {
-            modelContainer.addEventListener('inline-model-ready', setupRotation, { once: true });
-        }
     }
 
     destroy() {

@@ -20,6 +20,7 @@ import {
     renderTreatmentDecision,
     renderTreatmentSteps
 } from '../components/clinicalElements.js';
+import { renderProcessSteps } from '../components/processSteps.js';
 
 /**
  * StoryRenderer converts validated story configuration into HTML.
@@ -30,7 +31,7 @@ function getPresentationType(section = {}) {
     if (section.columns === '2' || section.inlineModel) return 'media';
 
     const elementTypes = new Set((section.elements || []).map((element) => element.type));
-    const mediaTypes = ['image', 'video', 'imagingComparison', 'modelPlaceholder'];
+    const mediaTypes = ['image', 'video', 'imagingComparison', 'modelPlaceholder', 'processSteps'];
     const dataTypes = [
         'chart', 'aorticStat', 'symptomBars', 'diagnosticPath', 'treatmentDecision',
         'treatmentSteps', 'treatmentBalance', 'preventionTimeline', 'aneurysmBurden',
@@ -50,6 +51,20 @@ function isNarrativeElement(element = {}) {
     return narrativeElementTypes.has(element.type);
 }
 
+// Copy stays one column so every section keeps the same split between
+// visual and text. A section can opt into two columns with `copyColumns: 2`.
+function hasLongCopy(section) {
+    return section.copyColumns === 2;
+}
+
+function renderNarrative(section) {
+    if (!hasLongCopy(section)) return renderElements(section.elements, isNarrativeElement);
+    // Sources stay full width below the two-column text.
+    const flow = renderElements(section.elements, (element) => isNarrativeElement(element) && element.type !== 'reference');
+    const references = renderElements(section.elements, (element) => element.type === 'reference');
+    return `<div class="story-copy-flow">${flow}</div>${references}`;
+}
+
 function renderElement(element, index) {
     let content = renderBasicElement(element);
     if (content === null) switch (element.type) {
@@ -58,6 +73,9 @@ function renderElement(element, index) {
                 break;
             case 'aorticStat':
                 content = renderAorticStatGraphic(element);
+                break;
+            case 'processSteps':
+                content = renderProcessSteps(element);
                 break;
             case 'aneurysmBurden':
                 content = renderAneurysmBurden(element);
@@ -122,6 +140,28 @@ function renderPlaceholder(section) {
     `;
 }
 
+function toDataAttribute(value) {
+    return JSON.stringify(value).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+}
+
+// A model view switches the viewer to another GLB with its own framing and labels.
+function modelViewConfig(view) {
+    const keys = ['url', 'label', 'framingScale', 'rotationX', 'rotationY', 'rotationZ', 'animationFps', 'animationSpeed'];
+    const config = Object.fromEntries(keys.filter((key) => view[key] !== undefined).map((key) => [key, view[key]]));
+    config.labels = Array.isArray(view.labels) ? view.labels : [];
+    config.sourceColors = Boolean(view.sourceColors);
+    return config;
+}
+
+function renderModelViewControls(model, illustration) {
+    if (!illustration && !model.flowView) return '';
+    const viewButton = (view, text, selected, config = null) => `<button class="flow-view-button${selected ? ' active' : ''}" type="button" data-flow-view="${view}"${config ? ` data-model-view="${toDataAttribute(config)}"` : ''} aria-pressed="${selected}">${text}</button>`;
+    const buttons = model.flowView
+        ? viewButton('animation', 'Anatomy', true, modelViewConfig(model)) + viewButton('flow', model.flowView.buttonLabel || 'Blood flow', false, modelViewConfig(model.flowView))
+        : viewButton('animation', '3D model', true);
+    return `<div class="inline-model-view-controls" role="group" aria-label="Choose anatomy view">${buttons}${illustration ? viewButton('illustration', 'Illustration', false) : ''}</div>`;
+}
+
 function renderInlineModel(model, illustration = null) {
     if (!model?.url) return '';
     const label = model.label || '3D model';
@@ -130,21 +170,43 @@ function renderInlineModel(model, illustration = null) {
     const rotationY = Number.isFinite(model.rotationY) ? ` data-rotation-y="${model.rotationY}"` : '';
     const rotationZ = Number.isFinite(model.rotationZ) ? ` data-rotation-z="${model.rotationZ}"` : '';
     const framingScale = Number.isFinite(model.framingScale) ? ` data-framing-scale="${model.framingScale}"` : '';
+    const animation = ['animationFps', 'animationSpeed']
+        .filter((key) => Number.isFinite(model[key]))
+        .map((key) => ` data-${key.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}="${model[key]}"`)
+        .join('');
+    const sourceColors = model.sourceColors ? ' data-source-colors="true"' : '';
+    const labels = Array.isArray(model.labels) ? model.labels : [];
+    const labelData = labels.length
+        ? ` data-model-labels="${toDataAttribute(labels)}"`
+        : '';
+    const labelKey = labels.length ? `
+        <ol class="model-label-key" aria-label="Labelled parts of the 3D model">
+            ${labels.map((item, index) => `<li><span class="model-label-key-number" aria-hidden="true">${index + 1}</span>${item.text}</li>`).join('')}
+        </ol>` : '';
     const legend = model.legend === false ? '' : `
         <div class="wall-layer-legend" aria-label="Legend of aortic wall layers">
             <span><i class="intima"></i>Intima</span>
             <span><i class="media"></i>Media</span>
             <span><i class="adventitia"></i>Adventitia</span>
         </div>`;
+    // Explains the flow encoding: line = path of blood, color = speed.
+    const speedLegend = model.speedLegend ? `
+        <div class="flow-reading-legend" aria-label="How to read the flow lines">
+            <span class="flow-reading-legend-item"><i class="flow-reading-line" aria-hidden="true"></i>Line: path of blood</span>
+            <span class="flow-reading-legend-item">Color: speed <span class="flow-reading-scale"><small>slower</small><i class="flow-reading-gradient" aria-hidden="true"></i><small>faster</small></span></span>
+        </div>` : '';
     return `
         <figure class="inline-model-figure">
-            ${illustration ? `<div class="inline-model-view-controls" role="group" aria-label="Choose anatomy view"><button class="flow-view-button active" type="button" data-flow-view="animation" aria-pressed="true">3D model</button><button class="flow-view-button" type="button" data-flow-view="illustration" aria-pressed="false">Illustration</button></div><figure class="inline-model-illustration" hidden><img src="${illustration.src}" alt="${illustration.alt || ''}"></figure>` : ''}
-            <div class="inline-model-viewer" data-inline-model data-model-url="${model.url}" data-model-mode="${modelMode}"${rotationX}${rotationY}${rotationZ}${framingScale} role="img" aria-label="${label}">
+            ${renderModelViewControls(model, illustration)}
+            ${illustration ? `<figure class="inline-model-illustration" hidden><img src="${illustration.src}" alt="${illustration.alt || ''}"></figure>` : ''}
+            <div class="inline-model-viewer" data-inline-model data-model-url="${model.url}" data-model-mode="${modelMode}"${rotationX}${rotationY}${rotationZ}${framingScale}${animation}${sourceColors}${labelData} role="img" aria-label="${label}">
                 <span class="inline-model-plus-icon" aria-hidden="true">+</span>
                 ${model.rotationHint ? '<span class="inline-model-360-hint material-symbols-rounded story-material-icon" aria-hidden="true">360</span>' : ''}
                 <div class="inline-model-loading" aria-hidden="true"></div>
             </div>
             <div class="inline-model-meta">
+                ${labelKey}
+                ${speedLegend}
                 ${legend}
             </div>
         </figure>
@@ -173,7 +235,7 @@ function renderSections(sections = [], navItems = []) {
 
     return sections.map((section, index) => {
         const layoutClass = section.layout === 'full' ? ' layout-full' : '';
-        const customClass = section.className ? ` ${section.className}` : '';
+        const customClass = `${section.className ? ` ${section.className}` : ''}${hasLongCopy(section) ? ' has-long-copy' : ''}`;
         const chapterClass = chapterIds.has(section.id) ? ' chapter-start' : ' chapter-continuation';
         const chapter = chapters.get(section.id);
         const scrollMode = section.scrollMode || 'flow';
@@ -186,7 +248,7 @@ function renderSections(sections = [], navItems = []) {
             section.preventionFlowIllustrations ? `<figure class="prevention-flow-illustrations"><div class="flow-illustration-switch" role="group" aria-label="Highlight a flow animation"><button type="button" class="flow-illustration-button active" data-flow-illustration="affected" aria-pressed="true">Affected flow</button><button type="button" class="flow-illustration-button" data-flow-illustration="healthy" aria-pressed="false">Healthy flow</button></div><div class="prevention-flow-video-pair"><section class="prevention-flow-video-panel"><h3>Affected aorta</h3>${/\.(png|jpe?g|webp|gif|svg)$/i.test(section.preventionFlowIllustrations.affectedSrc) ? `<img class="flow-illustration-affected" src="${section.preventionFlowIllustrations.affectedSrc}" alt="${section.preventionFlowIllustrations.affectedAlt}">` : `<video class="flow-illustration-affected" src="${section.preventionFlowIllustrations.affectedSrc}" autoplay muted loop playsinline aria-label="${section.preventionFlowIllustrations.affectedAlt}"></video>`}</section><section class="prevention-flow-video-panel"><h3>Healthy aorta</h3>${/\.(png|jpe?g|webp|gif|svg)$/i.test(section.preventionFlowIllustrations.healthySrc) ? `<img class="flow-illustration-healthy" src="${section.preventionFlowIllustrations.healthySrc}" alt="${section.preventionFlowIllustrations.healthyAlt}">` : `<video class="flow-illustration-healthy" src="${section.preventionFlowIllustrations.healthySrc}" autoplay muted loop playsinline aria-label="${section.preventionFlowIllustrations.healthyAlt}"></video>`}</section></div></figure>` : '',
             visualElements
         ].filter(Boolean).join('');
-        const narrativeContent = renderElements(section.elements, isNarrativeElement);
+        const narrativeContent = renderNarrative(section);
         
         const customStyle = [
             style.opacity !== undefined ? `background-color: rgba(12, 12, 14, ${style.opacity / 100});` : '',

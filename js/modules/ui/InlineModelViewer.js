@@ -2,9 +2,15 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
+import { ModelLabels, parseModelLabels } from './ModelLabels.js';
+import { addBoundaryPlanes } from './boundaryPlanes.js';
 
 // Keep 3D mesh materials aligned with the UI accent token (--color-accent).
 const MODEL_ACCENT = 0xb62413;
+// Lightest step of the accent speed scale (matches --flow-speed-slow).
+const ACCENT_SCALE_LIGHT = 0.15;
+// Particle diameter as a fraction of the model's largest dimension.
+const PARTICLE_SIZE = 0.004;
 const animationSyncStarts = new Map();
 
 class InlineModelViewer {
@@ -72,6 +78,13 @@ class InlineModelViewer {
         this.controls.enablePan = false;
         this.controls.enableZoom = false;
 
+        const labels = parseModelLabels(this.container);
+        if (labels.length) {
+            this.labels = new ModelLabels(this.container, labels);
+            this.controls.addEventListener('start', () => this.labels.setDragging(true));
+            this.controls.addEventListener('end', () => this.labels.setDragging(false));
+        }
+
         const rotationHint = this.container.querySelector('.inline-model-360-hint');
         if (rotationHint) {
             let hintTimer;
@@ -123,15 +136,21 @@ class InlineModelViewer {
             if (modelMode === 'flow') this.markTransparentSourceMeshes(this.originalModel);
             if (modelMode === 'surface') this.applySurfaceMaterial(this.originalModel);
             this.prepareMaterials(this.originalModel);
+            if (modelMode === 'wireframe') this.applyWireframeMaterial(this.originalModel);
             if (modelMode === 'flow') this.applyTransparentFlowSurfaceMaterial(this.originalModel);
-            if (modelMode === 'flow') this.applyFlowAccentColor(this.originalModel);
+            // Exports that encode speed in their colors (data-source-colors)
+            // keep that scale, re-tinted to the accent red.
+            const keepSourceColors = this.container.dataset.sourceColors === 'true';
+            if (modelMode === 'flow' && !keepSourceColors) this.applyFlowAccentColor(this.originalModel);
+            if (modelMode === 'flow' && keepSourceColors) this.applyAccentSpeedScale(this.originalModel);
             this.layeredModel = modelMode === 'layers'
                 ? this.createLayeredModel(this.originalModel)
                 : null;
             this.model = this.layeredModel || this.originalModel;
             this.scene.add(this.model);
             this.fitModel(this.model, modelMode);
-            if (modelMode === 'surface' || modelMode === 'flow') {
+            this.sizeParticles(this.model);
+            if (['surface', 'flow', 'wireframe'].includes(modelMode)) {
                 this.rotationPivot = new THREE.Group();
                 this.rotationPivot.name = 'ScrollRotationPivot';
                 this.scene.remove(this.model);
@@ -150,10 +169,12 @@ class InlineModelViewer {
                 );
                 this.scene.add(this.rotationPivot);
             }
+            if (this.container.dataset.boundaryPlanes) this.addBoundaryPlanes();
             this.instancedGroups = modelMode === 'flow'
                 ? this.collapseRepeatedMeshes(this.originalModel)
                 : [];
             this.setupAnimation(gltf.animations || []);
+            this.labels?.attach(this.rotationPivot || this.model, this.camera);
             this.container.classList.add('is-loaded');
             this.container.dispatchEvent(new CustomEvent('inline-model-ready'));
             this.startAnimationLoop();
@@ -177,6 +198,7 @@ class InlineModelViewer {
         if (this.animationFrame) cancelAnimationFrame(this.animationFrame);
         this.animationFrame = null;
         this.mixer?.stopAllAction();
+        this.labels?.detach();
 
         const modelRoot = this.rotationPivot || this.model;
         if (modelRoot) this.scene.remove(modelRoot);
@@ -260,6 +282,48 @@ class InlineModelViewer {
         });
     }
 
+    // The flow exports color lines on a single-hue red scale, where a more
+    // saturated color means faster flow. Map that scale onto light accent ->
+    // accent and draw the lines unlit so the scene lights do not tint it.
+    applyAccentSpeedScale(model) {
+        const fast = new THREE.Color(MODEL_ACCENT);
+        const slow = new THREE.Color(0xffffff).lerp(fast, ACCENT_SCALE_LIGHT);
+        const mixed = new THREE.Color();
+        model.traverse((child) => {
+            const colors = child.geometry?.attributes?.color;
+            if (!child.isMesh || child.userData.isFlowSurface || !colors) return;
+            const saturation = (index) => {
+                const red = colors.getX(index);
+                return red > 0 ? 1 - Math.min(colors.getY(index), colors.getZ(index)) / red : 0;
+            };
+            let min = Infinity;
+            let max = -Infinity;
+            for (let index = 0; index < colors.count; index += 1) {
+                const value = saturation(index);
+                min = Math.min(min, value);
+                max = Math.max(max, value);
+            }
+            const range = max - min || 1;
+            for (let index = 0; index < colors.count; index += 1) {
+                mixed.copy(slow).lerp(fast, (saturation(index) - min) / range);
+                colors.setXYZ(index, mixed.r, mixed.g, mixed.b);
+            }
+            colors.needsUpdate = true;
+            child.material = new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.DoubleSide });
+        });
+    }
+
+    // Point-cloud exports arrive with 1px points; give them a size relative
+    // to the model so particles stay visible at every framing.
+    sizeParticles(model) {
+        model.traverse((child) => {
+            if (!child.isPoints || !child.material) return;
+            child.material.size = this.referenceModelDimension * PARTICLE_SIZE;
+            child.material.sizeAttenuation = true;
+            child.material.needsUpdate = true;
+        });
+    }
+
     applyTransparentFlowSurfaceMaterial(model) {
         model.traverse((child) => {
             if (!child.isMesh || !child.userData.isFlowSurface) return;
@@ -323,6 +387,25 @@ class InlineModelViewer {
             });
             instancedMesh.instanceMatrix.needsUpdate = true;
         });
+    }
+
+    // Shows the vessel surface as its triangle mesh, the way a simulation
+    // divides the geometry into small elements.
+    applyWireframeMaterial(model) {
+        model.traverse((child) => {
+            if (!child.isMesh) return;
+            child.material = new THREE.MeshBasicMaterial({ color: MODEL_ACCENT, wireframe: true, transparent: true, opacity: 0.3, depthWrite: false });
+        });
+    }
+
+    addBoundaryPlanes() {
+        let planes = [];
+        try {
+            planes = JSON.parse(this.container.dataset.boundaryPlanes);
+        } catch (error) {
+            console.error('[InlineModelViewer] Invalid boundary planes', error);
+        }
+        if (Array.isArray(planes)) addBoundaryPlanes(this.rotationPivot || this.model, planes, { inflowColor: MODEL_ACCENT, outflowColor: MODEL_ACCENT });
     }
 
     applySurfaceMaterial(model) {
@@ -493,6 +576,7 @@ class InlineModelViewer {
         }
         this.controls.update();
         this.renderer.render(this.scene, this.camera);
+        this.labels?.update(frameTime);
         this.animationFrame = requestAnimationFrame((nextFrameTime) => this.animate(nextFrameTime));
     }
 }

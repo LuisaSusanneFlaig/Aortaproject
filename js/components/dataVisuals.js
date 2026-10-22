@@ -127,8 +127,8 @@ export function renderAorticStatGraphic(element = {}) {
                     <text x="100" y="190" text-anchor="middle" class="aortic-branch-percent aortic-pie-label-b">35-40%</text>
                 </svg>
                 <div class="aortic-stat-legend">
-                    <span><i class="aortic-swatch legend-type-a"></i>Type A</span>
                     <span><i class="aortic-swatch legend-type-b"></i>Type B</span>
+                    <span><i class="aortic-swatch legend-type-a"></i>Type A</span>
                 </div>
                 ${caption ? `<p>${caption}</p>` : ''}
             </div>
@@ -147,10 +147,10 @@ export function renderAorticStatGraphic(element = {}) {
                 <div class="aortic-stat-head">
                 ${title ? `<strong>${title}</strong>` : ''}
             </div>
-            <svg class="aortic-population-circle" viewBox="0 0 456 300" role="img" aria-label="A large circle representing 100.000 people, containing five diagnosed cases and seven possibly hidden cases">
+            <svg class="aortic-population-circle" viewBox="0 0 456 300" role="img" aria-label="A large circle representing 100,000 people, containing five diagnosed cases and seven possibly hidden cases">
                 <circle cx="228" cy="132" r="120" class="aortic-population-frame"></circle>
                 <g class="aortic-case-markers">${diagnosedCases}${hiddenCases}</g>
-                <text x="228" y="282" text-anchor="middle" class="aortic-population-label">100.000 people worldwide</text>
+                <text x="228" y="282" text-anchor="middle" class="aortic-population-label">100,000 people worldwide</text>
             </svg>
             <div class="aortic-case-key" aria-label="Five diagnosed cases and seven possibly hidden cases">
                 <span class="aortic-case-group"><i class="aortic-case-marker aortic-case-marker-routine"></i><b>5 diagnosed cases</b></span>
@@ -168,7 +168,7 @@ export function renderAneurysmBurden(element = {}) {
                 ${element.title ? `<strong id="aneurysm-burden-title">${element.title}</strong>` : ''}
                 <span>Worldwide 1990-2030</span>
             </div>
-            <svg viewBox="0 0 920 470" role="img" aria-label="Deaths rise from 88.353 in 1990 to 153.927 in 2021 and a projected 174.611 in 2030. The age-standardized mortality rate falls from 2.54 to 1.86 and a projected 1.70 per 100,000 people.">
+            <svg viewBox="0 0 920 470" role="img" aria-label="Deaths rise from 88,353 in 1990 to 153,927 in 2021 and a projected 174,611 in 2030. The age-standardized death rate falls from 2.54 to 1.86 and a projected 1.70 per 100,000 people.">
                 <g class="burden-panel burden-panel-deaths">
                     <text x="48" y="48" class="burden-panel-title">Deaths</text>
                     <text x="48" y="78" class="burden-panel-change">+74%</text>
@@ -183,16 +183,16 @@ export function renderAneurysmBurden(element = {}) {
                     <circle cx="74" cy="305" r="7" class="burden-point"></circle>
                     <circle cx="318" cy="192" r="7" class="burden-point"></circle>
                     <circle cx="394" cy="154" r="7" class="burden-point burden-point-projection"></circle>
-                    <text x="74" y="282" text-anchor="middle" class="burden-value">88.353</text>
-                    <text x="318" y="169" text-anchor="middle" class="burden-value">153.927</text>
-                    <text x="394" y="131" text-anchor="middle" class="burden-value">174.611</text>
+                    <text x="74" y="282" text-anchor="middle" class="burden-value">88,353</text>
+                    <text x="318" y="169" text-anchor="middle" class="burden-value">153,927</text>
+                    <text x="394" y="131" text-anchor="middle" class="burden-value">174,611</text>
                     <text x="74" y="394" text-anchor="middle" class="burden-year">1990</text>
                     <text x="318" y="394" text-anchor="middle" class="burden-year">2021</text>
                     <text x="394" y="394" text-anchor="middle" class="burden-year">2030</text>
                 </g>
                 <line x1="460" y1="42" x2="460" y2="405" class="burden-divider"></line>
                 <g class="burden-panel burden-panel-rate">
-                    <text x="500" y="48" class="burden-panel-title">Mortality rate per 100,000</text>
+                    <text x="500" y="48" class="burden-panel-title">Standardized death rate per 100,000</text>
                     <text x="500" y="78" class="burden-panel-change">-27%</text>
                     <line x1="500" y1="360" x2="872" y2="360" class="burden-axis"></line>
                     <line x1="500" y1="140" x2="500" y2="360" class="burden-axis"></line>

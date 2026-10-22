@@ -1,0 +1,158 @@
+/* Labels pinned to points on the inline 3D models (js/modules/ui/ModelLabels.js).
+   The flat theme disables pseudo-elements inside #story, so lines and key
+   numbers are real elements. */
+.model-label-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.model-label-layer.is-ready {
+    opacity: 1;
+}
+
+.model-label-layer.is-ready.is-dragging {
+    opacity: 0.45;
+}
+
+/* Zero-size box sitting exactly on the projected anchor point. */
+.model-label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    transition: opacity 0.2s ease;
+    will-change: transform;
+}
+
+.model-label.is-occluded {
+    opacity: 0;
+}
+
+.model-label-dot {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--color-text);
+    border-radius: 50%;
+    background: var(--color-accent);
+    font-size: 0;
+}
+
+.model-label-line {
+    position: absolute;
+    top: -0.5px;
+    left: 5px;
+    width: 24px;
+    height: 1px;
+    background: color-mix(in srgb, var(--color-text) 70%, transparent);
+}
+
+.model-label-text {
+    position: absolute;
+    top: 0;
+    left: 29px;
+    padding: 3px 8px;
+    border: 1px solid color-mix(in srgb, var(--color-text) 18%, transparent);
+    border-radius: 4px;
+    background: color-mix(in srgb, var(--color-bg) 86%, transparent);
+    color: var(--color-text);
+    font-size: 0.76rem;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    transform: translateY(-50%);
+}
+
+.model-label--left .model-label-line {
+    right: 5px;
+    left: auto;
+}
+
+.model-label--left .model-label-text {
+    right: 29px;
+    left: auto;
+}
+
+/* Kept for screen readers on wide screens; becomes the visible key on phones. */
+.model-label-key {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.model-label-key-number {
+    display: none;
+}
+
+@media (max-width: 700px) {
+    .model-label-dot {
+        display: grid;
+        top: -10px;
+        left: -10px;
+        width: 20px;
+        height: 20px;
+        place-items: center;
+        border-width: 1px;
+        color: #fff;
+        font-size: 0.68rem;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .model-label-line,
+    .model-label-text {
+        display: none;
+    }
+
+    .model-label-key {
+        position: static;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 16px;
+        width: auto;
+        height: auto;
+        margin: 0;
+        padding: 0;
+        overflow: visible;
+        clip-path: none;
+        color: color-mix(in srgb, var(--color-text) 78%, transparent);
+        font-size: 0.78rem;
+        list-style: none;
+        white-space: normal;
+    }
+
+    .model-label-key li {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .model-label-key-number {
+        display: grid;
+        width: 18px;
+        height: 18px;
+        place-items: center;
+        border-radius: 50%;
+        background: var(--color-accent);
+        color: #fff;
+        font-size: 0.66rem;
+        font-weight: 700;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .model-label-layer,
+    .model-label {
+        transition: none;
+    }
+}

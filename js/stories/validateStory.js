@@ -35,6 +35,20 @@ function validateElement(element, path, errors) {
         });
     }
 
+    if (element.type === 'processSteps') {
+        (element.steps || []).forEach((step, stepIndex) => {
+            const visual = step.visual || {};
+            const visualPath = `${path}.steps[${stepIndex}].visual`;
+            if (!step.title?.trim()) addError(errors, `${path}.steps[${stepIndex}].title`, 'step title is required');
+            if (visual.kind === 'image' && !visual.src) addError(errors, `${visualPath}.src`, 'image is required');
+            if (visual.kind === 'image' && !visual.alt?.trim()) addError(errors, `${visualPath}.alt`, 'meaningful alternative text is required');
+            if (visual.kind === 'slices' && !visual.src) addError(errors, `${visualPath}.src`, 'slice image is required');
+            if (visual.kind === 'slices' && !visual.alt?.trim()) addError(errors, `${visualPath}.alt`, 'meaningful alternative text is required');
+            if (visual.kind === 'model' && !visual.url) addError(errors, `${visualPath}.url`, '3D model URL is required');
+            if (visual.kind === 'model' && !visual.label?.trim()) addError(errors, `${visualPath}.label`, 'accessible model label is required');
+        });
+    }
+
     if (element.type === 'modelPlaceholder' && element.src && !element.alt?.trim()) {
         addError(errors, `${path}.alt`, 'animated model alternative text is required');
     }
@@ -67,6 +81,17 @@ export function validateStory(story, storyKey = 'story') {
         if (section.scrollMode && !supportedScrollModes.has(section.scrollMode)) {
             addError(errors, `${path}.scrollMode`, `unsupported mode "${section.scrollMode}"`);
         }
+        [
+            ['inlineModel', section.inlineModel?.labels],
+            ['inlineModel.flowView', section.inlineModel?.flowView?.labels]
+        ].flatMap(([owner, labels]) => (labels || []).map((label, labelIndex) => [owner, label, labelIndex])).forEach(([owner, label, labelIndex]) => {
+            const labelPath = `${path}.${owner}.labels[${labelIndex}]`;
+            if (!label?.text?.trim()) addError(errors, `${labelPath}.text`, 'label text is required');
+            const anchor = label?.anchor;
+            if (!Array.isArray(anchor) || anchor.length !== 3 || anchor.some((value) => !Number.isFinite(value) || value < 0 || value > 1)) {
+                addError(errors, `${labelPath}.anchor`, 'must be three numbers between 0 and 1');
+            }
+        });
         if (!Array.isArray(section?.elements)) {
             addError(errors, `${path}.elements`, 'must be an array');
         } else {

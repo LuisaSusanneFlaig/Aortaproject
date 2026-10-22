@@ -21,6 +21,21 @@ body[data-story-version] .chapter-opener::before {
     pointer-events: none;
 }
 
+/* Brush stroke from the dashboard header (see renderChapterArt). */
+body[data-story-version] .chapter-opener-art {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+}
+
+body[data-story-version] .chapter-opener-art image {
+    opacity: 0.6;
+}
+
 body[data-story-version] .chapter-opener-inner {
     display: grid;
     width: min(var(--story-content-max), 100%);

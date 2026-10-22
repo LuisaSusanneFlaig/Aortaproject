@@ -11,6 +11,13 @@ body[data-story-version] .step .story-split-shell {
     margin: 0;
 }
 
+/* Older flow-section styles pad their text box (scrollytelling.css), which
+   pushed the copy column out of line with every other section. */
+body[data-story-version] #story .flow-research-section .story-split-shell {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+}
+
 body[data-story-version] .step .story-copy-column {
     box-sizing: border-box;
     display: grid;
@@ -45,4 +52,18 @@ body[data-story-version] .step .story-copy-column > .element-wrapper {
         width: min(100%, 54ch);
         margin-left: 0;
     }
+}
+
+/* Empty visual slot for a graphic that is still being designed
+   (section.placeholderId / placeholderText in story data). */
+body[data-story-version] #story .story-visual-column .placeholder-box {
+    display: grid;
+    width: min(100%, 520px);
+    aspect-ratio: 4 / 3;
+    place-items: center;
+    border: 1px dashed color-mix(in srgb, var(--color-text) 35%, transparent);
+    border-radius: 8px;
+    color: color-mix(in srgb, var(--color-text) 55%, transparent);
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
 }

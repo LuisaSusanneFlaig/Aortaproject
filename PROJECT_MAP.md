@@ -37,6 +37,8 @@ npm run screenshots
 | Statistics plots | `js/components/dataVisuals.js` |
 | Clinical infographics | `js/components/clinicalElements.js` |
 | 3D model viewer | `js/modules/ui/InlineModelViewer.js` |
+| 3D model labels | `inlineModel.labels` in the story files, `js/modules/ui/ModelLabels.js`, `css/components/model-labels.css` (open a story with `?pickLabels` and click the model to log an anchor) |
+| Step infographics (scan to model, flow simulation) | `processSteps` elements in the story files, `js/components/processSteps.js`, `css/components/process-steps.css`; boundary planes in `js/modules/ui/boundaryPlanes.js` |
 | Story validation | `js/stories/validateStory.js` |
 
 ## Live pages
@@ -46,6 +48,7 @@ npm run screenshots
 | Dashboard / story selection | `index.html` |
 | Alex aneurysm story | `scrollytelling-aneurysm.html` |
 | Miriam dissection story | `scrollytelling-dissection.html` |
+| Shared ending with both outlooks | `ending.html`, `css/components/ending-page.css`, `css/components/ending-outlooks.css` |
 | Imprint | `impressum.html` |
 | Privacy policy | `datenschutz.html` |
 

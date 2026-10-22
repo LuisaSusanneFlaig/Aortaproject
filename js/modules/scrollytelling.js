@@ -8,6 +8,7 @@ import { ThemeManager } from './ui/ThemeManager.js';
 import { renderStoryPage, getStoryVersion } from './storyRenderer.js';
 import { storyVersions } from './storyContent.js';
 import { initInlineModelViewers } from './ui/InlineModelViewer.js';
+import { switchInlineModelView } from './ui/modelViews.js';
 import { ScrollDirector } from './ui/ScrollDirector.js';
 import { GsapSectionAnimator } from './ui/GsapSectionAnimator.js';
 import * as Config from './core/Config.js';
@@ -520,7 +521,9 @@ class ScrollytellingApp {
         const steps = Array.from(document.querySelectorAll('#story .step'));
         if (!steps.length) return { currentSection: 0, sectionT: 0, cameraT: 0 };
 
-        const marker = window.innerHeight * (this.usesEditorialScroll ? 0.34 : (window.innerWidth <= 820 ? 0.62 : 0.5));
+        // The editorial stories hand over their fixed visual stage at mid-screen
+        // (see GsapSectionAnimator), so the current section is chosen there too.
+        const marker = window.innerHeight * (this.usesEditorialScroll ? 0.5 : (window.innerWidth <= 820 ? 0.62 : 0.5));
         const activeGsapSection = steps.findIndex((step) => {
             const rect = step.getBoundingClientRect();
             return step.classList.contains('is-gsap-active') && rect.top <= marker && rect.bottom >= marker;
@@ -653,6 +656,7 @@ class ScrollytellingApp {
                     button.classList.toggle('active', selected);
                     button.setAttribute('aria-pressed', String(selected));
                 });
+                if (flowViewButton.dataset.modelView) switchInlineModelView(flowViewButton);
                 return;
             }
             const flowIllustrationButton = event.target.closest('.flow-illustration-button');
@@ -732,15 +736,16 @@ class ScrollytellingApp {
             const decisionButton = event.target.closest('.decision-info-trigger');
             const preventionButton = event.target.closest('.prevention-info-trigger');
             const imageHotspot = event.target.closest('.image-hotspot');
-            if (!button && !symptomButton && !diagnosticButton && !decisionButton && !preventionButton && !imageHotspot) return;
+            const processButton = event.target.closest('.process-info-trigger');
+            if (!button && !symptomButton && !diagnosticButton && !decisionButton && !preventionButton && !imageHotspot && !processButton) return;
 
-            const trigger = button || symptomButton || diagnosticButton || decisionButton || preventionButton || imageHotspot;
+            const trigger = button || symptomButton || diagnosticButton || decisionButton || preventionButton || imageHotspot || processButton;
             const popup = document.getElementById(trigger.getAttribute('aria-controls'));
             if (!popup) return;
 
             const isOpen = trigger.getAttribute('aria-expanded') === 'true';
 
-            if ((symptomButton || diagnosticButton || decisionButton || preventionButton || imageHotspot) && !isOpen) {
+            if ((symptomButton || diagnosticButton || decisionButton || preventionButton || imageHotspot || processButton) && !isOpen) {
                 const exclusiveGroup = symptomButton
                     ? trigger.closest('.symptom-bars')
                     : diagnosticButton
@@ -749,7 +754,9 @@ class ScrollytellingApp {
                             ? trigger.closest('.treatment-decision-map')
                             : preventionButton
                                 ? trigger.closest('.prevention-timeline')
-                                : trigger.closest('.has-image-hotspot');
+                                : processButton
+                                    ? trigger.closest('.process-steps')
+                                    : trigger.closest('.has-image-hotspot');
                 const triggerSelector = symptomButton
                     ? '.symptom-info-trigger[aria-expanded="true"]'
                     : diagnosticButton
@@ -758,7 +765,9 @@ class ScrollytellingApp {
                             ? '.decision-info-trigger[aria-expanded="true"]'
                             : preventionButton
                                 ? '.prevention-info-trigger[aria-expanded="true"]'
-                                : '.image-hotspot[aria-expanded="true"]';
+                                : processButton
+                                    ? '.process-info-trigger[aria-expanded="true"]'
+                                    : '.image-hotspot[aria-expanded="true"]';
                 exclusiveGroup?.querySelectorAll(triggerSelector).forEach((openTrigger) => {
                     openTrigger.setAttribute('aria-expanded', 'false');
                     const openPopup = document.getElementById(openTrigger.getAttribute('aria-controls'));

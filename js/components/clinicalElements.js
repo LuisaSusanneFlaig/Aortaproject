@@ -287,7 +287,7 @@ export function renderModelPlaceholder(element = {}) {
     const infoPopupMarkup = element.src ? `
             <details class="model-viewport-info-popup">
                 <summary aria-label="${element.infoPopup?.title || 'More information'}"></summary>
-                ${element.infoPopup?.text ? `<div class="image-hotspot-popover"><p>${element.infoPopup.text}</p>${flowSpeedControl}</div>` : ''}
+                ${element.infoPopup?.text || flowSpeedControl ? `<div class="image-hotspot-popover">${element.infoPopup?.text ? `<p>${element.infoPopup.text}</p>` : ''}${flowSpeedControl}</div>` : ''}
             </details>` : '';
 
     return `

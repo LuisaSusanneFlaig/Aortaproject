@@ -35,32 +35,6 @@ body.ending-page {
     line-height: 1;
 }
 
-.ending-main h1 span {
-    color: var(--color-accent);
-}
-
-.ending-columns {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 28px clamp(24px, 4vw, 56px);
-    max-width: 920px;
-    margin: 42px auto 0;
-}
-
-.ending-columns p {
-    margin: 0;
-    color: var(--color-text);
-    font-size: 1.05rem;
-    line-height: 1.7;
-}
-
-.ending-columns a {
-    color: var(--color-text);
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 4px;
-}
-
 .ending-actions {
     display: flex;
     flex-wrap: wrap;
@@ -137,10 +111,6 @@ body.ending-page {
     .ending-main {
         width: min(100% - 28px, 520px);
         padding-top: 90px;
-    }
-
-    .ending-columns {
-        grid-template-columns: 1fr;
     }
 
     .story-completion-cta {
