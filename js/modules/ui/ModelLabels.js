@@ -30,17 +30,36 @@ export class ModelLabels {
         this.layer = document.createElement('div');
         this.layer.className = 'model-label-layer';
         this.layer.setAttribute('aria-hidden', 'true');
+        container.append(this.layer);
+        this.setLabels(labels);
+        if (new URLSearchParams(window.location.search).has('pickLabels')) this.enablePicking();
+    }
+
+    // Replaces the labels and the key below the viewer; anchors are resolved
+    // against the next model passed to attach().
+    setLabels(labels) {
+        this.detach();
+        this.labels = labels;
         this.elements = labels.map((label, index) => {
             const element = document.createElement('span');
             element.className = 'model-label';
             element.innerHTML = '<span class="model-label-dot"></span><span class="model-label-line"></span><span class="model-label-text"></span>';
             element.firstChild.textContent = String(index + 1);
             element.lastChild.textContent = label.text;
-            this.layer.append(element);
             return element;
         });
-        container.append(this.layer);
-        if (new URLSearchParams(window.location.search).has('pickLabels')) this.enablePicking();
+        this.layer.replaceChildren(...this.elements);
+
+        const key = this.container.closest('.inline-model-figure')?.querySelector('.model-label-key');
+        if (!key) return;
+        key.replaceChildren(...labels.map((label, index) => {
+            const item = document.createElement('li');
+            item.innerHTML = '<span class="model-label-key-number" aria-hidden="true"></span>';
+            item.firstChild.textContent = String(index + 1);
+            item.append(label.text);
+            return item;
+        }));
+        key.hidden = !labels.length;
     }
 
     attach(modelRoot, camera) {
@@ -55,6 +74,12 @@ export class ModelLabels {
             this.frame.min.y + size.y * anchor[1],
             this.frame.min.z + size.z * anchor[2]
         )));
+        // Flow exports also contain pathline meshes; only the vessel wall
+        // should count when deciding whether a label is hidden.
+        const meshes = [];
+        modelRoot.traverse((child) => { if (child.isMesh) meshes.push(child); });
+        const flowSurfaces = meshes.filter((mesh) => mesh.userData.isFlowSurface);
+        this.wallMeshes = flowSurfaces.length ? flowSurfaces : meshes;
         this.occludedState = this.labels.map(() => false);
         this.lastCameraPosition.set(Infinity, Infinity, Infinity);
         this.layer.classList.add('is-ready');
@@ -110,8 +135,8 @@ export class ModelLabels {
 
     wallHits() {
         const minimumGap = this.modelSize * DUPLICATE_HIT_DISTANCE;
-        return this.raycaster.intersectObject(this.modelRoot, true)
-            .filter((intersection) => intersection.object.isMesh && intersection.object.visible)
+        return this.raycaster.intersectObjects(this.wallMeshes, false)
+            .filter((intersection) => intersection.object.visible)
             .filter((intersection, index, hits) => index === 0 || intersection.distance - hits[index - 1].distance > minimumGap);
     }
 

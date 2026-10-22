@@ -96,7 +96,22 @@ export const dissectionStory = {
                     { text: 'True and false lumen', anchor: [0.888, 0.645, 0.791], side: 'right' },
                     { text: 'Descending aorta', anchor: [0.677, 0.422, 0.798], side: 'right' },
                     { text: 'End of the flap', anchor: [0.42, 0.165, 0.615], side: 'left' }
-                ]
+                ],
+                flowView: {
+                    url: `${flowModelBase}dissection_lines_anim.glb`,
+                    label: 'Simulated blood flow through Miriam\'s dissected aorta',
+                    rotationX: 0,
+                    rotationY: -1.5708,
+                    rotationZ: 0,
+                    framingScale: 0.62,
+                    animationFps: 20,
+                    animationSpeed: 1,
+                    labels: [
+                        { text: 'Blood arrives from the heart', anchor: [0.254, 0.589, 0.337], side: 'left' },
+                        { text: 'Swirling flow where the flap begins', anchor: [0.597, 0.67, 0.544], side: 'right' },
+                        { text: 'Descending aorta', anchor: [0.605, 0.381, 0.58], side: 'right' }
+                    ]
+                }
             },
             paragraphs: [],
             elements: [
@@ -111,6 +126,10 @@ export const dissectionStory = {
                 {
                     type: 'text',
                     text: 'The labels in the model trace this route. Blood leaves the heart through the ascending aorta and curves through the aortic arch. Just beyond the arch, the entry tear marks where the flap begins. From there, the flap divides the descending aorta into the true and false lumen until it ends further down.'
+                },
+                {
+                    type: 'text',
+                    text: 'Switch to “Blood flow” to see the same aorta with simulated paths of blood. The lines enter through the ascending aorta and run fairly evenly through the arch. Where the flap begins, they lose this order and swirl, right where blood now divides between two channels. The simulation is based on Miriam\'s aorta about six weeks after the dissection.'
                 },
                 {
                     type: 'reference',

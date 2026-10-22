@@ -67,8 +67,11 @@ export function validateStory(story, storyKey = 'story') {
         if (section.scrollMode && !supportedScrollModes.has(section.scrollMode)) {
             addError(errors, `${path}.scrollMode`, `unsupported mode "${section.scrollMode}"`);
         }
-        (section.inlineModel?.labels || []).forEach((label, labelIndex) => {
-            const labelPath = `${path}.inlineModel.labels[${labelIndex}]`;
+        [
+            ['inlineModel', section.inlineModel?.labels],
+            ['inlineModel.flowView', section.inlineModel?.flowView?.labels]
+        ].flatMap(([owner, labels]) => (labels || []).map((label, labelIndex) => [owner, label, labelIndex])).forEach(([owner, label, labelIndex]) => {
+            const labelPath = `${path}.${owner}.labels[${labelIndex}]`;
             if (!label?.text?.trim()) addError(errors, `${labelPath}.text`, 'label text is required');
             const anchor = label?.anchor;
             if (!Array.isArray(anchor) || anchor.length !== 3 || anchor.some((value) => !Number.isFinite(value) || value < 0 || value > 1)) {

@@ -8,6 +8,7 @@ import { ThemeManager } from './ui/ThemeManager.js';
 import { renderStoryPage, getStoryVersion } from './storyRenderer.js';
 import { storyVersions } from './storyContent.js';
 import { initInlineModelViewers } from './ui/InlineModelViewer.js';
+import { switchInlineModelView } from './ui/modelViews.js';
 import { ScrollDirector } from './ui/ScrollDirector.js';
 import { GsapSectionAnimator } from './ui/GsapSectionAnimator.js';
 import * as Config from './core/Config.js';
@@ -653,6 +654,7 @@ class ScrollytellingApp {
                     button.classList.toggle('active', selected);
                     button.setAttribute('aria-pressed', String(selected));
                 });
+                if (flowViewButton.dataset.modelView) switchInlineModelView(flowViewButton);
                 return;
             }
             const flowIllustrationButton = event.target.closest('.flow-illustration-button');

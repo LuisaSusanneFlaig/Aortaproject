@@ -122,6 +122,27 @@ function renderPlaceholder(section) {
     `;
 }
 
+function toDataAttribute(value) {
+    return JSON.stringify(value).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+}
+
+// A model view switches the viewer to another GLB with its own framing and labels.
+function modelViewConfig(view) {
+    const keys = ['url', 'label', 'framingScale', 'rotationX', 'rotationY', 'rotationZ', 'animationFps', 'animationSpeed'];
+    const config = Object.fromEntries(keys.filter((key) => view[key] !== undefined).map((key) => [key, view[key]]));
+    config.labels = Array.isArray(view.labels) ? view.labels : [];
+    return config;
+}
+
+function renderModelViewControls(model, illustration) {
+    if (!illustration && !model.flowView) return '';
+    const viewButton = (view, text, selected, config = null) => `<button class="flow-view-button${selected ? ' active' : ''}" type="button" data-flow-view="${view}"${config ? ` data-model-view="${toDataAttribute(config)}"` : ''} aria-pressed="${selected}">${text}</button>`;
+    const buttons = model.flowView
+        ? viewButton('animation', 'Anatomy', true, modelViewConfig(model)) + viewButton('flow', model.flowView.buttonLabel || 'Blood flow', false, modelViewConfig(model.flowView))
+        : viewButton('animation', '3D model', true);
+    return `<div class="inline-model-view-controls" role="group" aria-label="Choose anatomy view">${buttons}${illustration ? viewButton('illustration', 'Illustration', false) : ''}</div>`;
+}
+
 function renderInlineModel(model, illustration = null) {
     if (!model?.url) return '';
     const label = model.label || '3D model';
@@ -132,7 +153,7 @@ function renderInlineModel(model, illustration = null) {
     const framingScale = Number.isFinite(model.framingScale) ? ` data-framing-scale="${model.framingScale}"` : '';
     const labels = Array.isArray(model.labels) ? model.labels : [];
     const labelData = labels.length
-        ? ` data-model-labels="${JSON.stringify(labels).replace(/&/g, '&amp;').replace(/"/g, '&quot;')}"`
+        ? ` data-model-labels="${toDataAttribute(labels)}"`
         : '';
     const labelKey = labels.length ? `
         <ol class="model-label-key" aria-label="Labelled parts of the 3D model">
@@ -146,7 +167,8 @@ function renderInlineModel(model, illustration = null) {
         </div>`;
     return `
         <figure class="inline-model-figure">
-            ${illustration ? `<div class="inline-model-view-controls" role="group" aria-label="Choose anatomy view"><button class="flow-view-button active" type="button" data-flow-view="animation" aria-pressed="true">3D model</button><button class="flow-view-button" type="button" data-flow-view="illustration" aria-pressed="false">Illustration</button></div><figure class="inline-model-illustration" hidden><img src="${illustration.src}" alt="${illustration.alt || ''}"></figure>` : ''}
+            ${renderModelViewControls(model, illustration)}
+            ${illustration ? `<figure class="inline-model-illustration" hidden><img src="${illustration.src}" alt="${illustration.alt || ''}"></figure>` : ''}
             <div class="inline-model-viewer" data-inline-model data-model-url="${model.url}" data-model-mode="${modelMode}"${rotationX}${rotationY}${rotationZ}${framingScale}${labelData} role="img" aria-label="${label}">
                 <span class="inline-model-plus-icon" aria-hidden="true">+</span>
                 ${model.rotationHint ? '<span class="inline-model-360-hint material-symbols-rounded story-material-icon" aria-hidden="true">360</span>' : ''}
