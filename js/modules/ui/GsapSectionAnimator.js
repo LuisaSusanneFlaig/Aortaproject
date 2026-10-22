@@ -20,6 +20,7 @@ export class GsapSectionAnimator {
                 gsap.set(section.querySelector('.text-box'), { clearProps: 'all' });
             });
             openers.forEach((opener) => gsap.set(opener.querySelectorAll('*'), { clearProps: 'all' }));
+            this.root.querySelectorAll('.chapter-opener-art-reveal').forEach((reveal) => reveal.setAttribute('width', '1200'));
             return;
         }
 
@@ -42,6 +43,7 @@ export class GsapSectionAnimator {
                 const eyebrow = opener.querySelector('.chapter-opener-eyebrow');
                 const title = opener.querySelector('.chapter-opener-title');
                 const rule = opener.querySelector('.chapter-opener-rule');
+                const artReveal = opener.querySelector('.chapter-opener-art-reveal');
                 if (!inner) return;
 
                 const openerTimeline = gsap.timeline({
@@ -54,6 +56,16 @@ export class GsapSectionAnimator {
                         }
                     }
                 });
+
+                if (artReveal) {
+                    openerTimeline.fromTo(artReveal, {
+                        attr: { width: 0 }
+                    }, {
+                        attr: { width: 1200 },
+                        duration: 1.6,
+                        ease: 'power1.inOut'
+                    }, 0);
+                }
 
                 openerTimeline.fromTo(inner, {
                     autoAlpha: 0,
