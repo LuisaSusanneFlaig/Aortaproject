@@ -42,7 +42,7 @@ export function renderProcessSteps(element = {}) {
         let title = `${number}${step.title || ''}`;
         if (step.text) {
             const infoId = `process-info-${++processInfoId}`;
-            infoBoxes.push(`<div class="symptom-info-box process-info-box" id="${infoId}" hidden><strong>${step.title || ''}</strong> ${step.text}</div>`);
+            infoBoxes.push(`<div class="symptom-info-box process-info-box" id="${infoId}" hidden>${step.text}</div>`);
             title = `<button class="process-info-trigger" type="button" aria-label="More information about ${step.title || `step ${index + 1}`}" aria-expanded="false" aria-controls="${infoId}"><span class="process-number" aria-hidden="true">+</span>${step.title || ''}</button>`;
         }
         return `

@@ -4,13 +4,9 @@
 body[data-story-version] #story .process-steps {
     --process-stage-size: clamp(110px, 10.5vw, 190px);
     --process-gap: clamp(18px, 2.2vw, 44px);
-    --slice-gap: 4px;
+    --slice-gap: 12px;
     width: 100%;
     margin: 0;
-}
-
-body[data-story-version] #story .step.is-gsap-active .process-steps {
-    --slice-gap: 12px;
 }
 
 body[data-story-version] #story .process-step-list {
@@ -157,7 +153,6 @@ body[data-story-version] #story .process-slice-stack .process-slice {
     opacity: calc(0.3 + var(--slice-index) * 0.14);
     object-fit: cover;
     transform: rotateY(-42deg) translateZ(calc(var(--slice-index) * var(--slice-gap)));
-    transition: transform 0.7s ease;
 }
 
 body[data-story-version] #story .process-icon {
@@ -209,7 +204,6 @@ body[data-story-version] #story .story-visual-column .process-steps .process-vie
 }
 
 @media (prefers-reduced-motion: reduce) {
-    body[data-story-version] #story .process-slice-stack .process-slice,
     body[data-story-version] #story .process-info-trigger .process-number {
         transition: none;
     }
