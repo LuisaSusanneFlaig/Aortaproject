@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
+import { ModelLabels, parseModelLabels } from './ModelLabels.js';
 
 // Keep 3D mesh materials aligned with the UI accent token (--color-accent).
 const MODEL_ACCENT = 0xb62413;
@@ -71,6 +72,13 @@ class InlineModelViewer {
         this.controls.dampingFactor = 0.08;
         this.controls.enablePan = false;
         this.controls.enableZoom = false;
+
+        const labels = parseModelLabels(this.container);
+        if (labels.length) {
+            this.labels = new ModelLabels(this.container, labels);
+            this.controls.addEventListener('start', () => this.labels.setDragging(true));
+            this.controls.addEventListener('end', () => this.labels.setDragging(false));
+        }
 
         const rotationHint = this.container.querySelector('.inline-model-360-hint');
         if (rotationHint) {
@@ -154,6 +162,7 @@ class InlineModelViewer {
                 ? this.collapseRepeatedMeshes(this.originalModel)
                 : [];
             this.setupAnimation(gltf.animations || []);
+            this.labels?.attach(this.rotationPivot || this.model, this.camera);
             this.container.classList.add('is-loaded');
             this.container.dispatchEvent(new CustomEvent('inline-model-ready'));
             this.startAnimationLoop();
@@ -177,6 +186,7 @@ class InlineModelViewer {
         if (this.animationFrame) cancelAnimationFrame(this.animationFrame);
         this.animationFrame = null;
         this.mixer?.stopAllAction();
+        this.labels?.detach();
 
         const modelRoot = this.rotationPivot || this.model;
         if (modelRoot) this.scene.remove(modelRoot);
@@ -493,6 +503,7 @@ class InlineModelViewer {
         }
         this.controls.update();
         this.renderer.render(this.scene, this.camera);
+        this.labels?.update(frameTime);
         this.animationFrame = requestAnimationFrame((nextFrameTime) => this.animate(nextFrameTime));
     }
 }

@@ -45,7 +45,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Before Alex\'s scan becomes personal, the statistics set the wider scene. More people worldwide are dying with aortic aneurysm than in earlier decades, partly because populations are growing and aging. At the same time, after adjusting for age, the risk of death is decreasing (standardized death rate). This shows that diagnostics and treatment methods are improving. The values for 2030 are estimates, not measurements.',
+                    text: 'Before Alex\'s scan becomes personal, the statistics set the wider scene. The “Deaths” chart shows that more people worldwide are dying with aortic aneurysm than in earlier decades: the number rose by 74%, from 88,353 in 1990 to 153,927 in 2021. This is partly because populations are growing and aging. At the same time, the “Mortality rate per 100,000” chart shows that, after adjusting for age, the risk of death fell by 27%, from 2.54 to 1.86. This age-adjusted figure is the standardized death rate. This shows that diagnostics and treatment methods are improving. The last point in each chart, for 2030, is an estimate, not a measurement.',
                     infoPopup: {
                         title: 'standardized death rate',
                         text: 'A standardized death rate adjusts mortality figures to a common population structure, often by age, so populations or years can be compared more fairly. It estimates the death rate that would be seen if the population had the same age distribution as the reference population.'
@@ -76,12 +76,22 @@ export const aneurysmStory = {
                 rotationY: 1.5708,
                 framingScale: 0.72,
                 legend: false,
-                rotationHint: true
+                rotationHint: true,
+                labels: [
+                    { text: 'Ascending aorta', anchor: [0.194, 0.592, 0.439], side: 'left' },
+                    { text: 'Aortic arch', anchor: [0.599, 0.734, 0.76], side: 'left' },
+                    { text: 'Widened section (aneurysm)', anchor: [0.87, 0.657, 0.766], side: 'right' },
+                    { text: 'Descending aorta', anchor: [0.83, 0.455, 0.697], side: 'right' }
+                ]
             },
             elements: [
                 {
                     type: 'text',
                     text: 'Alex\'s aorta is shown here. The aorta has widened in the thoracic part. That\'s why it is called a thoracic aortic aneurysm. The diameter, growth, and location are compared across follow-up visits.'
+                },
+                {
+                    type: 'text',
+                    text: 'The labels in the model follow the path of the blood. It leaves the heart through the ascending aorta, curves through the aortic arch, and flows down the descending aorta. The widened section, the aneurysm, sits where the arch turns downward.'
                 },
                 {
                     type: 'reference',

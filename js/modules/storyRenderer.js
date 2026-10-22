@@ -130,6 +130,14 @@ function renderInlineModel(model, illustration = null) {
     const rotationY = Number.isFinite(model.rotationY) ? ` data-rotation-y="${model.rotationY}"` : '';
     const rotationZ = Number.isFinite(model.rotationZ) ? ` data-rotation-z="${model.rotationZ}"` : '';
     const framingScale = Number.isFinite(model.framingScale) ? ` data-framing-scale="${model.framingScale}"` : '';
+    const labels = Array.isArray(model.labels) ? model.labels : [];
+    const labelData = labels.length
+        ? ` data-model-labels="${JSON.stringify(labels).replace(/&/g, '&amp;').replace(/"/g, '&quot;')}"`
+        : '';
+    const labelKey = labels.length ? `
+        <ol class="model-label-key" aria-label="Labelled parts of the 3D model">
+            ${labels.map((item, index) => `<li><span class="model-label-key-number" aria-hidden="true">${index + 1}</span>${item.text}</li>`).join('')}
+        </ol>` : '';
     const legend = model.legend === false ? '' : `
         <div class="wall-layer-legend" aria-label="Legend of aortic wall layers">
             <span><i class="intima"></i>Intima</span>
@@ -139,12 +147,13 @@ function renderInlineModel(model, illustration = null) {
     return `
         <figure class="inline-model-figure">
             ${illustration ? `<div class="inline-model-view-controls" role="group" aria-label="Choose anatomy view"><button class="flow-view-button active" type="button" data-flow-view="animation" aria-pressed="true">3D model</button><button class="flow-view-button" type="button" data-flow-view="illustration" aria-pressed="false">Illustration</button></div><figure class="inline-model-illustration" hidden><img src="${illustration.src}" alt="${illustration.alt || ''}"></figure>` : ''}
-            <div class="inline-model-viewer" data-inline-model data-model-url="${model.url}" data-model-mode="${modelMode}"${rotationX}${rotationY}${rotationZ}${framingScale} role="img" aria-label="${label}">
+            <div class="inline-model-viewer" data-inline-model data-model-url="${model.url}" data-model-mode="${modelMode}"${rotationX}${rotationY}${rotationZ}${framingScale}${labelData} role="img" aria-label="${label}">
                 <span class="inline-model-plus-icon" aria-hidden="true">+</span>
                 ${model.rotationHint ? '<span class="inline-model-360-hint material-symbols-rounded story-material-icon" aria-hidden="true">360</span>' : ''}
                 <div class="inline-model-loading" aria-hidden="true"></div>
             </div>
             <div class="inline-model-meta">
+                ${labelKey}
                 ${legend}
             </div>
         </figure>

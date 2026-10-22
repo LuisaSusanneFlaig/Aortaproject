@@ -53,7 +53,7 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Aortic dissection is rare, but rarity does not make it insignificant. It is a condition in which a small number of cases can have extremely serious consequences. Some dissections may initially go undetected. What happens next depends strongly on where the dissection begins. Type A involves the first part of the aorta as it leaves the heart and usually requires immediate treatment. Type B begins farther down, beyond the arteries leading to the head, and may follow a different treatment path. This makes aortic dissection an important example of how a single anatomical difference can fundamentally change a medical situation.'
+                    text: 'Aortic dissection is rare, but rarity does not make it insignificant. It is a condition in which a small number of cases can have extremely serious consequences. The circle chart shows what rare means: among 100,000 people, five cases are diagnosed, and seven more may go undetected. What happens next depends strongly on where the dissection begins, as the pie chart shows. Type A, about 60–65% of cases, involves the first part of the aorta as it leaves the heart and usually requires immediate treatment. Type B, about 35–40% of cases, begins farther down, beyond the arteries leading to the head, and may follow a different treatment path. This makes aortic dissection an important example of how a single anatomical difference can fundamentally change a medical situation.'
                 },
                 {
                     type: 'aorticStat',
@@ -88,7 +88,15 @@ export const dissectionStory = {
                 rotationY: -1.5708,
                 rotationZ: 0,
                 framingScale: 0.9,
-                rotationHint: true
+                rotationHint: true,
+                labels: [
+                    { text: 'Ascending aorta', anchor: [0.131, 0.72, 0.264], side: 'left' },
+                    { text: 'Aortic arch', anchor: [0.283, 0.857, 0.441], side: 'left' },
+                    { text: 'Entry tear (flap begins)', anchor: [0.628, 0.856, 0.785], side: 'right' },
+                    { text: 'True and false lumen', anchor: [0.888, 0.645, 0.791], side: 'right' },
+                    { text: 'Descending aorta', anchor: [0.677, 0.422, 0.798], side: 'right' },
+                    { text: 'End of the flap', anchor: [0.42, 0.165, 0.615], side: 'left' }
+                ]
             },
             paragraphs: [],
             elements: [
@@ -99,6 +107,10 @@ export const dissectionStory = {
                 {
                     type: 'text',
                     text: 'When dissection occurs, blood enters through a tear and separates layers of the vessel wall. The original channel is called the true lumen; the new channel inside the wall is called the false lumen. From that moment, the aorta is no longer just a pipe carrying blood downward. It has become a divided pathway.'
+                },
+                {
+                    type: 'text',
+                    text: 'The labels in the model trace this route. Blood leaves the heart through the ascending aorta and curves through the aortic arch. Just beyond the arch, the entry tear marks where the flap begins. From there, the flap divides the descending aorta into the true and false lumen until it ends further down.'
                 },
                 {
                     type: 'reference',

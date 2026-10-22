@@ -67,6 +67,14 @@ export function validateStory(story, storyKey = 'story') {
         if (section.scrollMode && !supportedScrollModes.has(section.scrollMode)) {
             addError(errors, `${path}.scrollMode`, `unsupported mode "${section.scrollMode}"`);
         }
+        (section.inlineModel?.labels || []).forEach((label, labelIndex) => {
+            const labelPath = `${path}.inlineModel.labels[${labelIndex}]`;
+            if (!label?.text?.trim()) addError(errors, `${labelPath}.text`, 'label text is required');
+            const anchor = label?.anchor;
+            if (!Array.isArray(anchor) || anchor.length !== 3 || anchor.some((value) => !Number.isFinite(value) || value < 0 || value > 1)) {
+                addError(errors, `${labelPath}.anchor`, 'must be three numbers between 0 and 1');
+            }
+        });
         if (!Array.isArray(section?.elements)) {
             addError(errors, `${path}.elements`, 'must be an array');
         } else {

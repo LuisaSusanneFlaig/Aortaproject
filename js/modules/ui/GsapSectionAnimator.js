@@ -120,8 +120,6 @@ export class GsapSectionAnimator {
                 const content = section.querySelector('.text-box');
                 if (!content) return;
 
-                this.addInlineModelRotation(section, gsap, localAnimations);
-
                 if (content.classList.contains('story-split-shell')) {
                     const copy = content.querySelector('.story-copy-column');
                     const visualTriggerStart = section.classList.contains('miriam-diagnosis-infographic-section')
@@ -302,8 +300,6 @@ export class GsapSectionAnimator {
                 sections.forEach((section) => {
                     section.classList.remove('is-gsap-active');
                     delete section.dataset.gsapProgress;
-                    const modelContainer = section.querySelector('[data-inline-model]');
-                    if (modelContainer) delete modelContainer.dataset.scrollRotationBound;
                 });
                 openers.forEach((opener) => opener.classList.remove('is-chapter-active'));
             };
@@ -370,57 +366,6 @@ export class GsapSectionAnimator {
             localAnimations.push(shine);
             this.animations.push(shine);
         });
-    }
-
-    addInlineModelRotation(section, gsap, localAnimations) {
-        if (!section.classList.contains('alex-aorta-model-section')
-            && !section.classList.contains('alex-flow-section')
-            && !section.classList.contains('miriam-aorta-model-section')
-            && !section.classList.contains('miriam-flow-section')) return;
-        const modelContainer = section.querySelector('[data-inline-model]');
-        if (!modelContainer || modelContainer.dataset.scrollRotationBound === 'true') return;
-
-        const setupRotation = () => {
-            const viewer = modelContainer.inlineModelViewer;
-            if (!viewer?.model || modelContainer.dataset.scrollRotationBound === 'true') return;
-
-            modelContainer.dataset.scrollRotationBound = 'true';
-            // Rotate a centered parent around the world Y axis so the model's
-            // fitted X/Z orientation and position remain unchanged. Resolve
-            // the target on every update because flow buttons replace the
-            // model and create a new rotation pivot.
-            const getRotationTarget = () => viewer.rotationPivot || viewer.model;
-            const baseRotation = getRotationTarget().rotation.y;
-            const rotationState = { value: 0 };
-            const rotationDirection = section.classList.contains('miriam-aorta-model-section') ? -1 : 1;
-            const rotationTween = gsap.to(rotationState, {
-                value: Math.PI * 2 * rotationDirection,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: section,
-                    start: 'top 80%',
-                    end: 'bottom 20%',
-                    scrub: true,
-                    onUpdate: () => {
-                        const rotationTarget = getRotationTarget();
-                        if (rotationTarget) rotationTarget.rotation.y = baseRotation + rotationState.value;
-                    }
-                },
-                onUpdate: () => {
-                    const rotationTarget = getRotationTarget();
-                    if (rotationTarget) rotationTarget.rotation.y = baseRotation + rotationState.value;
-                }
-            });
-
-            localAnimations.push(rotationTween);
-            this.animations.push(rotationTween);
-        };
-
-        if (modelContainer.inlineModelViewer?.model) {
-            setupRotation();
-        } else {
-            modelContainer.addEventListener('inline-model-ready', setupRotation, { once: true });
-        }
     }
 
     destroy() {

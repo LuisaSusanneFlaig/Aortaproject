@@ -37,6 +37,7 @@ npm run screenshots
 | Statistics plots | `js/components/dataVisuals.js` |
 | Clinical infographics | `js/components/clinicalElements.js` |
 | 3D model viewer | `js/modules/ui/InlineModelViewer.js` |
+| 3D model labels | `inlineModel.labels` in the story files, `js/modules/ui/ModelLabels.js`, `css/components/model-labels.css` (open a story with `?pickLabels` and click the model to log an anchor) |
 | Story validation | `js/stories/validateStory.js` |
 
 ## Live pages
