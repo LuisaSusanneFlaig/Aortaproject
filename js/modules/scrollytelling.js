@@ -521,7 +521,9 @@ class ScrollytellingApp {
         const steps = Array.from(document.querySelectorAll('#story .step'));
         if (!steps.length) return { currentSection: 0, sectionT: 0, cameraT: 0 };
 
-        const marker = window.innerHeight * (this.usesEditorialScroll ? 0.34 : (window.innerWidth <= 820 ? 0.62 : 0.5));
+        // The editorial stories hand over their fixed visual stage at mid-screen
+        // (see GsapSectionAnimator), so the current section is chosen there too.
+        const marker = window.innerHeight * (this.usesEditorialScroll ? 0.5 : (window.innerWidth <= 820 ? 0.62 : 0.5));
         const activeGsapSection = steps.findIndex((step) => {
             const rect = step.getBoundingClientRect();
             return step.classList.contains('is-gsap-active') && rect.top <= marker && rect.bottom >= marker;

@@ -134,14 +134,17 @@ export class GsapSectionAnimator {
 
                 if (content.classList.contains('story-split-shell')) {
                     const copy = content.querySelector('.story-copy-column');
+                    // Adjacent sections must hand over at the same line, or two
+                    // fixed visual stages are active at once and overlap. The
+                    // default matches the mid-screen marker of setActiveStep.
                     const visualTriggerStart = section.classList.contains('miriam-diagnosis-infographic-section')
                         || section.classList.contains('miriam-imaging-section')
                         ? 'top 30%'
-                        : 'top 62%';
+                        : 'top 50%';
                     const visualTriggerEnd = section.classList.contains('miriam-symptoms-section')
                         || section.classList.contains('miriam-diagnosis-infographic-section')
                         ? 'bottom 30%'
-                        : 'bottom 38%';
+                        : 'bottom 50%';
                     const activeTrigger = ScrollTrigger.create({
                         trigger: section,
                         start: visualTriggerStart,
