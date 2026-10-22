@@ -54,6 +54,7 @@ export const aneurysmStory = {
                 legend: false,
                 rotationHint: true,
                 labels: [
+                    { text: 'Aortic root', anchor: [0.198, 0.53, 0.47], side: 'left' },
                     { text: 'Ascending aorta', anchor: [0.194, 0.592, 0.439], side: 'left' },
                     { text: 'Aortic arch', anchor: [0.599, 0.734, 0.76], side: 'left' },
                     { text: 'Widened section (aneurysm)', anchor: [0.87, 0.657, 0.766], side: 'right' },
@@ -63,11 +64,11 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Alex\'s aorta is shown here. The aorta has widened in the thoracic part. That\'s why it is called a thoracic aortic aneurysm.'
+                    text: 'Alex has Marfan syndrome, an inherited weakness of the connective tissue that can also affect the wall of the aorta. His aorta is shown here. It has widened in the thoracic part. That\'s why it is called a thoracic aortic aneurysm.'
                 },
                 {
                     type: 'text',
-                    text: 'The labels in the model follow the path of the blood. It leaves the heart through the ascending aorta, curves through the aortic arch, and flows down the descending aorta. The widened section, the aneurysm, sits where the arch turns downward.'
+                    text: 'The labels in the model follow the path of the blood. It leaves the heart through the aortic valve into the aortic root, the first, slightly wider part of the aorta. From there it rises through the ascending aorta, curves through the aortic arch, and flows down the descending aorta. The widened section, the aneurysm, sits where the arch turns downward.'
                 },
                 {
                     type: 'reference',
@@ -320,7 +321,7 @@ export const aneurysmStory = {
                     text: 'The important point is not only where the aorta is wide, but how the wider shape reorganizes flow. Blood accelerates in the arch and can swirl in the enlargement, forming a vortex. This differs from the smoother, more orderly movement called laminar flow. For comparison, the healthy-flow reference uses a separate healthy aortic anatomy; it does not show Alex\'s aorta. These patterns matter because the vessel wall is exposed to the flow with every heartbeat.',
                     infoPopup: {
                         title: 'laminar flow',
-                        text: 'Laminar flow moves in smooth layers, with little mixing or crosswise swirling between them. It can occur in the bloodstream and is an orderly flow that may become turbulent when disturbances grow beyond a critical point.'
+                        text: 'In laminar flow, blood moves smoothly in one direction and swirls only very little; no large swirls form. When the flow is disturbed, for example where the vessel widens or splits, larger swirls can develop.'
                     }
                 },
                 {

@@ -72,7 +72,7 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Before the tear, Miriam\'s aorta was one continuous vessel with a single channel for blood. In a dissection, blood enters through a tear in the inner layer and forces the layers of the wall apart.'
+                    text: 'Before the tear, Miriam\'s aorta was one continuous vessel with a single channel for blood. Its wall is built from three layers: the inner wall, a strong middle layer, and an outer layer. In a dissection, blood enters through a tear in the inner wall and pushes between the layers, splitting the wall apart.'
                 },
                 {
                     type: 'text',
@@ -117,10 +117,10 @@ export const dissectionStory = {
                 },
                 {
                     type: 'text',
-                    text: 'In a healthy aorta, the lines run side by side in smooth, orderly layers, from the heart through the arch and down into the body. This is called laminar flow. Later in the story, the same kind of image shows how a dissection disturbs this order.',
+                    text: 'In a healthy aorta, the lines run side by side, smooth and orderly, from the heart through the arch and down into the body. This is called laminar flow. Later in the story, the same kind of image shows how a dissection disturbs this order.',
                     infoPopup: {
                         title: 'laminar flow',
-                        text: 'Laminar flow moves in smooth layers, with little mixing or crosswise swirling between them. It can occur in the bloodstream and is an orderly flow that may become turbulent when disturbances grow beyond a critical point.'
+                        text: 'In laminar flow, blood moves smoothly in one direction and swirls only very little; no large swirls form. When the flow is disturbed, for example where the vessel widens or splits, larger swirls can develop.'
                     }
                 }
             ]
@@ -135,11 +135,11 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Many people with acute Type B dissection report severe chest or back pain, often beginning suddenly. High blood pressure is also common. Migrating pain means the pain seems to move as the tear extends along the aorta. A fainting episode, a normal heart tracing, or a normal chest X-ray cannot safely rule the disease in or out, so symptoms are only the first clue.'
+                    text: 'The chart shows how often each warning sign was reported by 1,891 people with acute Type B dissection in an international registry (IRAD). Most of them had severe chest or back pain, often beginning suddenly. High blood pressure is also common. Migrating pain means the pain seems to move as the tear extends along the aorta. A fainting episode, a normal heart tracing, or a normal chest X-ray cannot safely rule the disease in or out, so symptoms are only the first clue. Type A dissections cause similar warning signs, with chest pain being more common there.'
                 },
                 {
                     type: 'symptomBars',
-                    subtitle: '1,891 of 5,638 acute dissections',
+                    subtitle: '1,891 people with acute Type B dissection',
                     items: [
                         { icon: 'bolt', label: 'Severe or worst-ever pain', value: 88.7, color: '#c83c48', info: 'A sudden, severe pain in the chest or back is an important warning sign. It can feel different from usual pain and needs urgent medical assessment.' },
                         { icon: 'rib_cage', label: 'Chest or back pain', value: 88.7, color: '#c83c48', info: 'Pain can be felt in the chest, back, or both. Its location alone cannot confirm a dissection, but it helps clinicians decide how urgently to investigate.' },
