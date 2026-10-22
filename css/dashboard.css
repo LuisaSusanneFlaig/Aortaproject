@@ -82,13 +82,6 @@ body:not(.light-mode).dashboard-page .section-kicker { color: #fff; }
 .intro-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(24px, 4vw, 56px); max-width: 920px; margin: clamp(42px, 6vw, 68px) auto 0; }
 .intro-columns p { margin: 0; color: color-mix(in srgb, var(--color-text) 72%, transparent); font-size: 1.05rem; line-height: 1.7; }
 .intro-columns a { color: var(--color-text); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
-.intro-learning-objectives { position: relative; z-index: 1; max-width: 920px; margin: clamp(36px, 5vw, 56px) auto 0; }
-.intro-learning-objectives h2 { margin: 0 0 18px; font-size: clamp(1.2rem, 2vw, 1.45rem); font-weight: 600; }
-.intro-learning-objectives ul { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; margin: 0; padding: 0; list-style: none; }
-.intro-learning-objectives li { display: flex; align-items: flex-start; gap: 16px; min-height: 100%; padding: 16px 14px 16px 0; border-top: 1px solid color-mix(in srgb, var(--color-text) 28%, transparent); color: color-mix(in srgb, var(--color-text) 76%, transparent); font-size: .98rem; line-height: 1.6; }
-.learning-objective-icon { flex: 0 0 auto; margin-top: 1px; color: var(--color-accent); font-family: 'Material Symbols Rounded'; font-size: 1.8rem; font-feature-settings: 'liga'; font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 32; line-height: 1.25; }
-.learning-objective-source { margin: 18px 0 0; color: color-mix(in srgb, var(--color-text) 60%, transparent); font-size: .82rem; line-height: 1.5; }
-.learning-objective-source a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; }
 .overview-hero { min-height: 100vh; padding: clamp(88px, 12vw, 156px) 0 clamp(72px, 9vw, 112px); display: flex; flex-direction: column; align-items: center; }
 .overview-hero.anatomy-section { min-height: 0; padding-top: clamp(48px, 6vw, 80px); }
 .overview-copy { text-align: left; max-width: 760px; margin-right: auto; }
@@ -139,10 +132,12 @@ body:not(.light-mode).dashboard-page .section-kicker { color: #fff; }
 .section-heading { max-width: 720px; margin-bottom: clamp(44px, 7vw, 80px); }
 .section-heading h2 { margin: 0; font-size: clamp(2rem, 5vw, 4rem); font-weight: 500; }
 .section-heading p { margin: 16px 0 0; font-size: 1.05rem; }
-.story-entry { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: center; gap: clamp(36px, 8vw, 104px); padding: clamp(36px, 6vw, 72px) 0; border-top: 0; }
-.story-entry-reverse img { grid-column: 2; }
-.story-entry-reverse .story-entry-copy { grid-column: 1; grid-row: 1; }
-.story-entry img { width: 100%; max-width: none; aspect-ratio: 4 / 5; object-fit: cover; object-position: center 30%; border-radius: 6px; }
+/* Alex and Miriam side by side, like the outlooks on the ending page. */
+.story-entry-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(2, auto); gap: 0 clamp(24px, 4vw, 56px); }
+.story-entry { display: grid; grid-row: span 2; grid-template-rows: subgrid; row-gap: 28px; min-width: 0; padding-top: 20px; border-top: 2px solid var(--color-accent); }
+.story-entry img { width: 100%; max-width: none; aspect-ratio: 1; object-fit: cover; object-position: center 30%; border-radius: 6px; }
+.story-entry-copy { display: flex; flex-direction: column; align-items: flex-start; }
+.story-entry-copy a { margin-top: auto; }
 .story-entry-copy h3 { margin: 0; font-size: clamp(2.2rem, 5vw, 4.5rem); font-weight: 500; }
 .diagnosis-label { margin: 8px 0 28px; color: var(--color-accent); font-weight: 500; }
 .story-entry-copy > p:not(.diagnosis-label) { max-width: 58ch; margin: 0 0 28px; font-size: 1.05rem; }
@@ -160,9 +155,6 @@ body:not(.light-mode).dashboard-page .section-kicker { color: #fff; }
   .dashboard-intro { min-height: 0; padding-top: calc(var(--nav-height) + 42px); padding-bottom: 48px; }
   .intro-heading { padding: 28px 0 42px; }
   .intro-columns { grid-template-columns: 1fr; gap: 18px; }
-  .intro-learning-objectives { margin-top: 32px; }
-  .intro-learning-objectives ol { grid-template-columns: 1fr; gap: 8px; }
-  .intro-learning-objectives li { min-height: 0; padding-top: 12px; padding-bottom: 12px; }
   .overview-hero { align-items: stretch; } .overview-copy { text-align: left; }
   .overview-hero.anatomy-section { padding-top: 36px; }
   .anatomy-layout { grid-template-columns: 1fr; gap: 12px; margin-top: 28px; }
@@ -174,9 +166,8 @@ body:not(.light-mode).dashboard-page .section-kicker { color: #fff; }
   .anatomy-popover::before { display: none; }
   .state-control { width: 100%; } .state-button { flex: 1; min-width: 0; padding: 0 8px; font-size: .875rem; }
   .aorta-stage { height: 360px; } .state-descriptions { text-align: left; }
-  .story-entry, .story-entry-reverse { grid-template-columns: 1fr; gap: 28px; }
-  .story-entry img, .story-entry-reverse img { grid-column: 1; grid-row: auto; width: min(240px, 78vw); }
-  .story-entry-copy, .story-entry-reverse .story-entry-copy { grid-column: 1; grid-row: auto; }
+  .story-entry-grid { grid-template-columns: 1fr; grid-template-rows: none; row-gap: 56px; }
+  .story-entry { grid-row: auto; grid-template-rows: none; }
   .topic-links { grid-template-columns: 1fr; } .overview-footer { flex-direction: column; }
 }
 @media (prefers-reduced-motion: reduce) {
