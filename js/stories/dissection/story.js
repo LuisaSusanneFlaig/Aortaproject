@@ -72,11 +72,11 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Before the tear, Miriam\'s aorta is one continuous vessel with a single channel for blood. The emergency is not that a new vessel appears, but that blood forces a second route inside the existing wall.'
+                    text: 'Before the tear, Miriam\'s aorta was one continuous vessel with a single channel for blood. In a dissection, blood enters through a tear in the inner layer and forces the layers of the wall apart.'
                 },
                 {
                     type: 'text',
-                    text: 'When dissection occurs, blood enters through a tear and separates layers of the vessel wall. The original channel is called the true lumen; the new channel inside the wall is called the false lumen. From that moment, the aorta is no longer just a pipe carrying blood downward. It has become a divided pathway.'
+                    text: 'The original channel is called the true lumen; the new channel inside the wall is called the false lumen. From that moment, the aorta is no longer just a pipe carrying blood downward. It has become a divided pathway.'
                 },
                 {
                     type: 'text',
@@ -186,7 +186,7 @@ export const dissectionStory = {
                         {
                             icon: 'labs_svg',
                             title: 'Lab tests',
-                            info: 'Blood tests can include D-dimer and tests of organ function. D-dimer may help rule out dissection only in selected low-risk cases; it cannot confirm the diagnosis, and other illnesses can raise it.'
+                            info: 'Blood tests can include D-dimer and tests of organ function, which show whether the kidneys, liver, or gut are affected.'
                         },
                         {
                             icon: 'radiology_aorta',
@@ -211,7 +211,7 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'For a CT angiogram (CTA), contrast is injected into a vein while a fast CT scanner takes many thin X-ray images. The contrast makes blood inside the aorta visible. From the image slices, clinicians can follow the vessel through the chest and abdomen, identify the flap separating the two channels, measure the aorta, and check the branch vessels. The red marking was added during image editing to highlight Miriam\'s Type B dissection; it was not red in the original scan.'
+                    text: 'For a CT angiogram (CTA), contrast is injected into a vein while a fast CT scanner takes many thin X-ray images. The contrast makes blood inside the aorta visible. From these images, clinicians can follow the vessel through the chest and abdomen, identify the flap separating the two channels, measure the aorta, and check the branch vessels. The red marking was added during image editing to highlight Miriam\'s Type B dissection; it was not red in the original scan.'
                 },
                 {
                     type: 'image',
@@ -245,7 +245,7 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'A CTA is not one single picture. The scanner records the chest as a stack of hundreds of thin cross-sectional images, called slices. In every slice, the contrast makes the blood inside the aorta appear bright. On a computer, software traces the outline of the aorta in each slice and joins these outlines into a three-dimensional model. In Miriam\'s case, the model also has to capture the flap that divides the aorta into two channels. This is how the model shown earlier was built, and it is also the starting point for the flow simulation later in the story.'
+                    text: 'A CTA is not one single picture but a stack of hundreds of thin images, called slices. On a computer, software traces the outline of the aorta in each slice and joins these outlines into a three-dimensional model. In Miriam\'s case, the model also has to capture the flap that divides the aorta into two channels. This is how the model shown earlier was built, and it is also the starting point for the flow simulation later in the story.'
                 },
                 {
                     type: 'processSteps',
@@ -289,11 +289,11 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Miriam\'s dissected aorta is reconstructed from medical imaging and divided into a computational mesh that includes both channels. Software calculates blood movement through that geometry, including how blood enters the aorta and leaves through its branches.'
+                    text: 'To simulate the flow, the 3D model is divided into a computational mesh that includes both channels. Software then calculates how blood moves through this geometry, from where it enters the aorta to where it leaves through its branches.'
                 },
                 {
                     type: 'text',
-                    text: 'The calculated results are then rendered as a 3D animation; color and motion help show flow direction and relative speed. This is simulated data, not blood recorded in the body or a prediction of Miriam\'s individual outcome.'
+                    text: 'The results are shown as the moving lines introduced earlier: each line follows the path of the blood, and its color shows the speed. This is simulated data, not blood recorded in the body or a prediction of Miriam\'s individual outcome.'
                 },
                 {
                     type: 'text',
@@ -380,7 +380,7 @@ export const dissectionStory = {
                 },
                 {
                     type: 'text',
-                    text: 'Flow speed and direction vary across the vessel, and swirling areas may change the forces on the wall. For comparison, the healthy-flow reference uses a separate healthy aortic anatomy to illustrate general laminar flow; it does not represent Miriam\'s dissected aorta. This patient-specific model cannot predict Miriam\'s individual outcome, but it shows why blood movement matters for the treatment decisions that follow.'
+                    text: 'Flow speed and direction vary across the vessel, and swirling areas may change the forces on the wall. The healthy comparison view uses the same reference aorta as before, with its orderly laminar flow. The difference helps explain why blood movement matters for the treatment decisions that follow.'
                 },
                 {
                     type: 'reference',
@@ -398,7 +398,7 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Treatment depends on whether the dissection is causing complications. For an uncomplicated Type B dissection, the first step is usually hospital care with medicine to lower heart rate and blood pressure, pain relief, and close checks of pulses, organ function, and repeat images. If blood flow to an organ is reduced, the aorta is enlarging or leaking, pain persists, or blood pressure cannot be controlled, the team may recommend repair. TEVAR places a fabric-covered support inside the aorta through an artery, usually in the groin, to cover the main tear and redirect blood. It is not suitable for every anatomy or every person.',
+                    text: 'Treatment depends on whether the dissection is causing complications. For an uncomplicated Type B dissection, the first step is usually hospital care with medicine to lower heart rate and blood pressure, pain relief, and close checks of pulses, organ function, and repeat images. If blood flow to an organ is reduced, the aorta is enlarging or leaking, pain persists, or blood pressure cannot be controlled, the team may recommend repair. A common option is TEVAR, a stent graft placed from inside the aorta to cover the main tear. It is not suitable for every anatomy or every person.',
                     infoPopup: {
                         title: 'TEVAR',
                         text: 'TEVAR means thoracic endovascular aortic repair. Through an artery, usually in the groin, doctors guide a catheter carrying a fabric-covered metal stent graft to the chest aorta. Once opened, it lines the inside of the vessel and covers the main tear, helping blood flow through the intended channel. Suitability depends on the tear\'s position, branch vessels, and the strength of the aortic wall; people with Marfan syndrome may need a different balance of endovascular and open repair.'
@@ -414,13 +414,13 @@ export const dissectionStory = {
                             icon: 'prescriptions',
                             label: 'Uncomplicated Type B',
                             treatment: 'Medical therapy',
-                            info: 'If there is no rupture, organ blood-flow problem, ongoing severe pain, or uncontrolled blood pressure, treatment generally begins with medicines in hospital. The team controls heart rate and blood pressure, treats pain, watches organ function, and repeats imaging to check for change.'
+                            info: 'Without complications, treatment begins in hospital with medicines and close monitoring. Repeat imaging checks whether the dissection changes.'
                         },
                         {
                             icon: 'medical_services',
                             label: 'Complicated Type B',
                             treatment: 'Aortic treatment',
-                            info: 'A blocked branch artery, reduced blood supply to an organ, bleeding or rupture, ongoing pain, or blood pressure that remains high despite treatment can make the dissection complicated. The aortic team then weighs urgent repair options, including TEVAR or open surgery, based on anatomy and connective-tissue disease.'
+                            info: 'With complications, the aortic team weighs urgent repair, with TEVAR or open surgery. The choice depends on the anatomy and on Miriam\'s connective-tissue disease.'
                         }
                     ]
                 },
@@ -448,7 +448,7 @@ export const dissectionStory = {
                         {
                             eyebrow: 'Today',
                             title: 'Blood pressure',
-                            info: 'Long-term medicine is commonly used to keep blood pressure and heart rate under control, reducing the force of each heartbeat on the aorta.'
+                            info: 'Medicine keeps blood pressure and heart rate low every day, reducing the force of each heartbeat on the aorta.'
                         },
                         {
                             eyebrow: 'After the acute phase',

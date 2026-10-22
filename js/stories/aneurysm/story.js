@@ -21,7 +21,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Before Alex\'s scan becomes personal, the statistics set the wider scene. The “Deaths” chart shows that more people worldwide are dying with aortic aneurysm than in earlier decades: the number rose by 74%, from 88,353 in 1990 to 153,927 in 2021. This is partly because populations are growing and aging. At the same time, the “Mortality rate per 100,000” chart shows that, after adjusting for age, the risk of death fell by 27%, from 2.54 to 1.86. This age-adjusted figure is the standardized death rate. This shows that diagnostics and treatment methods are improving. The last point in each chart, for 2030, is an estimate, not a measurement.',
+                    text: 'Before Alex\'s scan becomes personal, the statistics set the wider scene. The “Deaths” chart shows that more people worldwide are dying with aortic aneurysm than in earlier decades: the number rose by 74%, from 88,353 in 1990 to 153,927 in 2021. This is partly because populations are growing and aging. At the same time, the “Mortality rate per 100,000” chart shows that, after adjusting for age, the risk of death fell by 27%, from 2.54 to 1.86. This age-adjusted figure is the standardized death rate. This suggests that diagnostics and treatment methods are improving. The last point in each chart, for 2030, is an estimate, not a measurement.',
                     infoPopup: {
                         title: 'standardized death rate',
                         text: 'A standardized death rate adjusts mortality figures to a common population structure, often by age, so populations or years can be compared more fairly. It estimates the death rate that would be seen if the population had the same age distribution as the reference population.'
@@ -63,7 +63,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Alex\'s aorta is shown here. The aorta has widened in the thoracic part. That\'s why it is called a thoracic aortic aneurysm. The diameter, growth, and location are compared across follow-up visits.'
+                    text: 'Alex\'s aorta is shown here. The aorta has widened in the thoracic part. That\'s why it is called a thoracic aortic aneurysm.'
                 },
                 {
                     type: 'text',
@@ -83,11 +83,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'The difficult part of a thoracic aortic aneurysm is that it can stay quiet for a long time. Clinical sources describe most people as having no symptoms before a sudden serious event; one review gives roughly 95% without warning signs and about 5% with symptoms beforehand. If the widened vessel presses on nearby parts of the body, it may cause chest or back pain, a change in the voice, trouble swallowing, or shortness of breath. Sudden severe pain, fainting, breathlessness, or neurological symptoms can signal a tear in the wall of the aorta or a burst blood vessel.',
-                    infoPopup: {
-                        title: 'thoracic aortic aneurysm',
-                        text: 'A thoracic aortic aneurysm is a bulge or widening in the part of the aorta that runs through the chest.'
-                    }
+                    text: 'The difficult part of a thoracic aortic aneurysm is that it can stay quiet for a long time. Clinical sources describe most people as having no symptoms before a sudden serious event; one review gives roughly 95% without warning signs and about 5% with symptoms beforehand. If the widened vessel presses on nearby parts of the body, it may cause chest or back pain, a change in the voice, trouble swallowing, or shortness of breath. Sudden severe pain, fainting, breathlessness, or neurological symptoms can signal a tear in the wall of the aorta or a burst blood vessel.'
                 },
                 {
                     type: 'symptomBars',
@@ -97,13 +93,13 @@ export const aneurysmStory = {
                             icon: 'block',
                             label: 'No symptoms',
                             value: 95,
-                            info: 'Many thoracic aortic aneurysms grow without noticeable symptoms. This is why regular imaging can be important: it may identify changes before the aneurysm causes an emergency.'
+                            info: 'Many thoracic aortic aneurysms grow without noticeable symptoms, sometimes for years.'
                         },
                         {
                             icon: 'sick',
                             label: 'Symptoms before acute event',
                             value: 5,
-                            info: 'A small proportion of people may notice symptoms before an acute event. Chest or back pain, shortness of breath, trouble swallowing, or a changed voice should be assessed promptly, especially when an aortic aneurysm is already known.'
+                            info: 'A small proportion of people notice symptoms before an acute event. They should be assessed promptly, especially when an aortic aneurysm is already known.'
                         }
                     ]
                 },
@@ -121,9 +117,9 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Because Alex has Marfan syndrome, doctors check his aorta even when he feels well: widening may cause no symptoms. They measure the aortic root and ascending aorta, assess the aortic valve, and compare each result with earlier scans. The change over time matters as much as one measurement. The team also considers family history, body size, and how quickly the aorta is growing when planning the next scan or specialist review.',
+                    text: 'Because Alex has Marfan syndrome, doctors check his aorta regularly, even when he feels well. They measure the aortic root and ascending aorta, assess the aortic valve, and compare each result with earlier scans. The change over time matters as much as one measurement. The team also considers family history, body size, and how quickly the aorta is growing when planning the next scan or specialist review.',
                     infoPopup: {
-                        title: 'valve findings',
+                        title: 'aortic valve',
                         text: 'Heart valves act like one-way doors that keep blood moving through the heart in the right direction. The aortic valve sits between the heart’s main pumping chamber and the aorta, and scans can show whether it is opening and closing normally.'
                     }
                 },
@@ -148,7 +144,7 @@ export const aneurysmStory = {
                         {
                             icon: 'compare_svg',
                             title: 'Aortic review',
-                            info: 'The team checks whether the aorta is stable or growing, reviews the family history and valve, and relates the measurements to Alex’s body size.'
+                            info: 'The team decides whether the aorta is stable or growing and when the next scan or specialist review is due.'
                         }
                     ]
                 },
@@ -166,7 +162,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'For a CT angiogram (CTA), a small tube is placed in a vein, usually in the arm, and iodine contrast is injected while the scanner takes a rapid series of X-ray images. The contrast makes blood-filled spaces stand out, so the team can trace the aorta, see its branches, and measure its diameter. A computer can combine the thin image slices into views from different angles. The aorta is colored red here during image editing; it was not red in the original scan.'
+                    text: 'For a CT angiogram (CTA), a small tube is placed in a vein, usually in the arm, and iodine contrast is injected while the scanner takes a rapid series of X-ray images. The contrast makes blood-filled spaces stand out, so the team can trace the aorta, see its branches, and measure its diameter. The aorta is colored red here during image editing; it was not red in the original scan.'
                 },
                 {
                     type: 'image',
@@ -190,7 +186,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'A CTA is not one single picture. The scanner records the chest as a stack of hundreds of thin cross-sectional images, called slices. In every slice, the contrast makes the blood inside the aorta appear bright. On a computer, software traces the outline of the aorta in each slice and joins these outlines into a three-dimensional model. This is how the model of Alex\'s aorta shown earlier was built, and it is also the starting point for the flow simulation later in the story.'
+                    text: 'A CTA is not one single picture but a stack of hundreds of thin images, called slices. On a computer, software traces the outline of the aorta in each slice and joins these outlines into a three-dimensional model. This is how the model of Alex\'s aorta shown earlier was built, and it is also the starting point for the flow simulation later in the story.'
                 },
                 {
                     type: 'processSteps',
@@ -232,11 +228,11 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Alex\'s aortic anatomy is reconstructed from medical imaging and divided into a computational mesh. Software calculates blood movement through that geometry, including how blood enters the aorta and leaves through its branches.'
+                    text: 'To simulate the flow, the 3D model is divided into a computational mesh. Software then calculates how blood moves through this geometry, from where it enters the aorta to where it leaves through its branches.'
                 },
                 {
                     type: 'text',
-                    text: 'The calculated results are then rendered as a 3D animation; color and motion help show flow direction and relative speed. This is simulated data, not blood recorded in the body or a prediction of Alex\'s individual outcome.'
+                    text: 'The results are rendered as a 3D animation; color and motion help show flow direction and relative speed. This is simulated data, not blood recorded in the body or a prediction of Alex\'s individual outcome.'
                 },
                 {
                     type: 'text',
@@ -290,7 +286,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'In the aorta, shape and blood flow are tightly connected. This model shows simulated blood flow through Alex’s aorta. It illustrates changes in speed and direction, especially where the vessel widens or curves. It is not a real-time scan, but a simulation based on his anatomy.'
+                    text: 'In the aorta, shape and blood flow are tightly connected. This model shows simulated blood flow through Alex’s aorta. It illustrates changes in speed and direction, especially where the vessel widens or curves.'
                 },
                 {
                     type: 'modelPlaceholder',
@@ -353,7 +349,7 @@ export const aneurysmStory = {
                             icon: 'circle_circle',
                             label: 'Stable diameter and growth',
                             treatment: 'Continue monitoring',
-                            info: 'If repeat measurements show little or no growth, follow-up imaging and visits continue at an interval chosen for Alex. Regular review matters because a change can happen before symptoms appear.'
+                            info: 'If repeat measurements show little or no growth, follow-up imaging and visits continue at an interval chosen for Alex.'
                         },
                         {
                             icon: 'expand',
@@ -406,7 +402,7 @@ export const aneurysmStory = {
                         {
                             eyebrow: 'Long term',
                             title: 'Regular imaging',
-                            info: 'Attending follow-up imaging to track aortic size and shape over time.'
+                            info: 'Follow-up imaging tracks the size and shape of the aorta over time.'
                         },
                         {
                             eyebrow: 'In the family',
