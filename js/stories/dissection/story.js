@@ -326,6 +326,10 @@ export const dissectionStory = {
                     text: 'The calculated results are then rendered as a 3D animation; color and motion help show flow direction and relative speed. This is simulated data, not blood recorded in the body or a prediction of Miriam\'s individual outcome.'
                 },
                 {
+                    type: 'text',
+                    text: 'Every simulation rests on assumptions. The vessel wall is usually treated as rigid, although real vessels stretch with every heartbeat. Inflow and outflow are based on measurements, population averages or estimates, and small differences in how the aorta is traced in the scan can change the result. Above all, the flow is calculated, not measured: 4D-flow MRI can measure blood flow in the body, but with less detail.'
+                },
+                {
                     type: 'processSteps',
                     label: 'How a flow simulation is built from Miriam\'s 3D model',
                     steps: [
@@ -355,16 +359,7 @@ export const dissectionStory = {
                             text: 'The results become pathlines that show where blood moves and how fast.',
                             visual: { kind: 'model', url: `${flowModelBase}dissection_lines_anim.glb`, label: 'Animated pathlines of the simulated blood flow in Miriam\'s aorta', rotationY: -1.5708, framingScale: 0.75, animationFps: 20 }
                         }
-                    ],
-                    notes: {
-                        title: 'What the simulation assumes',
-                        items: [
-                            'The vessel wall is usually treated as rigid, although real vessels stretch with every heartbeat.',
-                            'Inflow and outflow are based on measurements, population averages or estimates.',
-                            'Small differences in how the aorta is traced in the scan can change the result.',
-                            'The flow is calculated, not measured. 4D-flow MRI can measure blood flow in the body, but with less detail.'
-                        ]
-                    }
+                    ]
                 },
                 {
                     type: 'reference',
