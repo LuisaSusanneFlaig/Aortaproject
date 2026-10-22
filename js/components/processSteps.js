@@ -2,8 +2,8 @@ import { renderMaterialIcon } from './icons.js';
 
 // Step-by-step infographic (e.g. scan -> 3D model, 3D model -> flow simulation).
 // Each step has a title, a text and a visual; all copy comes from story data.
-// The step text stays hidden until the step number is clicked, like the info
-// boxes of the diagnosis path.
+// The step text stays hidden until the + button above the title is clicked,
+// like the info boxes of the diagnosis path.
 const SLICE_COUNT = 6;
 let processInfoId = 0;
 
@@ -43,7 +43,7 @@ export function renderProcessSteps(element = {}) {
         if (step.text) {
             const infoId = `process-info-${++processInfoId}`;
             infoBoxes.push(`<div class="symptom-info-box process-info-box" id="${infoId}" hidden><strong>${step.title || ''}</strong> ${step.text}</div>`);
-            title = `<button class="process-info-trigger" type="button" aria-label="More information about ${step.title || `step ${index + 1}`}" aria-expanded="false" aria-controls="${infoId}">${number}${step.title || ''}</button>`;
+            title = `<button class="process-info-trigger" type="button" aria-label="More information about ${step.title || `step ${index + 1}`}" aria-expanded="false" aria-controls="${infoId}"><span class="process-number" aria-hidden="true">+</span>${step.title || ''}</button>`;
         }
         return `
         <li class="process-step">
