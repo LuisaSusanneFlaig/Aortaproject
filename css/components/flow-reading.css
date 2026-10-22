@@ -1,9 +1,10 @@
 /* Legend for the "How to Read Blood Flow" model (speedLegend in story data).
-   The gradient mirrors the export's line colors: light = slower, saturated = faster.
+   The gradient matches the line colors in the viewer (InlineModelViewer
+   applyAccentSpeedScale): light accent = slower, accent = faster.
    Selectors include #story to outrank the flat theme's background-image reset. */
 :root {
-    --flow-speed-slow: #ffe6e6;
-    --flow-speed-fast: #ff3333;
+    --flow-speed-slow: color-mix(in srgb, var(--color-accent) 15%, #fff);
+    --flow-speed-fast: var(--color-accent);
 }
 
 body[data-story-version] #story .flow-reading-legend {

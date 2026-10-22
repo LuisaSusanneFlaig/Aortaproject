@@ -6,8 +6,8 @@ import { ModelLabels, parseModelLabels } from './ModelLabels.js';
 
 // Keep 3D mesh materials aligned with the UI accent token (--color-accent).
 const MODEL_ACCENT = 0xb62413;
-// Wall tint behind flow exports that keep their own colors.
-const NEUTRAL_WALL = 0x8a8f96;
+// Lightest step of the accent speed scale (matches --flow-speed-slow).
+const ACCENT_SCALE_LIGHT = 0.15;
 // Particle diameter as a fraction of the model's largest dimension.
 const PARTICLE_SIZE = 0.004;
 const animationSyncStarts = new Map();
@@ -135,12 +135,12 @@ class InlineModelViewer {
             if (modelMode === 'flow') this.markTransparentSourceMeshes(this.originalModel);
             if (modelMode === 'surface') this.applySurfaceMaterial(this.originalModel);
             this.prepareMaterials(this.originalModel);
-            // Exports that encode meaning in their colors (data-source-colors)
-            // keep them instead of the uniform accent, over a neutral wall.
+            if (modelMode === 'flow') this.applyTransparentFlowSurfaceMaterial(this.originalModel);
+            // Exports that encode speed in their colors (data-source-colors)
+            // keep that scale, re-tinted to the accent red.
             const keepSourceColors = this.container.dataset.sourceColors === 'true';
-            if (modelMode === 'flow') this.applyTransparentFlowSurfaceMaterial(this.originalModel, keepSourceColors ? NEUTRAL_WALL : MODEL_ACCENT);
             if (modelMode === 'flow' && !keepSourceColors) this.applyFlowAccentColor(this.originalModel);
-            if (modelMode === 'flow' && keepSourceColors) this.applyUnlitSourceColors(this.originalModel);
+            if (modelMode === 'flow' && keepSourceColors) this.applyAccentSpeedScale(this.originalModel);
             this.layeredModel = modelMode === 'layers'
                 ? this.createLayeredModel(this.originalModel)
                 : null;
@@ -279,11 +279,33 @@ class InlineModelViewer {
         });
     }
 
-    // Colors that encode data (e.g. speed) must not be tinted by the scene
-    // lights, so those lines are drawn unlit.
-    applyUnlitSourceColors(model) {
+    // The flow exports color lines on a single-hue red scale, where a more
+    // saturated color means faster flow. Map that scale onto light accent ->
+    // accent and draw the lines unlit so the scene lights do not tint it.
+    applyAccentSpeedScale(model) {
+        const fast = new THREE.Color(MODEL_ACCENT);
+        const slow = new THREE.Color(0xffffff).lerp(fast, ACCENT_SCALE_LIGHT);
+        const mixed = new THREE.Color();
         model.traverse((child) => {
-            if (!child.isMesh || child.userData.isFlowSurface || !child.geometry?.attributes?.color) return;
+            const colors = child.geometry?.attributes?.color;
+            if (!child.isMesh || child.userData.isFlowSurface || !colors) return;
+            const saturation = (index) => {
+                const red = colors.getX(index);
+                return red > 0 ? 1 - Math.min(colors.getY(index), colors.getZ(index)) / red : 0;
+            };
+            let min = Infinity;
+            let max = -Infinity;
+            for (let index = 0; index < colors.count; index += 1) {
+                const value = saturation(index);
+                min = Math.min(min, value);
+                max = Math.max(max, value);
+            }
+            const range = max - min || 1;
+            for (let index = 0; index < colors.count; index += 1) {
+                mixed.copy(slow).lerp(fast, (saturation(index) - min) / range);
+                colors.setXYZ(index, mixed.r, mixed.g, mixed.b);
+            }
+            colors.needsUpdate = true;
             child.material = new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.DoubleSide });
         });
     }
@@ -299,15 +321,15 @@ class InlineModelViewer {
         });
     }
 
-    applyTransparentFlowSurfaceMaterial(model, color = MODEL_ACCENT) {
+    applyTransparentFlowSurfaceMaterial(model) {
         model.traverse((child) => {
             if (!child.isMesh || !child.userData.isFlowSurface) return;
             if (child.geometry && !child.geometry.attributes.normal) child.geometry.computeVertexNormals();
             child.material = new THREE.MeshStandardMaterial({
-                color,
+                color: MODEL_ACCENT,
                 roughness: 0.64,
                 metalness: 0.02,
-                emissive: color,
+                emissive: MODEL_ACCENT,
                 emissiveIntensity: 0.08,
                 transparent: true,
                 opacity: 0.16,
