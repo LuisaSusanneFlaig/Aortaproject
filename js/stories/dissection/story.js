@@ -311,15 +311,15 @@ export const dissectionStory = {
         },
         {
             id: 's11',
-            title: 'After the Acute Event',
+            title: 'What the Flow Reveals',
             scrollMode: 'sticky',
-            timelineLabel: '+1.5 months',
+            timelineLabel: 'Flow simulation',
             className: 'flow-research-section miriam-flow-section',
             paragraphs: [],
             elements: [
                 {
                     type: 'text',
-                    text: 'After the acute event, this simulation shows how blood moves through both channels of Miriam\'s dissected aorta. It illustrates how the tear changes the route of circulation.'
+                    text: 'This simulation shows how blood moves through both channels of Miriam\'s dissected aorta. It illustrates how the tear changes the route of circulation. The simulation is based on a follow-up CTA taken about six weeks after the dissection.'
                 },
                 {
                     type: 'modelPlaceholder',
@@ -353,7 +353,7 @@ export const dissectionStory = {
                 },
                 {
                     type: 'text',
-                    text: 'Flow speed and direction vary across the vessel, and swirling areas may change the forces on the wall. For comparison, the healthy-flow reference uses a separate healthy aortic anatomy to illustrate general laminar flow; it does not represent Miriam\'s dissected aorta. This patient-specific model cannot predict Miriam\'s individual outcome, but it shows why blood movement still matters after the first emergency.'
+                    text: 'Flow speed and direction vary across the vessel, and swirling areas may change the forces on the wall. For comparison, the healthy-flow reference uses a separate healthy aortic anatomy to illustrate general laminar flow; it does not represent Miriam\'s dissected aorta. This patient-specific model cannot predict Miriam\'s individual outcome, but it shows why blood movement matters for the treatment decisions that follow.'
                 },
                 {
                     type: 'reference',
