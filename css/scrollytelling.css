@@ -2920,7 +2920,7 @@ body[data-story-version="aneurysm"] .alex-treatment-infographic-section .treatme
     background-size: 32px 32px;
 }
 
-.model-placeholder-stage span {
+.model-placeholder-stage > span {
     padding: 7px 10px;
     border: 1px solid rgba(255, 255, 255, 0.16);
     border-radius: 4px;
@@ -3521,7 +3521,7 @@ body.light-mode .aortic-clock-tick {
 .aortic-stat-head span,
 .aortic-stat-card small,
 .aortic-stat-legend,
-.model-placeholder-stage span {
+.model-placeholder-stage > span {
     color: color-mix(in srgb, var(--color-text) 62%, transparent);
     font-size: 0.875rem;
     font-weight: 400;
@@ -3620,7 +3620,7 @@ body.light-mode .aortic-clock-tick {
 .text-box .info-image,
 .text-box .info-image img,
 .model-placeholder-stage,
-.model-placeholder-stage span {
+.model-placeholder-stage > span {
     background: var(--color-bg);
 }
 
@@ -4210,7 +4210,7 @@ body[data-story-version="dissection"] .element-modelPlaceholder {
 .aortic-stat-head span,
 .aortic-stat-card small,
 .aortic-stat-legend,
-.model-placeholder-stage span { font-size: 0.95rem; }
+.model-placeholder-stage > span { font-size: 0.95rem; }
 
 .text-box .closing-statement { font-size: 1.2rem; }
 
@@ -4341,7 +4341,7 @@ body[data-story-version] .step .treatment-balance-column li,
 body[data-story-version] .step .prevention-copy small,
 body[data-story-version] .step .prevention-copy p,
 body[data-story-version] .step .section-reference,
-body[data-story-version] .step .model-placeholder-stage span,
+body[data-story-version] .step .model-placeholder-stage > span,
 body[data-story-version] .step .model-placeholder figcaption small,
 body[data-story-version] .step .model-placeholder figcaption p,
 body[data-story-version] .step .aortic-stat-head span,
@@ -4544,7 +4544,7 @@ body[data-story-version] .flow-research-section .model-placeholder-stage {
     background-color: color-mix(in srgb, var(--color-bg) 78%, #000);
 }
 
-body[data-story-version] .flow-research-section .model-placeholder-stage span {
+body[data-story-version] .flow-research-section .model-placeholder-stage > span {
     font-size: 1.05rem;
 }
 

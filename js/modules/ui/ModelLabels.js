@@ -9,6 +9,85 @@ const DUPLICATE_HIT_DISTANCE = 0.002;
 // Matches the text offset in css/components/model-labels.css.
 const LABEL_TEXT_OFFSET = 29;
 const LABEL_EDGE_MARGIN = 8;
+const LABEL_GAP = 4;
+const LABEL_SHIFT_STEP = 2;
+// Up to this many text heights; the line then tilts to reach the text.
+const LABEL_MAX_SHIFT = 2.5;
+// Matches the dot radius and line length in model-labels.css.
+const LABEL_DOT_RADIUS = 5;
+const LABEL_LINE_LENGTH = 24;
+
+// Text size is fixed per label; measured once it is rendered, so the
+// per-frame layout of the 3D labels does not force a reflow.
+function textSize(element) {
+    if (!element.labelSize?.width) {
+        const text = element.lastChild;
+        element.labelSize = { width: text.offsetWidth, height: text.offsetHeight };
+    }
+    return element.labelSize;
+}
+
+// Places labels in order. Each takes its authored side when the text fits in
+// the box and covers neither a text placed before it nor another label's dot,
+// else the other side. If both are blocked, the text moves up or down and the
+// line tilts to reach it.
+// items: [{ element, x, y, side, hidden }], x/y in px within the box.
+function layoutLabels(items, width) {
+    const visible = items.filter((item) => !item.hidden);
+    const placed = visible.map((item) => ({
+        left: item.x - LABEL_DOT_RADIUS,
+        right: item.x + LABEL_DOT_RADIUS,
+        top: item.y - LABEL_DOT_RADIUS,
+        bottom: item.y + LABEL_DOT_RADIUS,
+        owner: item
+    }));
+    visible.forEach((item) => {
+        const { width: textWidth, height: textHeight } = textSize(item.element);
+        const rect = (left, shift) => {
+            const start = left ? item.x - LABEL_TEXT_OFFSET - textWidth : item.x + LABEL_TEXT_OFFSET;
+            return { left: start, right: start + textWidth, top: item.y - textHeight / 2 + shift, bottom: item.y + textHeight / 2 + shift };
+        };
+        const fits = (box) => box.left >= LABEL_EDGE_MARGIN && box.right <= width - LABEL_EDGE_MARGIN;
+        const free = (box) => placed.every((other) => other.owner === item
+            || box.right + LABEL_GAP <= other.left || box.left >= other.right + LABEL_GAP
+            || box.bottom + LABEL_GAP <= other.top || box.top >= other.bottom + LABEL_GAP);
+        const sides = item.side === 'left' ? [true, false] : [false, true];
+        const shifts = [0];
+        for (let shift = LABEL_SHIFT_STEP; shift <= textHeight * LABEL_MAX_SHIFT; shift += LABEL_SHIFT_STEP) shifts.push(-shift, shift);
+        let choice = null;
+        for (const shift of shifts) {
+            const left = sides.find((side) => fits(rect(side, shift)) && free(rect(side, shift)));
+            if (left !== undefined) {
+                choice = { left, shift };
+                break;
+            }
+        }
+        if (!choice) choice = { left: sides.find((side) => fits(rect(side, 0))) ?? sides[0], shift: 0 };
+        placed.push({ ...rect(choice.left, choice.shift), owner: null });
+        item.element.classList.toggle('model-label--left', choice.left);
+        item.element.style.setProperty('--label-shift', `${choice.shift}px`);
+        item.element.style.setProperty('--label-line-length', `${Math.hypot(LABEL_LINE_LENGTH, choice.shift)}px`);
+        item.element.style.setProperty('--label-line-angle', `${Math.atan2(choice.shift, LABEL_LINE_LENGTH) * (choice.left ? -1 : 1)}rad`);
+    });
+}
+
+// Labels on flat images (js/components/imageLabels.js) use the same layout.
+// Placed whenever the image changes size, which includes a hidden
+// illustration being shown.
+export function initImageLabels(root = document) {
+    const observer = new ResizeObserver((entries) => entries.forEach(({ target }) => placeImageLabels(target)));
+    root.querySelectorAll('.labelled-image').forEach((image) => observer.observe(image));
+}
+
+function placeImageLabels(image) {
+    const bounds = (image.closest('.flow-illustration-panel, .inline-model-illustration') || image).getBoundingClientRect();
+    if (!bounds.width) return;
+    const items = [...image.querySelectorAll('.model-label')].map((element) => {
+        const anchor = element.getBoundingClientRect();
+        return { element, x: anchor.left - bounds.left, y: anchor.top - bounds.top, side: element.dataset.side };
+    });
+    layoutLabels(items, bounds.width);
+}
 
 export function parseModelLabels(container) {
     try {
@@ -50,7 +129,8 @@ export class ModelLabels {
         });
         this.layer.replaceChildren(...this.elements);
 
-        const key = this.container.closest('.inline-model-figure')?.querySelector('.model-label-key');
+        const key = this.container.closest('.flow-comparison-panel')?.querySelector('.model-label-key')
+            || this.container.closest('.inline-model-figure')?.querySelector('.inline-model-meta .model-label-key');
         if (!key) return;
         key.replaceChildren(...labels.map((label, index) => {
             const item = document.createElement('li');
@@ -66,7 +146,15 @@ export class ModelLabels {
         this.modelRoot = modelRoot;
         this.camera = camera;
         modelRoot.updateMatrixWorld(true);
-        this.frame = new THREE.Box3().setFromObject(modelRoot);
+        // Flow exports also contain pathlines or particles; only the vessel
+        // wall counts, both for the anchor frame (so anatomy, pathline and
+        // particle exports of one aorta share anchors) and for occlusion.
+        const meshes = [];
+        modelRoot.traverse((child) => { if (child.isMesh) meshes.push(child); });
+        const flowSurfaces = meshes.filter((mesh) => mesh.userData.isFlowSurface);
+        this.wallMeshes = flowSurfaces.length ? flowSurfaces : meshes;
+        this.frame = new THREE.Box3();
+        this.wallMeshes.forEach((mesh) => this.frame.expandByObject(mesh));
         const size = this.frame.getSize(new THREE.Vector3());
         this.modelSize = Math.max(size.x, size.y, size.z) || 1;
         this.anchors = this.labels.map(({ anchor }) => modelRoot.worldToLocal(new THREE.Vector3(
@@ -74,12 +162,6 @@ export class ModelLabels {
             this.frame.min.y + size.y * anchor[1],
             this.frame.min.z + size.z * anchor[2]
         )));
-        // Flow exports also contain pathline meshes; only the vessel wall
-        // should count when deciding whether a label is hidden.
-        const meshes = [];
-        modelRoot.traverse((child) => { if (child.isMesh) meshes.push(child); });
-        const flowSurfaces = meshes.filter((mesh) => mesh.userData.isFlowSurface);
-        this.wallMeshes = flowSurfaces.length ? flowSurfaces : meshes;
         this.occludedState = this.labels.map(() => false);
         this.lastCameraPosition.set(Infinity, Infinity, Infinity);
         this.layer.classList.add('is-ready');
@@ -105,32 +187,30 @@ export class ModelLabels {
             this.lastCameraPosition.copy(this.camera.position);
         }
 
-        this.anchors.forEach((localAnchor, index) => {
+        const items = this.anchors.map((localAnchor, index) => {
             const worldAnchor = this.modelRoot.localToWorld(localAnchor.clone());
-            if (checkOcclusion) this.occludedState[index] = this.isOccluded(worldAnchor);
+            if (checkOcclusion) this.occludedState[index] = this.isOccluded(worldAnchor, this.labels[index]);
             const projected = worldAnchor.project(this.camera);
             const element = this.elements[index];
             const x = ((projected.x + 1) / 2) * width;
-            element.style.transform = `translate(${x}px, ${((1 - projected.y) / 2) * height}px)`;
-            element.classList.toggle('is-occluded', this.occludedState[index] || projected.z > 1);
-            element.classList.toggle('model-label--left', this.placeOnLeft(this.labels[index], element, x, width));
+            const y = ((1 - projected.y) / 2) * height;
+            const hidden = this.occludedState[index] || projected.z > 1;
+            element.style.transform = `translate(${x}px, ${y}px)`;
+            element.classList.toggle('is-occluded', hidden);
+            return { element, x, y, side: this.labels[index].side, hidden };
         });
+        layoutLabels(items, width);
     }
 
-    // Use the authored side unless the text would run past the viewer edge.
-    placeOnLeft(label, element, x, width) {
-        const reach = LABEL_TEXT_OFFSET + element.lastChild.offsetWidth;
-        const fitsRight = x + reach <= width - LABEL_EDGE_MARGIN;
-        const fitsLeft = x - reach >= LABEL_EDGE_MARGIN;
-        return label.side === 'left' ? fitsLeft || !fitsRight : !fitsRight && fitsLeft;
-    }
-
-    isOccluded(worldAnchor) {
+    // A label is hidden when more walls than its own lie in front of it. An
+    // anchor in the true lumen of a dissection (behindFlap) also sits behind
+    // the flap when seen from the false-lumen side.
+    isOccluded(worldAnchor, label) {
         const direction = worldAnchor.clone().sub(this.camera.position);
         const distance = direction.length();
         this.raycaster.set(this.camera.position, direction.normalize());
         this.raycaster.far = distance;
-        return this.wallHits().length > 1;
+        return this.wallHits().length > (label?.behindFlap ? 2 : 1);
     }
 
     wallHits() {

@@ -1,4 +1,34 @@
+import { healthyIllustrationLabels, healthyModelLabels } from '../healthyReferenceLabels.js';
+
 const flowModelBase = 'assets/models/flow/optimized/';
+
+// 3D anchors: [x, y, z] fractions of the vessel wall box, shared by the anatomy,
+// pathline and particle exports of this aorta. Pick new ones with ?pickLabels.
+const miriamModelLabels = [
+    { text: 'Aortic arch', anchor: [0.283, 0.857, 0.441], side: 'left' },
+    { text: 'Entry tear (flap begins)', anchor: [0.628, 0.856, 0.785], side: 'right' },
+    // Centers of the white (true) and red (false) lumen lines of the flow export.
+    { text: 'True lumen', anchor: [0.775, 0.674, 0.618], side: 'right', behindFlap: true },
+    { text: 'False lumen', anchor: [0.778, 0.62, 0.799], side: 'left' },
+    { text: 'End of the flap', anchor: [0.42, 0.165, 0.615], side: 'left' }
+];
+
+// Image anchors: [x, y] fractions of the anatomy illustration; the flow
+// animation is the same drawing at a smaller size.
+const miriamIllustrationLabels = [
+    { text: 'Aortic arch', anchor: [0.505, 0.298], side: 'left' },
+    { text: 'Entry tear (flap begins)', anchor: [0.596, 0.298], side: 'right' },
+    // The darker band drawn inside the wall is the false lumen.
+    { text: 'True lumen', anchor: [0.695, 0.5], side: 'right' },
+    { text: 'False lumen', anchor: [0.642, 0.5], side: 'left' },
+    { text: 'End of the flap', anchor: [0.491, 0.786], side: 'left' }
+];
+
+// In the flow comparison the affected aorta labels only what the dissection flap changes;
+// the healthy aorta beside it names the regions.
+const miriamFlowFindings = ['Entry tear (flap begins)', 'True lumen', 'False lumen', 'End of the flap'];
+const miriamFlowModelLabels = miriamModelLabels.filter((label) => miriamFlowFindings.includes(label.text));
+const miriamFlowIllustrationLabels = miriamIllustrationLabels.filter((label) => miriamFlowFindings.includes(label.text));
 
 export const dissectionStory = {
 
@@ -47,7 +77,8 @@ export const dissectionStory = {
             className: 'model-section miriam-aorta-model-section',
             inlineIllustration: {
                 src: 'assets/story_images/miriam_dissection_illustration.png',
-                alt: 'Illustration of Miriam’s dissected aorta with a second channel within the vessel wall.'
+                alt: 'Illustration of Miriam’s dissected aorta with a second channel within the vessel wall.',
+                labels: miriamIllustrationLabels
             },
             inlineModel: {
                 url: `${flowModelBase}dissection_anatomy.glb`,
@@ -59,14 +90,7 @@ export const dissectionStory = {
                 rotationZ: 0,
                 framingScale: 0.9,
                 rotationHint: true,
-                labels: [
-                    { text: 'Ascending aorta', anchor: [0.131, 0.72, 0.264], side: 'left' },
-                    { text: 'Aortic arch', anchor: [0.283, 0.857, 0.441], side: 'left' },
-                    { text: 'Entry tear (flap begins)', anchor: [0.628, 0.856, 0.785], side: 'right' },
-                    { text: 'True and false lumen', anchor: [0.888, 0.645, 0.791], side: 'right' },
-                    { text: 'Descending aorta', anchor: [0.677, 0.422, 0.798], side: 'right' },
-                    { text: 'End of the flap', anchor: [0.42, 0.165, 0.615], side: 'left' }
-                ]
+                labels: miriamModelLabels
             },
             paragraphs: [],
             elements: [
@@ -80,7 +104,7 @@ export const dissectionStory = {
                 },
                 {
                     type: 'text',
-                    text: 'The labels in the model trace this route. Blood leaves the heart through the ascending aorta and curves through the aortic arch. Just beyond the arch, the entry tear marks where the flap begins. From there, the flap divides the descending aorta into the true and false lumen until it ends further down.'
+                    text: 'In Miriam\'s aorta, blood leaves the heart and curves through the aortic arch as usual. Just beyond the arch, the entry tear marks where the flap begins. From there, the flap divides the aorta into the true and false lumen until it ends further down.'
                 },
                 {
                     type: 'reference',
@@ -94,33 +118,37 @@ export const dissectionStory = {
             scrollMode: 'sticky',
             timelineLabel: 'Dissected aorta',
             className: 'model-section miriam-flow-reading-section',
+            inlineIllustration: {
+                src: 'assets/story_images/healthy_flow_illustration.gif',
+                alt: 'Animated illustration of blood flowing smoothly through a healthy aorta, from the heart through the arch and down the descending aorta.',
+                labels: healthyIllustrationLabels
+            },
             inlineModel: {
                 url: `${flowModelBase}healthy_lines_anim.glb`,
                 label: 'Simulated blood flow through a healthy reference aorta, shown as colored lines',
                 mode: 'flow',
                 legend: false,
-                sourceColors: true,
-                speedLegend: true,
                 rotationX: 0,
                 rotationY: -1.5708,
                 rotationZ: 0,
                 framingScale: 0.4,
                 animationFps: 20,
                 animationSpeed: 1,
-                rotationHint: true
+                rotationHint: true,
+                labels: healthyModelLabels
             },
             paragraphs: [],
             elements: [
                 {
                     type: 'text',
-                    text: 'Before we look at the blood flow in Miriam\'s aorta, it helps to learn how blood flow is shown in this story. The model shows a healthy aorta from a separate reference case, not Miriam\'s. Each line traces the path that blood takes through the vessel, and its color shows how fast the blood moves there.'
+                    text: 'Before we look at the blood flow in Miriam\'s aorta, it helps to see how blood moves through a healthy one. This aorta comes from a separate reference case, not from Miriam. It shows where the blood travels on its way from the heart through the arch and down into the body.'
                 },
                 {
                     type: 'text',
-                    text: 'In a healthy aorta, the lines run side by side, smooth and orderly, from the heart through the arch and down into the body. This is called laminar flow. Later in the story, the same kind of image shows how a dissection disturbs this order.',
+                    text: 'In a healthy aorta, blood moves as one orderly stream. This is called laminar flow. It is the baseline for the rest of Miriam\'s story: later, the same view shows what her divided aorta does to this order.',
                     infoPopup: {
                         title: 'laminar flow',
-                        text: 'In laminar flow, blood moves smoothly in one direction and swirls only very little; no large swirls form. When the flow is disturbed, for example where the vessel widens or splits, larger swirls can develop.'
+                        text: 'In laminar flow, blood moves in layers that slide past each other, usually fastest in the middle of the vessel and slower near the wall, with hardly any swirling. Where a vessel suddenly widens, narrows, or splits, this order can break up into swirls.'
                     }
                 }
             ]
@@ -135,17 +163,17 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'The chart shows how often each warning sign was reported by 1,891 people with acute Type B dissection in an international registry (IRAD). Most of them had severe chest or back pain, often beginning suddenly. High blood pressure is also common. Migrating pain means the pain seems to move as the tear extends along the aorta. A fainting episode, a normal heart tracing, or a normal chest X-ray cannot safely rule the disease in or out, so symptoms are only the first clue. Type A dissections cause similar warning signs, with chest pain being more common there.'
+                    text: 'Unlike an aneurysm, a dissection like Miriam\'s usually announces itself with strong warning signs. The chart shows how often each warning sign was reported by 1,891 people with acute Type B dissection, the type Miriam has, in an international registry (IRAD). Still, no single sign proves a dissection, and a fainting episode, a normal heart tracing, or a normal chest X-ray cannot safely rule it in or out. Symptoms are only the first clue.'
                 },
                 {
                     type: 'symptomBars',
                     subtitle: '1,891 people with acute Type B dissection',
                     items: [
-                        { icon: 'bolt', label: 'Severe or worst-ever pain', value: 88.7, color: '#c83c48', info: 'A sudden, severe pain in the chest or back is an important warning sign. It can feel different from usual pain and needs urgent medical assessment.' },
-                        { icon: 'rib_cage', label: 'Chest or back pain', value: 88.7, color: '#c83c48', info: 'Pain can be felt in the chest, back, or both. Its location alone cannot confirm a dissection, but it helps clinicians decide how urgently to investigate.' },
-                        { icon: 'acute', label: 'Sudden onset', value: 85.4, color: '#c83c48', info: 'Dissection pain often begins abruptly. A sudden onset is a clinical clue.' },
-                        { icon: 'blood_pressure', label: 'High blood pressure', value: 64.6, color: '#c83c48', info: 'High blood pressure can increase stress on the aortic wall.' },
-                        { icon: 'hand_bones', label: 'Migrating pain', value: 16.8, color: '#c83c48', info: 'Migrating pain can move from the chest toward the back or abdomen as the dissection extends.' }
+                        { icon: 'bolt', label: 'Severe or worst-ever pain', value: 88.7, color: '#c83c48', info: 'Many people describe the pain as tearing or ripping, unlike any pain they have felt before. It needs urgent medical assessment.' },
+                        { icon: 'rib_cage', label: 'Chest or back pain', value: 88.7, color: '#c83c48', info: 'The pain can be felt in the chest, the back, or both. Its location alone cannot confirm a dissection. Type A dissections cause similar warning signs, with chest pain being more common there.' },
+                        { icon: 'acute', label: 'Sudden onset', value: 85.4, color: '#c83c48', info: 'Dissection pain usually reaches its full strength within moments, unlike pain that builds up slowly. This abrupt start is a clinical clue.' },
+                        { icon: 'blood_pressure', label: 'High blood pressure', value: 64.6, color: '#c83c48', info: 'High blood pressure strains the aortic wall over years and is one of the most common findings in people with Type B dissection.' },
+                        { icon: 'hand_bones', label: 'Migrating pain', value: 16.8, color: '#c83c48', info: 'The pain seems to move as the tear extends along the aorta, for example from the chest toward the back or abdomen.' }
                     ]
                 },
                 {
@@ -164,10 +192,10 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'A suspected dissection is an emergency, so assessment and imaging happen quickly. The team asks when the pain began and whether Miriam has Marfan syndrome or known aortic disease, checks blood pressure and pulses in the limbs, and looks for signs that blood flow to the brain, kidneys, gut, or legs may be affected. These clues help judge urgency but cannot confirm the diagnosis. In selected people with a low likelihood of dissection, a D-dimer blood test may help rule it out; it is not used alone and a positive result does not prove a tear.',
+                    text: 'For Miriam, everything has to happen fast: a suspected dissection is an emergency. Before the scan, the team gathers quick clues at the bedside and from blood tests, including a test called D-dimer. These clues help judge how urgent the situation is and whether blood flow to the brain, kidneys, gut, or legs may be affected, but only imaging can confirm the diagnosis.',
                     infoPopup: {
                         title: 'D-dimer',
-                        text: 'D-dimer is a small protein fragment. A blood test can help assess the likelihood of clot-related disease: a negative result can help rule it out in people with a low clinical probability, while a positive result can have other causes and usually needs further testing.'
+                        text: 'D-dimer is a protein fragment released when a blood clot breaks down. In people with a low likelihood of dissection, a negative result can help rule it out. A positive result has many other causes and does not prove a tear, so the test is never used alone.'
                     }
                 },
                 {
@@ -176,7 +204,7 @@ export const dissectionStory = {
                         {
                             icon: 'genetics_svg',
                             title: 'Marfan Risk',
-                            info: 'Miriam’s Marfan syndrome is an inherited risk factor clinicians consider.'
+                            info: 'Marfan syndrome or a known aortic disease makes clinicians think of a dissection earlier, because the condition weakens the aortic wall. The team therefore asks about it, and about when the pain began.'
                         },
                         {
                             icon: 'monitor_heart_svg',
@@ -186,12 +214,12 @@ export const dissectionStory = {
                         {
                             icon: 'labs_svg',
                             title: 'Lab tests',
-                            info: 'Blood tests can include D-dimer and tests of organ function, which show whether the kidneys, liver, or gut are affected.'
+                            info: 'Tests of organ function show whether the kidneys, liver, or gut are getting enough blood.'
                         },
                         {
                             icon: 'radiology_aorta',
                             title: 'Aortic imaging',
-                            info: 'The team looks for the wall flap and both channels, maps how far they extend, measures the aorta, and checks whether blood flow to organs is reduced or there are signs of bleeding.'
+                            info: 'CT angiography is usually the first choice because it is fast and widely available. Ultrasound through the esophagus or MRI are alternatives in some situations.'
                         }
                     ]
                 },
@@ -245,7 +273,7 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'A CTA is not one single picture but a stack of hundreds of thin images, called slices. On a computer, software traces the outline of the aorta in each slice and joins these outlines into a three-dimensional model. In Miriam\'s case, the model also has to capture the flap that divides the aorta into two channels. This is how the model shown earlier was built, and it is also the starting point for the flow simulation later in the story.'
+                    text: 'Miriam\'s scan does more than confirm the diagnosis. It is also the raw material for a 3D model of her divided aorta, including the flap between the two channels: the model you explored earlier, and the starting point for the flow simulation later in the story.'
                 },
                 {
                     type: 'processSteps',
@@ -253,22 +281,22 @@ export const dissectionStory = {
                     steps: [
                         {
                             title: 'CT scanner',
-                            text: 'The patient lies on a table that moves through the ring of the scanner.',
+                            text: 'The patient lies on a table that moves through the ring of the scanner. The contrast agent is timed so that it reaches the aorta while the images are taken.',
                             visual: { kind: 'image', fit: 'contain', src: 'assets/story_images/process/ct_scanner.png', alt: 'A CT scanner with its ring and patient table' }
                         },
                         {
                             title: 'CTA slices',
-                            text: 'The scan is a stack of thin images through the chest.',
+                            text: 'A CTA is not one picture but a stack of hundreds of thin images through the chest, called slices, often less than a millimeter apart.',
                             visual: { kind: 'slices', src: 'assets/story_images/miriam_cta.png', aspect: '955 / 1280', alt: 'Miriam\'s CTA image with the dissected aorta highlighted in red, shown as the front image of a stack of slices' }
                         },
                         {
                             title: 'Software',
-                            text: 'On a computer, software traces the aorta in every slice and joins the outlines.',
-                            visual: { kind: 'icon', icon: 'computer' }
+                            text: 'Software marks the aorta in every slice, a step called segmentation, and joins the outlines into a surface. In a dissection, the thin flap between the channels has to be traced as well. A person checks and corrects the result.',
+                            visual: { kind: 'placeholder' }
                         },
                         {
                             title: '3D model',
-                            text: 'Miriam\'s aorta as a model that can be turned and used for a flow simulation.',
+                            text: 'The surface is smoothed and its branches are cut to open ends, so the model can be turned on screen and used for a flow simulation.',
                             visual: { kind: 'image', fit: 'contain', src: 'assets/story_images/process/miriam_model.png', alt: '3D model of Miriam\'s aorta built from the CTA slices' }
                         }
                     ]
@@ -289,11 +317,7 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'To simulate the flow, the 3D model is divided into a computational mesh that includes both channels. Software then calculates how blood moves through this geometry, from where it enters the aorta to where it leaves through its branches.'
-                },
-                {
-                    type: 'text',
-                    text: 'The results are shown as the moving lines introduced earlier: each line follows the path of the blood, and its color shows the speed. This is simulated data, not blood recorded in the body or a prediction of Miriam\'s individual outcome.'
+                    text: 'The 3D model shows the shape of Miriam\'s divided aorta, but not how blood moves through its two channels. For that, the team runs a computer simulation of the blood flow through her model. The result is simulated data, not blood recorded in Miriam\'s body and not a prediction of her individual outcome.'
                 },
                 {
                     type: 'text',
@@ -305,22 +329,22 @@ export const dissectionStory = {
                     steps: [
                         {
                             title: 'Mesh',
-                            text: 'The 3D model is divided into many small elements, where the flow is calculated.',
-                            visual: { kind: 'image', src: 'assets/story_images/miriam_mesh_closeup.png', alt: 'Close-up of the wall of Miriam\'s aortic model, divided into a mesh of small triangles' }
+                            text: 'The inside of the model, both channels included, is divided into a computational mesh of often millions of tiny cells. A finer mesh captures more detail but takes longer to calculate.',
+                            visual: { kind: 'image', src: 'assets/story_images/alex_mesh_closeup.png', alt: 'Close-up of the wall of an aortic model, divided into a mesh of small triangles' }
                         },
                         {
                             title: 'In- and outflow',
-                            text: 'At each open end, the team sets how blood enters from the heart and leaves the model. The red planes mark these openings.',
+                            text: 'At the inlet, the team sets how much blood the heart pumps during a heartbeat; at each outlet, how blood leaves the model. The red planes mark these openings.',
                             visual: { kind: 'image', fit: 'contain', src: 'assets/story_images/process/miriam_planes.png', alt: 'Miriam\'s aortic model with red planes at the inflow in the ascending aorta and at the outflows of the other open ends' }
                         },
                         {
                             title: 'Calculation',
-                            text: 'A computer solves the equations of fluid motion for every element, step by step in time.',
-                            visual: { kind: 'icon', icon: 'calculate' }
+                            text: 'A computer solves the equations of fluid motion in every cell, in many small time steps over several heartbeats, until the result repeats from beat to beat.',
+                            visual: { kind: 'placeholder' }
                         },
                         {
                             title: 'Visualization',
-                            text: 'The results become pathlines that show where blood moves and how fast.',
+                            text: 'The result is a speed and direction for every cell at every moment. To make it readable, it is turned into views that show where the blood goes and how fast it moves.',
                             visual: { kind: 'image', fit: 'contain', src: 'assets/story_images/process/miriam_pathlines.png', alt: 'Pathlines of the simulated blood flow in Miriam\'s aorta' }
                         }
                     ]
@@ -341,7 +365,7 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'This simulation shows how blood moves through both channels of Miriam\'s dissected aorta. It illustrates how the tear changes the route of circulation. The simulation is based on a follow-up CTA taken about six weeks after the dissection.'
+                    text: 'Here, the simulated blood flow through both channels of Miriam\'s dissected aorta appears next to the healthy reference aorta from earlier. Watch how the tear changes the route of the blood. The simulation is based on a follow-up CTA taken about six weeks after the dissection.'
                 },
                 {
                     type: 'modelPlaceholder',
@@ -352,13 +376,20 @@ export const dissectionStory = {
                         src: 'assets/story_images/dissection_flow_illustration.gif',
                         healthySrc: 'assets/story_images/healthy_flow_illustration.gif',
                         healthyAlt: 'Illustration of blood flowing through a healthy aorta.',
-                        alt: 'Illustration of an aortic dissection showing blood flow through the true and false channels.'
+                        alt: 'Illustration of an aortic dissection showing blood flow through the true and false channels.',
+                        labels: miriamFlowIllustrationLabels,
+                        healthyLabels: healthyIllustrationLabels
                     },
                     flowVariants: [
                         { label: 'Pathlines', src: `${flowModelBase}dissection_lines_anim.glb`, comparisonSrc: `${flowModelBase}healthy_lines_anim.glb`, framingScale: 0.75, comparisonFramingScale: 0.29, rotationY: -1.5708, comparisonRotationY: -1.5708, animationFps: 20, animationSpeed: 1 },
                         { label: 'Particle flow', src: `${flowModelBase}dissection_particles_anim.glb`, comparisonSrc: `${flowModelBase}healthy_particle_anim.glb`, framingScale: 0.35, comparisonFramingScale: 0.35, rotationY: -1.5708, comparisonRotationY: -1.5708, animationFps: 20, animationSpeed: 0.5 }
                     ],
                     modelMode: 'flow',
+                    // The dissection exports mark the false lumen red and the true lumen white;
+                    // the "True lumen" and "False lumen" labels name them.
+                    flowColors: 'lumen',
+                    labels: miriamFlowModelLabels,
+                    healthyLabels: healthyModelLabels,
                     preload: true,
                     framingScale: 0.75,
                     animationFps: 20,
@@ -374,7 +405,7 @@ export const dissectionStory = {
                 },
                 {
                     type: 'text',
-                    text: 'Flow speed and direction vary across the vessel, and swirling areas may change the forces on the wall. The healthy comparison view uses the same reference aorta as before, with its orderly laminar flow. The difference helps explain why blood movement matters for the treatment decisions that follow.'
+                    text: 'In Miriam\'s aorta, flow speed and direction vary across the vessel, and swirling areas may change the forces on her weakened wall, unlike the orderly laminar flow of the healthy aorta beside it. This difference helps explain why blood movement matters for the treatment decisions that follow.'
                 },
                 {
                     type: 'reference',
@@ -392,10 +423,10 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Treatment depends on whether the dissection is causing complications. For an uncomplicated Type B dissection, the first step is usually hospital care with medicine to lower heart rate and blood pressure, pain relief, and close checks of pulses, organ function, and repeat images. If blood flow to an organ is reduced, the aorta is enlarging or leaking, pain persists, or blood pressure cannot be controlled, the team may recommend repair. A common option is TEVAR, a stent graft placed from inside the aorta to cover the main tear. It is not suitable for every anatomy or every person.',
+                    text: 'Miriam\'s treatment hinges on one question: is the dissection causing complications? If not, she is treated in hospital with medicine and watched closely. If complications appear, the team may recommend repairing the aorta, for example with TEVAR, a stent graft placed from inside the aorta to cover the main tear.',
                     infoPopup: {
                         title: 'TEVAR',
-                        text: 'TEVAR means thoracic endovascular aortic repair. Through an artery, usually in the groin, doctors guide a catheter carrying a fabric-covered metal stent graft to the chest aorta. Once opened, it lines the inside of the vessel and covers the main tear, helping blood flow through the intended channel. Suitability depends on the tear\'s position, branch vessels, and the strength of the aortic wall; people with Marfan syndrome may need a different balance of endovascular and open repair.'
+                        text: 'TEVAR means thoracic endovascular aortic repair. Through an artery, usually in the groin, doctors guide a catheter carrying a fabric-covered metal stent graft to the chest aorta. Once opened, it lines the inside of the vessel and helps blood flow through the intended channel. Suitability depends on the tear\'s position, the branch vessels, and the strength of the aortic wall, so it is not suitable for every anatomy or every person.'
                     }
                 },
                 {
@@ -408,13 +439,13 @@ export const dissectionStory = {
                             icon: 'prescriptions',
                             label: 'Uncomplicated Type B',
                             treatment: 'Medical therapy',
-                            info: 'Without complications, treatment begins in hospital with medicines and close monitoring. Repeat imaging checks whether the dissection changes.'
+                            info: 'Medicines lower heart rate and blood pressure to reduce the force on the damaged wall. Pain relief and close checks of pulses, organ function, and repeat images complete the hospital care.'
                         },
                         {
                             icon: 'medical_services',
                             label: 'Complicated Type B',
                             treatment: 'Aortic treatment',
-                            info: 'With complications, the aortic team weighs urgent repair, with TEVAR or open surgery. The choice depends on the anatomy and on Miriam\'s connective-tissue disease.'
+                            info: 'A dissection counts as complicated if blood flow to an organ is reduced, the aorta is enlarging or leaking, pain persists, or blood pressure cannot be controlled. Because of Miriam\'s Marfan syndrome, the team weighs TEVAR against open surgery with particular care.'
                         }
                     ]
                 },
@@ -434,7 +465,7 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'After the emergency, care shifts to lowering the chance of further aortic problems and finding change early. Long-term blood-pressure and heart-rate medicines reduce strain on the wall; the care team adjusts them to the person and checks for side effects. Repeat imaging looks for enlargement or other changes in the dissected area and the rest of the aorta. Activity is usually returned to gradually, with a clinician or rehabilitation team advising what level is appropriate and which heavy straining to avoid. Because Miriam has Marfan syndrome, follow-up is lifelong and close relatives may be offered genetic counseling and aortic assessment.'
+                    text: 'After the emergency, Miriam\'s care changes pace: from getting her through the acute phase to protecting her aorta for the long term, lowering the chance of further problems and finding changes early. Because she has Marfan syndrome, this follow-up lasts a lifetime, and because the condition is inherited, her family becomes part of the story too.'
                 },
                 {
                     type: 'preventionTimeline',

@@ -18,6 +18,19 @@
     opacity: 0.45;
 }
 
+/* Flat images and animations with labels (js/components/imageLabels.js):
+   the box shrink-wraps the image so anchors in % land on the image. */
+.labelled-image {
+    position: relative;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.labelled-image > :is(img, video) {
+    max-width: 100%;
+}
+
 /* Zero-size box sitting exactly on the projected anchor point. */
 .model-label {
     position: absolute;
@@ -49,9 +62,12 @@
     position: absolute;
     top: -0.5px;
     left: 5px;
-    width: 24px;
+    /* Tilts toward text moved by --label-shift (ModelLabels.js layoutLabels). */
+    width: var(--label-line-length, 24px);
     height: 1px;
     background: color-mix(in srgb, var(--color-text) 70%, transparent);
+    rotate: var(--label-line-angle, 0rad);
+    transform-origin: 0 50%;
 }
 
 .model-label-text {
@@ -67,12 +83,16 @@
     font-weight: 600;
     line-height: 1.2;
     white-space: nowrap;
-    transform: translateY(-50%);
+    /* --label-shift moves the text off a neighbouring label (ModelLabels.js layoutLabels).
+       `translate`/`rotate` rather than `transform`, which the scroll theme
+       resets inside story steps. */
+    translate: 0 calc(-50% + var(--label-shift, 0px));
 }
 
 .model-label--left .model-label-line {
     right: 5px;
     left: auto;
+    transform-origin: 100% 50%;
 }
 
 .model-label--left .model-label-text {
@@ -129,6 +149,11 @@
         font-size: 0.78rem;
         list-style: none;
         white-space: normal;
+    }
+
+    :is(.flow-comparison-panel, .flow-illustration-panel) .model-label-key {
+        justify-content: center;
+        margin-top: 8px;
     }
 
     .model-label-key li {

@@ -52,6 +52,36 @@ function validateElement(element, path, errors) {
     if (element.type === 'modelPlaceholder' && element.src && !element.alt?.trim()) {
         addError(errors, `${path}.alt`, 'animated model alternative text is required');
     }
+
+    if (element.type === 'modelPlaceholder') {
+        validateLabels(element.labels, `${path}.labels`, 3, errors);
+        validateLabels(element.healthyLabels, `${path}.healthyLabels`, 3, errors);
+        validateLabels(element.flowIllustration?.labels, `${path}.flowIllustration.labels`, 2, errors);
+        validateLabels(element.flowIllustration?.healthyLabels, `${path}.flowIllustration.healthyLabels`, 2, errors);
+        if (element.flowColors && !['accent', 'lumen', 'region'].includes(element.flowColors)) {
+            addError(errors, `${path}.flowColors`, 'must be "accent", "lumen", or "region"');
+        }
+        if (element.flowColors === 'region') {
+            const region = element.flowRegion;
+            const center = region?.center;
+            if (!Array.isArray(center) || center.length !== 3 || center.some((value) => !Number.isFinite(value) || value < 0 || value > 1)) {
+                addError(errors, `${path}.flowRegion.center`, 'must be three numbers between 0 and 1');
+            }
+            if (!Number.isFinite(region?.radius) || region.radius <= 0) addError(errors, `${path}.flowRegion.radius`, 'must be a positive number');
+        }
+    }
+}
+
+// 3D labels anchor to [x, y, z] of the model's wall box, image labels to [x, y] of the image.
+function validateLabels(labels, labelsPath, axes, errors) {
+    (labels || []).forEach((label, labelIndex) => {
+        const labelPath = `${labelsPath}[${labelIndex}]`;
+        if (!label?.text?.trim()) addError(errors, `${labelPath}.text`, 'label text is required');
+        const anchor = label?.anchor;
+        if (!Array.isArray(anchor) || anchor.length !== axes || anchor.some((value) => !Number.isFinite(value) || value < 0 || value > 1)) {
+            addError(errors, `${labelPath}.anchor`, `must be ${axes === 3 ? 'three' : 'two'} numbers between 0 and 1`);
+        }
+    });
 }
 
 export function validateStory(story, storyKey = 'story') {
@@ -81,17 +111,9 @@ export function validateStory(story, storyKey = 'story') {
         if (section.scrollMode && !supportedScrollModes.has(section.scrollMode)) {
             addError(errors, `${path}.scrollMode`, `unsupported mode "${section.scrollMode}"`);
         }
-        [
-            ['inlineModel', section.inlineModel?.labels],
-            ['inlineModel.flowView', section.inlineModel?.flowView?.labels]
-        ].flatMap(([owner, labels]) => (labels || []).map((label, labelIndex) => [owner, label, labelIndex])).forEach(([owner, label, labelIndex]) => {
-            const labelPath = `${path}.${owner}.labels[${labelIndex}]`;
-            if (!label?.text?.trim()) addError(errors, `${labelPath}.text`, 'label text is required');
-            const anchor = label?.anchor;
-            if (!Array.isArray(anchor) || anchor.length !== 3 || anchor.some((value) => !Number.isFinite(value) || value < 0 || value > 1)) {
-                addError(errors, `${labelPath}.anchor`, 'must be three numbers between 0 and 1');
-            }
-        });
+        validateLabels(section.inlineModel?.labels, `${path}.inlineModel.labels`, 3, errors);
+        validateLabels(section.inlineModel?.flowView?.labels, `${path}.inlineModel.flowView.labels`, 3, errors);
+        validateLabels(section.inlineIllustration?.labels, `${path}.inlineIllustration.labels`, 2, errors);
         if (!Array.isArray(section?.elements)) {
             addError(errors, `${path}.elements`, 'must be an array');
         } else {

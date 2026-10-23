@@ -1,6 +1,7 @@
 import { renderReferenceDisclosure } from './basicElements.js';
 import { renderAneurysmGrowth, renderAneurysmSexRisk } from './dataVisuals.js';
 import { renderMaterialIcon } from './icons.js';
+import { renderLabelKey, renderLabelledImage } from './imageLabels.js';
 import { clampPercent } from './renderUtils.js';
 
 let symptomInfoId = 0;
@@ -230,8 +231,10 @@ export function renderModelPlaceholder(element = {}) {
     const offsetAttribute = (key) => Number.isFinite(element[key])
         ? ` data-${key.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}="${element[key]}"`
         : '';
+    // Colors of the affected aorta (js/modules/ui/flowColors.js); the healthy one stays accent red.
+    const affectedColors = `${element.flowColors ? ` data-flow-colors="${element.flowColors}"` : ''}${element.flowRegion ? ` data-flow-region="${JSON.stringify(element.flowRegion).replace(/"/g, '&quot;')}"` : ''}`;
     const viewerAttributes = element.src
-        ? ` data-inline-model data-model-url="${element.src}" data-model-mode="${element.modelMode || 'flow'}" data-animation-fps="${element.animationFps || 30}"${element.preload ? ' data-preload="true"' : ''}${framingAttribute}${offsetAttribute('offsetX')}${offsetAttribute('offsetY')}`
+        ? ` data-inline-model data-model-url="${element.src}" data-model-mode="${element.modelMode || 'flow'}" data-animation-fps="${element.animationFps || 30}"${element.preload ? ' data-preload="true"' : ''}${framingAttribute}${offsetAttribute('offsetX')}${offsetAttribute('offsetY')}${affectedColors}`
         : '';
     const accessibleLabel = element.alt || element.title || 'Animated flow model';
     const flowVariants = element.flowVariants || [];
@@ -244,15 +247,28 @@ export function renderModelPlaceholder(element = {}) {
                     <button class="flow-variant-button${index === 0 ? ' active' : ''}" type="button" data-flow-url="${variant.src}" data-flow-comparison-url="${variant.comparisonSrc}" data-flow-info="${variant.showInfoPopup !== false}"${variantAttribute(variant, 'framingScale')}${variantAttribute(variant, 'comparisonFramingScale')}${variantAttribute(variant, 'offsetX')}${variantAttribute(variant, 'offsetY')}${variantAttribute(variant, 'rotationX')}${variantAttribute(variant, 'rotationY')}${variantAttribute(variant, 'comparisonRotationY')}${variantAttribute(variant, 'rotationZ')}${variantAttribute(variant, 'animationFps')}${variantAttribute(variant, 'animationSpeed')} aria-pressed="${index === 0}">${variant.label || ('View ' + (index + 1))}</button>
                 `).join('')}
             </div>` : '';
-    const pairedFlowView = flowVariants.some((variant) => variant.comparisonSrc) ? `
+    const comparisonVariant = flowVariants.find((variant) => variant.comparisonSrc);
+    // Labels per side; pathline and particle exports share anchors (ModelLabels).
+    const labelAttribute = (labels) => Array.isArray(labels) && labels.length
+        ? ` data-model-labels="${JSON.stringify(labels).replace(/"/g, '&quot;')}"`
+        : '';
+    const comparisonPanel = (title, url, attributes, labels = []) => `
+                <section class="flow-comparison-panel"><h3>${title}</h3><div class="model-placeholder-stage inline-model-viewer" data-inline-model data-model-url="${url}" data-model-mode="flow" data-animation-sync-group="${element.id || 'flow-comparison'}" data-animation-fps="20"${attributes}${labelAttribute(labels)} role="img" aria-label="Animated flow in ${title.toLowerCase()}"><div class="inline-model-loading" aria-hidden="true"></div><span class="inline-model-error">Animation unavailable</span></div>${renderLabelKey(labels, `Labelled parts of the ${title.toLowerCase()} model`)}</section>`;
+    const pairedFlowView = comparisonVariant ? `
             <div class="flow-comparison-viewers" aria-label="Affected and healthy aorta flow comparison">
-                <section class="flow-comparison-panel"><h3>Healthy aorta</h3><div class="model-placeholder-stage inline-model-viewer" data-inline-model data-model-url="${flowVariants.find((variant) => variant.comparisonSrc)?.comparisonSrc}" data-model-mode="flow" data-animation-sync-group="${element.id || 'flow-comparison'}" data-animation-fps="20" data-framing-scale="${flowVariants.find((variant) => variant.comparisonSrc)?.comparisonFramingScale || flowVariants.find((variant) => variant.comparisonSrc)?.framingScale || 0.35}" data-rotation-y="${flowVariants.find((variant) => variant.comparisonSrc)?.comparisonRotationY ?? flowVariants.find((variant) => variant.comparisonSrc)?.rotationY ?? 0}" role="img" aria-label="Animated flow in healthy aorta"><div class="inline-model-loading" aria-hidden="true"></div><span class="inline-model-error">Animation unavailable</span></div></section>
-                <section class="flow-comparison-panel"><h3>Affected aorta</h3><div class="model-placeholder-stage inline-model-viewer" data-inline-model data-model-url="${flowVariants.find((variant) => variant.comparisonSrc)?.src}" data-model-mode="flow" data-animation-sync-group="${element.id || 'flow-comparison'}" data-animation-fps="20" data-framing-scale="${flowVariants.find((variant) => variant.comparisonSrc)?.framingScale || 0.35}" role="img" aria-label="Animated flow in affected aorta"><div class="inline-model-loading" aria-hidden="true"></div><span class="inline-model-error">Animation unavailable</span></div></section>
+                ${comparisonPanel('Healthy aorta', comparisonVariant.comparisonSrc, ` data-framing-scale="${comparisonVariant.comparisonFramingScale || comparisonVariant.framingScale || 0.35}" data-rotation-y="${comparisonVariant.comparisonRotationY ?? comparisonVariant.rotationY ?? 0}"`, element.healthyLabels)}
+                ${comparisonPanel('Affected aorta', comparisonVariant.src, ` data-framing-scale="${comparisonVariant.framingScale || 0.35}"${Number.isFinite(comparisonVariant.rotationY) ? ` data-rotation-y="${comparisonVariant.rotationY}"` : ''}${affectedColors}`, element.labels)}
             </div>` : '';
-    const flowIllustration = element.flowIllustration ? `
+    const illustration = element.flowIllustration;
+    const illustrationMedia = (src, alt, imageFallback, videoFallback) => /.(png|jpe?g|webp|gif|svg)$/i.test(src)
+        ? `<img src="${src}" alt="${alt || imageFallback}">`
+        : `<video src="${src}" autoplay muted loop playsinline aria-label="${alt || videoFallback}"></video>`;
+    const flowIllustration = illustration ? `
             <figure class="flow-illustration" hidden>
-                ${element.flowIllustration.healthySrc ? `<section class="flow-illustration-panel"><h3>Healthy aorta</h3>${/\.(png|jpe?g|webp|gif|svg)$/i.test(element.flowIllustration.healthySrc) ? `<img src="${element.flowIllustration.healthySrc}" alt="${element.flowIllustration.healthyAlt || 'Illustration of blood flow through a healthy aorta'}">` : `<video src="${element.flowIllustration.healthySrc}" autoplay muted loop playsinline aria-label="${element.flowIllustration.healthyAlt || 'Animation of blood flowing through a healthy aorta'}"></video>`}</section><section class="flow-illustration-panel"><h3>Affected aorta</h3>${/\.(png|jpe?g|webp|gif|svg)$/i.test(element.flowIllustration.src) ? `<img src="${element.flowIllustration.src}" alt="${element.flowIllustration.alt || 'Affected aortic flow illustration'}">` : `<video src="${element.flowIllustration.src}" autoplay muted loop playsinline aria-label="${element.flowIllustration.alt || 'Animation of affected blood flow'}"></video>`}</section>` : `${/\.(png|jpe?g|webp|gif|svg)$/i.test(element.flowIllustration.src) ? `<img src="${element.flowIllustration.src}" alt="${element.flowIllustration.alt || ''}">` : `<video src="${element.flowIllustration.src}" autoplay muted loop playsinline aria-label="${element.flowIllustration.alt || ''}"></video>`}`}
-                ${element.flowIllustration.caption ? `<figcaption>${element.flowIllustration.caption}</figcaption>` : ''}
+                ${illustration.healthySrc
+                    ? `<section class="flow-illustration-panel"><h3>Healthy aorta</h3>${renderLabelledImage(illustrationMedia(illustration.healthySrc, illustration.healthyAlt, 'Illustration of blood flow through a healthy aorta', 'Animation of blood flowing through a healthy aorta'), illustration.healthyLabels)}</section><section class="flow-illustration-panel"><h3>Affected aorta</h3>${renderLabelledImage(illustrationMedia(illustration.src, illustration.alt, 'Affected aortic flow illustration', 'Animation of affected blood flow'), illustration.labels)}</section>`
+                    : illustrationMedia(illustration.src, illustration.alt, '', '')}
+                ${illustration.caption ? `<figcaption>${illustration.caption}</figcaption>` : ''}
             </figure>` : '';
     const flowViewControl = element.flowIllustration ? `
             <div class="flow-view-controls" role="group" aria-label="Choose flow view">
@@ -301,8 +317,7 @@ export function renderModelPlaceholder(element = {}) {
             ${flowIllustration}
             ${infoPopupMarkup}
             ${hotspotMarkup}
-            ${flowControls}
-            ${flowViewControl}
+            ${flowControls || flowViewControl ? `<div class="flow-control-row">${flowControls}${flowViewControl}</div>` : ''}
             ${element.note ? `<p class="symptom-note model-placeholder-note">${element.note}</p>` : ''}
         </figure>
     `;

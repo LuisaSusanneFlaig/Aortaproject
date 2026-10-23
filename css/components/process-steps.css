@@ -185,6 +185,19 @@ body[data-story-version] #story .step .process-icon .story-material-icon {
     font-size: calc(var(--process-stage-size) * 0.5);
 }
 
+body[data-story-version] #story .process-placeholder {
+    display: grid;
+    width: 80%;
+    aspect-ratio: 1;
+    place-items: center;
+    border: 1px dashed color-mix(in srgb, var(--color-text) 35%, transparent);
+    border-radius: 6px;
+    color: color-mix(in srgb, var(--color-text) 50%, transparent);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
 /* Small 3D viewers without the usual frame. */
 body[data-story-version] #story .story-visual-column .process-steps .process-viewer {
     width: 100%;

@@ -1,4 +1,28 @@
+import { healthyIllustrationLabels, healthyModelLabels } from '../healthyReferenceLabels.js';
+
 const flowModelBase = 'assets/models/flow/optimized/';
+
+// 3D anchors: [x, y, z] fractions of the vessel wall box, shared by the anatomy,
+// pathline and particle exports of this aorta. Pick new ones with ?pickLabels.
+const alexModelLabels = [
+    { text: 'Aortic root', anchor: [0.198, 0.53, 0.47], side: 'left' },
+    { text: 'Aortic arch', anchor: [0.599, 0.734, 0.76], side: 'left' },
+    { text: 'Widened section (aneurysm)', anchor: [0.87, 0.657, 0.766], side: 'right' }
+];
+
+// Image anchors: [x, y] fractions of the anatomy illustration; the flow
+// animation is the same drawing at a smaller size.
+const alexIllustrationLabels = [
+    { text: 'Aortic root', anchor: [0.375, 0.51], side: 'left' },
+    { text: 'Aortic arch', anchor: [0.5, 0.327], side: 'left' },
+    { text: 'Widened section (aneurysm)', anchor: [0.66, 0.41], side: 'right' }
+];
+
+// In the flow comparison the affected aorta labels only what the aneurysm changes;
+// the healthy aorta beside it names the regions.
+const alexFlowFindings = ['Widened section (aneurysm)'];
+const alexFlowModelLabels = alexModelLabels.filter((label) => alexFlowFindings.includes(label.text));
+const alexFlowIllustrationLabels = alexIllustrationLabels.filter((label) => alexFlowFindings.includes(label.text));
 
 export const aneurysmStory = {
 
@@ -21,7 +45,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Before Alex\'s scan becomes personal, the two charts on the left set the wider scene. The left chart, “Deaths”, shows that more people worldwide are dying with aortic aneurysm than in earlier decades: its line rises by 74%, from 88,353 in 1990 to 153,927 in 2021. This is partly because populations are growing and aging. The right chart, “Standardized death rate per 100,000”, shows the opposite trend. A standardized death rate adjusts for age, and by this measure the risk of dying fell by 27%, from 2.54 to 1.86 per 100,000 people. This suggests that diagnostics and treatment methods are improving. In both charts, the dotted line to 2030 is a projection, not a measurement.',
+                    text: 'Before Alex\'s scan becomes personal, the two charts set the wider scene. The left chart, “Deaths”, shows that more people worldwide are dying with aortic aneurysm than in earlier decades: its line rises by 74%, from 88,353 in 1990 to 153,927 in 2021. This is partly because populations are growing and aging. The right chart shows the opposite trend: measured as a standardized death rate, the risk of dying fell by 27%, from 2.54 to 1.86 per 100,000 people. This suggests that diagnostics and treatment methods are improving. In both charts, the dotted line to 2030 is a projection, not a measurement.',
                     infoPopup: {
                         title: 'standardized death rate',
                         text: 'A standardized death rate adjusts death figures to a common population structure, often by age, so populations or years can be compared more fairly. It estimates the death rate that would be seen if the population had the same age distribution as the reference population.'
@@ -43,7 +67,8 @@ export const aneurysmStory = {
             scrollMode: 'sticky',
             inlineIllustration: {
                 src: 'assets/story_images/alex_aneurysm_illustration.png',
-                alt: 'Illustration of Alex’s aortic arch and descending aorta, with widening in the arch.'
+                alt: 'Illustration of Alex’s aortic arch and descending aorta, with widening in the arch.',
+                labels: alexIllustrationLabels
             },
             inlineModel: {
                 url: `${flowModelBase}aneurysm_anatomy.glb`,
@@ -53,13 +78,7 @@ export const aneurysmStory = {
                 framingScale: 0.72,
                 legend: false,
                 rotationHint: true,
-                labels: [
-                    { text: 'Aortic root', anchor: [0.198, 0.53, 0.47], side: 'left' },
-                    { text: 'Ascending aorta', anchor: [0.194, 0.592, 0.439], side: 'left' },
-                    { text: 'Aortic arch', anchor: [0.599, 0.734, 0.76], side: 'left' },
-                    { text: 'Widened section (aneurysm)', anchor: [0.87, 0.657, 0.766], side: 'right' },
-                    { text: 'Descending aorta', anchor: [0.83, 0.455, 0.697], side: 'right' }
-                ]
+                labels: alexModelLabels
             },
             elements: [
                 {
@@ -68,7 +87,7 @@ export const aneurysmStory = {
                 },
                 {
                     type: 'text',
-                    text: 'The labels in the model follow the path of the blood. It leaves the heart through the aortic valve into the aortic root, the first, slightly wider part of the aorta. From there it rises through the ascending aorta, curves through the aortic arch, and flows down the descending aorta. The widened section, the aneurysm, sits where the arch turns downward.'
+                    text: 'Every heartbeat sends blood through the aortic valve into the aortic root, the first, slightly wider part of the aorta. From there it rises, curves through the aortic arch, and flows down into the body. In Alex\'s aorta, the widened section, the aneurysm, sits where the arch turns downward.'
                 },
                 {
                     type: 'reference',
@@ -81,32 +100,36 @@ export const aneurysmStory = {
             title: 'How to Read Blood Flow',
             scrollMode: 'sticky',
             className: 'model-section alex-flow-reading-section',
+            inlineIllustration: {
+                src: 'assets/story_images/healthy_flow_illustration.gif',
+                alt: 'Animated illustration of blood flowing smoothly through a healthy aorta, from the heart through the arch and down the descending aorta.',
+                labels: healthyIllustrationLabels
+            },
             inlineModel: {
                 url: `${flowModelBase}healthy_lines_anim.glb`,
                 label: 'Simulated blood flow through a healthy reference aorta, shown as colored lines',
                 mode: 'flow',
                 legend: false,
-                sourceColors: true,
-                speedLegend: true,
                 rotationX: 0,
                 rotationY: -1.5708,
                 rotationZ: 0,
                 framingScale: 0.4,
                 animationFps: 20,
                 animationSpeed: 1,
-                rotationHint: true
+                rotationHint: true,
+                labels: healthyModelLabels
             },
             elements: [
                 {
                     type: 'text',
-                    text: 'Before we look at the blood flow in Alex\'s aorta, it helps to learn how blood flow is shown in this story. The model shows a healthy aorta from a separate reference case, not Alex\'s. Each line traces the path that blood takes through the vessel, and its color shows how fast the blood moves there.'
+                    text: 'Before we look at the blood flow in Alex\'s aorta, it helps to see how blood moves through a healthy one. This aorta comes from a separate reference case, not from Alex. It shows where the blood travels on its way from the heart through the arch and down into the body.'
                 },
                 {
                     type: 'text',
-                    text: 'In a healthy aorta, the lines run side by side, smooth and orderly, from the heart through the arch and down into the body. This is called laminar flow. Later in the story, the same kind of image shows how the widened section of Alex\'s aorta disturbs this order.',
+                    text: 'In a healthy aorta, blood moves as one orderly stream. This is called laminar flow. It is the baseline for the rest of Alex\'s story: later, the same view shows what his widened aorta does to this order.',
                     infoPopup: {
                         title: 'laminar flow',
-                        text: 'In laminar flow, blood moves smoothly in one direction and swirls only very little; no large swirls form. When the flow is disturbed, for example where the vessel widens or splits, larger swirls can develop.'
+                        text: 'In laminar flow, blood moves in layers that slide past each other, usually fastest in the middle of the vessel and slower near the wall, with hardly any swirling. Where a vessel suddenly widens, narrows, or splits, this order can break up into swirls.'
                     }
                 }
             ]
@@ -119,7 +142,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'The difficult part of a thoracic aortic aneurysm is that it can stay quiet for a long time. Clinical sources describe most people as having no symptoms before a sudden serious event; one review gives roughly 95% without warning signs and about 5% with symptoms beforehand. If the widened vessel presses on nearby parts of the body, it may cause chest or back pain, a change in the voice, trouble swallowing, or shortness of breath. Sudden severe pain, fainting, breathlessness, or neurological symptoms can signal a tear in the wall of the aorta or a burst blood vessel.'
+                    text: 'Alex feels well, and that is exactly what makes a thoracic aortic aneurysm difficult: it can stay quiet for a long time. Clinical sources describe most people as having no symptoms before a sudden serious event; one review gives roughly 95% without warning signs and about 5% with symptoms beforehand. For Alex, waiting for symptoms is therefore not an option.'
                 },
                 {
                     type: 'symptomBars',
@@ -129,13 +152,13 @@ export const aneurysmStory = {
                             icon: 'block',
                             label: 'No symptoms',
                             value: 95,
-                            info: 'Many thoracic aortic aneurysms grow without noticeable symptoms, sometimes for years.'
+                            info: 'Without symptoms, an aneurysm is often found by chance, on a scan done for another reason, or through planned checks like Alex\'s.'
                         },
                         {
                             icon: 'sick',
                             label: 'Symptoms before acute event',
                             value: 5,
-                            info: 'A small proportion of people notice symptoms before an acute event. They should be assessed promptly, especially when an aortic aneurysm is already known.'
+                            info: 'If the widened vessel presses on nearby parts of the body, it may cause chest or back pain, a change in the voice, trouble swallowing, or shortness of breath. Sudden severe pain, fainting, breathlessness, or neurological symptoms can signal a tear in the wall of the aorta or a burst blood vessel and need emergency care.'
                         }
                     ]
                 },
@@ -153,7 +176,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Because Alex has Marfan syndrome, doctors check his aorta regularly, even when he feels well. They measure the aortic root and ascending aorta, assess the aortic valve, and compare each result with earlier scans. The change over time matters as much as one measurement. The team also considers family history, body size, and how quickly the aorta is growing when planning the next scan or specialist review.',
+                    text: 'Because Alex has Marfan syndrome, doctors check his aorta regularly, even when he feels well. At each visit they measure the aortic root and ascending aorta and look at the aortic valve. Every result adds to Alex\'s history, and the change over time matters as much as any single measurement.',
                     infoPopup: {
                         title: 'aortic valve',
                         text: 'Heart valves act like one-way doors that keep blood moving through the heart in the right direction. The aortic valve sits between the heart’s main pumping chamber and the aorta, and scans can show whether it is opening and closing normally.'
@@ -165,22 +188,22 @@ export const aneurysmStory = {
                         {
                             icon: 'genetics_svg',
                             title: 'Marfan risk',
-                            info: 'Marfan syndrome can weaken the aortic wall.'
+                            info: 'Marfan syndrome affects fibrillin-1, a protein that gives connective tissue its strength. In the aorta, this makes the wall more likely to stretch, especially at the aortic root.'
                         },
                         {
                             icon: 'event_available_svg',
                             title: 'Surveillance',
-                            info: 'Regular checks can find enlargement before it causes symptoms.'
+                            info: 'For Marfan syndrome, guidelines recommend imaging at diagnosis and again about six months later to see how fast the aorta is growing, then at regular intervals, more often if it enlarges.'
                         },
                         {
                             icon: 'radiology_aorta',
                             title: 'Imaging',
-                            info: 'The images show the aorta’s course and branches and let radiologists measure its widest points.'
+                            info: 'Ultrasound of the heart usually measures the aortic root and valve. CT or MRI show the whole aorta, including parts that ultrasound cannot reach.'
                         },
                         {
                             icon: 'compare_svg',
                             title: 'Aortic review',
-                            info: 'The team decides whether the aorta is stable or growing and when the next scan or specialist review is due.'
+                            info: 'Measurements are compared with earlier scans and with Alex\'s body size, because a taller person can have a larger normal aorta. Family history and growth rate also shape when the next scan or specialist review is due.'
                         }
                     ]
                 },
@@ -198,7 +221,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'A CT angiogram (CTA) is a CT scan that shows the blood vessels. A contrast agent is injected into a vein in the arm while the scanner takes a rapid series of X-ray images. The contrast makes the blood inside the vessels stand out, so the team can trace the aorta, see its branches, and measure its diameter. The aorta is colored red here during image editing; it was not red in the original scan.'
+                    text: 'To see Alex\'s whole aorta, the team uses a CT angiogram (CTA), a CT scan that shows the blood vessels. A contrast agent is injected into a vein in the arm while the scanner takes a rapid series of X-ray images. The contrast makes the blood inside the vessels stand out, so the team can trace the aorta, see its branches, and measure its diameter. The aorta is colored red here during image editing; it was not red in the original scan.'
                 },
                 {
                     type: 'image',
@@ -209,7 +232,7 @@ export const aneurysmStory = {
                         x: '52%',
                         y: '30%',
                         title: 'Thoracic aortic aneurysm',
-                        text: 'The widened section of Alex\'s thoracic aorta is the finding being measured and followed over time.'
+                        text: 'The diameter is measured at right angles to the course of the vessel, so that a curved section is not measured too wide.'
                     }
                 }
             ]
@@ -222,7 +245,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'A CTA is not one single picture but a stack of hundreds of thin images, called slices. On a computer, software traces the outline of the aorta in each slice and joins these outlines into a three-dimensional model. This is how the model of Alex\'s aorta shown earlier was built, and it is also the starting point for the flow simulation later in the story.'
+                    text: 'Alex\'s scan does more than give his doctors a measurement. It is also the raw material for a 3D model of his aorta: the model you explored earlier, and the starting point for the flow simulation later in the story.'
                 },
                 {
                     type: 'processSteps',
@@ -230,22 +253,22 @@ export const aneurysmStory = {
                     steps: [
                         {
                             title: 'CT scanner',
-                            text: 'The patient lies on a table that moves through the ring of the scanner.',
+                            text: 'The patient lies on a table that moves through the ring of the scanner. The contrast agent is timed so that it reaches the aorta while the images are taken.',
                             visual: { kind: 'image', fit: 'contain', src: 'assets/story_images/process/ct_scanner.png', alt: 'A CT scanner with its ring and patient table' }
                         },
                         {
                             title: 'CTA slices',
-                            text: 'The scan is a stack of thin images through the chest.',
+                            text: 'A CTA is not one picture but a stack of hundreds of thin images through the chest, called slices, often less than a millimeter apart.',
                             visual: { kind: 'slices', src: 'assets/story_images/alex_cta_sagittal.png', aspect: '1212 / 1193', alt: 'Alex\'s sagittal CTA image with the aorta highlighted in red, shown as the front image of a stack of slices' }
                         },
                         {
                             title: 'Software',
-                            text: 'On a computer, software traces the aorta in every slice and joins the outlines.',
-                            visual: { kind: 'icon', icon: 'computer' }
+                            text: 'Software marks the aorta in every slice, a step called segmentation, and joins the outlines into a surface. A person checks and corrects the result.',
+                            visual: { kind: 'placeholder' }
                         },
                         {
                             title: '3D model',
-                            text: 'Alex\'s aorta as a model that can be turned and used for a flow simulation.',
+                            text: 'The surface is smoothed and its branches are cut to open ends, so the model can be turned on screen and used for a flow simulation.',
                             visual: { kind: 'image', fit: 'contain', src: 'assets/story_images/process/alex_model.png', alt: '3D model of Alex\'s aorta built from the CTA slices' }
                         }
                     ]
@@ -264,11 +287,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'To simulate the flow, the 3D model is divided into a computational mesh. Software then calculates how blood moves through this geometry, from where it enters the aorta to where it leaves through its branches.'
-                },
-                {
-                    type: 'text',
-                    text: 'The results are shown as the moving lines introduced earlier: each line follows the path of the blood, and its color shows the speed. This is simulated data, not blood recorded in the body or a prediction of Alex\'s individual outcome.'
+                    text: 'The 3D model shows the shape of Alex\'s aorta, but not how blood moves through it. For that, the team runs a computer simulation of the blood flow through his model. The result is simulated data, not blood recorded in Alex\'s body and not a prediction of his individual outcome.'
                 },
                 {
                     type: 'text',
@@ -280,22 +299,22 @@ export const aneurysmStory = {
                     steps: [
                         {
                             title: 'Mesh',
-                            text: 'The 3D model is divided into many small elements, where the flow is calculated.',
+                            text: 'The inside of the model is divided into a computational mesh of often millions of tiny cells. A finer mesh captures more detail but takes longer to calculate.',
                             visual: { kind: 'image', src: 'assets/story_images/alex_mesh_closeup.png', alt: 'Close-up of the wall of Alex\'s aortic model, divided into a mesh of small triangles' }
                         },
                         {
                             title: 'In- and outflow',
-                            text: 'At each open end, the team sets how blood enters from the heart and leaves the model. The red planes mark these openings.',
+                            text: 'At the inlet, the team sets how much blood the heart pumps during a heartbeat; at each outlet, how blood leaves the model. The red planes mark these openings.',
                             visual: { kind: 'image', fit: 'contain', src: 'assets/story_images/process/alex_planes.png', alt: 'Alex\'s aortic model with red planes at the inflow in the aortic root and at the outflows of the branches and the descending aorta' }
                         },
                         {
                             title: 'Calculation',
-                            text: 'A computer solves the equations of fluid motion for every element, step by step in time.',
-                            visual: { kind: 'icon', icon: 'calculate' }
+                            text: 'A computer solves the equations of fluid motion in every cell, in many small time steps over several heartbeats, until the result repeats from beat to beat.',
+                            visual: { kind: 'placeholder' }
                         },
                         {
                             title: 'Visualization',
-                            text: 'The results become pathlines that show where blood moves and how fast.',
+                            text: 'The result is a speed and direction for every cell at every moment. To make it readable, it is turned into views that show where the blood goes and how fast it moves.',
                             visual: { kind: 'image', fit: 'contain', src: 'assets/story_images/process/alex_pathlines.png', alt: 'Pathlines of the simulated blood flow in Alex\'s aorta' }
                         }
                     ]
@@ -314,7 +333,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'In the aorta, shape and blood flow are tightly connected. This model shows simulated blood flow through Alex’s aorta. It illustrates changes in speed and direction, especially where the vessel widens or curves.'
+                    text: 'In the aorta, shape and blood flow are tightly connected. Here, the simulated blood flow through Alex’s aorta appears next to the healthy reference aorta from earlier. Watch for changes in speed and direction, especially where Alex\'s aorta widens or curves.'
                 },
                 {
                     type: 'modelPlaceholder',
@@ -325,13 +344,21 @@ export const aneurysmStory = {
                         src: 'assets/story_images/aneurysm_flow_illustration.gif',
                         healthySrc: 'assets/story_images/healthy_flow_illustration.gif',
                         healthyAlt: 'Illustration of blood flowing through a healthy aorta.',
-                        alt: 'Illustration of the aorta showing blood flow through the arch and descending vessel.'
+                        alt: 'Illustration of the aorta showing blood flow through the arch and descending vessel.',
+                        labels: alexFlowIllustrationLabels,
+                        healthyLabels: healthyIllustrationLabels
                     },
                     flowVariants: [
                         { label: 'Pathlines', src: `${flowModelBase}aneurysm_lines_anim.glb`, comparisonSrc: `${flowModelBase}healthy_lines_anim.glb`, framingScale: 0.29, comparisonFramingScale: 0.29, rotationY: 1.5708, comparisonRotationY: -1.5708, animationFps: 20, animationSpeed: 1 },
                         { label: 'Particle flow', src: `${flowModelBase}aneurysm_particles_anim.glb`, comparisonSrc: `${flowModelBase}healthy_particle_anim.glb`, framingScale: 0.35, comparisonFramingScale: 0.35, rotationY: 1.5708, comparisonRotationY: -1.5708, animationFps: 20, animationSpeed: 0.5 }
                     ],
                     modelMode: 'flow',
+                    // Flow inside the widened section in red, the rest in white; the
+                    // center is the anchor of the "Widened section" label.
+                    flowColors: 'region',
+                    flowRegion: { center: [0.87, 0.657, 0.766], radius: 0.12 },
+                    labels: alexFlowModelLabels,
+                    healthyLabels: healthyModelLabels,
                     preload: true,
                     animationFps: 20,
                     framingScale: 0.29,
@@ -345,7 +372,7 @@ export const aneurysmStory = {
                 },
                 {
                     type: 'text',
-                    text: 'The important point is not only where the aorta is wide, but how the wider shape reorganizes flow. Blood accelerates in the arch and can swirl in the enlargement, forming a vortex. This differs from the orderly laminar flow of the healthy reference aorta shown earlier, which the comparison view shows again. These patterns matter because the vessel wall is exposed to the flow with every heartbeat.'
+                    text: 'The important point is not only where Alex\'s aorta is wide, but how the wider shape reorganizes the flow. Blood accelerates in the arch and can swirl in the enlargement, forming a vortex, unlike the orderly laminar flow of the healthy aorta beside it. These patterns matter because Alex\'s aortic wall is exposed to this flow with every heartbeat.'
                 },
                 {
                     type: 'reference',
@@ -361,7 +388,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'This is a choice based on changing risk, not a fixed timeline. If Alex’s measurements are stable, the team continues planned scans and medical follow-up. Faster growth or other risk features can lead to an earlier discussion with a specialist aortic team. For Marfan syndrome, guidelines recommend surgery when the aortic root reaches 5.0 cm; surgery may be considered from 4.5 cm when specific high-risk features are present. These figures apply to the aortic root—not every part of the aorta—and are not a decision rule by themselves. Growth rate, body size, family history, valve findings, overall health, and the risks and benefits of surgery are considered together.'
+                    text: 'For Alex, treatment is not a fixed date but a decision that is revisited with every scan. As long as his aorta stays stable, careful watching is the treatment. If it grows faster, or reaches a size where the risk of a tear outweighs the risk of an operation, the team will recommend repair. No single number decides this: growth rate, body size, family history, valve findings, overall health, and the risks and benefits of surgery are weighed together.'
                 },
                 {
                     type: 'treatmentDecision',
@@ -373,19 +400,19 @@ export const aneurysmStory = {
                             icon: 'circle_circle',
                             label: 'Stable diameter and growth',
                             treatment: 'Continue monitoring',
-                            info: 'If repeat measurements show little or no growth, follow-up imaging and visits continue at an interval chosen for Alex.'
+                            info: 'The follow-up interval is set for Alex individually. It becomes shorter as soon as a scan shows growth.'
                         },
                         {
                             icon: 'expand',
                             label: 'Faster growth or added risk',
                             treatment: 'Appointment at an aortic center',
-                            info: 'A faster increase in size, family history, or other high-risk findings may prompt earlier review by a team experienced in inherited aortic disease. The team confirms measurements and discusses options; it does not mean surgery is automatic.'
+                            info: 'An aortic center brings together surgeons, cardiologists, and imaging specialists experienced in inherited aortic disease. They confirm the measurements and discuss the options; a referral does not mean surgery is automatic.'
                         },
                         {
                             icon: 'surgical',
                             label: 'Point at which treatment is recommended',
                             treatment: 'Aortic repair',
-                            info: 'If the balance of risk favors repair, surgeons replace the enlarged aortic root and sometimes the ascending aorta. In selected patients the natural aortic valve can be preserved; in others it is repaired or replaced.'
+                            info: 'For Marfan syndrome, guidelines recommend surgery when the aortic root reaches 5.0 cm; it may be considered from 4.5 cm when specific high-risk features are present. These figures apply to the aortic root, not every part of the aorta. Surgeons then replace the enlarged root and sometimes the ascending aorta; in selected patients the natural aortic valve can be preserved, in others it is repaired or replaced.'
                         }
                     ]
                 },
@@ -403,7 +430,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Alex cannot prevent Marfan syndrome itself, but he can reduce stress on the aortic wall and keep dangerous changes from going unnoticed. Long-term care means controlling blood pressure, taking medication when prescribed, adapting intense physical activity, returning for regular imaging, and including family or genetic care because inherited aortic risk can affect relatives too.'
+                    text: 'Alex cannot prevent Marfan syndrome itself, but he can reduce the stress on his aortic wall and make sure that dangerous changes do not go unnoticed. For him, prevention is not a single step but a set of habits that runs through his everyday life, his care, and his family.'
                 },
                 {
                     type: 'preventionTimeline',
