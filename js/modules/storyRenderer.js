@@ -21,6 +21,7 @@ import {
     renderTreatmentSteps
 } from '../components/clinicalElements.js';
 import { renderProcessSteps } from '../components/processSteps.js';
+import { renderLabelKey, renderLabelledImage } from '../components/imageLabels.js';
 
 /**
  * StoryRenderer converts validated story configuration into HTML.
@@ -149,7 +150,6 @@ function modelViewConfig(view) {
     const keys = ['url', 'label', 'framingScale', 'rotationX', 'rotationY', 'rotationZ', 'animationFps', 'animationSpeed'];
     const config = Object.fromEntries(keys.filter((key) => view[key] !== undefined).map((key) => [key, view[key]]));
     config.labels = Array.isArray(view.labels) ? view.labels : [];
-    config.sourceColors = Boolean(view.sourceColors);
     return config;
 }
 
@@ -160,6 +160,15 @@ function renderModelViewControls(model, illustration) {
         ? viewButton('animation', 'Anatomy', true, modelViewConfig(model)) + viewButton('flow', model.flowView.buttonLabel || 'Blood flow', false, modelViewConfig(model.flowView))
         : viewButton('animation', '3D model', true);
     return `<div class="inline-model-view-controls" role="group" aria-label="Choose anatomy view">${buttons}${illustration ? viewButton('illustration', 'Illustration', false) : ''}</div>`;
+}
+
+function renderInlineIllustration(illustration) {
+    if (!illustration?.src) return '';
+    const labels = Array.isArray(illustration.labels) ? illustration.labels : [];
+    return `
+        <figure class="inline-model-illustration" hidden>
+            ${renderLabelledImage(`<img src="${illustration.src}" alt="${illustration.alt || ''}">`, labels)}
+        </figure>`;
 }
 
 function renderInlineModel(model, illustration = null) {
@@ -174,39 +183,28 @@ function renderInlineModel(model, illustration = null) {
         .filter((key) => Number.isFinite(model[key]))
         .map((key) => ` data-${key.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}="${model[key]}"`)
         .join('');
-    const sourceColors = model.sourceColors ? ' data-source-colors="true"' : '';
     const labels = Array.isArray(model.labels) ? model.labels : [];
     const labelData = labels.length
         ? ` data-model-labels="${toDataAttribute(labels)}"`
         : '';
-    const labelKey = labels.length ? `
-        <ol class="model-label-key" aria-label="Labelled parts of the 3D model">
-            ${labels.map((item, index) => `<li><span class="model-label-key-number" aria-hidden="true">${index + 1}</span>${item.text}</li>`).join('')}
-        </ol>` : '';
+    const labelKey = renderLabelKey(labels, 'Labelled parts of the 3D model');
     const legend = model.legend === false ? '' : `
         <div class="wall-layer-legend" aria-label="Legend of aortic wall layers">
             <span><i class="intima"></i>Intima</span>
             <span><i class="media"></i>Media</span>
             <span><i class="adventitia"></i>Adventitia</span>
         </div>`;
-    // Explains the flow encoding: line = path of blood, color = speed.
-    const speedLegend = model.speedLegend ? `
-        <div class="flow-reading-legend" aria-label="How to read the flow lines">
-            <span class="flow-reading-legend-item"><i class="flow-reading-line" aria-hidden="true"></i>Line: path of blood</span>
-            <span class="flow-reading-legend-item">Color: speed <span class="flow-reading-scale"><small>slower</small><i class="flow-reading-gradient" aria-hidden="true"></i><small>faster</small></span></span>
-        </div>` : '';
     return `
         <figure class="inline-model-figure">
             ${renderModelViewControls(model, illustration)}
-            ${illustration ? `<figure class="inline-model-illustration" hidden><img src="${illustration.src}" alt="${illustration.alt || ''}"></figure>` : ''}
-            <div class="inline-model-viewer" data-inline-model data-model-url="${model.url}" data-model-mode="${modelMode}"${rotationX}${rotationY}${rotationZ}${framingScale}${animation}${sourceColors}${labelData} role="img" aria-label="${label}">
+            ${renderInlineIllustration(illustration)}
+            <div class="inline-model-viewer" data-inline-model data-model-url="${model.url}" data-model-mode="${modelMode}"${rotationX}${rotationY}${rotationZ}${framingScale}${animation}${labelData} role="img" aria-label="${label}">
                 <span class="inline-model-plus-icon" aria-hidden="true">+</span>
                 ${model.rotationHint ? '<span class="inline-model-360-hint material-symbols-rounded story-material-icon" aria-hidden="true">360</span>' : ''}
                 <div class="inline-model-loading" aria-hidden="true"></div>
             </div>
             <div class="inline-model-meta">
                 ${labelKey}
-                ${speedLegend}
                 ${legend}
             </div>
         </figure>

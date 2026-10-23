@@ -369,6 +369,20 @@ body[data-story-version] .flow-view-controls {
     margin-top: 12px;
 }
 
+/* Pathlines / Particle flow sit left of Flow animation / Illustration. */
+body[data-story-version] .flow-control-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px 16px;
+    margin-top: 12px;
+}
+
+body[data-story-version] .flow-control-row > :is(.flow-variant-controls, .flow-view-controls) {
+    margin-top: 0;
+}
+
 body[data-story-version] .flow-view-button {
     padding: 8px 14px;
     border: 1px solid color-mix(in srgb, var(--color-accent) 58%, transparent);
@@ -396,6 +410,8 @@ body[data-story-version] .inline-model-view-controls {
 
 body[data-story-version] .inline-model-illustration {
     display: none;
+    flex-direction: column;
+    gap: 12px;
     min-height: 350px;
     margin: 0 0 12px;
     align-items: center;
@@ -404,10 +420,10 @@ body[data-story-version] .inline-model-illustration {
 
 body[data-story-version] .inline-model-illustration :is(img, video) {
     display: block;
-    width: min(100%, 520px);
-    height: min(58vh, 620px);
-    min-height: 350px;
-    object-fit: contain;
+    width: auto;
+    max-width: min(100%, 520px);
+    height: auto;
+    max-height: min(58vh, 620px);
 }
 
 body[data-story-version] .prevention-flow-illustrations {
@@ -472,19 +488,18 @@ body[data-story-version] .flow-illustration-button:focus-visible {
     color: #fff;
 }
 
-body[data-story-version] :is(.alex-aorta-model-section, .miriam-aorta-model-section).show-anatomy-illustration .inline-model-viewer,
-body[data-story-version] :is(.alex-aorta-model-section, .miriam-aorta-model-section).show-anatomy-illustration .inline-model-meta {
+body[data-story-version] .inline-model-figure.show-anatomy-illustration .inline-model-viewer,
+body[data-story-version] .inline-model-figure.show-anatomy-illustration .inline-model-meta {
     display: none;
 }
 
-body[data-story-version] :is(.alex-aorta-model-section, .miriam-aorta-model-section).show-anatomy-illustration .inline-model-illustration {
+body[data-story-version] .inline-model-figure.show-anatomy-illustration .inline-model-illustration {
     display: flex;
 }
 
 @media (max-width: 700px) {
     body[data-story-version] .inline-model-illustration :is(img, video) {
-        height: min(52vh, 500px);
-        min-height: 280px;
+        max-height: min(52vh, 500px);
     }
 }
 
@@ -534,6 +549,14 @@ body[data-story-version] .flow-illustration :is(img, video) {
     object-fit: contain;
 }
 
+/* Labelled animations keep their own proportions so the labels stay on them. */
+body[data-story-version] .flow-illustration-panel .labelled-image > :is(img, video) {
+    width: auto;
+    height: auto;
+    min-height: 0;
+    max-height: min(60vh, 620px);
+}
+
 body[data-story-version] .flow-illustration figcaption {
     margin-top: 8px;
     color: var(--color-text-muted, #aaa);
@@ -564,6 +587,12 @@ body[data-story-version] .model-placeholder.show-flow-illustration .flow-illustr
     body[data-story-version] .flow-illustration :is(img, video) {
         height: min(58vh, 520px);
         min-height: 200px;
+    }
+
+    body[data-story-version] .flow-illustration-panel .labelled-image > :is(img, video) {
+        height: auto;
+        min-height: 0;
+        max-height: min(58vh, 520px);
     }
 }
 

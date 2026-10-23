@@ -4,14 +4,23 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 import { ModelLabels, parseModelLabels } from './ModelLabels.js';
 import { addBoundaryPlanes } from './boundaryPlanes.js';
+import { applyFlowColors, parseFlowRegion } from './flowColors.js';
 
 // Keep 3D mesh materials aligned with the UI accent token (--color-accent).
 const MODEL_ACCENT = 0xb62413;
-// Lightest step of the accent speed scale (matches --flow-speed-slow).
-const ACCENT_SCALE_LIGHT = 0.15;
 // Particle diameter as a fraction of the model's largest dimension.
 const PARTICLE_SIZE = 0.004;
-const animationSyncStarts = new Map();
+// Shared clock per sync group: { start, speed }. mixer.setTime() is scaled by
+// timeScale, so a speed change re-anchors `start` to keep the current frame.
+const animationSyncClocks = new Map();
+
+function rescaleSyncClock(group, speed) {
+    const clock = animationSyncClocks.get(group);
+    if (!clock || clock.speed === speed || speed <= 0) return;
+    const now = performance.now();
+    clock.start = now - ((now - clock.start) * clock.speed) / speed;
+    clock.speed = speed;
+}
 
 class InlineModelViewer {
     constructor(container) {
@@ -138,11 +147,6 @@ class InlineModelViewer {
             this.prepareMaterials(this.originalModel);
             if (modelMode === 'wireframe') this.applyWireframeMaterial(this.originalModel);
             if (modelMode === 'flow') this.applyTransparentFlowSurfaceMaterial(this.originalModel);
-            // Exports that encode speed in their colors (data-source-colors)
-            // keep that scale, re-tinted to the accent red.
-            const keepSourceColors = this.container.dataset.sourceColors === 'true';
-            if (modelMode === 'flow' && !keepSourceColors) this.applyFlowAccentColor(this.originalModel);
-            if (modelMode === 'flow' && keepSourceColors) this.applyAccentSpeedScale(this.originalModel);
             this.layeredModel = modelMode === 'layers'
                 ? this.createLayeredModel(this.originalModel)
                 : null;
@@ -169,6 +173,10 @@ class InlineModelViewer {
                 );
                 this.scene.add(this.rotationPivot);
             }
+            // After fitting, because a color region is placed in the fitted wall box.
+            if (modelMode === 'flow') {
+                applyFlowColors(this.rotationPivot || this.model, this.container.dataset.flowColors, MODEL_ACCENT, parseFlowRegion(this.container));
+            }
             if (this.container.dataset.boundaryPlanes) this.addBoundaryPlanes();
             this.instancedGroups = modelMode === 'flow'
                 ? this.collapseRepeatedMeshes(this.originalModel)
@@ -192,7 +200,7 @@ class InlineModelViewer {
         });
         if (options.framingScale !== undefined) this.framingScale = options.framingScale;
         if (options.animationFps !== undefined) this.animationFps = Math.max(1, options.animationFps);
-        if (options.animationSpeed !== undefined) this.animationSpeed = Math.max(0, options.animationSpeed);
+        if (options.animationSpeed !== undefined) this.setAnimationSpeed(options.animationSpeed);
         if (!this.hasStarted || !this.scene) return;
 
         if (this.animationFrame) cancelAnimationFrame(this.animationFrame);
@@ -218,6 +226,7 @@ class InlineModelViewer {
     setAnimationSpeed(speed) {
         const nextSpeed = Number(speed);
         if (!Number.isFinite(nextSpeed)) return;
+        if (this.animationSyncGroup) rescaleSyncClock(this.animationSyncGroup, Math.max(0, nextSpeed));
         this.animationSpeed = Math.max(0, nextSpeed);
         this.container.dataset.animationSpeed = String(this.animationSpeed);
         if (this.mixer) this.mixer.timeScale = this.animationSpeed;
@@ -267,49 +276,6 @@ class InlineModelViewer {
                 material.metalness = Math.min(material.metalness ?? 0, 0.08);
                 material.needsUpdate = true;
             });
-        });
-    }
-
-    applyFlowAccentColor(model) {
-        model.traverse((child) => {
-            if (child.userData.isFlowSurface || (!child.isMesh && !child.isPoints && !child.isLine)) return;
-            const materials = Array.isArray(child.material) ? child.material : [child.material];
-            materials.filter(Boolean).forEach((material) => {
-                material.color?.set(MODEL_ACCENT);
-                material.vertexColors = false;
-                material.needsUpdate = true;
-            });
-        });
-    }
-
-    // The flow exports color lines on a single-hue red scale, where a more
-    // saturated color means faster flow. Map that scale onto light accent ->
-    // accent and draw the lines unlit so the scene lights do not tint it.
-    applyAccentSpeedScale(model) {
-        const fast = new THREE.Color(MODEL_ACCENT);
-        const slow = new THREE.Color(0xffffff).lerp(fast, ACCENT_SCALE_LIGHT);
-        const mixed = new THREE.Color();
-        model.traverse((child) => {
-            const colors = child.geometry?.attributes?.color;
-            if (!child.isMesh || child.userData.isFlowSurface || !colors) return;
-            const saturation = (index) => {
-                const red = colors.getX(index);
-                return red > 0 ? 1 - Math.min(colors.getY(index), colors.getZ(index)) / red : 0;
-            };
-            let min = Infinity;
-            let max = -Infinity;
-            for (let index = 0; index < colors.count; index += 1) {
-                const value = saturation(index);
-                min = Math.min(min, value);
-                max = Math.max(max, value);
-            }
-            const range = max - min || 1;
-            for (let index = 0; index < colors.count; index += 1) {
-                mixed.copy(slow).lerp(fast, (saturation(index) - min) / range);
-                colors.setXYZ(index, mixed.r, mixed.g, mixed.b);
-            }
-            colors.needsUpdate = true;
-            child.material = new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.DoubleSide });
         });
     }
 
@@ -562,10 +528,10 @@ class InlineModelViewer {
             const animationInterval = 1 / this.animationFps;
             if (this.animationAccumulator >= animationInterval) {
                 if (this.animationSyncGroup) {
-                    if (!animationSyncStarts.has(this.animationSyncGroup)) {
-                        animationSyncStarts.set(this.animationSyncGroup, frameTime);
+                    if (!animationSyncClocks.has(this.animationSyncGroup)) {
+                        animationSyncClocks.set(this.animationSyncGroup, { start: frameTime, speed: this.animationSpeed });
                     }
-                    const elapsed = Math.max(0, (frameTime - animationSyncStarts.get(this.animationSyncGroup)) / 1000);
+                    const elapsed = Math.max(0, (frameTime - animationSyncClocks.get(this.animationSyncGroup).start) / 1000);
                     this.mixer.setTime(elapsed);
                 } else {
                     this.mixer.update(this.animationAccumulator);

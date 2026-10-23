@@ -31,7 +31,9 @@ const visualRenderers = {
     model: renderModel,
     slices: renderSlices,
     image: (visual) => `<img class="process-image${visual.fit === 'contain' ? ' process-image-contain' : ''}" src="${visual.src}" alt="${visual.alt}">`,
-    icon: (visual) => `<div class="process-icon">${renderMaterialIcon(visual.icon || 'computer')}</div>`
+    icon: (visual) => `<div class="process-icon">${renderMaterialIcon(visual.icon || 'computer')}</div>`,
+    // Stand-in until the step's image exists; decorative, the title names the step.
+    placeholder: () => '<div class="process-placeholder" aria-hidden="true">Image</div>'
 };
 
 export function renderProcessSteps(element = {}) {

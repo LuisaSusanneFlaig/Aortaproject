@@ -8,6 +8,7 @@ import { ThemeManager } from './ui/ThemeManager.js';
 import { renderStoryPage, getStoryVersion } from './storyRenderer.js';
 import { storyVersions } from './storyContent.js';
 import { initInlineModelViewers } from './ui/InlineModelViewer.js';
+import { initImageLabels } from './ui/ModelLabels.js';
 import { switchInlineModelView } from './ui/modelViews.js';
 import { ScrollDirector } from './ui/ScrollDirector.js';
 import { GsapSectionAnimator } from './ui/GsapSectionAnimator.js';
@@ -112,6 +113,7 @@ class ScrollytellingApp {
         this.updateStory();
         this.usesSplitLayout = Boolean(document.querySelector('.story-split-shell'));
         this.inlineModelViewers = initInlineModelViewers();
+        initImageLabels();
         if (this.usesEditorialScroll) {
             this.scrollDirector = new ScrollDirector(document.getElementById('story'));
             this.scrollDirector.init();
@@ -645,13 +647,12 @@ class ScrollytellingApp {
             const flowViewButton = event.target.closest('.flow-view-button');
             if (flowViewButton) {
                 const figure = flowViewButton.closest('.model-placeholder');
-                const modelSection = flowViewButton.closest('.alex-aorta-model-section');
-                const miriamModelSection = flowViewButton.closest('.miriam-aorta-model-section');
+                // Any inline model with an inlineIllustration (anatomy, How to Read Blood Flow).
+                const inlineFigure = flowViewButton.closest('.inline-model-figure');
                 const showIllustration = flowViewButton.dataset.flowView === 'illustration';
                 figure?.classList.toggle('show-flow-illustration', showIllustration);
-                modelSection?.classList.toggle('show-anatomy-illustration', showIllustration);
-                miriamModelSection?.classList.toggle('show-anatomy-illustration', showIllustration);
-                (figure || modelSection || miriamModelSection)?.querySelectorAll('.flow-view-button').forEach((button) => {
+                inlineFigure?.classList.toggle('show-anatomy-illustration', showIllustration);
+                (figure || inlineFigure)?.querySelectorAll('.flow-view-button').forEach((button) => {
                     const selected = button === flowViewButton;
                     button.classList.toggle('active', selected);
                     button.setAttribute('aria-pressed', String(selected));
@@ -785,8 +786,10 @@ class ScrollytellingApp {
             speedSlider.dataset.userAdjusted = 'true';
             const speedOutput = speedSlider.closest('.flow-speed-control')?.querySelector('.flow-speed-value');
             if (speedOutput) speedOutput.textContent = `${speed}×`;
-            const modelStage = speedSlider.closest('.model-placeholder')?.querySelector('[data-inline-model]');
-            modelStage?.inlineModelViewer?.setAnimationSpeed(speed);
+            // Healthy and affected viewers play in sync, so both follow the slider.
+            speedSlider.closest('.model-placeholder')?.querySelectorAll('[data-inline-model]').forEach((modelStage) => {
+                modelStage.inlineModelViewer?.setAnimationSpeed(speed);
+            });
         });
         if (this.hasCompletedBothStories()) this.renderCompletionPrompt();
     }
