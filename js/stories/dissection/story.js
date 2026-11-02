@@ -1,4 +1,5 @@
-import { healthyIllustrationLabels, healthyModelLabels } from '../healthyReferenceLabels.js';
+import { healthyIllustrationArrows, healthyIllustrationLabels, healthyIllustrationSrc, healthyModelLabels } from '../healthyReferenceLabels.js';
+import { miriamFlowArrows } from './flowArrows.js';
 
 const flowModelBase = 'assets/models/flow/optimized/';
 
@@ -119,7 +120,8 @@ export const dissectionStory = {
             timelineLabel: 'Dissected aorta',
             className: 'model-section miriam-flow-reading-section',
             inlineIllustration: {
-                src: 'assets/story_images/healthy_flow_illustration.gif',
+                src: healthyIllustrationSrc,
+                arrows: healthyIllustrationArrows,
                 alt: 'Animated illustration of blood flowing smoothly through a healthy aorta, from the heart through the arch and down the descending aorta.',
                 labels: healthyIllustrationLabels
             },
@@ -312,7 +314,7 @@ export const dissectionStory = {
                             text: 'Here, the animated drawing of the blood flow through both channels of Miriam\'s dissected aorta appears next to the drawing of the healthy reference aorta from earlier. Watch how the tear changes the route of the blood.',
                             infoPopup: {
                                 title: 'animated drawing',
-                                text: 'The arrows were drawn by hand on top of the drawing of Miriam\'s aorta. In animation software, each arrow grows along its path within two seconds, and the animation repeats. This flow is not the result of a computer simulation: it is not calculated, not measured, and not blood recorded in Miriam\'s body. Like every illustration, it rests on choices about which paths to show and where to simplify.'
+                                text: 'The arrows were drawn by hand on top of the drawing of Miriam\'s aorta. On this page, each arrow grows in, travels along its path and fades out at its end, and the arrows follow one another along the path of the blood, from the heart downwards. Then the sequence starts again. This flow is not the result of a computer simulation: it is not calculated, not measured, and not blood recorded in Miriam\'s body. Like every illustration, it rests on choices about which paths to show and where to simplify.'
                             }
                         }
                     }
@@ -322,17 +324,46 @@ export const dissectionStory = {
                     id: 'flow-vis-subacute',
                     src: `${flowModelBase}dissection_lines_anim.glb`,
                     flowIllustration: {
-                        type: 'video',
-                        src: 'assets/story_images/dissection_flow_illustration.gif',
-                        healthySrc: 'assets/story_images/healthy_flow_illustration.gif',
+                        // The arrows grow over the still drawing (js/modules/ui/flowArrows.js).
+                        // Order as in Figma: 1 ascending aorta, 2a–2c branches, 3 arch,
+                        // 4 red swirl at the entry tear, 5 dashed, 6–7 red, 8 dashed,
+                        // 9 lower descending aorta. Each arrow starts when the one it
+                        // continues arrives at its end.
+                        src: 'assets/story_images/miriam_dissection_illustration.png',
+                        arrows: {
+                            ...miriamFlowArrows,
+                            timing: [
+                                {},
+                                { after: 0 },
+                                { after: 0, delay: 75 },
+                                { after: 0, delay: 150 },
+                                { after: 0 },
+                                { after: 0 },
+                                { after: 4 },
+                                { after: 5 },
+                                { after: 7 },
+                                { after: 6 },
+                                { after: 9 }
+                            ]
+                        },
+                        healthySrc: healthyIllustrationSrc,
+                        healthyArrows: healthyIllustrationArrows,
+                        // Position on screen, as fractions of the drawing's size (x right, y down).
+                        shiftX: 0,
+                        shiftY: -0.1,
+                        healthyShiftX: 0,
+                        healthyShiftY: 0,
+                        // Miriam's aorta fills less of its drawing; the healthy one is
+                        // shrunk so both appear at a similar size side by side.
+                        healthyScale: 0.87,
                         healthyAlt: 'Illustration of blood flowing through a healthy aorta.',
                         alt: 'Illustration of an aortic dissection showing blood flow through the true and false channels.',
                         labels: miriamFlowIllustrationLabels,
                         healthyLabels: healthyIllustrationLabels
                     },
                     flowVariants: [
-                        { view: 'lines', label: 'Pathlines', src: `${flowModelBase}dissection_lines_anim.glb`, comparisonSrc: `${flowModelBase}healthy_lines_anim.glb`, framingScale: 0.5, comparisonFramingScale: 0.29, rotationY: -1.5708, comparisonRotationY: -1.5708, animationFps: 20, animationSpeed: 1 },
-                        { view: 'particles', label: 'Particle flow', src: 'assets/models/flow/dissection_particles_colored.glb', comparisonSrc: `${flowModelBase}healthy_particle_anim.glb`, framingScale: 1.05, comparisonFramingScale: 0.35, rotationY: -1.5708, comparisonRotationY: -1.5708, animationFps: 20, animationSpeed: 0.5 }
+                        { view: 'lines', label: 'Pathlines', src: `${flowModelBase}dissection_lines_anim.glb`, comparisonSrc: `${flowModelBase}healthy_lines_anim.glb`, framingScale: 0.37, comparisonFramingScale: 0.29, rotationY: -1.5708, comparisonRotationY: -1.5708, shiftX: 0, shiftY: -0.05, comparisonShiftX: 0, comparisonShiftY: 0, animationFps: 20, animationSpeed: 1 },
+                        { view: 'particles', label: 'Particle flow', src: 'assets/models/flow/dissection_particles_colored.glb', comparisonSrc: `${flowModelBase}healthy_particle_anim.glb`, framingScale: 0.85, comparisonFramingScale: 0.35, rotationY: -1.5708, comparisonRotationY: -1.5708, shiftX: 0, shiftY: 0.1, comparisonShiftX: 0, comparisonShiftY: 0, animationFps: 20, animationSpeed: 0.5 }
                     ],
                     modelMode: 'flow',
                     // The dissection exports mark the false lumen red and the true lumen white;

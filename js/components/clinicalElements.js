@@ -1,6 +1,7 @@
 import { renderReferenceDisclosure } from './basicElements.js';
 import { renderAneurysmGrowth, renderAneurysmSexRisk } from './dataVisuals.js';
 import { renderMaterialIcon } from './icons.js';
+import { renderFlowArrowLayer } from './flowArrowLayer.js';
 import { renderLabelKey, renderLabelledImage } from './imageLabels.js';
 import { clampPercent } from './renderUtils.js';
 
@@ -256,20 +257,33 @@ export function renderModelPlaceholder(element = {}) {
         : '';
     const comparisonPanel = (title, url, attributes, labels = []) => `
                 <section class="flow-comparison-panel"><h3>${title}</h3><div class="model-placeholder-stage inline-model-viewer" data-inline-model data-model-url="${url}" data-model-mode="flow" data-animation-sync-group="${element.id || 'flow-comparison'}" data-animation-fps="20" data-animation-speed="${startSpeed}"${attributes}${labelAttribute(labels)} role="img" aria-label="Animated flow in ${title.toLowerCase()}"><div class="inline-model-loading" aria-hidden="true"></div><span class="inline-model-error">Animation unavailable</span></div>${renderLabelKey(labels, `Labelled parts of the ${title.toLowerCase()} model`)}</section>`;
+    // shiftX / shiftY (affected) and comparisonShiftX / comparisonShiftY (healthy)
+    // move a model on screen, as fractions of the viewer size (InlineModelViewer).
+    const shiftAttributes = (x, y) => `${Number.isFinite(x) ? ` data-shift-x="${x}"` : ''}${Number.isFinite(y) ? ` data-shift-y="${y}"` : ''}`;
     const pairedFlowView = comparisonVariant ? `
             <div class="flow-comparison-viewers" aria-label="Affected and healthy aorta flow comparison">
-                ${comparisonPanel('Healthy aorta', comparisonVariant.comparisonSrc, ` data-framing-scale="${comparisonVariant.comparisonFramingScale || comparisonVariant.framingScale || 0.35}" data-rotation-y="${comparisonVariant.comparisonRotationY ?? comparisonVariant.rotationY ?? 0}"`, element.healthyLabels)}
-                ${comparisonPanel('Affected aorta', comparisonVariant.src, ` data-framing-scale="${comparisonVariant.framingScale || 0.35}"${Number.isFinite(comparisonVariant.rotationY) ? ` data-rotation-y="${comparisonVariant.rotationY}"` : ''}${affectedColors}`, element.labels)}
+                ${comparisonPanel('Healthy aorta', comparisonVariant.comparisonSrc, ` data-framing-scale="${comparisonVariant.comparisonFramingScale || comparisonVariant.framingScale || 0.35}" data-rotation-y="${comparisonVariant.comparisonRotationY ?? comparisonVariant.rotationY ?? 0}"${shiftAttributes(comparisonVariant.comparisonShiftX, comparisonVariant.comparisonShiftY)}`, element.healthyLabels)}
+                ${comparisonPanel('Affected aorta', comparisonVariant.src, ` data-framing-scale="${comparisonVariant.framingScale || 0.35}"${Number.isFinite(comparisonVariant.rotationY) ? ` data-rotation-y="${comparisonVariant.rotationY}"` : ''}${shiftAttributes(comparisonVariant.shiftX, comparisonVariant.shiftY)}${affectedColors}`, element.labels)}
             </div>` : '';
     const illustration = element.flowIllustration;
     const illustrationMedia = (src, alt, imageFallback, videoFallback) => /.(png|jpe?g|webp|gif|svg)$/i.test(src)
         ? `<img src="${src}" alt="${alt || imageFallback}">`
         : `<video src="${src}" autoplay muted loop playsinline aria-label="${alt || videoFallback}"></video>`;
+    // `scale` / `healthyScale` shrink one drawing so both aortas appear at a similar size;
+    // `shiftX` / `shiftY` (`healthyShiftX` / `healthyShiftY`) move it, as fractions of its size.
+    const panelStyle = (scale, shiftX, shiftY) => {
+        const values = [
+            Number.isFinite(scale) ? `--illustration-scale: ${scale}` : '',
+            Number.isFinite(shiftX) ? `--illustration-shift-x: ${shiftX}` : '',
+            Number.isFinite(shiftY) ? `--illustration-shift-y: ${shiftY}` : ''
+        ].filter(Boolean);
+        return values.length ? ` style="${values.join('; ')}"` : '';
+    };
     const flowIllustration = illustration ? `
             <figure class="flow-illustration" hidden>
                 ${illustration.healthySrc
-                    ? `<section class="flow-illustration-panel"><h3>Healthy aorta</h3>${renderLabelledImage(illustrationMedia(illustration.healthySrc, illustration.healthyAlt, 'Illustration of blood flow through a healthy aorta', 'Animation of blood flowing through a healthy aorta'), illustration.healthyLabels)}</section><section class="flow-illustration-panel"><h3>Affected aorta</h3>${renderLabelledImage(illustrationMedia(illustration.src, illustration.alt, 'Affected aortic flow illustration', 'Animation of affected blood flow'), illustration.labels)}</section>`
-                    : illustrationMedia(illustration.src, illustration.alt, '', '')}
+                    ? `<section class="flow-illustration-panel"${panelStyle(illustration.healthyScale, illustration.healthyShiftX, illustration.healthyShiftY)}><h3>Healthy aorta</h3>${renderLabelledImage(illustrationMedia(illustration.healthySrc, illustration.healthyAlt, 'Illustration of blood flow through a healthy aorta', 'Animation of blood flowing through a healthy aorta'), illustration.healthyLabels, undefined, renderFlowArrowLayer(illustration.healthyArrows))}</section><section class="flow-illustration-panel"${panelStyle(illustration.scale, illustration.shiftX, illustration.shiftY)}><h3>Affected aorta</h3>${renderLabelledImage(illustrationMedia(illustration.src, illustration.alt, 'Affected aortic flow illustration', 'Animation of affected blood flow'), illustration.labels, undefined, renderFlowArrowLayer(illustration.arrows))}</section>`
+                    : renderLabelledImage(illustrationMedia(illustration.src, illustration.alt, '', ''), [], undefined, renderFlowArrowLayer(illustration.arrows))}
                 ${illustration.caption ? `<figcaption>${illustration.caption}</figcaption>` : ''}
             </figure>` : '';
     const flowViewControl = element.flowIllustration ? `

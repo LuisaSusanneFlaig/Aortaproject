@@ -105,6 +105,10 @@ In the CTA Imaging section (`diagnose-bildgebung`, `s10`), the second paragraph 
 
 `npm run check` validates and renders all three versions.
 
+Animated flow arrows of the illustration version: export the Figma frame (drawing plus arrows) as SVG and run `node tools/extract-flow-arrows.js <frame.svg> js/stories/<story>/flowArrows.js <exportName>`. Pass the result as `flowIllustration.arrows` (or `healthyArrows`) with the still drawing as `src`; `js/modules/ui/flowArrows.js` grows and reseeds the arrows over it in rounds and shows them still with reduced motion. When each arrow starts is set with an optional `timing` list next to the arrows (see `js/components/flowArrowLayer.js`; Alex's flow section has an example); without it, the arrows start one after another in the Figma layer order.
+
+Side-by-side sizes in the flow comparison: the 3D viewers scale every model to fill the view, so `framingScale` / `comparisonFramingScale` in `flowVariants` set how large each aorta appears; the drawings take `flowIllustration.scale` / `healthyScale` (below 1 shrinks one drawing). Keep the healthy and the affected aorta at a similar size when exports change.
+
 ## Current data sources
 
 - Alex aneurysm case: VMR `0021_H_AO_MFS`, case `0129_0000`.

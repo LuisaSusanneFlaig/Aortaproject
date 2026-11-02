@@ -508,6 +508,26 @@ class InlineModelViewer {
         this.camera.updateProjectionMatrix();
         this.controls.target.set(0, 0, 0);
         this.controls.update();
+        this.applyScreenShift();
+    }
+
+    // data-shift-x / data-shift-y move the model on screen, as fractions of
+    // the viewer width and height (x to the right, y downwards). The camera
+    // and its target move together, so the view direction stays the same.
+    applyScreenShift() {
+        const shiftX = Number(this.container.dataset.shiftX) || 0;
+        const shiftY = Number(this.container.dataset.shiftY) || 0;
+        if (!shiftX && !shiftY) return;
+        this.camera.updateMatrixWorld(true);
+        const distance = this.camera.position.distanceTo(this.controls.target);
+        const visibleHeight = 2 * distance * Math.tan(THREE.MathUtils.degToRad(this.camera.fov / 2));
+        const visibleWidth = visibleHeight * this.camera.aspect;
+        const right = new THREE.Vector3().setFromMatrixColumn(this.camera.matrixWorld, 0);
+        const up = new THREE.Vector3().setFromMatrixColumn(this.camera.matrixWorld, 1);
+        const pan = right.multiplyScalar(-shiftX * visibleWidth).add(up.multiplyScalar(shiftY * visibleHeight));
+        this.camera.position.add(pan);
+        this.controls.target.add(pan);
+        this.controls.update();
     }
 
     resize() {

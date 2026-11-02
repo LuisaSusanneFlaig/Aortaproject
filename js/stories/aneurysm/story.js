@@ -1,4 +1,5 @@
-import { healthyIllustrationLabels, healthyModelLabels } from '../healthyReferenceLabels.js';
+import { healthyIllustrationArrows, healthyIllustrationLabels, healthyIllustrationSrc, healthyModelLabels } from '../healthyReferenceLabels.js';
+import { alexFlowArrows } from './flowArrows.js';
 
 const flowModelBase = 'assets/models/flow/optimized/';
 
@@ -101,7 +102,8 @@ export const aneurysmStory = {
             scrollMode: 'sticky',
             className: 'model-section alex-flow-reading-section',
             inlineIllustration: {
-                src: 'assets/story_images/healthy_flow_illustration.gif',
+                src: healthyIllustrationSrc,
+                arrows: healthyIllustrationArrows,
                 alt: 'Animated illustration of blood flowing smoothly through a healthy aorta, from the heart through the arch and down the descending aorta.',
                 labels: healthyIllustrationLabels
             },
@@ -281,7 +283,7 @@ export const aneurysmStory = {
                             text: 'In the aorta, shape and blood flow are tightly connected. Here, the animated drawing of the blood flow through Alex’s aorta appears next to the drawing of the healthy reference aorta from earlier. Watch for changes in direction, especially where Alex\'s aorta widens or curves.',
                             infoPopup: {
                                 title: 'animated drawing',
-                                text: 'The arrows were drawn by hand on top of the drawing of Alex\'s aorta. In animation software, each arrow grows along its path within two seconds, and the animation repeats. This flow is not the result of a computer simulation: it is not calculated, not measured, and not blood recorded in Alex\'s body. Like every illustration, it rests on choices about which paths to show and where to simplify.'
+                                text: 'The arrows were drawn by hand on top of the drawing of Alex\'s aorta. On this page, each arrow grows in, travels along its path and fades out at its end, and the arrows follow one another along the path of the blood, from the heart downwards. Then the sequence starts again. This flow is not the result of a computer simulation: it is not calculated, not measured, and not blood recorded in Alex\'s body. Like every illustration, it rests on choices about which paths to show and where to simplify.'
                             }
                         }
                     }
@@ -291,17 +293,41 @@ export const aneurysmStory = {
                     id: 'alex-flow-overview-model',
                     src: `${flowModelBase}aneurysm_lines_anim.glb`,
                     flowIllustration: {
-                        type: 'video',
-                        src: 'assets/story_images/aneurysm_flow_illustration.gif',
-                        healthySrc: 'assets/story_images/healthy_flow_illustration.gif',
+                        // The arrows grow over the still drawing (js/modules/ui/flowArrows.js).
+                        src: 'assets/story_images/alex_aneurysm_illustration.png',
+                        // Order as in Figma: 1 ascending aorta, 2a–2c branches, 3 swirl
+                        // in the widened section, 4–6 descending aorta. The branches and
+                        // the swirl start when arrow 1 arrives, 4 once the swirl is done.
+                        arrows: {
+                            ...alexFlowArrows,
+                            // The drawing is shown smaller than the healthy one, so its arrows are thickened.
+                            size: 1.3,
+                            timing: [
+                                {},
+                                { after: 0 },
+                                { after: 0, delay: 75 },
+                                { after: 0, delay: 150 },
+                                { after: 0 },
+                                { after: 4, at: 'done' },
+                                { after: 5 },
+                                { after: 6 }
+                            ]
+                        },
+                        healthySrc: healthyIllustrationSrc,
+                        healthyArrows: healthyIllustrationArrows,
+                        // Position on screen, as fractions of the drawing's size (x right, y down).
+                        shiftX: 0,
+                        shiftY: 0,
+                        healthyShiftX: 0,
+                        healthyShiftY: 0.1,
                         healthyAlt: 'Illustration of blood flowing through a healthy aorta.',
                         alt: 'Illustration of the aorta showing blood flow through the arch and descending vessel.',
                         labels: alexFlowIllustrationLabels,
                         healthyLabels: healthyIllustrationLabels
                     },
                     flowVariants: [
-                        { view: 'lines', label: 'Pathlines', src: `${flowModelBase}aneurysm_lines_anim.glb`, comparisonSrc: `${flowModelBase}healthy_lines_anim.glb`, framingScale: 0.29, comparisonFramingScale: 0.29, rotationY: 1.5708, comparisonRotationY: -1.5708, animationFps: 20, animationSpeed: 1 },
-                        { view: 'particles', label: 'Particle flow', src: `${flowModelBase}aneurysm_particles_anim.glb`, comparisonSrc: `${flowModelBase}healthy_particle_anim.glb`, framingScale: 0.35, comparisonFramingScale: 0.35, rotationY: 1.5708, comparisonRotationY: -1.5708, animationFps: 20, animationSpeed: 0.5 }
+                        { view: 'lines', label: 'Pathlines', src: `${flowModelBase}aneurysm_lines_anim.glb`, comparisonSrc: `${flowModelBase}healthy_lines_anim.glb`, framingScale: 0.29, comparisonFramingScale: 0.29, rotationY: 1.5708, comparisonRotationY: -1.5708, shiftX: 0, shiftY: -0.15, comparisonShiftX: 0, comparisonShiftY: 0, animationFps: 20, animationSpeed: 1 },
+                        { view: 'particles', label: 'Particle flow', src: `${flowModelBase}aneurysm_particles_anim.glb`, comparisonSrc: `${flowModelBase}healthy_particle_anim.glb`, framingScale: 0.37, comparisonFramingScale: 0.35, rotationY: 1.5708, comparisonRotationY: -1.5708, shiftX: 0, shiftY: -0.15, comparisonShiftX: 0, comparisonShiftY: 0, animationFps: 20, animationSpeed: 0.5 }
                     ],
                     modelMode: 'flow',
                     // Flow inside the widened section in red, the rest in white; the

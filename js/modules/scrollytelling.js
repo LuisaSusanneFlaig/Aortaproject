@@ -11,6 +11,7 @@ import { applyFlowView, getFlowView, initFlowViewSelect } from './flowView.js';
 import { initInlineModelViewers } from './ui/InlineModelViewer.js';
 import { initImageLabels } from './ui/ModelLabels.js';
 import { initImageZoom } from './ui/imageZoom.js';
+import { initFlowArrows } from './ui/flowArrows.js';
 import { switchInlineModelView } from './ui/modelViews.js';
 import { ScrollDirector } from './ui/ScrollDirector.js';
 import { GsapSectionAnimator } from './ui/GsapSectionAnimator.js';
@@ -117,6 +118,7 @@ class ScrollytellingApp {
         this.inlineModelViewers = initInlineModelViewers();
         initImageLabels();
         initImageZoom();
+        initFlowArrows();
         if (this.usesEditorialScroll) {
             this.scrollDirector = new ScrollDirector(document.getElementById('story'));
             this.scrollDirector.init();
