@@ -59,6 +59,7 @@ npm run screenshots
 | Story images and CT slices | `assets/story_images/` |
 | Aorta surface models | `assets/models/` |
 | Flow visualization GLBs | `assets/models/flow/` |
+| FlowVisAnalyzer particle exports with per-frame colors | `assets/models/flow/dissection_particles_colored.glb`, read by `js/modules/ui/flowvisParticles.js` (loader in `vendor/flowvis/`). Do not run gltfpack on them: it drops the color table. |
 | Third-party Three.js files | `vendor/three/` |
 
 ## Story structure
@@ -91,6 +92,18 @@ Common story elements include:
 - `modelPlaceholder`
 
 When adding a new element type, register it in `js/stories/storySchema.js`, render it in `js/modules/storyRenderer.js`, and add the component renderer under `js/components/`.
+
+## Study versions of the flow visuals
+
+The menu dropdown "Visualization" (or `?view=illustration|lines|particles`) picks one version for every flow figure: hand-drawn illustrations, 3D pathlines or 3D particles. `js/modules/flowView.js` rewrites the story before rendering:
+
+- A section with both `inlineModel` and `inlineIllustration` keeps only one of them.
+- A `modelPlaceholder` keeps only its `flowIllustration` or the `flowVariants` entry whose `view` matches.
+- Any story object can carry `flowViews: { illustration: {...}, particles: {...} }` to change its fields for one version; `null` removes a field.
+
+In the CTA Imaging section (`diagnose-bildgebung`, `s10`), the second paragraph explains per version how the aorta was traced from the scan: by segmentation software (3D versions) or by hand (illustration version). How the flow itself was made (simulated or drawn and animated) is explained in an info popup in the first paragraph of the flow section.
+
+`npm run check` validates and renders all three versions.
 
 ## Current data sources
 

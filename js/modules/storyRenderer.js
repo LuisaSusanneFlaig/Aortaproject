@@ -29,7 +29,7 @@ import { renderLabelKey, renderLabelledImage } from '../components/imageLabels.j
  */
 
 function getPresentationType(section = {}) {
-    if (section.columns === '2' || section.inlineModel) return 'media';
+    if (section.columns === '2' || section.inlineModel || section.inlineIllustration) return 'media';
 
     const elementTypes = new Set((section.elements || []).map((element) => element.type));
     const mediaTypes = ['image', 'video', 'imagingComparison', 'modelPlaceholder', 'processSteps'];
@@ -172,7 +172,10 @@ function renderInlineIllustration(illustration) {
 }
 
 function renderInlineModel(model, illustration = null) {
-    if (!model?.url) return '';
+    // Illustration version of the study (js/modules/flowView.js): the drawing alone.
+    if (!model?.url) {
+        return illustration?.src ? `<figure class="inline-model-figure show-anatomy-illustration">${renderInlineIllustration(illustration)}</figure>` : '';
+    }
     const label = model.label || '3D model';
     const modelMode = model.mode || 'layers';
     const rotationX = Number.isFinite(model.rotationX) ? ` data-rotation-x="${model.rotationX}"` : '';

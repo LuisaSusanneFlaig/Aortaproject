@@ -1,0 +1,35 @@
+/* Study version dropdown in the menu (js/modules/flowView.js). */
+.flow-view-select {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: color-mix(in srgb, var(--color-text) 68%, transparent);
+    font-size: 0.875rem;
+}
+
+.flow-view-select select {
+    padding: 6px 10px;
+    border: 1px solid color-mix(in srgb, var(--color-text) 20%, transparent);
+    border-radius: 4px;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font: inherit;
+    cursor: pointer;
+}
+
+.flow-view-select select:focus-visible {
+    outline: 2px solid var(--accent-red);
+    outline-offset: 2px;
+}
+
+.nav-menu-mobile .flow-view-select {
+    justify-content: space-between;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent);
+}
+
+/* Below this width the links move into the mobile menu, and the dropdown goes with them. */
+@media (max-width: 1024px) {
+    .navbar-right .flow-view-select { display: none; }
+}

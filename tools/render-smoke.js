@@ -1,5 +1,6 @@
 import { storyVersions } from '../js/modules/storyContent.js';
 import { renderStoryPage } from '../js/modules/storyRenderer.js';
+import { applyFlowView, flowViewOptions } from '../js/modules/flowView.js';
 
 function createDocumentStub() {
     const nodes = {
@@ -30,12 +31,14 @@ export function smokeTestStoryRendering() {
     const previousDocument = globalThis.document;
 
     try {
-        for (const [version, config] of Object.entries(storyVersions)) {
+        const studyVersions = Object.entries(storyVersions).flatMap(([story, baseConfig]) =>
+            flowViewOptions.map(({ id }) => [`${story}[view=${id}]`, applyFlowView(baseConfig, id), story]));
+        for (const [version, config, story] of studyVersions) {
             const documentStub = createDocumentStub();
             globalThis.document = documentStub;
 
             try {
-                renderStoryPage(config, version);
+                renderStoryPage(config, story);
                 const renderedSections = (documentStub.nodes.story.innerHTML.match(/<section class="step\b/g) || []).length;
                 if (renderedSections !== config.sections.length) {
                     errors.push(`${version}: rendered ${renderedSections} of ${config.sections.length} sections`);
@@ -44,6 +47,9 @@ export function smokeTestStoryRendering() {
                 const copyColumns = (documentStub.nodes.story.innerHTML.match(/class="story-copy-column"/g) || []).length;
                 if (visualColumns !== config.sections.length || copyColumns !== config.sections.length) {
                     errors.push(`${version}: split layout rendered ${visualColumns} visual and ${copyColumns} copy columns for ${config.sections.length} sections`);
+                }
+                if (/data-flow-view="illustration"|class="flow-variant-controls"/.test(documentStub.nodes.story.innerHTML)) {
+                    errors.push(`${version}: a flow figure still offers a switch between study versions`);
                 }
                 if (documentStub.storyTitle.textContent !== config.title) {
                     errors.push(`${version}: page title was not rendered`);
