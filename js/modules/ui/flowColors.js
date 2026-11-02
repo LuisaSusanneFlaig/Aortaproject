@@ -14,7 +14,8 @@ const WHITE = 0xffffff;
 function flowObjects(model) {
     const objects = [];
     model.traverse((child) => {
-        if ((child.isMesh || child.isPoints) && !child.userData.isFlowSurface) objects.push(child);
+        // Exports with per-frame colors (flowvisParticles.js) keep their palette.
+        if ((child.isMesh || child.isPoints) && !child.userData.isFlowSurface && !child.userData.hasExportColors) objects.push(child);
     });
     return objects;
 }

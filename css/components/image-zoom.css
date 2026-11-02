@@ -1,0 +1,60 @@
+/* Enlarged story image (js/modules/ui/imageZoom.js). The dialog lives on
+   <body>, outside #story, so these rules are not scoped to the story. */
+.image-zoom-dialog {
+    width: 100vw;
+    max-width: 100vw;
+    height: 100dvh;
+    max-height: 100dvh;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #fff;
+}
+
+.image-zoom-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.88);
+}
+
+/* Shows the image at its original size; larger images scroll inside the frame. */
+.image-zoom-frame {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    padding: 56px 16px 16px;
+    box-sizing: border-box;
+    cursor: zoom-out;
+}
+
+.image-zoom-frame img {
+    display: block;
+    max-width: none;
+    margin: auto;
+    cursor: default;
+}
+
+.image-zoom-close {
+    position: fixed;
+    top: 12px;
+    right: 16px;
+    z-index: 1;
+    display: grid;
+    width: 36px;
+    height: 36px;
+    place-items: center;
+    padding: 0;
+    border: 1px solid #b62413;
+    border-radius: 50%;
+    background: #090909;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.image-zoom-close:hover,
+.image-zoom-close:focus-visible {
+    background: #b62413;
+}

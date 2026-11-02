@@ -5,6 +5,7 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 import { ModelLabels, parseModelLabels } from './ModelLabels.js';
 import { addBoundaryPlanes } from './boundaryPlanes.js';
 import { applyFlowColors, parseFlowRegion } from './flowColors.js';
+import { createFlowVisParticleModel, isFlowVisParticleGlb } from './flowvisParticles.js';
 
 // Keep 3D mesh materials aligned with the UI accent token (--color-accent).
 const MODEL_ACCENT = 0xb62413;
@@ -134,9 +135,17 @@ class InlineModelViewer {
         this.framingScale = Number(this.container.dataset.framingScale) || null;
         this.animationFps = Math.max(1, Number(this.container.dataset.animationFps) || 30);
         this.animationSpeed = Math.max(0, Number(this.container.dataset.animationSpeed) || 1);
-        const loader = new GLTFLoader();
-        loader.setMeshoptDecoder(MeshoptDecoder);
-        const gltf = await loader.loadAsync(modelUrl);
+        const response = await fetch(modelUrl);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const arrayBuffer = await response.arrayBuffer();
+        let gltf;
+        if (isFlowVisParticleGlb(arrayBuffer)) {
+            gltf = createFlowVisParticleModel(arrayBuffer);
+        } else {
+            const loader = new GLTFLoader();
+            loader.setMeshoptDecoder(MeshoptDecoder);
+            gltf = await loader.parseAsync(arrayBuffer, THREE.LoaderUtils.extractUrlBase(modelUrl));
+        }
         if (loadToken !== this.modelLoadToken) {
             this.disposeObject(gltf.scene);
             return;
@@ -181,7 +190,7 @@ class InlineModelViewer {
             this.instancedGroups = modelMode === 'flow'
                 ? this.collapseRepeatedMeshes(this.originalModel)
                 : [];
-            this.setupAnimation(gltf.animations || []);
+            this.setupAnimation(gltf.animations || [], gltf.animation);
             this.labels?.attach(this.rotationPivot || this.model, this.camera);
             this.container.classList.add('is-loaded');
             this.container.dispatchEvent(new CustomEvent('inline-model-ready'));
@@ -309,9 +318,10 @@ class InlineModelViewer {
         });
     }
 
-    setupAnimation(clips) {
-        if (!clips.length) return;
-        this.mixer = new THREE.AnimationMixer(this.originalModel);
+    // flowVisAnimation: the mixer-like player of a FlowVis particle export.
+    setupAnimation(clips, flowVisAnimation = null) {
+        if (!clips.length && !flowVisAnimation) return;
+        this.mixer = flowVisAnimation || new THREE.AnimationMixer(this.originalModel);
         this.mixer.timeScale = this.animationSpeed;
         clips.forEach((clip) => this.mixer.clipAction(clip).play());
         if (this.reducedMotion) this.mixer.setTime(0);

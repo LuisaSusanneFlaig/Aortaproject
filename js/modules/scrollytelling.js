@@ -7,8 +7,10 @@ import { ChartManager } from './ui/ChartManager.js';
 import { ThemeManager } from './ui/ThemeManager.js';
 import { renderStoryPage, getStoryVersion } from './storyRenderer.js';
 import { storyVersions } from './storyContent.js';
+import { applyFlowView, getFlowView, initFlowViewSelect } from './flowView.js';
 import { initInlineModelViewers } from './ui/InlineModelViewer.js';
 import { initImageLabels } from './ui/ModelLabels.js';
+import { initImageZoom } from './ui/imageZoom.js';
 import { switchInlineModelView } from './ui/modelViews.js';
 import { ScrollDirector } from './ui/ScrollDirector.js';
 import { GsapSectionAnimator } from './ui/GsapSectionAnimator.js';
@@ -114,6 +116,7 @@ class ScrollytellingApp {
         this.usesSplitLayout = Boolean(document.querySelector('.story-split-shell'));
         this.inlineModelViewers = initInlineModelViewers();
         initImageLabels();
+        initImageZoom();
         if (this.usesEditorialScroll) {
             this.scrollDirector = new ScrollDirector(document.getElementById('story'));
             this.scrollDirector.init();
@@ -207,7 +210,8 @@ class ScrollytellingApp {
     }
 
     updateStory() {
-        this.storyConfig = renderStoryPage(storyVersions[this.version], this.version);
+        this.flowView = getFlowView();
+        this.storyConfig = renderStoryPage(applyFlowView(storyVersions[this.version], this.flowView), this.version);
         this.storySectionCount = this.storyConfig.sections.length;
     }
 
@@ -643,6 +647,7 @@ class ScrollytellingApp {
         const navToggle = document.getElementById('nav-toggle');
         const navMenu = document.getElementById('nav-menu-mobile');
         if (navToggle && navMenu) navToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
+        initFlowViewSelect(this.flowView);
         document.addEventListener('click', (event) => {
             const flowViewButton = event.target.closest('.flow-view-button');
             if (flowViewButton) {

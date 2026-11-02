@@ -248,12 +248,14 @@ export function renderModelPlaceholder(element = {}) {
                 `).join('')}
             </div>` : '';
     const comparisonVariant = flowVariants.find((variant) => variant.comparisonSrc);
+    // The first variant plays from the start, so both sides start at its speed.
+    const startSpeed = Number.isFinite(comparisonVariant?.animationSpeed) ? comparisonVariant.animationSpeed : 1;
     // Labels per side; pathline and particle exports share anchors (ModelLabels).
     const labelAttribute = (labels) => Array.isArray(labels) && labels.length
         ? ` data-model-labels="${JSON.stringify(labels).replace(/"/g, '&quot;')}"`
         : '';
     const comparisonPanel = (title, url, attributes, labels = []) => `
-                <section class="flow-comparison-panel"><h3>${title}</h3><div class="model-placeholder-stage inline-model-viewer" data-inline-model data-model-url="${url}" data-model-mode="flow" data-animation-sync-group="${element.id || 'flow-comparison'}" data-animation-fps="20"${attributes}${labelAttribute(labels)} role="img" aria-label="Animated flow in ${title.toLowerCase()}"><div class="inline-model-loading" aria-hidden="true"></div><span class="inline-model-error">Animation unavailable</span></div>${renderLabelKey(labels, `Labelled parts of the ${title.toLowerCase()} model`)}</section>`;
+                <section class="flow-comparison-panel"><h3>${title}</h3><div class="model-placeholder-stage inline-model-viewer" data-inline-model data-model-url="${url}" data-model-mode="flow" data-animation-sync-group="${element.id || 'flow-comparison'}" data-animation-fps="20" data-animation-speed="${startSpeed}"${attributes}${labelAttribute(labels)} role="img" aria-label="Animated flow in ${title.toLowerCase()}"><div class="inline-model-loading" aria-hidden="true"></div><span class="inline-model-error">Animation unavailable</span></div>${renderLabelKey(labels, `Labelled parts of the ${title.toLowerCase()} model`)}</section>`;
     const pairedFlowView = comparisonVariant ? `
             <div class="flow-comparison-viewers" aria-label="Affected and healthy aorta flow comparison">
                 ${comparisonPanel('Healthy aorta', comparisonVariant.comparisonSrc, ` data-framing-scale="${comparisonVariant.comparisonFramingScale || comparisonVariant.framingScale || 0.35}" data-rotation-y="${comparisonVariant.comparisonRotationY ?? comparisonVariant.rotationY ?? 0}"`, element.healthyLabels)}
@@ -276,6 +278,15 @@ export function renderModelPlaceholder(element = {}) {
                 <button class="flow-view-button" type="button" data-flow-view="illustration" aria-pressed="false">Illustration</button>
             </div>` : '';
 
+    // Illustration version of the study (js/modules/flowView.js): the drawings alone.
+    if (!element.src && !flowVariants.length && flowIllustration) {
+        return `
+        <figure class="model-placeholder show-flow-illustration" id="${element.id || ''}">
+            ${flowIllustration}
+            ${element.note ? `<p class="symptom-note model-placeholder-note">${element.note}</p>` : ''}
+        </figure>`;
+    }
+
     const hotspots = Array.isArray(element.hotspots)
         ? element.hotspots
         : (element.hotspot ? [element.hotspot] : []);
@@ -291,12 +302,12 @@ export function renderModelPlaceholder(element = {}) {
         `;
     }).join('');
 
-    const flowSpeedControl = flowVariants.length > 1 ? (() => {
+    const flowSpeedControl = flowVariants.length ? (() => {
         const sliderId = `flow-speed-slider-${++flowSpeedSliderId}`;
         return `
                 <div class="flow-speed-control">
-                    <label for="${sliderId}">Animation speed <output class="flow-speed-value" for="${sliderId}">1×</output></label>
-                    <input class="flow-speed-slider" id="${sliderId}" type="range" min="0.25" max="1" step="0.25" value="1" aria-label="Animation speed">
+                    <label for="${sliderId}">Animation speed <output class="flow-speed-value" for="${sliderId}">${startSpeed}×</output></label>
+                    <input class="flow-speed-slider" id="${sliderId}" type="range" min="0.25" max="1" step="0.25" value="${startSpeed}" aria-label="Animation speed">
                 </div>`;
     })() : '';
 

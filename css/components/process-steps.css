@@ -172,6 +172,50 @@ body[data-story-version] #story .process-image.process-image-contain {
     border-radius: 0;
 }
 
+/* Zoomable screenshots: the wrapper hugs the image so the + sits on its corner;
+   the dialog it opens is styled in image-zoom.css. */
+body[data-story-version] #story .process-zoomable {
+    position: relative;
+    width: 100%;
+}
+
+body[data-story-version] #story .process-zoomable .process-image {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+body[data-story-version] #story .process-zoom-trigger {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    display: grid;
+    width: 24px;
+    height: 24px;
+    place-items: center;
+    padding: 0;
+    border: 1px solid var(--color-accent);
+    border-radius: 50%;
+    background: var(--color-bg);
+    color: var(--color-accent);
+    font-family: Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1;
+    cursor: zoom-in;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+body[data-story-version] #story .process-zoom-trigger:hover,
+body[data-story-version] #story .process-zoom-trigger:focus-visible {
+    background: var(--color-accent);
+    color: #fff;
+}
+
+body[data-story-version] #story .process-zoom-trigger:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--color-accent) 45%, transparent);
+    outline-offset: 3px;
+}
+
 body[data-story-version] #story .process-icon {
     display: grid;
     width: 70%;
@@ -233,7 +277,8 @@ body[data-story-version] #story .story-visual-column .process-steps .process-vie
 }
 
 @media (prefers-reduced-motion: reduce) {
-    body[data-story-version] #story .process-info-trigger .process-number {
+    body[data-story-version] #story .process-info-trigger .process-number,
+    body[data-story-version] #story .process-zoom-trigger {
         transition: none;
     }
 }

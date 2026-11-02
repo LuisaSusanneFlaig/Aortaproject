@@ -32,7 +32,7 @@ export const aneurysmStory = {
         { href: '#anatomie', label: 'Anatomy' },
         { href: '#symptome', label: 'Symptoms' },
         { href: '#diagnose-procedure', label: 'Diagnosis' },
-        { href: '#alex-simulation-method', label: 'Prognosis' },
+        { href: '#alex-flow-overview', label: 'Prognosis' },
         { href: '#behandlung', label: 'Treatment' },
         { href: '#praevention', label: 'Prevention' }
     ],
@@ -117,7 +117,15 @@ export const aneurysmStory = {
                 animationFps: 20,
                 animationSpeed: 1,
                 rotationHint: true,
-                labels: healthyModelLabels
+                labels: healthyModelLabels,
+                flowViews: {
+                    particles: {
+                        url: `${flowModelBase}healthy_particle_anim.glb`,
+                        label: 'Simulated blood flow through a healthy reference aorta, shown as moving particles',
+                        framingScale: 0.35,
+                        animationSpeed: 0.5
+                    }
+                }
             },
             elements: [
                 {
@@ -224,6 +232,13 @@ export const aneurysmStory = {
                     text: 'To see Alex\'s whole aorta, the team uses a CT angiogram (CTA), a CT scan that shows the blood vessels. A contrast agent is injected into a vein in the arm while the scanner takes a rapid series of X-ray images. The contrast makes the blood inside the vessels stand out, so the team can trace the aorta, see its branches, and measure its diameter. The aorta is colored red here during image editing; it was not red in the original scan.'
                 },
                 {
+                    type: 'text',
+                    text: 'The same scan is the raw material for a 3D model of Alex\'s aorta: the model you explored earlier, and the starting point for the flow simulation later in the story. Software marks the aorta in every slice, a step called segmentation, and joins the outlines into a surface. A person checks and corrects the result.',
+                    flowViews: {
+                        illustration: { text: 'The same scan is the raw material for the drawings in this story. The outline of Alex\'s aorta was traced by hand from the scan and from the 3D model built from it. The drawing keeps the shape of his aorta, including the widened section, but leaves out the fine detail of the vessel wall.' }
+                    }
+                },
+                {
                     type: 'image',
                     src: 'assets/story_images/alex_cta_sagittal.png',
                     alt: 'Sagittal CTA image of Alex\'s chest with the thoracic aorta highlighted in red',
@@ -234,94 +249,10 @@ export const aneurysmStory = {
                         title: 'Thoracic aortic aneurysm',
                         text: 'The diameter is measured at right angles to the course of the vessel, so that a curved section is not measured too wide.'
                     }
-                }
-            ]
-        },
-        {
-            id: 'alex-scan-to-model',
-            title: 'From Scan to 3D Model',
-            className: 'scan-to-model-section',
-            scrollMode: 'sequence',
-            elements: [
-                {
-                    type: 'text',
-                    text: 'Alex\'s scan does more than give his doctors a measurement. It is also the raw material for a 3D model of his aorta: the model you explored earlier, and the starting point for the flow simulation later in the story.'
-                },
-                {
-                    type: 'processSteps',
-                    label: 'From CTA slices to a 3D model of Alex\'s aorta',
-                    steps: [
-                        {
-                            title: 'CT scanner',
-                            text: 'The patient lies on a table that moves through the ring of the scanner. The contrast agent is timed so that it reaches the aorta while the images are taken.',
-                            visual: { kind: 'image', fit: 'contain', src: 'assets/story_images/process/ct_scanner.png', alt: 'A CT scanner with its ring and patient table' }
-                        },
-                        {
-                            title: 'CTA slices',
-                            text: 'A CTA is not one picture but a stack of hundreds of thin images through the chest, called slices, often less than a millimeter apart.',
-                            visual: { kind: 'slices', src: 'assets/story_images/alex_cta_sagittal.png', aspect: '1212 / 1193', alt: 'Alex\'s sagittal CTA image with the aorta highlighted in red, shown as the front image of a stack of slices' }
-                        },
-                        {
-                            title: 'Software',
-                            text: 'Software marks the aorta in every slice, a step called segmentation, and joins the outlines into a surface. A person checks and corrects the result.',
-                            visual: { kind: 'placeholder' }
-                        },
-                        {
-                            title: '3D model',
-                            text: 'The surface is smoothed and its branches are cut to open ends, so the model can be turned on screen and used for a flow simulation.',
-                            visual: { kind: 'image', fit: 'contain', src: 'assets/story_images/process/alex_model.png', alt: '3D model of Alex\'s aorta built from the CTA slices' }
-                        }
-                    ]
                 },
                 {
                     type: 'reference',
-                    text: 'CT scanner 3D model: “CT Scanner” by Ng Jun Wei, https://skfb.ly/ornOu, licensed under Creative Commons Attribution 4.0, http://creativecommons.org/licenses/by/4.0/. CTA image and aortic model: Vascular Model Repository 0021_H_AO_MFS, case 0129_0000.'
-                }
-            ]
-        },
-        {
-            id: 'alex-simulation-method',
-            title: 'How the Flow Is Simulated',
-            scrollMode: 'sequence',
-            className: 'simulation-method-section',
-            elements: [
-                {
-                    type: 'text',
-                    text: 'The 3D model shows the shape of Alex\'s aorta, but not how blood moves through it. For that, the team runs a computer simulation of the blood flow through his model. The result is simulated data, not blood recorded in Alex\'s body and not a prediction of his individual outcome.'
-                },
-                {
-                    type: 'text',
-                    text: 'Every simulation rests on assumptions. The vessel wall is usually treated as rigid, although real vessels stretch with every heartbeat. Inflow and outflow are based on measurements, population averages or estimates, and small differences in how the aorta is traced in the scan can change the result. Above all, the flow is calculated, not measured: 4D-flow MRI can measure blood flow in the body, but with less detail.'
-                },
-                {
-                    type: 'processSteps',
-                    label: 'How a flow simulation is built from Alex\'s 3D model',
-                    steps: [
-                        {
-                            title: 'Mesh',
-                            text: 'The inside of the model is divided into a computational mesh of often millions of tiny cells. A finer mesh captures more detail but takes longer to calculate.',
-                            visual: { kind: 'image', src: 'assets/story_images/alex_mesh_closeup.png', alt: 'Close-up of the wall of Alex\'s aortic model, divided into a mesh of small triangles' }
-                        },
-                        {
-                            title: 'In- and outflow',
-                            text: 'At the inlet, the team sets how much blood the heart pumps during a heartbeat; at each outlet, how blood leaves the model. The red planes mark these openings.',
-                            visual: { kind: 'image', fit: 'contain', src: 'assets/story_images/process/alex_planes.png', alt: 'Alex\'s aortic model with red planes at the inflow in the aortic root and at the outflows of the branches and the descending aorta' }
-                        },
-                        {
-                            title: 'Calculation',
-                            text: 'A computer solves the equations of fluid motion in every cell, in many small time steps over several heartbeats, until the result repeats from beat to beat.',
-                            visual: { kind: 'placeholder' }
-                        },
-                        {
-                            title: 'Visualization',
-                            text: 'The result is a speed and direction for every cell at every moment. To make it readable, it is turned into views that show where the blood goes and how fast it moves.',
-                            visual: { kind: 'image', fit: 'contain', src: 'assets/story_images/process/alex_pathlines.png', alt: 'Pathlines of the simulated blood flow in Alex\'s aorta' }
-                        }
-                    ]
-                },
-                {
-                    type: 'reference',
-                    text: 'Simulation steps and assumptions: Kamada H, Nakamura M, Ota H, Higuchi S, Takase K. Blood flow analysis with computational fluid dynamics and 4D-flow MRI for vascular diseases. J Cardiol. 2022;80:386–396. DOI 10.1016/j.jjcc.2022.05.007. Methods reference: Wilson NM, Ortiz AK, Johnson AB. The Vascular Model Repository: A Public Resource of Medical Imaging Data and Blood Flow Simulation Results. J Med Devices. 2013;7(4):040923. DOI: 10.1115/1.4025983. Data basis: VMR dataset 0021_H_AO_MFS, case 0129_0000.'
+                    text: 'CTA image and aortic model: Vascular Model Repository 0021_H_AO_MFS, case 0129_0000.'
                 }
             ]
         },
@@ -333,7 +264,27 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'In the aorta, shape and blood flow are tightly connected. Here, the simulated blood flow through Alex’s aorta appears next to the healthy reference aorta from earlier. Watch for changes in speed and direction, especially where Alex\'s aorta widens or curves.'
+                    text: 'In the aorta, shape and blood flow are tightly connected. Here, the simulated blood flow through Alex’s aorta appears next to the healthy reference aorta from earlier. Watch for changes in speed and direction, especially where Alex\'s aorta widens or curves.',
+                    // How the flow picture was made, per study version (js/modules/flowView.js).
+                    infoPopup: {
+                        title: 'simulated blood flow',
+                        text: 'This flow is calculated, not measured. For the simulation, the inside of the 3D model of Alex\'s aorta is divided into millions of tiny cells. The team sets how much blood the heart pumps in and how it leaves through each open end, and a computer solves the equations of fluid motion in every cell over several heartbeats. The result is shown as pathlines: lines that follow the paths the blood takes. Every simulation rests on assumptions; the vessel wall, for example, is usually treated as rigid. It is not blood recorded in Alex\'s body and not a prediction of his individual outcome.'
+                    },
+                    flowViews: {
+                        particles: {
+                            infoPopup: {
+                                title: 'simulated blood flow',
+                                text: 'This flow is calculated, not measured. For the simulation, the inside of the 3D model of Alex\'s aorta is divided into millions of tiny cells. The team sets how much blood the heart pumps in and how it leaves through each open end, and a computer solves the equations of fluid motion in every cell over several heartbeats. The result is shown as moving particles that are carried along with the blood. Every simulation rests on assumptions; the vessel wall, for example, is usually treated as rigid. It is not blood recorded in Alex\'s body and not a prediction of his individual outcome.'
+                            }
+                        },
+                        illustration: {
+                            text: 'In the aorta, shape and blood flow are tightly connected. Here, the animated drawing of the blood flow through Alex’s aorta appears next to the drawing of the healthy reference aorta from earlier. Watch for changes in direction, especially where Alex\'s aorta widens or curves.',
+                            infoPopup: {
+                                title: 'animated drawing',
+                                text: 'The arrows were drawn by hand on top of the drawing of Alex\'s aorta. In animation software, each arrow grows along its path within two seconds, and the animation repeats. This flow is not the result of a computer simulation: it is not calculated, not measured, and not blood recorded in Alex\'s body. Like every illustration, it rests on choices about which paths to show and where to simplify.'
+                            }
+                        }
+                    }
                 },
                 {
                     type: 'modelPlaceholder',
@@ -349,8 +300,8 @@ export const aneurysmStory = {
                         healthyLabels: healthyIllustrationLabels
                     },
                     flowVariants: [
-                        { label: 'Pathlines', src: `${flowModelBase}aneurysm_lines_anim.glb`, comparisonSrc: `${flowModelBase}healthy_lines_anim.glb`, framingScale: 0.29, comparisonFramingScale: 0.29, rotationY: 1.5708, comparisonRotationY: -1.5708, animationFps: 20, animationSpeed: 1 },
-                        { label: 'Particle flow', src: `${flowModelBase}aneurysm_particles_anim.glb`, comparisonSrc: `${flowModelBase}healthy_particle_anim.glb`, framingScale: 0.35, comparisonFramingScale: 0.35, rotationY: 1.5708, comparisonRotationY: -1.5708, animationFps: 20, animationSpeed: 0.5 }
+                        { view: 'lines', label: 'Pathlines', src: `${flowModelBase}aneurysm_lines_anim.glb`, comparisonSrc: `${flowModelBase}healthy_lines_anim.glb`, framingScale: 0.29, comparisonFramingScale: 0.29, rotationY: 1.5708, comparisonRotationY: -1.5708, animationFps: 20, animationSpeed: 1 },
+                        { view: 'particles', label: 'Particle flow', src: `${flowModelBase}aneurysm_particles_anim.glb`, comparisonSrc: `${flowModelBase}healthy_particle_anim.glb`, framingScale: 0.35, comparisonFramingScale: 0.35, rotationY: 1.5708, comparisonRotationY: -1.5708, animationFps: 20, animationSpeed: 0.5 }
                     ],
                     modelMode: 'flow',
                     // Flow inside the widened section in red, the rest in white; the
@@ -376,7 +327,10 @@ export const aneurysmStory = {
                 },
                 {
                     type: 'reference',
-                    text: 'Data basis: open VMR dataset 0021_H_AO_MFS, case 0129_0000, with CT-based geometry and simulation files. Methods reference: Wilson NM, Ortiz AK, Johnson AB. The Vascular Model Repository: A Public Resource of Medical Imaging Data and Blood Flow Simulation Results. J Med Devices. 2013;7(4):040923. DOI: 10.1115/1.4025983.'
+                    text: 'Data basis: open VMR dataset 0021_H_AO_MFS, case 0129_0000, with CT-based geometry and simulation files. Methods reference: Wilson NM, Ortiz AK, Johnson AB. The Vascular Model Repository: A Public Resource of Medical Imaging Data and Blood Flow Simulation Results. J Med Devices. 2013;7(4):040923. DOI: 10.1115/1.4025983. Simulation steps and assumptions: Kamada H, Nakamura M, Ota H, Higuchi S, Takase K. Blood flow analysis with computational fluid dynamics and 4D-flow MRI for vascular diseases. J Cardiol. 2022;80:386–396. DOI 10.1016/j.jjcc.2022.05.007.',
+                    flowViews: {
+                        illustration: { text: 'Drawings and animation made for this story, based on the 3D model of Alex\'s aorta. Geometry: Vascular Model Repository 0021_H_AO_MFS, case 0129_0000.' }
+                    }
                 }
             ]
         },

@@ -148,6 +148,7 @@ export function collectStoryAssets(story) {
     story.sections.forEach((section, sectionIndex) => {
         const sectionPath = `sections[${sectionIndex}]`;
         add(section.inlineModel?.url, `${sectionPath}.inlineModel.url`);
+        add(section.inlineIllustration?.src, `${sectionPath}.inlineIllustration.src`);
         add(section.meshUrl, `${sectionPath}.meshUrl`);
         add(section.pathlinesUrl, `${sectionPath}.pathlinesUrl`);
         section.elements.forEach((element, elementIndex) => {
@@ -156,6 +157,15 @@ export function collectStoryAssets(story) {
             (element.items || []).forEach((item, itemIndex) => {
                 add(item.src, `${elementPath}.items[${itemIndex}].src`);
             });
+            (element.steps || []).forEach((step, stepIndex) => {
+                add(step.visual?.src || step.visual?.url, `${elementPath}.steps[${stepIndex}].visual`);
+            });
+            (element.flowVariants || []).forEach((variant, variantIndex) => {
+                add(variant.src, `${elementPath}.flowVariants[${variantIndex}].src`);
+                add(variant.comparisonSrc, `${elementPath}.flowVariants[${variantIndex}].comparisonSrc`);
+            });
+            add(element.flowIllustration?.src, `${elementPath}.flowIllustration.src`);
+            add(element.flowIllustration?.healthySrc, `${elementPath}.flowIllustration.healthySrc`);
         });
     });
 

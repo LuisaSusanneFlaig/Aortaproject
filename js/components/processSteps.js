@@ -27,10 +27,21 @@ function renderModel(visual) {
         </div>`;
 }
 
+function renderImage(visual) {
+    const image = `<img class="process-image${visual.fit === 'contain' ? ' process-image-contain' : ''}" src="${visual.src}" alt="${visual.alt}">`;
+    if (!visual.zoom) return image;
+    // zoom: a small + on the image opens it at original size (js/modules/ui/imageZoom.js).
+    return `
+        <div class="process-zoomable">
+            ${image}
+            <button class="process-zoom-trigger" type="button" data-zoom-src="${visual.src}" data-zoom-alt="${visual.alt}" aria-label="Enlarge image: ${visual.alt}">+</button>
+        </div>`;
+}
+
 const visualRenderers = {
     model: renderModel,
     slices: renderSlices,
-    image: (visual) => `<img class="process-image${visual.fit === 'contain' ? ' process-image-contain' : ''}" src="${visual.src}" alt="${visual.alt}">`,
+    image: renderImage,
     icon: (visual) => `<div class="process-icon">${renderMaterialIcon(visual.icon || 'computer')}</div>`,
     // Stand-in until the step's image exists; decorative, the title names the step.
     placeholder: () => '<div class="process-placeholder" aria-hidden="true">Image</div>'
