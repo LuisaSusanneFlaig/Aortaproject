@@ -18,12 +18,14 @@ export function renderImageLabelLayer(labels = []) {
     return `<div class="model-label-layer is-ready" aria-hidden="true">${markers}</div>`;
 }
 
-// `media` is the finished <img> or <video> markup.
-export function renderLabelledImage(media, labels = [], keyLabel = 'Labelled parts of the illustration') {
-    if (!labels.length) return media;
+// `media` is the finished <img> or <video> markup; `overlay` lies on top of it
+// in the same box (for example the flow arrows of js/components/flowArrowLayer.js).
+export function renderLabelledImage(media, labels = [], keyLabel = 'Labelled parts of the illustration', overlay = '') {
+    if (!labels.length && !overlay) return media;
     return `
         <div class="labelled-image">
             ${media}
+            ${overlay}
             ${renderImageLabelLayer(labels)}
         </div>
         ${renderLabelKey(labels, keyLabel)}`;

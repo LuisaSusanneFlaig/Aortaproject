@@ -58,6 +58,8 @@ function validateElement(element, path, errors) {
         validateLabels(element.healthyLabels, `${path}.healthyLabels`, 3, errors);
         validateLabels(element.flowIllustration?.labels, `${path}.flowIllustration.labels`, 2, errors);
         validateLabels(element.flowIllustration?.healthyLabels, `${path}.flowIllustration.healthyLabels`, 2, errors);
+        validateArrows(element.flowIllustration?.arrows, `${path}.flowIllustration.arrows`, errors);
+        validateArrows(element.flowIllustration?.healthyArrows, `${path}.flowIllustration.healthyArrows`, errors);
         if (element.flowColors && !['accent', 'lumen', 'region'].includes(element.flowColors)) {
             addError(errors, `${path}.flowColors`, 'must be "accent", "lumen", or "region"');
         }
@@ -70,6 +72,21 @@ function validateElement(element, path, errors) {
             if (!Number.isFinite(region?.radius) || region.radius <= 0) addError(errors, `${path}.flowRegion.radius`, 'must be a positive number');
         }
     }
+}
+
+// Arrow sets come from tools/extract-flow-arrows.js.
+function validateArrows(arrowSet, arrowsPath, errors) {
+    if (!arrowSet) return;
+    if (!/^[\d.]+ [\d.]+ [\d.]+ [\d.]+$/.test(arrowSet.viewBox || '')) addError(errors, `${arrowsPath}.viewBox`, 'must be "x y width height"');
+    if (!arrowSet.arrows?.length) addError(errors, `${arrowsPath}.arrows`, 'at least one arrow is required');
+    (arrowSet.arrows || []).forEach((arrow, arrowIndex) => {
+        if (!/^M[\d.\s-]+[LC]/.test(arrow?.d || '')) addError(errors, `${arrowsPath}.arrows[${arrowIndex}].d`, 'must be path data starting with M');
+    });
+    (arrowSet.timing || []).forEach((timing, timingIndex) => {
+        const timingPath = `${arrowsPath}.timing[${timingIndex}]`;
+        if (timing.after !== undefined && !(Number.isInteger(timing.after) && timing.after >= 0 && timing.after < timingIndex)) addError(errors, `${timingPath}.after`, 'must be the index of an earlier arrow');
+        if (timing.at !== undefined && !['arrive', 'done'].includes(timing.at)) addError(errors, `${timingPath}.at`, 'must be "arrive" or "done"');
+    });
 }
 
 // 3D labels anchor to [x, y, z] of the model's wall box, image labels to [x, y] of the image.
@@ -114,6 +131,7 @@ export function validateStory(story, storyKey = 'story') {
         validateLabels(section.inlineModel?.labels, `${path}.inlineModel.labels`, 3, errors);
         validateLabels(section.inlineModel?.flowView?.labels, `${path}.inlineModel.flowView.labels`, 3, errors);
         validateLabels(section.inlineIllustration?.labels, `${path}.inlineIllustration.labels`, 2, errors);
+        validateArrows(section.inlineIllustration?.arrows, `${path}.inlineIllustration.arrows`, errors);
         if (!Array.isArray(section?.elements)) {
             addError(errors, `${path}.elements`, 'must be an array');
         } else {

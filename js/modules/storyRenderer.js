@@ -22,6 +22,7 @@ import {
 } from '../components/clinicalElements.js';
 import { renderProcessSteps } from '../components/processSteps.js';
 import { renderLabelKey, renderLabelledImage } from '../components/imageLabels.js';
+import { renderFlowArrowLayer } from '../components/flowArrowLayer.js';
 
 /**
  * StoryRenderer converts validated story configuration into HTML.
@@ -167,7 +168,7 @@ function renderInlineIllustration(illustration) {
     const labels = Array.isArray(illustration.labels) ? illustration.labels : [];
     return `
         <figure class="inline-model-illustration" hidden>
-            ${renderLabelledImage(`<img src="${illustration.src}" alt="${illustration.alt || ''}">`, labels)}
+            ${renderLabelledImage(`<img src="${illustration.src}" alt="${illustration.alt || ''}">`, labels, undefined, renderFlowArrowLayer(illustration.arrows))}
         </figure>`;
 }
 
