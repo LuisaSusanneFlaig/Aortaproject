@@ -12,14 +12,18 @@ export function renderReferenceText(value = '') {
     });
 }
 
+// `value` is one source as text, or a list of sources shown one per line.
 export function renderReferenceDisclosure(value = '') {
+    const sources = Array.isArray(value)
+        ? `<ul class="source-list">${value.map((source) => `<li>${renderReferenceText(source)}</li>`).join('')}</ul>`
+        : renderReferenceText(value);
     return `
         <details class="section-reference source-disclosure">
             <summary class="source-toggle">
                 <span class="source-toggle-show">Sources</span>
                 <span class="source-toggle-hide">Hide sources</span>
             </summary>
-            <div class="source-box">${renderReferenceText(value)}</div>
+            <div class="source-box">${sources}</div>
         </details>
     `;
 }

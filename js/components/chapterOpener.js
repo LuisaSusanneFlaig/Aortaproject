@@ -11,9 +11,14 @@ function renderChapterArt(sectionId) {
                 <clipPath id="chapter-art-reveal-${sectionId}" clipPathUnits="userSpaceOnUse">
                     <rect class="chapter-opener-art-reveal" x="-160" y="0" width="0" height="408"></rect>
                 </clipPath>
+                <!-- Recolors the brush to --brush-color (chapter-opener.css). -->
+                <filter id="chapter-art-tint-${sectionId}" color-interpolation-filters="sRGB">
+                    <feFlood class="brush-tint-flood"></feFlood>
+                    <feComposite in2="SourceAlpha" operator="in"></feComposite>
+                </filter>
             </defs>
             <g filter="url(#chapter-art-noise-${sectionId})" transform="translate(0 146)">
-                <image href="assets/vector-1.svg" x="-160" y="0" width="1200" height="408" preserveAspectRatio="none" clip-path="url(#chapter-art-reveal-${sectionId})"></image>
+                <image href="assets/vector-1.svg" x="-160" y="0" width="1200" height="408" preserveAspectRatio="none" clip-path="url(#chapter-art-reveal-${sectionId})" filter="url(#chapter-art-tint-${sectionId})"></image>
             </g>
         </svg>`;
 }

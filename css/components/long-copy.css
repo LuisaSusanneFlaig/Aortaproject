@@ -38,3 +38,23 @@ body[data-story-version] #story .story-copy-flow {
         break-inside: avoid;
     }
 }
+
+/* Story paragraphs are justified; hyphenation keeps the word gaps small. */
+body[data-story-version] #story .element-text .info-text {
+    text-align: justify;
+    hyphens: auto;
+}
+
+/* Flow sections grow with their text, so every paragraph scrolls fully into
+   view before the next chapter starts. Overrides the full-screen lock
+   (height: 100dvh !important) of the older flow layout in scrollytelling.css. */
+body[data-story-version] #story .flow-research-section,
+body[data-story-version] #story .flow-research-section[data-scroll-mode="sticky"] {
+    height: auto !important;
+    min-height: max(100svh, 760px) !important;
+}
+
+body[data-story-version] #story .flow-research-section .text-box {
+    height: auto !important;
+    overflow: visible;
+}

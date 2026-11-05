@@ -126,7 +126,8 @@ body[data-story-version] #story .prevention-info-trigger:hover .prevention-info-
 body[data-story-version] #story .prevention-info-trigger:focus-visible .prevention-info-badge,
 body[data-story-version] #story .prevention-info-trigger[aria-expanded="true"] .prevention-info-badge {
     background: var(--color-accent);
-    color: #fff;
+    /* !important to beat the resting accent color above, so the + turns white. */
+    color: #fff !important;
 }
 
 body[data-story-version] #story .prevention-info-box {

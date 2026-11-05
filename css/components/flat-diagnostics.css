@@ -188,70 +188,16 @@ body[data-story-version] #story .symptom-info-trigger {
     cursor: pointer;
 }
 
-body[data-story-version] #story .symptom-button-shine {
-    position: absolute;
-    inset: -40% auto -40% 0;
-    z-index: 2;
-    width: 35%;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.8),
-        transparent
-    );
-    content: '';
-    filter: blur(2px);
-    pointer-events: none;
-    transform: skewX(-18deg);
-    will-change: transform;
-}
-
-body[data-story-version] #story .diagnostic-shine-target {
+body[data-story-version] #story .diagnostic-icon-frame {
     position: relative;
     overflow: hidden;
 }
 
-body[data-story-version] #story .diagnostic-button-shine {
-    position: absolute;
-    inset: -40% auto -40% 0;
-    z-index: 2;
-    width: 35%;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.8),
-        transparent
-    );
-    content: '';
-    filter: blur(2px);
-    pointer-events: none;
-    transform: skewX(-18deg);
-    will-change: transform;
-}
-
-body[data-story-version] #story .visual-icon-shine-target {
+body[data-story-version] #story .story-visual-icon {
     position: relative;
     display: inline-flex;
     overflow: hidden;
     vertical-align: middle;
-}
-
-body[data-story-version] #story .visual-icon-shine {
-    position: absolute;
-    inset: -40% auto -40% 0;
-    z-index: 2;
-    width: 38%;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.8),
-        transparent
-    );
-    content: '';
-    filter: blur(2px);
-    pointer-events: none;
-    transform: skewX(-18deg);
-    will-change: transform;
 }
 
 body[data-story-version] #story .symptom-info-trigger .story-inline-icon {

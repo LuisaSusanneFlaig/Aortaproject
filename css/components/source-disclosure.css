@@ -83,6 +83,27 @@ body[data-story-version] #story .source-box {
     text-align: left;
 }
 
+/* Several sources: one per line, without bullet dots. */
+.source-box .source-list,
+body[data-story-version] #story .source-box .source-list {
+    display: grid;
+    gap: 0.7em;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.source-box .source-list li,
+body[data-story-version] #story .source-box .source-list li {
+    margin: 0;
+    padding: 0;
+}
+
+.source-box .source-list li::before,
+body[data-story-version] #story .source-box .source-list li::before {
+    content: none;
+}
+
 .source-disclosure .source-box a,
 body[data-story-version] #story .source-box a {
     color: var(--color-text);

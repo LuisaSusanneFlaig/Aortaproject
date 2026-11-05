@@ -32,8 +32,14 @@ body[data-story-version] .chapter-opener-art {
     pointer-events: none;
 }
 
-body[data-story-version] .chapter-opener-art image {
-    opacity: 0.6;
+/* Brush stroke in a softened accent: the accent mixed toward the page
+   background, applied by the tint filter in renderChapterArt. */
+body[data-story-version] .chapter-opener-art {
+    --brush-color: color-mix(in srgb, var(--color-accent) 40%, var(--color-bg));
+}
+
+body[data-story-version] .chapter-opener-art .brush-tint-flood {
+    flood-color: var(--brush-color);
 }
 
 body[data-story-version] .chapter-opener-inner {
