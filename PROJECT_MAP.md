@@ -49,8 +49,6 @@ npm run screenshots
 | Alex aneurysm story | `scrollytelling-aneurysm.html` |
 | Miriam dissection story | `scrollytelling-dissection.html` |
 | Shared ending with both outlooks | `ending.html`, `css/components/ending-page.css`, `css/components/ending-outlooks.css` |
-| Imprint | `impressum.html` |
-| Privacy policy | `datenschutz.html` |
 
 ## Assets
 
@@ -101,7 +99,7 @@ The menu dropdown "Visualization" (or `?view=illustration|lines|particles`) pick
 - A `modelPlaceholder` keeps only its `flowIllustration` or the `flowVariants` entry whose `view` matches.
 - Any story object can carry `flowViews: { illustration: {...}, particles: {...} }` to change its fields for one version; `null` removes a field.
 
-In the CTA Imaging section (`diagnose-bildgebung`, `s10`), the second paragraph explains per version how the aorta was traced from the scan: by segmentation software (3D versions) or by hand (illustration version). How the flow itself was made (simulated or drawn and animated) is explained in an info popup in the first paragraph of the flow section.
+How each version was made (from the CTA scan to the 3D model, then the simulation or the hand-drawn outline and arrows) is explained per version under "How this view was made" in the flow sections (`alex-flow-overview`, `s11`). The info popup in the first paragraph of those sections only says what the view is and is not (calculated or drawn, not measured).
 
 `npm run check` validates and renders all three versions.
 

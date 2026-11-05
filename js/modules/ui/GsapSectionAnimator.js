@@ -34,9 +34,6 @@ export class GsapSectionAnimator {
         }, ({ conditions }) => {
             const localAnimations = [];
 
-            this.addSymptomButtonShine(gsap, localAnimations);
-            this.addDiagnosticButtonShine(gsap, localAnimations);
-
             openers.forEach((opener) => {
                 const inner = opener.querySelector('.chapter-opener-inner');
                 const icon = opener.querySelector('.chapter-opener-icon');
@@ -321,66 +318,6 @@ export class GsapSectionAnimator {
         });
 
         requestAnimationFrame(() => ScrollTrigger.refresh());
-    }
-
-    addSymptomButtonShine(gsap, localAnimations) {
-        const buttons = this.root.querySelectorAll('.symptom-info-trigger');
-        buttons.forEach((button, index) => {
-            const shineElement = button.querySelector('.symptom-button-shine');
-            if (!shineElement) return;
-
-            const shine = gsap.timeline({
-                delay: 1.05 + index * 0.45,
-                repeat: -1,
-                repeatDelay: 1.4
-            });
-            shine.set(shineElement, { xPercent: -160, autoAlpha: 0 });
-            shine.to(shineElement, {
-                xPercent: 160,
-                autoAlpha: 0.75,
-                duration: 1.4,
-                ease: 'power2.inOut'
-            });
-            shine.to(shineElement, {
-                autoAlpha: 0,
-                duration: 0.3,
-                ease: 'power1.out'
-            });
-
-            localAnimations.push(shine);
-            this.animations.push(shine);
-        });
-    }
-
-    addDiagnosticButtonShine(gsap, localAnimations) {
-        const targets = this.root.querySelectorAll(
-            '.diagnostic-shine-target, .visual-icon-shine-target'
-        );
-        targets.forEach((target, index) => {
-            const shineElement = target.querySelector('.diagnostic-button-shine, .visual-icon-shine');
-            if (!shineElement) return;
-
-            const shine = gsap.timeline({
-                delay: 1.05 + index * 0.45,
-                repeat: -1,
-                repeatDelay: 1.4
-            });
-            shine.set(shineElement, { xPercent: -160, autoAlpha: 0 });
-            shine.to(shineElement, {
-                xPercent: 160,
-                autoAlpha: 0.75,
-                duration: 1.4,
-                ease: 'power2.inOut'
-            });
-            shine.to(shineElement, {
-                autoAlpha: 0,
-                duration: 0.3,
-                ease: 'power1.out'
-            });
-
-            localAnimations.push(shine);
-            this.animations.push(shine);
-        });
     }
 
     destroy() {

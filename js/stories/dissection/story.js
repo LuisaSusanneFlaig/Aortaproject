@@ -54,7 +54,11 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Aortic dissection is rare, but rarity does not make it insignificant: a small number of cases can have extremely serious consequences. The circle chart on the left shows what rare means. The circle stands for 100,000 people worldwide; the five dots are diagnosed cases, and the seven squares are cases that may go undetected. What happens next depends strongly on where the dissection begins, as the pie chart below it shows. Type A, about 60–65% of cases, involves the first part of the aorta as it leaves the heart and usually requires immediate treatment. Type B, about 35–40% of cases, begins farther down, beyond the arteries leading to the head, and may follow a different treatment path. This makes aortic dissection an important example of how a single anatomical difference can fundamentally change a medical situation. Miriam\'s dissection is Type B, the red slice of the pie chart.'
+                    text: 'Aortic dissection is rare, but rarity does not make it insignificant: a small number of cases can have extremely serious consequences. The circle chart on the left shows what rare means. The circle stands for 100,000 people; the five dots are the cases diagnosed each year, and the seven squares are an estimate of cases that may go undetected. What happens next depends strongly on where the dissection begins, as the pie chart below it shows. Type A, about 60–65% of cases, involves the first part of the aorta as it leaves the heart and usually requires immediate treatment. Type B, about 35–40% of cases, begins farther down, beyond the arteries leading to the head, and may follow a different treatment path. This makes aortic dissection an important example of how a single anatomical difference can fundamentally change a medical situation. Miriam\'s dissection is Type B, the red slice of the pie chart.',
+                    infoPopup: {
+                        title: 'estimate',
+                        text: 'Dots: diagnosed cases per year, an average of studies worldwide. Squares: an estimate of undetected cases, based on autopsy data from one region of Germany. When a study in Berlin and Brandenburg also counted dissections near the heart that were found only at autopsy, it arrived at about 12 cases per 100,000 people.'
+                    }
                 },
                 {
                     type: 'aorticStat',
@@ -66,7 +70,11 @@ export const dissectionStory = {
                 },
                 {
                     type: 'reference',
-                    text: 'Context sources: Gouveia e Melo et al.; Kurz et al.; Wundram et al.; Obel et al.; Smedberg et al.; clinical guideline summaries.'
+                    text: [
+                        'Gouveia e Melo R, et al. A systematic review and meta-analysis of the incidence of acute aortic dissections in population-based studies. Journal of Vascular Surgery. 2022;75(2):709–720. https://doi.org/10.1016/j.jvs.2021.08.080',
+                        'Kurz SD, et al. Insight into the incidence of acute aortic dissection in the German region of Berlin and Brandenburg. International Journal of Cardiology. 2017;241:326–329. https://doi.org/10.1016/j.ijcard.2017.05.024',
+                        'Smedberg C, et al. Incidence, presentation and outcome of acute aortic dissection: results from a population-based study. Open Heart. 2024;11(1):e002595. https://doi.org/10.1136/openhrt-2023-002595'
+                    ]
                 }
             ]
         },
@@ -109,7 +117,10 @@ export const dissectionStory = {
                 },
                 {
                     type: 'reference',
-                    text: 'Anatomy and case source: VMR dataset 0246_H_AO_AOD, pre-dissection aortic geometry and follow-up case material; patient course described in Baeumler et al., IEEE TBME 2025, DOI 10.1109/TBME.2024.3480362.'
+                    text: [
+                        'Wilson NM, et al. The Vascular Model Repository: A Public Resource of Medical Imaging Data and Blood Flow Simulation Results. Journal of Medical Devices. 2013;7(4):040923. https://doi.org/10.1115/1.4025983. Dataset 0246_H_AO_AOD: pre-dissection aortic geometry and follow-up case material.',
+                        'Bäumler K, et al. Assessment of Aortic Dissection Remodeling With Patient-Specific Fluid–Structure Interaction Models. IEEE Transactions on Biomedical Engineering. 2025;72(3):953–964. https://doi.org/10.1109/TBME.2024.3480362'
+                    ]
                 }
             ]
         },
@@ -158,8 +169,13 @@ export const dissectionStory = {
                     text: 'In a healthy aorta, blood moves as one orderly stream. This is called laminar flow. It is the baseline for the rest of Miriam\'s story: later, the same view shows what her divided aorta does to this order.',
                     infoPopup: {
                         title: 'laminar flow',
-                        text: 'In laminar flow, blood moves in layers that slide past each other, usually fastest in the middle of the vessel and slower near the wall, with hardly any swirling. Where a vessel suddenly widens, narrows, or splits, this order can break up into swirls.'
+                        text: 'In laminar flow, blood moves in layers that slide past each other, usually fastest in the middle of the vessel and slower near the wall, with hardly any swirling.'
                     }
+                },
+                {
+                    type: 'reference',
+                    // PLACEHOLDER: replace with the source of the healthy reference aorta model.
+                    text: 'PLACEHOLDER: source of the healthy reference aorta model (dataset and citation).'
                 }
             ]
         },
@@ -173,7 +189,7 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Unlike an aneurysm, a dissection like Miriam\'s usually announces itself with strong warning signs. The chart shows how often each warning sign was reported by 1,891 people with acute Type B dissection, the type Miriam has, in an international registry (IRAD). Still, no single sign proves a dissection, and a fainting episode, a normal heart tracing, or a normal chest X-ray cannot safely rule it in or out. Symptoms are only the first clue.'
+                    text: 'A dissection like Miriam\'s usually announces itself with strong warning signs. The chart shows how often each warning sign was reported by 1,891 people with acute Type B dissection, the type Miriam has, in an international registry (IRAD). Still, no single sign proves a dissection, and a fainting episode, a normal heart tracing, or a normal chest X-ray cannot safely rule it in or out. Symptoms are only the first clue.'
                 },
                 {
                     type: 'symptomBars',
@@ -188,7 +204,10 @@ export const dissectionStory = {
                 },
                 {
                     type: 'reference',
-                    text: 'Source: S2k guideline on Type B aortic dissection (2022), section 5.1 and table 4; IRAD data.'
+                    text: [
+                        'Deutsche Gesellschaft für Gefäßchirurgie und Gefäßmedizin. S2k-Leitlinie Typ-B-Aortendissektion (section 5.1, table 4). AWMF-Register 004-034. 2022. https://register.awmf.org/assets/guidelines/004-034l_S2k_Typ_B_Aortendissektion_2022-05.pdf',
+                        'Pape LA, et al. Presentation, Diagnosis, and Outcomes of Acute Aortic Dissection: 17-Year Trends From the International Registry of Acute Aortic Dissection. Journal of the American College of Cardiology. 2015;66(4):350–358. https://doi.org/10.1016/j.jacc.2015.05.029'
+                    ]
                 }
             ]
         },
@@ -229,13 +248,16 @@ export const dissectionStory = {
                         {
                             icon: 'radiology_aorta',
                             title: 'Aortic imaging',
-                            info: 'CT angiography is usually the first choice because it is fast and widely available. Ultrasound through the esophagus or MRI are alternatives in some situations.'
+                            info: 'Different imaging techniques can be used. The first choice is usually one that is fast and widely available; others are alternatives in some situations.'
                         }
                     ]
                 },
                 {
                     type: 'reference',
-                    text: 'Sources: [2022 ACC/AHA Aortic Disease Guideline](https://doi.org/10.1161/CIR.0000000000001106), acute aortic syndrome diagnosis and imaging; [2022 German S2k Guideline on Type B Aortic Dissection](https://register.awmf.org/assets/guidelines/004-034l_S2k_Typ_B_Aortendissektion_2022-05.pdf), chapter 5.'
+                    text: [
+                        'Isselbacher EM, et al. 2022 ACC/AHA Guideline for the Diagnosis and Management of Aortic Disease. Circulation. 2022;146(24):e334–e482. https://doi.org/10.1161/CIR.0000000000001106',
+                        'Deutsche Gesellschaft für Gefäßchirurgie und Gefäßmedizin. S2k-Leitlinie Typ-B-Aortendissektion (chapter 5). AWMF-Register 004-034. 2022. https://register.awmf.org/assets/guidelines/004-034l_S2k_Typ_B_Aortendissektion_2022-05.pdf'
+                    ]
                 }
             ]
         },
@@ -250,13 +272,6 @@ export const dissectionStory = {
                 {
                     type: 'text',
                     text: 'A CT angiogram (CTA) is a CT scan that shows the blood vessels. A contrast agent is injected into a vein in the arm while the scanner takes many thin X-ray images. The contrast makes blood inside the aorta visible. From these images, clinicians can follow the vessel through the chest and abdomen, identify the flap separating the two channels, measure the aorta, and check the branch vessels. The red marking was added during image editing to highlight Miriam\'s Type B dissection; it was not red in the original scan.'
-                },
-                {
-                    type: 'text',
-                    text: 'The same scan is the raw material for a 3D model of Miriam\'s divided aorta: the model you explored earlier, and the starting point for the flow simulation later in the story. Software marks the aorta in every slice, a step called segmentation, and joins the outlines into a surface. In a dissection, the thin flap between the channels has to be traced as well. A person checks and corrects the result.',
-                    flowViews: {
-                        illustration: { text: 'The same scan is the raw material for the drawings in this story. The outline of Miriam\'s aorta, including the thin flap between the two channels, was traced by hand from the scan and from the 3D model built from it. The drawing keeps the shape of her aorta and its two channels, but leaves out the fine detail of the vessel wall.' }
-                    }
                 },
                 {
                     type: 'image',
@@ -277,10 +292,6 @@ export const dissectionStory = {
                             text: 'The highlighted widened region shows the altered aortic channel created by the dissection.'
                         }
                     ]
-                },
-                {
-                    type: 'reference',
-                    text: 'CTA image and aortic model: VMR dataset 0246_H_AO_AOD.'
                 }
             ]
         },
@@ -297,24 +308,24 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Here, the simulated blood flow through both channels of Miriam\'s dissected aorta appears next to the healthy reference aorta from earlier. Watch how the tear changes the route of the blood. The simulation is based on a follow-up CTA taken about six weeks after the dissection.',
+                    text: 'Here, the simulated blood flow through both channels of Miriam\'s dissected aorta appears next to the healthy reference aorta from earlier. Watch how the tear changes the route of the blood.',
                     // How the flow picture was made, per study version (js/modules/flowView.js).
                     infoPopup: {
                         title: 'simulated blood flow',
-                        text: 'This flow is calculated, not measured. For the simulation, the inside of the 3D model of Miriam\'s aorta, both channels included, is divided into millions of tiny cells. The team sets how much blood the heart pumps in and how it leaves through each open end, and a computer solves the equations of fluid motion in every cell over several heartbeats. The result is shown as pathlines: lines that follow the paths the blood takes. Every simulation rests on assumptions; the vessel wall, for example, is usually treated as rigid. It is not blood recorded in Miriam\'s body and not a prediction of her individual outcome.'
+                        text: 'This flow is calculated, not measured. It is not blood recorded in Miriam\'s body and not a prediction of her individual outcome. Every simulation rests on assumptions; the vessel wall, for example, is usually treated as rigid.'
                     },
                     flowViews: {
                         particles: {
                             infoPopup: {
                                 title: 'simulated blood flow',
-                                text: 'This flow is calculated, not measured. For the simulation, the inside of the 3D model of Miriam\'s aorta, both channels included, is divided into millions of tiny cells. The team sets how much blood the heart pumps in and how it leaves through each open end, and a computer solves the equations of fluid motion in every cell over several heartbeats. The result is shown as moving particles that are carried along with the blood. Every simulation rests on assumptions; the vessel wall, for example, is usually treated as rigid. It is not blood recorded in Miriam\'s body and not a prediction of her individual outcome.'
+                                text: 'This flow is calculated, not measured. It is not blood recorded in Miriam\'s body and not a prediction of her individual outcome. Every simulation rests on assumptions; the vessel wall, for example, is usually treated as rigid.'
                             }
                         },
                         illustration: {
                             text: 'Here, the animated drawing of the blood flow through both channels of Miriam\'s dissected aorta appears next to the drawing of the healthy reference aorta from earlier. Watch how the tear changes the route of the blood.',
                             infoPopup: {
                                 title: 'animated drawing',
-                                text: 'The arrows were drawn by hand on top of the drawing of Miriam\'s aorta. On this page, each arrow grows in, travels along its path and fades out at its end, and the arrows follow one another along the path of the blood, from the heart downwards. Then the sequence starts again. This flow is not the result of a computer simulation: it is not calculated, not measured, and not blood recorded in Miriam\'s body. Like every illustration, it rests on choices about which paths to show and where to simplify.'
+                                text: 'This flow is drawn, not calculated or measured. It is not the result of a computer simulation, not blood recorded in Miriam\'s body and not a prediction of her individual outcome.'
                             }
                         }
                     }
@@ -388,11 +399,25 @@ export const dissectionStory = {
                     type: 'text',
                     text: 'In Miriam\'s aorta, flow speed and direction vary across the vessel, and swirling areas may change the forces on her weakened wall, unlike the orderly laminar flow of the healthy aorta beside it. This difference helps explain why blood movement matters for the treatment decisions that follow.'
                 },
+                // How the flow picture of each study version was made (js/modules/flowView.js).
                 {
-                    type: 'reference',
-                    text: 'Context: patient-specific simulation based on the subacute CTA anatomy. Source: Zimmermann et al. (2023), DOI 10.1038/s41598-023-49942-0. Methods reference: Wilson NM, Ortiz AK, Johnson AB. The Vascular Model Repository: A Public Resource of Medical Imaging Data and Blood Flow Simulation Results. J Med Devices. 2013;7(4):040923. DOI: 10.1115/1.4025983. Simulation steps and assumptions: Kamada H, Nakamura M, Ota H, Higuchi S, Takase K. Blood flow analysis with computational fluid dynamics and 4D-flow MRI for vascular diseases. J Cardiol. 2022;80:386–396. DOI 10.1016/j.jjcc.2022.05.007.',
+                    type: 'heading',
+                    text: 'How this view was made'
+                },
+                {
+                    type: 'text',
+                    text: 'It starts with a CTA scan of Miriam\'s aorta: a follow-up scan, taken about six weeks after the dissection. From its slices, a 3D model of the inside of her aorta, with both channels, was built. For the simulation, this space is divided into millions of tiny cells, the amount of blood that flows in and out is set, and a computer solves the equations of fluid motion in every cell over several heartbeats. The result is the speed and direction of the blood at every point and moment. Starting points are spread across the entrance of the aorta, and from each one this movement is followed step by step. The trail that a starting point leaves is a pathline: the route a tiny portion of blood would take.',
                     flowViews: {
-                        illustration: { text: 'Drawings and animation made for this story, based on the 3D model of Miriam\'s aorta. Geometry: VMR dataset 0246_H_AO_AOD.' }
+                        particles: { text: 'It starts with a CTA scan of Miriam\'s aorta: a follow-up scan, taken about six weeks after the dissection. From its slices, a 3D model of the inside of her aorta, with both channels, was built. For the simulation, this space is divided into millions of tiny cells, the amount of blood that flows in and out is set, and a computer solves the equations of fluid motion in every cell over several heartbeats. The result is the speed and direction of the blood at every point and moment. From these results, a flow-visualization program releases virtual particles at the entrance of the aorta and carries them along with this movement, frame by frame.' },
+                        illustration: { text: 'It starts with a CTA scan of Miriam\'s aorta. From its slices, a 3D model of her aorta was built, and the outline, with the flap that divides it into two channels, was traced by hand from this model and then simplified: the shape and the two channels are kept, fine details of the vessel wall are left out. The healthy aorta was drawn in the same way from its 3D model.' }
+                    }
+                },
+                {
+                    type: 'text',
+                    text: 'In the animation, the lines grow as the heartbeat goes on. In Miriam\'s aorta, lines in the false lumen are red and lines in the true lumen are white, so you can follow how the blood splits at the tear; in the healthy aorta, all lines are red. You can turn both models and slow the animation down. What you see stays a calculated picture, with the assumptions explained in the note on the simulated blood flow above.',
+                    flowViews: {
+                        particles: { text: 'Each dot is a marker, not a blood cell: where the dots crowd together, speed up or circle, the calculated flow does the same. In Miriam\'s aorta, dots in the false lumen are red and dots in the true lumen are white, so you can follow how the blood splits at the tear; in the healthy aorta, all dots are red. You can turn both models and slow the animation down. What you see stays a calculated picture, with the assumptions explained in the note on the simulated blood flow above.' },
+                        illustration: { text: 'The arrows were drawn by hand on top of the drawings to show the main direction of the blood: up from the heart, into the branches, around the arch and down through the body. At the tear in Miriam\'s aorta, a red arrow swirls, and below it red and dashed arrows follow the two channels. On the page, the arrows grow one after another from the heart downwards and then start again. Where they are placed, how long they are and how fast they move are design choices, not measurements.' }
                     }
                 }
             ]
@@ -435,7 +460,10 @@ export const dissectionStory = {
                 },
                 {
                     type: 'reference',
-                    text: 'Sources: [2022 German S2k Guideline on Type B Aortic Dissection](https://register.awmf.org/assets/guidelines/004-034l_S2k_Typ_B_Aortendissektion_2022-05.pdf), treatment chapters; [2022 ACC/AHA Aortic Disease Guideline](https://doi.org/10.1161/CIR.0000000000001106), acute aortic syndrome management. Miriam case: VMR dataset 0246_H_AO_AOD.'
+                    text: [
+                        'Deutsche Gesellschaft für Gefäßchirurgie und Gefäßmedizin. S2k-Leitlinie Typ-B-Aortendissektion (treatment chapters). AWMF-Register 004-034. 2022. https://register.awmf.org/assets/guidelines/004-034l_S2k_Typ_B_Aortendissektion_2022-05.pdf',
+                        'Isselbacher EM, et al. 2022 ACC/AHA Guideline for the Diagnosis and Management of Aortic Disease. Circulation. 2022;146(24):e334–e482. https://doi.org/10.1161/CIR.0000000000001106'
+                    ]
                 }
             ]
         },
@@ -483,7 +511,10 @@ export const dissectionStory = {
                 },
                 {
                     type: 'reference',
-                    text: 'Sources: [2022 German S2k Guideline on Type B Aortic Dissection](https://register.awmf.org/assets/guidelines/004-034l_S2k_Typ_B_Aortendissektion_2022-05.pdf), follow-up and rehabilitation; [2022 ACC/AHA Aortic Disease Guideline](https://doi.org/10.1161/CIR.0000000000001106), imaging after dissection, Marfan syndrome, and family assessment.'
+                    text: [
+                        'Deutsche Gesellschaft für Gefäßchirurgie und Gefäßmedizin. S2k-Leitlinie Typ-B-Aortendissektion (follow-up and rehabilitation). AWMF-Register 004-034. 2022. https://register.awmf.org/assets/guidelines/004-034l_S2k_Typ_B_Aortendissektion_2022-05.pdf',
+                        'Isselbacher EM, et al. 2022 ACC/AHA Guideline for the Diagnosis and Management of Aortic Disease. Circulation. 2022;146(24):e334–e482. https://doi.org/10.1161/CIR.0000000000001106'
+                    ]
                 }
             ]
         }

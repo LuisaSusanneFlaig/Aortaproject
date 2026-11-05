@@ -14,10 +14,7 @@ let flowSpeedSliderId = 0;
 
 const renderVisualIcon = (icon, className = 'story-inline-icon') => renderMaterialIcon(
     icon,
-    `${className} visual-icon-shine-target`
-).replace(
-    '</span>',
-    '<span class="visual-icon-shine" aria-hidden="true"></span></span>'
+    `${className} story-visual-icon`
 );
 
 export function renderSymptomBars(element = {}) {
@@ -34,7 +31,7 @@ export function renderSymptomBars(element = {}) {
                     const infoId = item.info ? `symptom-info-${++symptomInfoId}` : '';
                     const icon = item.icon
                         ? (item.info
-                            ? `<button class="symptom-row-icon symptom-info-trigger" type="button" aria-label="More information about ${item.label}" aria-expanded="false" aria-controls="${infoId}">${renderMaterialIcon(item.icon, 'story-inline-icon').replace('</span>', '<span class="symptom-button-shine" aria-hidden="true"></span></span>')}</button>`
+                            ? `<button class="symptom-row-icon symptom-info-trigger" type="button" aria-label="More information about ${item.label}" aria-expanded="false" aria-controls="${infoId}">${renderMaterialIcon(item.icon, 'story-inline-icon').replace('</span>', '</span>')}</button>`
                             : `<span class="symptom-row-icon">${renderVisualIcon(item.icon)}</span>`)
                         : '';
                     return `
@@ -61,11 +58,8 @@ export function renderDiagnosticPath(element = {}) {
     const icons = ['search', 'monitor_heart', 'biotech', 'radiology'];
     const customIcons = new Set(['radiology_aorta', 'genetics_svg', 'monitor_heart_svg', 'labs_svg', 'event_available_svg', 'compare_svg']);
     const renderDiagnosticIcon = (icon) => customIcons.has(icon)
-        ? `<span class="diagnostic-custom-icon diagnostic-custom-icon-${icon} diagnostic-shine-target" aria-hidden="true"><span class="diagnostic-button-shine" aria-hidden="true"></span></span>`
-        : renderMaterialIcon(icon, 'story-inline-icon diagnostic-shine-target').replace(
-            '</span>',
-            '<span class="diagnostic-button-shine" aria-hidden="true"></span></span>'
-        );
+        ? `<span class="diagnostic-custom-icon diagnostic-custom-icon-${icon} diagnostic-icon-frame" aria-hidden="true"></span>`
+        : renderMaterialIcon(icon, 'story-inline-icon diagnostic-icon-frame');
     const infoBoxes = [];
     const renderDiagnosticItem = (item, index) => {
         const infoId = item.info ? `diagnostic-info-${++diagnosticInfoId}` : '';

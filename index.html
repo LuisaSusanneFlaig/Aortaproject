@@ -27,9 +27,14 @@
                     <clipPath id="header-art-reveal" clipPathUnits="userSpaceOnUse">
                         <rect class="header-art-reveal-rect" x="-160" y="0" width="0" height="408"></rect>
                     </clipPath>
+                    <!-- Recolors the brush to --brush-color (dashboard.css). -->
+                    <filter id="header-art-tint" color-interpolation-filters="sRGB">
+                        <feFlood class="brush-tint-flood"></feFlood>
+                        <feComposite in2="SourceAlpha" operator="in"></feComposite>
+                    </filter>
                 </defs>
                 <g class="header-line-group" transform="translate(0 160)">
-                    <image class="header-line-art" href="assets/vector-1.svg" x="-160" y="0" width="1200" height="408" preserveAspectRatio="none" clip-path="url(#header-art-reveal)"></image>
+                    <image class="header-line-art" href="assets/vector-1.svg" x="-160" y="0" width="1200" height="408" preserveAspectRatio="none" clip-path="url(#header-art-reveal)" filter="url(#header-art-tint)"></image>
                 </g>
             </svg>
             <div class="intro-heading">
@@ -37,8 +42,8 @@
                 <h1 id="overview-title">A Matter of Flow</h1>
             </div>
             <div class="intro-columns">
-                <p>Blood flow is invisible, but it plays an important role in what happens inside the aorta. This application is a science-communication project about the aorta and the diseases that can change it. To make these complex processes accessible beyond a medical context, it uses narrative visualization to translate medical imaging, computational models, simulated blood flow, and clinical knowledge into an interactive scrollytelling experience that can be explored at your own pace. This makes abstract processes such as changes in blood flow easier to understand, while making the information more engaging and personally relatable.</p>
-                <p>The underlying vascular models and datasets come from the <a href="https://www.vascularmodel.com/index.html" target="_blank" rel="noopener noreferrer">Vascular Model Repository</a>, an open-source database of computational models of normal and diseased cardiovascular anatomy. The repository is intended for research; this project creates a visual and narrative entry point for understanding what those models can show. Above all, we hope you will come away valuing transparent explanations as a basis for trust in medical visualizations: knowing what the images and simulations are based on, and what they show. This aim is informed by <a href="https://doi.org/10.1109/TVCG.2022.3209500" target="_blank" rel="noopener noreferrer">Lee-Robbins and Adar’s framework for affective learning objectives</a>.</p>
+                <p>Blood flow is invisible, but it plays an important role in what happens inside the aorta. This application is a science-communication project about the aorta and the diseases that can change it. To make these complex processes accessible beyond a medical context, it uses narrative visualization to translate medical imaging, patient data, and clinical knowledge into an interactive scrollytelling experience that can be explored at your own pace. This makes abstract processes such as changes in blood flow easier to understand, while making the information more engaging and personally relatable.</p>
+                <p>The underlying patient data come from the <a href="https://www.vascularmodel.com/index.html" target="_blank" rel="noopener noreferrer">Vascular Model Repository</a>, an open-source database of normal and diseased cardiovascular anatomy. The repository is intended for research; this project creates a visual and narrative entry point for understanding what this data can show. Above all, we hope you will come away valuing transparent explanations as a basis for trust in medical visualizations: knowing what the images are based on, and what they show. This aim is informed by <a href="https://doi.org/10.1109/TVCG.2022.3209500" target="_blank" rel="noopener noreferrer">Lee-Robbins and Adar’s framework for affective learning objectives</a>.</p>
             </div>
         </section>
 
@@ -47,18 +52,18 @@
             <div class="story-entry-grid">
             <article class="story-entry">
                 <img src="assets/story_images/alex_portrait_photoreal_v1.png" alt="Portrait of Alex">
-                <div class="story-entry-copy"><h3>Alex</h3><p class="diagnosis-label">Aortic Aneurysm</p><p>Alex is 18 and has Marfan syndrome, an inherited weakness of the connective tissue. He feels well, but a planned scan finds a widening in his aorta.</p><a href="scrollytelling-aneurysm.html">Start Alex's story <span aria-hidden="true">&rarr;</span></a></div>
+                <div class="story-entry-copy"><h3>Alex</h3><p class="diagnosis-label">Aortic Aneurysm</p><p>Alex is 18 and feels well, but a planned scan finds a widening in his aorta.</p><a href="scrollytelling-aneurysm.html">Start Alex's story <span aria-hidden="true">&rarr;</span></a></div>
             </article>
             <article class="story-entry">
                 <img src="assets/story_images/miriam_portrait_photoreal_v1.png" alt="Portrait of Miriam">
-                <div class="story-entry-copy"><h3>Miriam</h3><p class="diagnosis-label">Aortic Dissection</p><p>Miriam is 25 and also has Marfan syndrome. Her story begins abruptly, with pain that points to an emergency inside the vessel wall.</p><a href="scrollytelling-dissection.html">Start Miriam's story <span aria-hidden="true">&rarr;</span></a></div>
+                <div class="story-entry-copy"><h3>Miriam</h3><p class="diagnosis-label">Aortic Dissection</p><p>Miriam is 25. Her story begins abruptly, with pain that points to an emergency inside the vessel wall.</p><a href="scrollytelling-dissection.html">Start Miriam's story <span aria-hidden="true">&rarr;</span></a></div>
             </article>
             </div>
         </section>
 
     </main>
 
-    <footer class="overview-footer"><span>Aorta Project</span><nav aria-label="Legal navigation"><a href="impressum.html">Imprint</a><a href="datenschutz.html">Privacy Policy</a></nav></footer>
+    <footer class="overview-footer"><span>Aorta Project</span></footer>
 
     <script type="module">
         const headerArt = document.querySelector('.header-line-art');

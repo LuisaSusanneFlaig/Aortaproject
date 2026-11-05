@@ -74,13 +74,16 @@ body.light-mode.dashboard-page .nav-menu-mobile a {
 .intro-heading, .intro-columns { position: relative; z-index: 1; }
 .intro-heading { padding: clamp(32px, 5vw, 72px) 0; text-align: center; }
 .header-line-pattern { position: absolute; inset: 0 auto auto 50%; z-index: -1; width: 100vw; height: 100%; overflow: visible; transform: translateX(-50%); pointer-events: none; }
-.header-line-art { display: block; opacity: .6; }
+.header-line-art { display: block; }
+/* Brush stroke in a softened accent: the accent mixed toward the page background. */
+.header-line-pattern { --brush-color: color-mix(in srgb, var(--color-accent) 40%, var(--color-bg)); }
+.header-line-pattern .brush-tint-flood { flood-color: var(--brush-color); }
 .header-line-group { filter: url(#organic-path-noise); }
 .section-kicker { margin: 0 0 18px; color: var(--color-accent); font-size: 1rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
 body:not(.light-mode).dashboard-page .section-kicker { color: #fff; }
 .intro-heading h1 { margin: 0; font-size: clamp(5rem, 16vw, 14rem); font-weight: 500; line-height: .92; }
 .intro-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(24px, 4vw, 56px); max-width: 920px; margin: clamp(42px, 6vw, 68px) auto 0; }
-.intro-columns p { margin: 0; color: color-mix(in srgb, var(--color-text) 72%, transparent); font-size: 1.05rem; line-height: 1.7; }
+.intro-columns p { margin: 0; color: color-mix(in srgb, var(--color-text) 72%, transparent); font-size: 1.05rem; line-height: 1.7; text-align: justify; hyphens: auto; }
 .intro-columns a { color: var(--color-text); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
 .overview-hero { min-height: 100vh; padding: clamp(88px, 12vw, 156px) 0 clamp(72px, 9vw, 112px); display: flex; flex-direction: column; align-items: center; }
 .overview-hero.anatomy-section { min-height: 0; padding-top: clamp(48px, 6vw, 80px); }
@@ -131,7 +134,7 @@ body:not(.light-mode).dashboard-page .section-kicker { color: #fff; }
 .story-index, .topic-index { padding: clamp(72px, 10vw, 128px) 0; border-top: 0; }
 .section-heading { max-width: 720px; margin-bottom: clamp(44px, 7vw, 80px); }
 .section-heading h2 { margin: 0; font-size: clamp(2rem, 5vw, 4rem); font-weight: 500; }
-.section-heading p { margin: 16px 0 0; font-size: 1.05rem; }
+.section-heading p { max-width: 32rem; margin: 16px 0 0; font-size: 1.05rem; text-align: justify; hyphens: auto; }
 /* Alex and Miriam side by side, like the outlooks on the ending page. */
 .story-entry-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(2, auto); gap: 0 clamp(24px, 4vw, 56px); }
 .story-entry { display: grid; grid-row: span 2; grid-template-rows: subgrid; row-gap: 28px; min-width: 0; padding-top: 20px; border-top: 2px solid var(--color-accent); }
@@ -140,7 +143,7 @@ body:not(.light-mode).dashboard-page .section-kicker { color: #fff; }
 .story-entry-copy a { margin-top: auto; }
 .story-entry-copy h3 { margin: 0; font-size: clamp(2.2rem, 5vw, 4.5rem); font-weight: 500; }
 .diagnosis-label { margin: 8px 0 28px; color: var(--color-accent); font-weight: 500; }
-.story-entry-copy > p:not(.diagnosis-label) { max-width: 58ch; margin: 0 0 28px; font-size: 1.05rem; }
+.story-entry-copy > p:not(.diagnosis-label) { max-width: 58ch; margin: 0 0 28px; font-size: 1.05rem; text-align: justify; hyphens: auto; }
 .story-entry-copy a, .topic-links a, .overview-footer a { color: var(--color-text); text-decoration: none; }
 .story-entry-copy a { display: inline-flex; gap: 12px; align-items: center; padding-bottom: 7px; border-bottom: 0; font-weight: 500; }
 .topic-index { padding-bottom: clamp(96px, 12vw, 160px); }

@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FlowVis Particle GLB Viewer</title>
+<style>
+    html, body { margin: 0; height: 100%; background: #111; color: #ddd; font: 13px system-ui, sans-serif; overflow: hidden; }
+    canvas { display: block; width: 100%; height: 100%; }
+    #ui { position: absolute; left: 12px; top: 12px; right: 12px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+          background: rgba(0,0,0,.55); padding: 8px 10px; border-radius: 6px; }
+    #time { flex: 1; min-width: 160px; }
+    #legend { position: absolute; left: 12px; bottom: 12px; background: rgba(0,0,0,.55); padding: 8px 10px; border-radius: 6px; }
+    .sw { display: inline-block; width: 12px; height: 12px; margin-right: 6px; vertical-align: -2px; border: 1px solid #666; }
+    #drop[hidden] { display: none; }
+    #drop { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; color: #888; font-size: 16px; }
+</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+<div id="drop">Drop a FlowVisAnalyzer .glb here, choose one above, or open viewer.html?src=file.glb</div>
+<div id="ui">
+    <input type="file" id="file" accept=".glb">
+    <button id="play">Pause</button>
+    <input type="range" id="time" min="0" max="1" step="0.0001" value="0">
+    <span id="frameLabel">–</span>
+    <label>speed <input type="range" id="speed" min="0.05" max="2" step="0.05" value="0.25"></label>
+    <label>point size <input type="range" id="size" min="1" max="10" step="0.5" value="3"></label>
+    <label><input type="checkbox" id="showSurf" checked> surface</label>
+</div>
+<div id="legend" hidden></div>
+
+<script src="flowvis-glb-loader.js"></script>
+<script>
+const { loadFlowVisGlb } = window.FlowVisGlbLoader;
+
+const canvas = document.getElementById('gl');
+const gl = canvas.getContext('webgl2', { antialias: true });
+if (!gl) throw new Error('WebGL2 required');
+
+// ---------- shaders ----------
+function program(vs, fs) {
+    const p = gl.createProgram();
+    for (const [type, src] of [[gl.VERTEX_SHADER, vs], [gl.FRAGMENT_SHADER, fs]]) {
+        const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+        if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+        gl.attachShader(p, s);
+    }
+    gl.linkProgram(p);
+    if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
+    return p;
+}
+
+const pointProg = program(`#version 300 es
+    layout(location=0) in vec3 aPos;
+    layout(location=1) in vec4 aColor;   // RGBA8, normalized; a == 0 -> dead
+    uniform mat4 uViewProj, uModel; uniform float uSize;
+    out vec4 vColor;
+    void main() {
+        vColor = aColor;
+        gl_Position = uViewProj * uModel * vec4(aPos, 1.0);
+        gl_PointSize = aColor.a > 0.0 ? uSize : 0.0;
+    }`, `#version 300 es
+    precision mediump float;
+    in vec4 vColor; out vec4 outColor;
+    void main() {
+        if (vColor.a == 0.0) discard;                       // dead particle: parked at its seed, must not be drawn
+        vec2 d = gl_PointCoord - 0.5; if (dot(d, d) > 0.25) discard;   // round points
+        outColor = vec4(vColor.rgb, 1.0);
+    }`);
+
+const surfProg = program(`#version 300 es
+    layout(location=0) in vec3 aPos;
+    layout(location=1) in vec3 aNormal;
+    layout(location=2) in vec3 aColor;
+    uniform mat4 uViewProj, uModel;
+    out vec3 vN; out vec3 vC;
+    void main() { vN = mat3(uModel) * aNormal; vC = aColor; gl_Position = uViewProj * uModel * vec4(aPos, 1.0); }`,
+`#version 300 es
+    precision mediump float;
+    in vec3 vN; in vec3 vC; uniform vec4 uBase; out vec4 outColor;
+    void main() {
+        float l = 0.35 + 0.65 * abs(dot(normalize(vN), normalize(vec3(0.3, 0.5, 1.0))));
+        outColor = vec4(vC * uBase.rgb * l, uBase.a);
+    }`);
+
+// ---------- camera (orbit around the particle bounds) ----------
+const cam = { yaw: 0.6, pitch: 0.3, dist: 1, target: [0, 0, 0], radius: 1 };
+function perspective(fovy, aspect, near, far) {
+    const f = 1 / Math.tan(fovy / 2), nf = 1 / (near - far);
+    return [f / aspect, 0, 0, 0, 0, f, 0, 0, 0, 0, (far + near) * nf, -1, 0, 0, 2 * far * near * nf, 0];
+}
+function lookAt(eye, c, up) {
+    const sub = (a, b) => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
+    const norm = v => { const l = Math.hypot(...v); return v.map(x => x / l); };
+    const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+    const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+    const z = norm(sub(eye, c)), x = norm(cross(up, z)), y = cross(z, x);
+    return [x[0], y[0], z[0], 0, x[1], y[1], z[1], 0, x[2], y[2], z[2], 0, -dot(x, eye), -dot(y, eye), -dot(z, eye), 1];
+}
+function mul(a, b) {
+    const o = new Array(16);
+    for (let c = 0; c < 4; c++) for (let r = 0; r < 4; r++)
+        o[c * 4 + r] = a[r] * b[c * 4] + a[4 + r] * b[c * 4 + 1] + a[8 + r] * b[c * 4 + 2] + a[12 + r] * b[c * 4 + 3];
+    return o;
+}
+let drag = null;
+canvas.addEventListener('pointerdown', e => { drag = [e.clientX, e.clientY]; canvas.setPointerCapture(e.pointerId); });
+canvas.addEventListener('pointerup', () => drag = null);
+canvas.addEventListener('pointermove', e => {
+    if (!drag) return;
+    cam.yaw -= (e.clientX - drag[0]) * 0.005;
+    cam.pitch = Math.max(-1.5, Math.min(1.5, cam.pitch + (e.clientY - drag[1]) * 0.005));
+    drag = [e.clientX, e.clientY];
+});
+canvas.addEventListener('wheel', e => { e.preventDefault(); cam.dist *= Math.exp(e.deltaY * 0.001); }, { passive: false });
+
+// ---------- scene ----------
+let scene = null;   // { particles, posBuf, colBuf, posScratch, colScratch, vaoPts, surfaces: [...] }
+const ui = id => document.getElementById(id);
+
+function upload(model) {
+    if (scene) { /* a real app would delete the old GL objects here */ }
+    const p = model.particles;
+    if (!p) throw new Error('This .glb has no particle cloud (export with Particles = Points)');
+
+    // Particles: dynamic buffers, rewritten whenever the frame changes.
+    const vaoPts = gl.createVertexArray(); gl.bindVertexArray(vaoPts);
+    const posBuf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, posBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, p.pointCount * 12, gl.DYNAMIC_DRAW);
+    gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0);
+    const colBuf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, colBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, p.pointCount * 4, gl.DYNAMIC_DRAW);
+    gl.enableVertexAttribArray(1); gl.vertexAttribPointer(1, 4, gl.UNSIGNED_BYTE, true, 0, 0);
+
+    const surfaces = model.surfaces.filter(s => s.indices).map(s => {
+        const vao = gl.createVertexArray(); gl.bindVertexArray(vao);
+        const attr = (loc, data, size) => {
+            const b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b); gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+            gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, size, gl.FLOAT, false, 0, 0);
+        };
+        attr(0, s.positions, 3);
+        if (s.normals) attr(1, s.normals, 3); else gl.vertexAttrib3f(1, 0, 0, 1);
+        if (s.colors) attr(2, s.colors, s.colorComponents); else gl.vertexAttrib3f(2, 1, 1, 1);
+        const ib = gl.createBuffer(); gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ib); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, s.indices, gl.STATIC_DRAW);
+        const type = s.indices instanceof Uint32Array ? gl.UNSIGNED_INT : s.indices instanceof Uint16Array ? gl.UNSIGNED_SHORT : gl.UNSIGNED_BYTE;
+        return { vao, count: s.indices.length, type, world: s.world, base: s.baseColor };
+    });
+    gl.bindVertexArray(null);
+
+    // Frame the camera on everything in world space (coordinates are scanner mm, not centred at the origin).
+    const lo = [Infinity, Infinity, Infinity], hi = [-Infinity, -Infinity, -Infinity];
+    for (const [pos, w] of [[p.positionsAt(0), p.world], ...model.surfaces.map(s => [s.positions, s.world])]) {
+        for (let i = 0; i < pos.length; i += 3) for (let c = 0; c < 3; c++) {
+            const v = w[c] * pos[i] + w[4 + c] * pos[i + 1] + w[8 + c] * pos[i + 2] + w[12 + c];
+            lo[c] = Math.min(lo[c], v); hi[c] = Math.max(hi[c], v);
+        }
+    }
+    cam.target = lo.map((l, c) => (l + hi[c]) / 2);
+    cam.radius = Math.hypot(hi[0] - lo[0], hi[1] - lo[1], hi[2] - lo[2]) / 2;
+    cam.dist = cam.radius / Math.sin(0.4) * 1.1;   // fit the bounding sphere into the 0.8 rad fov
+
+    scene = { particles: p, posBuf, colBuf, vaoPts, surfaces, frame: -1,
+              posScratch: new Float32Array(p.pointCount * 3), colScratch: new Uint8Array(p.pointCount * 4) };
+    ui('time').max = p.duration;
+    ui('drop').hidden = true;
+    renderLegend(p);
+}
+
+function renderLegend(p) {
+    const el = ui('legend');
+    if (!p.palette) { el.hidden = true; return; }
+    const n = p.palette.length / 3, rows = [];
+    for (let i = 0; i < n; i++) {
+        const rgb = `rgb(${p.palette[i * 3]},${p.palette[i * 3 + 1]},${p.palette[i * 3 + 2]})`;
+        const label = p.labels ? `label ${p.labels[i]}` : (n === 1 ? 'flat' : i === 0 ? 'low' : i === n - 1 ? 'high' : '');
+        rows.push(`<div><span class="sw" style="background:${rgb}"></span>${label}</div>`);
+    }
+    el.innerHTML = `<b>${p.field ?? 'colour'}</b>${rows.join('')}<div style="opacity:.7;margin-top:4px">${p.pointCount} points · ${p.frameCount} frames · ${p.duration.toFixed(3)} s loop</div>`;
+    el.hidden = false;
+}
+
+function setFrame(f) {
+    if (f === scene.frame) return;   // STEP animation: only re-upload when the frame index changes
+    const p = scene.particles;
+    gl.bindBuffer(gl.ARRAY_BUFFER, scene.posBuf); gl.bufferSubData(gl.ARRAY_BUFFER, 0, p.positionsAt(f, scene.posScratch));
+    gl.bindBuffer(gl.ARRAY_BUFFER, scene.colBuf); gl.bufferSubData(gl.ARRAY_BUFFER, 0, p.colorsAt(f, scene.colScratch));
+    scene.frame = f;
+}
+
+// ---------- loop ----------
+let playing = true, time = 0, last = performance.now();
+ui('play').onclick = () => { playing = !playing; ui('play').textContent = playing ? 'Pause' : 'Play'; };
+ui('time').oninput = e => { time = +e.target.value; };
+
+function draw(now) {
+    const dt = (now - last) / 1000; last = now;
+    const w = canvas.clientWidth * devicePixelRatio | 0, h = canvas.clientHeight * devicePixelRatio | 0;
+    if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
+    gl.viewport(0, 0, w, h);
+    gl.clearColor(0.07, 0.07, 0.08, 1); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    if (scene) {
+        const p = scene.particles;
+        if (playing) time = (time + dt * +ui('speed').value) % p.duration;
+        ui('time').value = time;
+        const f = p.frameAt(time);
+        setFrame(f);
+        ui('frameLabel').textContent = `frame ${f + 1}/${p.frameCount}  t=${p.times[f].toFixed(3)} s`;
+
+        const eye = [cam.target[0] + cam.dist * Math.cos(cam.pitch) * Math.sin(cam.yaw),
+                     cam.target[1] + cam.dist * Math.sin(cam.pitch),
+                     cam.target[2] + cam.dist * Math.cos(cam.pitch) * Math.cos(cam.yaw)];
+        const viewProj = mul(perspective(0.8, w / h, cam.dist * 0.01, cam.dist + cam.radius * 4), lookAt(eye, cam.target, [0, 1, 0]));
+
+        // 1) particles, opaque, with depth write
+        gl.enable(gl.DEPTH_TEST); gl.depthMask(true); gl.disable(gl.BLEND);
+        gl.useProgram(pointProg);
+        gl.uniformMatrix4fv(gl.getUniformLocation(pointProg, 'uViewProj'), false, viewProj);
+        gl.uniformMatrix4fv(gl.getUniformLocation(pointProg, 'uModel'), false, p.world);
+        gl.uniform1f(gl.getUniformLocation(pointProg, 'uSize'), +ui('size').value * devicePixelRatio);
+        gl.bindVertexArray(scene.vaoPts);
+        gl.drawArrays(gl.POINTS, 0, p.pointCount);
+
+        // 2) translucent surfaces on top, no depth write (they are exported with alpha ~0.15)
+        if (ui('showSurf').checked) {
+            gl.useProgram(surfProg); gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA); gl.depthMask(false);
+            gl.uniformMatrix4fv(gl.getUniformLocation(surfProg, 'uViewProj'), false, viewProj);
+            for (const s of scene.surfaces) {
+                gl.uniformMatrix4fv(gl.getUniformLocation(surfProg, 'uModel'), false, s.world);
+                gl.uniform4fv(gl.getUniformLocation(surfProg, 'uBase'), s.base);
+                gl.bindVertexArray(s.vao);
+                gl.drawElements(gl.TRIANGLES, s.count, s.type, 0);
+            }
+            gl.depthMask(true);
+        }
+        gl.bindVertexArray(null);
+    }
+    requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+
+// ---------- loading ----------
+async function loadBuffer(buf) {
+    try { upload(loadFlowVisGlb(buf)); window.__viewer = { scene, cam, setTime: t => { time = t; } }; }
+    catch (err) { ui('drop').hidden = false; ui('drop').textContent = 'Error: ' + err.message; console.error(err); }
+}
+ui('file').onchange = async e => e.target.files[0] && loadBuffer(await e.target.files[0].arrayBuffer());
+addEventListener('dragover', e => e.preventDefault());
+addEventListener('drop', async e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) loadBuffer(await f.arrayBuffer()); });
+const src = new URLSearchParams(location.search).get('src');
+if (src) fetch(src).then(r => r.arrayBuffer()).then(loadBuffer);
+</script>
+</body>
+</html>
