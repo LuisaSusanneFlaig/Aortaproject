@@ -29,7 +29,17 @@ const miriamIllustrationLabels = [
 // the healthy aorta beside it names the regions.
 const miriamFlowFindings = ['Entry tear (flap begins)', 'True lumen', 'False lumen', 'End of the flap'];
 const miriamFlowModelLabels = miriamModelLabels.filter((label) => miriamFlowFindings.includes(label.text));
-const miriamFlowIllustrationLabels = miriamIllustrationLabels.filter((label) => miriamFlowFindings.includes(label.text));
+// In the flow drawing, no arrow may cross a label. The texts sit left of the
+// drawing (no room on the right in the side-by-side panel), so the true-lumen
+// dot sits left of the white arrow, and the false-lumen dot lower down, where
+// the false channel lies on the outer side and the red arrow is still away.
+const miriamFlowIllustrationAnchors = {
+    'True lumen': { anchor: [0.624, 0.5], side: 'left' },
+    'False lumen': { anchor: [0.546, 0.619], side: 'left' }
+};
+const miriamFlowIllustrationLabels = miriamIllustrationLabels
+    .filter((label) => miriamFlowFindings.includes(label.text))
+    .map((label) => ({ ...label, ...miriamFlowIllustrationAnchors[label.text] }));
 
 export const dissectionStory = {
 
@@ -336,25 +346,22 @@ export const dissectionStory = {
                     src: `${flowModelBase}dissection_lines_anim.glb`,
                     flowIllustration: {
                         // The arrows grow over the still drawing (js/modules/ui/flowArrows.js).
-                        // Order as in Figma: 1 ascending aorta, 2a–2c branches, 3 arch,
-                        // 4 red swirl at the entry tear, 5 dashed, 6–7 red, 8 dashed,
-                        // 9 lower descending aorta. Each arrow starts when the one it
-                        // continues arrives at its end.
+                        // One arrow runs from the heart down the true channel; the branch
+                        // arrows and the false-channel arrow (red, see flowArrows.js)
+                        // start when its head passes their start.
                         src: 'assets/story_images/miriam_dissection_illustration.png',
                         arrows: {
                             ...miriamFlowArrows,
+                            // Matches the line width of the healthy drawing, which is shown shrunk.
+                            size: 1.4,
                             timing: [
                                 {},
-                                { after: 0 },
-                                { after: 0, delay: 75 },
-                                { after: 0, delay: 150 },
-                                { after: 0 },
-                                { after: 0 },
-                                { after: 4 },
-                                { after: 5 },
-                                { after: 7 },
-                                { after: 6 },
-                                { after: 9 }
+                                { after: 0, at: 'pass' },
+                                { after: 0, at: 'pass' },
+                                { after: 0, at: 'pass' },
+                                // The false channel is longer: its arrow moves faster so both
+                                // arrows reunite at the end of the flap at the same time.
+                                { after: 0, at: 'pass', meet: [329.5, 697.25] }
                             ]
                         },
                         healthySrc: healthyIllustrationSrc,
@@ -417,7 +424,7 @@ export const dissectionStory = {
                     text: 'In the animation, the lines grow as the heartbeat goes on. In Miriam\'s aorta, lines in the false lumen are red and lines in the true lumen are white, so you can follow how the blood splits at the tear; in the healthy aorta, all lines are red. You can turn both models and slow the animation down. What you see stays a calculated picture, with the assumptions explained in the note on the simulated blood flow above.',
                     flowViews: {
                         particles: { text: 'Each dot is a marker, not a blood cell: where the dots crowd together, speed up or circle, the calculated flow does the same. In Miriam\'s aorta, dots in the false lumen are red and dots in the true lumen are white, so you can follow how the blood splits at the tear; in the healthy aorta, all dots are red. You can turn both models and slow the animation down. What you see stays a calculated picture, with the assumptions explained in the note on the simulated blood flow above.' },
-                        illustration: { text: 'The arrows were drawn by hand on top of the drawings to show the main direction of the blood: up from the heart, into the branches, around the arch and down through the body. At the tear in Miriam\'s aorta, a red arrow swirls, and below it red and dashed arrows follow the two channels. On the page, the arrows grow one after another from the heart downwards and then start again. Where they are placed, how long they are and how fast they move are design choices, not measurements.' }
+                        illustration: { text: 'The arrows were drawn by hand on top of the drawings to show the main direction of the blood: up from the heart, into the branches, around the arch and down through the body. In Miriam\'s aorta, a white arrow follows the true channel. A second arrow turns red at the tear, swirls there and follows the false channel until both channels meet again further down. On the page, the arrows grow from the heart downwards and then start again. Where they are placed, how long they are and how fast they move are design choices, not measurements.' }
                     }
                 }
             ]

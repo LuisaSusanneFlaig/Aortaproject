@@ -295,22 +295,18 @@ export const aneurysmStory = {
                     flowIllustration: {
                         // The arrows grow over the still drawing (js/modules/ui/flowArrows.js).
                         src: 'assets/story_images/alex_aneurysm_illustration.png',
-                        // Order as in Figma: 1 ascending aorta, 2a–2c branches, 3 swirl
-                        // in the widened section, 4–6 descending aorta. The branches and
-                        // the swirl start when arrow 1 arrives, 4 once the swirl is done.
+                        // One arrow runs from the heart through the swirl in the widened
+                        // section and down the body (red there, see flowArrows.js); each
+                        // branch arrow starts when its head passes the branch.
                         arrows: {
                             ...alexFlowArrows,
                             // The drawing is shown smaller than the healthy one, so its arrows are thickened.
-                            size: 1.3,
+                            size: 2.1,
                             timing: [
                                 {},
-                                { after: 0 },
-                                { after: 0, delay: 75 },
-                                { after: 0, delay: 150 },
-                                { after: 0 },
-                                { after: 4, at: 'done' },
-                                { after: 5 },
-                                { after: 6 }
+                                { after: 0, at: 'pass' },
+                                { after: 0, at: 'pass' },
+                                { after: 0, at: 'pass' }
                             ]
                         },
                         healthySrc: healthyIllustrationSrc,

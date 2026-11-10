@@ -8,6 +8,11 @@
     height: 100%;
     overflow: visible;
     pointer-events: none;
+}
+
+/* The shadow sits on each arrow, not on the layer, so the see-through
+   overlay inside the layer (arrowSet.overlay) gets none. */
+.flow-arrow-seed {
     filter: drop-shadow(0 2px 1px rgb(0 0 0 / 25%));
 }
 
