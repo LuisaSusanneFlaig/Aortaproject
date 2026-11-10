@@ -17,19 +17,15 @@ export const healthyIllustrationLabels = [
 // Still drawing; the arrows grow over it (js/modules/ui/flowArrows.js).
 export const healthyIllustrationSrc = 'assets/story_images/healthy_aorta_illustration.png';
 
-// Order as in Figma: 1 ascending aorta, 2a–2c branches, 3 aortic arch,
-// 4–6 descending aorta. The branches and the arch start when arrow 1 arrives,
-// 4 when the arch arrow arrives, so the flow runs on without a pause.
+// One arrow runs from the heart around the arch and down the body; each
+// branch arrow starts when its head passes the branch.
 export const healthyIllustrationArrows = {
     ...healthyFlowArrows,
+    size: 1.6, // line width and arrowheads (1 = 2 px in drawing units)
     timing: [
         {},
-        { after: 0 },
-        { after: 0, delay: 75 },
-        { after: 0, delay: 150 },
-        { after: 0 },
-        { after: 4 },
-        { after: 5 },
-        { after: 6 }
+        { after: 0, at: 'pass' },
+        { after: 0, at: 'pass' },
+        { after: 0, at: 'pass' }
     ]
 };

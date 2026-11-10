@@ -82,10 +82,26 @@ function validateArrows(arrowSet, arrowsPath, errors) {
     (arrowSet.arrows || []).forEach((arrow, arrowIndex) => {
         if (!/^M[\d.\s-]+[LC]/.test(arrow?.d || '')) addError(errors, `${arrowsPath}.arrows[${arrowIndex}].d`, 'must be path data starting with M');
     });
+    if (arrowSet.tint) {
+        const { color, rects } = arrowSet.tint;
+        if (!/^#[\da-f]{3,8}$/i.test(color || '')) addError(errors, `${arrowsPath}.tint.color`, 'must be a hex colour');
+        if (!rects?.length) addError(errors, `${arrowsPath}.tint.rects`, 'at least one rectangle is required');
+        (rects || []).forEach((rect, rectIndex) => {
+            if (!Array.isArray(rect) || rect.length < 4 || rect.length > 6 || rect.some((value) => !Number.isFinite(value))) {
+                addError(errors, `${arrowsPath}.tint.rects[${rectIndex}]`, 'must be [x, y, width, height, rotate?, radius?]');
+            }
+        });
+    }
+    if (arrowSet.overlay) {
+        const { src, rect } = arrowSet.overlay;
+        if (!src) addError(errors, `${arrowsPath}.overlay.src`, 'image source is required');
+        if (!Array.isArray(rect) || rect.length !== 4 || rect.some((value) => !Number.isFinite(value))) addError(errors, `${arrowsPath}.overlay.rect`, 'must be [x, y, width, height]');
+    }
     (arrowSet.timing || []).forEach((timing, timingIndex) => {
         const timingPath = `${arrowsPath}.timing[${timingIndex}]`;
         if (timing.after !== undefined && !(Number.isInteger(timing.after) && timing.after >= 0 && timing.after < timingIndex)) addError(errors, `${timingPath}.after`, 'must be the index of an earlier arrow');
-        if (timing.at !== undefined && !['arrive', 'done'].includes(timing.at)) addError(errors, `${timingPath}.at`, 'must be "arrive" or "done"');
+        if (timing.at !== undefined && !['arrive', 'done', 'pass'].includes(timing.at)) addError(errors, `${timingPath}.at`, 'must be "arrive", "done" or "pass"');
+        if (timing.meet !== undefined && !(Array.isArray(timing.meet) && timing.meet.length === 2 && timing.meet.every(Number.isFinite) && Number.isInteger(timing.after))) addError(errors, `${timingPath}.meet`, 'must be [x, y] together with "after"');
     });
 }
 
@@ -184,6 +200,7 @@ export function collectStoryAssets(story) {
             });
             add(element.flowIllustration?.src, `${elementPath}.flowIllustration.src`);
             add(element.flowIllustration?.healthySrc, `${elementPath}.flowIllustration.healthySrc`);
+            add(element.flowIllustration?.arrows?.overlay?.src, `${elementPath}.flowIllustration.arrows.overlay.src`);
         });
     });
 
