@@ -1,0 +1,88 @@
+/* "Speed adjustment" button in the flow control row below a flow figure; it
+   opens the speed slider above itself (js/components/clinicalElements.js,
+   flowSpeedToggle). */
+body[data-story-version] .flow-speed-toggle {
+    position: relative;
+}
+
+/* Same pill as the view buttons (.flow-view-button, split-story.css). */
+body[data-story-version] .flow-speed-button {
+    display: inline-block;
+    padding: 8px 14px;
+    border: 1px solid color-mix(in srgb, var(--color-accent) 58%, transparent);
+    border-radius: 999px;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-size: 0.82rem;
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+}
+
+body[data-story-version] .flow-speed-button::-webkit-details-marker {
+    display: none;
+}
+
+body[data-story-version] .flow-speed-button:hover,
+body[data-story-version] .flow-speed-button:focus-visible,
+body[data-story-version] .flow-speed-toggle[open] .flow-speed-button {
+    background: var(--color-accent);
+    color: #fff;
+}
+
+body[data-story-version] .flow-speed-control {
+    position: absolute;
+    /* Centred above the button without transform, which page CSS resets. */
+    bottom: calc(100% + 8px);
+    left: calc(50% - 120px);
+    display: grid;
+    gap: 8px;
+    width: 240px;
+    padding: 14px 18px;
+    box-sizing: border-box;
+    background: var(--color-bg);
+    color: var(--color-text);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+}
+
+body[data-story-version] .flow-speed-control label {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+body[data-story-version] .flow-speed-value {
+    font-variant-numeric: tabular-nums;
+}
+
+body[data-story-version] .flow-speed-slider {
+    width: 100%;
+    margin: 0;
+    accent-color: var(--color-accent);
+    cursor: pointer;
+}
+
+body[data-story-version] .flow-speed-slider:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+}
+
+/* On phones the flow figure can have a fixed height (scrollytelling.css), so
+   the 3D stages (sized in flat-foundation.css) give up the height of the
+   button row. */
+@media (max-width: 700px) {
+    body[data-story-version] #story .flow-research-section .model-placeholder:has(.flow-speed-toggle) .flow-comparison-panel .model-placeholder-stage {
+        height: calc(min(70vh, 720px) - 44px);
+    }
+}
+
+/* With reduced motion the illustration arrows stand still, so there is no
+   speed to adjust. */
+@media (prefers-reduced-motion: reduce) {
+    body[data-story-version] .flow-speed-arrows-only {
+        display: none;
+    }
+}

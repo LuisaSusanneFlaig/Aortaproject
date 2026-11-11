@@ -793,10 +793,27 @@ class ScrollytellingApp {
             speedSlider.dataset.userAdjusted = 'true';
             const speedOutput = speedSlider.closest('.flow-speed-control')?.querySelector('.flow-speed-value');
             if (speedOutput) speedOutput.textContent = `${speed}×`;
-            // Healthy and affected viewers play in sync, so both follow the slider.
-            speedSlider.closest('.model-placeholder')?.querySelectorAll('[data-inline-model]').forEach((modelStage) => {
+            // Healthy and affected viewers play in sync, so both follow the slider,
+            // and so do the arrows of the illustrations (js/modules/ui/flowArrows.js).
+            const figure = speedSlider.closest('.model-placeholder');
+            figure?.querySelectorAll('[data-inline-model]').forEach((modelStage) => {
                 modelStage.inlineModelViewer?.setAnimationSpeed(speed);
             });
+            figure?.querySelectorAll('[data-flow-arrows]').forEach((layer) => {
+                layer.dataset.playbackSpeed = String(speed);
+            });
+        });
+        // An open "Speed adjustment" closes on a click elsewhere or on Escape.
+        const closeSpeedToggles = (keep) => document.querySelectorAll('.flow-speed-toggle[open]').forEach((toggle) => {
+            if (toggle !== keep) toggle.removeAttribute('open');
+        });
+        document.addEventListener('click', (event) => closeSpeedToggles(event.target.closest('.flow-speed-toggle')));
+        document.addEventListener('keydown', (event) => {
+            if (event.key !== 'Escape') return;
+            const open = document.querySelector('.flow-speed-toggle[open]');
+            if (!open) return;
+            open.removeAttribute('open');
+            open.querySelector('summary')?.focus();
         });
         if (this.hasCompletedBothStories()) this.renderCompletionPrompt();
     }

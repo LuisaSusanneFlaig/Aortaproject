@@ -1,6 +1,8 @@
 import { healthyFlowArrows } from './healthyFlowArrows.js';
 
-// Labels and drawing of the healthy reference aorta, shared by both stories.
+// Labels and drawing of the reference aorta, shared by both stories. It is the
+// pre-dissection geometry of dataset 0246_H_AO_AOD: Miriam's own aorta before
+// the dissection (Marfan syndrome), so the story texts must not call it healthy.
 // 3D anchors: [x, y, z] fractions of the vessel wall box of the healthy flow
 // exports (lines and particles share it). Pick new ones with ?pickLabels.
 export const healthyModelLabels = [

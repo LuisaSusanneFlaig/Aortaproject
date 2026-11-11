@@ -26,7 +26,7 @@ const miriamIllustrationLabels = [
 ];
 
 // In the flow comparison the affected aorta labels only what the dissection flap changes;
-// the healthy aorta beside it names the regions.
+// her aorta before the dissection, beside it, names the regions.
 const miriamFlowFindings = ['Entry tear (flap begins)', 'True lumen', 'False lumen', 'End of the flap'];
 const miriamFlowModelLabels = miriamModelLabels.filter((label) => miriamFlowFindings.includes(label.text));
 // In the flow drawing, no arrow may cross a label. The texts sit left of the
@@ -143,12 +143,12 @@ export const dissectionStory = {
             inlineIllustration: {
                 src: healthyIllustrationSrc,
                 arrows: healthyIllustrationArrows,
-                alt: 'Animated illustration of blood flowing smoothly through a healthy aorta, from the heart through the arch and down the descending aorta.',
+                alt: 'Animated illustration of blood flowing through Miriam\'s aorta before the dissection, from the heart through the arch and down the descending aorta.',
                 labels: healthyIllustrationLabels
             },
             inlineModel: {
                 url: `${flowModelBase}healthy_lines_anim.glb`,
-                label: 'Simulated blood flow through a healthy reference aorta, shown as colored lines',
+                label: 'Simulated blood flow through Miriam\'s aorta before the dissection, shown as colored lines',
                 mode: 'flow',
                 legend: false,
                 rotationX: 0,
@@ -162,7 +162,7 @@ export const dissectionStory = {
                 flowViews: {
                     particles: {
                         url: `${flowModelBase}healthy_particle_anim.glb`,
-                        label: 'Simulated blood flow through a healthy reference aorta, shown as moving particles',
+                        label: 'Simulated blood flow through Miriam\'s aorta before the dissection, shown as moving particles',
                         framingScale: 0.35,
                         animationSpeed: 0.5
                     }
@@ -172,11 +172,11 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Before we look at the blood flow in Miriam\'s aorta, it helps to see how blood moves through a healthy one. This aorta comes from a separate reference case, not from Miriam. It shows where the blood travels on its way from the heart through the arch and down into the body.'
+                    text: 'Before we look at the blood flow in Miriam\'s dissected aorta, it helps to see how blood moved through it before the tear. This is Miriam\'s own aorta, scanned years before the dissection. Because of her Marfan syndrome, it was not a healthy aorta even then, but it still had a single channel. It shows where the blood travels on its way from the heart through the arch and down into the body.'
                 },
                 {
                     type: 'text',
-                    text: 'In a healthy aorta, blood moves as one orderly stream. This is called laminar flow. It is the baseline for the rest of Miriam\'s story: later, the same view shows what her divided aorta does to this order.',
+                    text: 'In this aorta, blood moves as one orderly stream. This is called laminar flow. It is the baseline for the rest of Miriam\'s story: later, the same view shows what her divided aorta does to this order.',
                     infoPopup: {
                         title: 'laminar flow',
                         text: 'In laminar flow, blood moves in layers that slide past each other, usually fastest in the middle of the vessel and slower near the wall, with hardly any swirling.'
@@ -184,8 +184,10 @@ export const dissectionStory = {
                 },
                 {
                     type: 'reference',
-                    // PLACEHOLDER: replace with the source of the healthy reference aorta model.
-                    text: 'PLACEHOLDER: source of the healthy reference aorta model (dataset and citation).'
+                    text: [
+                        'Bäumler K, Rolf-Pissarczyk M, Schussnig R, Fries TP, Mistelbauer G, Pfaller MR. 0246_H_AO_AOD (Version 1). Stanford Digital Repository. 2025. https://doi.org/10.25740/nj140cs3237. Pre-dissection aortic geometry of the same patient as Miriam\'s dissected aorta.',
+                        'Wilson NM, et al. The Vascular Model Repository: A Public Resource of Medical Imaging Data and Blood Flow Simulation Results. Journal of Medical Devices. 2013;7(4):040923. https://doi.org/10.1115/1.4025983'
+                    ]
                 }
             ]
         },
@@ -318,7 +320,7 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Here, the simulated blood flow through both channels of Miriam\'s dissected aorta appears next to the healthy reference aorta from earlier. Watch how the tear changes the route of the blood.',
+                    text: 'Here, the simulated blood flow through both channels of Miriam\'s dissected aorta appears next to her aorta before the dissection, from earlier. Watch how the tear changes the route of the blood.',
                     // How the flow picture was made, per study version (js/modules/flowView.js).
                     infoPopup: {
                         title: 'simulated blood flow',
@@ -332,7 +334,7 @@ export const dissectionStory = {
                             }
                         },
                         illustration: {
-                            text: 'Here, the animated drawing of the blood flow through both channels of Miriam\'s dissected aorta appears next to the drawing of the healthy reference aorta from earlier. Watch how the tear changes the route of the blood.',
+                            text: 'Here, the animated drawing of the blood flow through both channels of Miriam\'s dissected aorta appears next to the drawing of her aorta before the dissection, from earlier. Watch how the tear changes the route of the blood.',
                             infoPopup: {
                                 title: 'animated drawing',
                                 text: 'This flow is drawn, not calculated or measured. It is not the result of a computer simulation, not blood recorded in Miriam\'s body and not a prediction of her individual outcome.'
@@ -374,7 +376,7 @@ export const dissectionStory = {
                         // Miriam's aorta fills less of its drawing; the healthy one is
                         // shrunk so both appear at a similar size side by side.
                         healthyScale: 0.87,
-                        healthyAlt: 'Illustration of blood flowing through a healthy aorta.',
+                        healthyAlt: 'Illustration of blood flowing through Miriam\'s aorta before the dissection.',
                         alt: 'Illustration of an aortic dissection showing blood flow through the true and false channels.',
                         labels: miriamFlowIllustrationLabels,
                         healthyLabels: healthyIllustrationLabels
@@ -404,7 +406,7 @@ export const dissectionStory = {
                 },
                 {
                     type: 'text',
-                    text: 'In Miriam\'s aorta, flow speed and direction vary across the vessel, and swirling areas may change the forces on her weakened wall, unlike the orderly laminar flow of the healthy aorta beside it. This difference helps explain why blood movement matters for the treatment decisions that follow.'
+                    text: 'In Miriam\'s aorta, flow speed and direction vary across the vessel, and swirling areas may change the forces on her weakened wall, unlike the orderly laminar flow of her aorta before the dissection, beside it. This difference helps explain why blood movement matters for the treatment decisions that follow.'
                 },
                 // How the flow picture of each study version was made (js/modules/flowView.js).
                 {
@@ -416,14 +418,14 @@ export const dissectionStory = {
                     text: 'It starts with a CTA scan of Miriam\'s aorta: a follow-up scan, taken about six weeks after the dissection. From its slices, a 3D model of the inside of her aorta, with both channels, was built. For the simulation, this space is divided into millions of tiny cells, the amount of blood that flows in and out is set, and a computer solves the equations of fluid motion in every cell over several heartbeats. The result is the speed and direction of the blood at every point and moment. Starting points are spread across the entrance of the aorta, and from each one this movement is followed step by step. The trail that a starting point leaves is a pathline: the route a tiny portion of blood would take.',
                     flowViews: {
                         particles: { text: 'It starts with a CTA scan of Miriam\'s aorta: a follow-up scan, taken about six weeks after the dissection. From its slices, a 3D model of the inside of her aorta, with both channels, was built. For the simulation, this space is divided into millions of tiny cells, the amount of blood that flows in and out is set, and a computer solves the equations of fluid motion in every cell over several heartbeats. The result is the speed and direction of the blood at every point and moment. From these results, a flow-visualization program releases virtual particles at the entrance of the aorta and carries them along with this movement, frame by frame.' },
-                        illustration: { text: 'It starts with a CTA scan of Miriam\'s aorta. From its slices, a 3D model of her aorta was built, and the outline, with the flap that divides it into two channels, was traced by hand from this model and then simplified: the shape and the two channels are kept, fine details of the vessel wall are left out. The healthy aorta was drawn in the same way from its 3D model.' }
+                        illustration: { text: 'It starts with a CTA scan of Miriam\'s aorta. From its slices, a 3D model of her aorta was built, and the outline, with the flap that divides it into two channels, was traced by hand from this model and then simplified: the shape and the two channels are kept, fine details of the vessel wall are left out. Her aorta before the dissection was drawn in the same way from its 3D model.' }
                     }
                 },
                 {
                     type: 'text',
-                    text: 'In the animation, the lines grow as the heartbeat goes on. In Miriam\'s aorta, lines in the false lumen are red and lines in the true lumen are white, so you can follow how the blood splits at the tear; in the healthy aorta, all lines are red. You can turn both models and slow the animation down. What you see stays a calculated picture, with the assumptions explained in the note on the simulated blood flow above.',
+                    text: 'In the animation, the lines grow as the heartbeat goes on. In Miriam\'s aorta, lines in the false lumen are red and lines in the true lumen are white, so you can follow how the blood splits at the tear; in her aorta before the dissection, all lines are red. You can turn both models and slow the animation down. What you see stays a calculated picture, with the assumptions explained in the note on the simulated blood flow above.',
                     flowViews: {
-                        particles: { text: 'Each dot is a marker, not a blood cell: where the dots crowd together, speed up or circle, the calculated flow does the same. In Miriam\'s aorta, dots in the false lumen are red and dots in the true lumen are white, so you can follow how the blood splits at the tear; in the healthy aorta, all dots are red. You can turn both models and slow the animation down. What you see stays a calculated picture, with the assumptions explained in the note on the simulated blood flow above.' },
+                        particles: { text: 'Each dot is a marker, not a blood cell: where the dots crowd together, speed up or circle, the calculated flow does the same. In Miriam\'s aorta, dots in the false lumen are red and dots in the true lumen are white, so you can follow how the blood splits at the tear; in her aorta before the dissection, all dots are red. You can turn both models and slow the animation down. What you see stays a calculated picture, with the assumptions explained in the note on the simulated blood flow above.' },
                         illustration: { text: 'The arrows were drawn by hand on top of the drawings to show the main direction of the blood: up from the heart, into the branches, around the arch and down through the body. In Miriam\'s aorta, a white arrow follows the true channel. A second arrow turns red at the tear, swirls there and follows the false channel until both channels meet again further down. On the page, the arrows grow from the heart downwards and then start again. Where they are placed, how long they are and how fast they move are design choices, not measurements.' }
                     }
                 }

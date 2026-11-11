@@ -20,7 +20,7 @@ const alexIllustrationLabels = [
 ];
 
 // In the flow comparison the affected aorta labels only what the aneurysm changes;
-// the healthy aorta beside it names the regions.
+// the reference aorta beside it names the regions.
 const alexFlowFindings = ['Widened section (aneurysm)'];
 const alexFlowModelLabels = alexModelLabels.filter((label) => alexFlowFindings.includes(label.text));
 const alexFlowIllustrationLabels = alexIllustrationLabels.filter((label) => alexFlowFindings.includes(label.text));
@@ -104,12 +104,12 @@ export const aneurysmStory = {
             inlineIllustration: {
                 src: healthyIllustrationSrc,
                 arrows: healthyIllustrationArrows,
-                alt: 'Animated illustration of blood flowing smoothly through a healthy aorta, from the heart through the arch and down the descending aorta.',
+                alt: 'Animated illustration of blood flowing through a reference aorta without dissection, from the heart through the arch and down the descending aorta.',
                 labels: healthyIllustrationLabels
             },
             inlineModel: {
                 url: `${flowModelBase}healthy_lines_anim.glb`,
-                label: 'Simulated blood flow through a healthy reference aorta, shown as colored lines',
+                label: 'Simulated blood flow through a reference aorta without dissection, shown as colored lines',
                 mode: 'flow',
                 legend: false,
                 rotationX: 0,
@@ -123,7 +123,7 @@ export const aneurysmStory = {
                 flowViews: {
                     particles: {
                         url: `${flowModelBase}healthy_particle_anim.glb`,
-                        label: 'Simulated blood flow through a healthy reference aorta, shown as moving particles',
+                        label: 'Simulated blood flow through a reference aorta without dissection, shown as moving particles',
                         framingScale: 0.35,
                         animationSpeed: 0.5
                     }
@@ -132,11 +132,11 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Before we look at the blood flow in Alex\'s aorta, it helps to see how blood moves through a healthy one. This aorta comes from a separate reference case, not from Alex. It shows where the blood travels on its way from the heart through the arch and down into the body.'
+                    text: 'Before we look at the blood flow in Alex\'s aorta, it helps to see how blood moves through an aorta without widening or dissection. This reference aorta comes from a separate case, not from Alex: a person with Marfan syndrome, scanned before a dissection developed. It is not a healthy aorta, but its shape is close to the usual one. It shows where the blood travels on its way from the heart through the arch and down into the body.'
                 },
                 {
                     type: 'text',
-                    text: 'In a healthy aorta, blood moves as one orderly stream. This is called laminar flow. It is the baseline for the rest of Alex\'s story: later, the same view shows what his widened aorta does to this order.',
+                    text: 'In this aorta, blood moves as one orderly stream. This is called laminar flow. It is the baseline for the rest of Alex\'s story: later, the same view shows what his widened aorta does to this order.',
                     infoPopup: {
                         title: 'laminar flow',
                         text: 'In laminar flow, blood moves in layers that slide past each other, usually fastest in the middle of the vessel and slower near the wall, with hardly any swirling.'
@@ -144,8 +144,10 @@ export const aneurysmStory = {
                 },
                 {
                     type: 'reference',
-                    // PLACEHOLDER: replace with the source of the healthy reference aorta model.
-                    text: 'PLACEHOLDER: source of the healthy reference aorta model (dataset and citation).'
+                    text: [
+                        'Bäumler K, Rolf-Pissarczyk M, Schussnig R, Fries TP, Mistelbauer G, Pfaller MR. 0246_H_AO_AOD (Version 1). Stanford Digital Repository. 2025. https://doi.org/10.25740/nj140cs3237. Pre-dissection aortic geometry, used here as the reference aorta.',
+                        'Wilson NM, et al. The Vascular Model Repository: A Public Resource of Medical Imaging Data and Blood Flow Simulation Results. Journal of Medical Devices. 2013;7(4):040923. https://doi.org/10.1115/1.4025983'
+                    ]
                 }
             ]
         },
@@ -266,7 +268,7 @@ export const aneurysmStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'In the aorta, shape and blood flow are tightly connected. Here, the simulated blood flow through Alex’s aorta appears next to the healthy reference aorta from earlier. Watch for changes in speed and direction, especially where Alex\'s aorta widens or curves.',
+                    text: 'In the aorta, shape and blood flow are tightly connected. Here, the simulated blood flow through Alex’s aorta appears next to the reference aorta from earlier. Watch for changes in speed and direction, especially where Alex\'s aorta widens or curves.',
                     // How the flow picture was made, per study version (js/modules/flowView.js).
                     infoPopup: {
                         title: 'simulated blood flow',
@@ -280,7 +282,7 @@ export const aneurysmStory = {
                             }
                         },
                         illustration: {
-                            text: 'In the aorta, shape and blood flow are tightly connected. Here, the animated drawing of the blood flow through Alex’s aorta appears next to the drawing of the healthy reference aorta from earlier. Watch for changes in direction, especially where Alex\'s aorta widens or curves.',
+                            text: 'In the aorta, shape and blood flow are tightly connected. Here, the animated drawing of the blood flow through Alex’s aorta appears next to the drawing of the reference aorta from earlier. Watch for changes in direction, especially where Alex\'s aorta widens or curves.',
                             infoPopup: {
                                 title: 'animated drawing',
                                 text: 'This flow is drawn, not calculated or measured. It is not the result of a computer simulation, not blood recorded in Alex\'s body and not a prediction of his individual outcome.'
@@ -316,7 +318,7 @@ export const aneurysmStory = {
                         shiftY: 0,
                         healthyShiftX: 0,
                         healthyShiftY: 0.1,
-                        healthyAlt: 'Illustration of blood flowing through a healthy aorta.',
+                        healthyAlt: 'Illustration of blood flowing through a reference aorta without dissection.',
                         alt: 'Illustration of the aorta showing blood flow through the arch and descending vessel.',
                         labels: alexFlowIllustrationLabels,
                         healthyLabels: healthyIllustrationLabels
@@ -345,7 +347,7 @@ export const aneurysmStory = {
                 },
                 {
                     type: 'text',
-                    text: 'The important point is not only where Alex\'s aorta is wide, but how the wider shape reorganizes the flow. Blood accelerates in the arch and can swirl in the enlargement, forming a vortex, unlike the orderly laminar flow of the healthy aorta beside it. These patterns matter because Alex\'s aortic wall is exposed to this flow with every heartbeat.'
+                    text: 'The important point is not only where Alex\'s aorta is wide, but how the wider shape reorganizes the flow. Blood accelerates in the arch and can swirl in the enlargement, forming a vortex, unlike the orderly laminar flow of the reference aorta beside it. These patterns matter because Alex\'s aortic wall is exposed to this flow with every heartbeat.'
                 },
                 // How the flow picture of each study version was made (js/modules/flowView.js).
                 {
@@ -357,14 +359,14 @@ export const aneurysmStory = {
                     text: 'It starts with the CTA scan from the diagnosis chapter. From its slices, a 3D model of the inside of Alex\'s aorta was built. For the simulation, this space is divided into millions of tiny cells, the amount of blood that flows in and out is set, and a computer solves the equations of fluid motion in every cell over several heartbeats. The result is the speed and direction of the blood at every point and moment. Starting points are spread across the entrance of the aorta, and from each one this movement is followed step by step. The trail that a starting point leaves is a pathline: the route a tiny portion of blood would take.',
                     flowViews: {
                         particles: { text: 'It starts with the CTA scan from the diagnosis chapter. From its slices, a 3D model of the inside of Alex\'s aorta was built. For the simulation, this space is divided into millions of tiny cells, the amount of blood that flows in and out is set, and a computer solves the equations of fluid motion in every cell over several heartbeats. The result is the speed and direction of the blood at every point and moment. Virtual particles are released at the entrance of the aorta and carried along by this movement, frame by frame.' },
-                        illustration: { text: 'It starts with the CTA scan from the diagnosis chapter. From its slices, a 3D model of Alex\'s aorta was built, and the outline of the aorta was traced by hand from this model and then simplified: the shape and the widened section are kept, fine details of the vessel wall are left out. The healthy aorta was drawn in the same way from its 3D model.' }
+                        illustration: { text: 'It starts with the CTA scan from the diagnosis chapter. From its slices, a 3D model of Alex\'s aorta was built, and the outline of the aorta was traced by hand from this model and then simplified: the shape and the widened section are kept, fine details of the vessel wall are left out. The reference aorta was drawn in the same way from its 3D model.' }
                     }
                 },
                 {
                     type: 'text',
-                    text: 'In the animation, the lines grow as the heartbeat goes on. In Alex\'s aorta, lines inside the widened section are red and all others are white, so the flow in the aneurysm stands out; in the healthy aorta, all lines are red. You can turn both models and slow the animation down. What you see stays a calculated picture, with the assumptions explained in the note on the simulated blood flow above.',
+                    text: 'In the animation, the lines grow as the heartbeat goes on. In Alex\'s aorta, lines inside the widened section are red and all others are white, so the flow in the aneurysm stands out; in the reference aorta, all lines are red. You can turn both models and slow the animation down. What you see stays a calculated picture, with the assumptions explained in the note on the simulated blood flow above.',
                     flowViews: {
-                        particles: { text: 'Each dot is a marker, not a blood cell: where the dots crowd together, speed up or circle, the calculated flow does the same. In Alex\'s aorta, dots inside the widened section are red and all others are white, and a dot changes color as it enters or leaves that section; in the healthy aorta, all dots are red. You can turn both models and slow the animation down. What you see stays a calculated picture, with the assumptions explained in the note on the simulated blood flow above.' },
+                        particles: { text: 'Each dot is a marker, not a blood cell: where the dots crowd together, speed up or circle, the calculated flow does the same. In Alex\'s aorta, dots inside the widened section are red and all others are white, and a dot changes color as it enters or leaves that section; in the reference aorta, all dots are red. You can turn both models and slow the animation down. What you see stays a calculated picture, with the assumptions explained in the note on the simulated blood flow above.' },
                         illustration: { text: 'The arrows were drawn by hand on top of the drawings to show the main direction of the blood: up from the heart, into the branches, around the arch and down through the body. In Alex\'s widened section, a red arrow loops to show a swirl. On the page, the arrows grow one after another from the heart downwards and then start again. Where they are placed, how long they are and how fast they move are design choices, not measurements.' }
                     }
                 }

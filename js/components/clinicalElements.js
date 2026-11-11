@@ -250,13 +250,13 @@ export function renderModelPlaceholder(element = {}) {
         ? ` data-model-labels="${JSON.stringify(labels).replace(/"/g, '&quot;')}"`
         : '';
     const comparisonPanel = (title, url, attributes, labels = []) => `
-                <section class="flow-comparison-panel"><h3>${title}</h3><div class="model-placeholder-stage inline-model-viewer" data-inline-model data-model-url="${url}" data-model-mode="flow" data-animation-sync-group="${element.id || 'flow-comparison'}" data-animation-fps="20" data-animation-speed="${startSpeed}"${attributes}${labelAttribute(labels)} role="img" aria-label="Animated flow in ${title.toLowerCase()}"><div class="inline-model-loading" aria-hidden="true"></div><span class="inline-model-error">Animation unavailable</span></div>${renderLabelKey(labels, `Labelled parts of the ${title.toLowerCase()} model`)}</section>`;
+                <section class="flow-comparison-panel"><h3>${title}</h3><div class="model-placeholder-stage inline-model-viewer" data-inline-model data-model-url="${url}" data-model-mode="flow" data-animation-sync-group="${element.id || 'flow-comparison'}" data-camera-sync-group="${element.id || 'flow-comparison'}" data-animation-fps="20" data-animation-speed="${startSpeed}"${attributes}${labelAttribute(labels)} role="img" aria-label="Animated flow in ${title.toLowerCase()}"><div class="inline-model-loading" aria-hidden="true"></div><span class="inline-model-error">Animation unavailable</span></div>${renderLabelKey(labels, `Labelled parts of the ${title.toLowerCase()} model`)}</section>`;
     // shiftX / shiftY (affected) and comparisonShiftX / comparisonShiftY (healthy)
     // move a model on screen, as fractions of the viewer size (InlineModelViewer).
     const shiftAttributes = (x, y) => `${Number.isFinite(x) ? ` data-shift-x="${x}"` : ''}${Number.isFinite(y) ? ` data-shift-y="${y}"` : ''}`;
     const pairedFlowView = comparisonVariant ? `
-            <div class="flow-comparison-viewers" aria-label="Affected and healthy aorta flow comparison">
-                ${comparisonPanel('Healthy aorta', comparisonVariant.comparisonSrc, ` data-framing-scale="${comparisonVariant.comparisonFramingScale || comparisonVariant.framingScale || 0.35}" data-rotation-y="${comparisonVariant.comparisonRotationY ?? comparisonVariant.rotationY ?? 0}"${shiftAttributes(comparisonVariant.comparisonShiftX, comparisonVariant.comparisonShiftY)}`, element.healthyLabels)}
+            <div class="flow-comparison-viewers" aria-label="Affected and reference aorta flow comparison">
+                ${comparisonPanel('Reference aorta', comparisonVariant.comparisonSrc, ` data-framing-scale="${comparisonVariant.comparisonFramingScale || comparisonVariant.framingScale || 0.35}" data-rotation-y="${comparisonVariant.comparisonRotationY ?? comparisonVariant.rotationY ?? 0}"${shiftAttributes(comparisonVariant.comparisonShiftX, comparisonVariant.comparisonShiftY)}`, element.healthyLabels)}
                 ${comparisonPanel('Affected aorta', comparisonVariant.src, ` data-framing-scale="${comparisonVariant.framingScale || 0.35}"${Number.isFinite(comparisonVariant.rotationY) ? ` data-rotation-y="${comparisonVariant.rotationY}"` : ''}${shiftAttributes(comparisonVariant.shiftX, comparisonVariant.shiftY)}${affectedColors}`, element.labels)}
             </div>` : '';
     const illustration = element.flowIllustration;
@@ -276,10 +276,23 @@ export function renderModelPlaceholder(element = {}) {
     const flowIllustration = illustration ? `
             <figure class="flow-illustration" hidden>
                 ${illustration.healthySrc
-                    ? `<section class="flow-illustration-panel"${panelStyle(illustration.healthyScale, illustration.healthyShiftX, illustration.healthyShiftY)}><h3>Healthy aorta</h3>${renderLabelledImage(illustrationMedia(illustration.healthySrc, illustration.healthyAlt, 'Illustration of blood flow through a healthy aorta', 'Animation of blood flowing through a healthy aorta'), illustration.healthyLabels, undefined, renderFlowArrowLayer(illustration.healthyArrows))}</section><section class="flow-illustration-panel"${panelStyle(illustration.scale, illustration.shiftX, illustration.shiftY)}><h3>Affected aorta</h3>${renderLabelledImage(illustrationMedia(illustration.src, illustration.alt, 'Affected aortic flow illustration', 'Animation of affected blood flow'), illustration.labels, undefined, renderFlowArrowLayer(illustration.arrows))}</section>`
+                    ? `<section class="flow-illustration-panel"${panelStyle(illustration.healthyScale, illustration.healthyShiftX, illustration.healthyShiftY)}><h3>Reference aorta</h3>${renderLabelledImage(illustrationMedia(illustration.healthySrc, illustration.healthyAlt, 'Illustration of blood flow through a reference aorta without dissection', 'Animation of blood flowing through a reference aorta without dissection'), illustration.healthyLabels, undefined, renderFlowArrowLayer(illustration.healthyArrows))}</section><section class="flow-illustration-panel"${panelStyle(illustration.scale, illustration.shiftX, illustration.shiftY)}><h3>Affected aorta</h3>${renderLabelledImage(illustrationMedia(illustration.src, illustration.alt, 'Affected aortic flow illustration', 'Animation of affected blood flow'), illustration.labels, undefined, renderFlowArrowLayer(illustration.arrows))}</section>`
                     : renderLabelledImage(illustrationMedia(illustration.src, illustration.alt, '', ''), [], undefined, renderFlowArrowLayer(illustration.arrows))}
                 ${illustration.caption ? `<figcaption>${illustration.caption}</figcaption>` : ''}
             </figure>` : '';
+    // "Speed adjustment" opens a slider for the 3D flow and the illustration arrows
+    // of this figure (js/modules/scrollytelling.js, js/modules/ui/flowArrows.js).
+    const flowSpeedToggle = (speed, arrowsOnly = false) => {
+        const sliderId = `flow-speed-slider-${++flowSpeedSliderId}`;
+        return `
+            <details class="flow-speed-toggle${arrowsOnly ? ' flow-speed-arrows-only' : ''}">
+                <summary class="flow-speed-button">Speed adjustment</summary>
+                <div class="flow-speed-control">
+                    <label for="${sliderId}">Animation speed <output class="flow-speed-value" for="${sliderId}">${speed}×</output></label>
+                    <input class="flow-speed-slider" id="${sliderId}" type="range" min="0.25" max="1" step="0.25" value="${speed}">
+                </div>
+            </details>`;
+    };
     const flowViewControl = element.flowIllustration ? `
             <div class="flow-view-controls" role="group" aria-label="Choose flow view">
                 <button class="flow-view-button active" type="button" data-flow-view="animation" aria-pressed="true">Flow animation</button>
@@ -291,6 +304,7 @@ export function renderModelPlaceholder(element = {}) {
         return `
         <figure class="model-placeholder show-flow-illustration" id="${element.id || ''}">
             ${flowIllustration}
+            ${illustration.arrows ? `<div class="flow-control-row">${flowSpeedToggle(1, true)}</div>` : ''}
             ${element.note ? `<p class="symptom-note model-placeholder-note">${element.note}</p>` : ''}
         </figure>`;
     }
@@ -310,19 +324,12 @@ export function renderModelPlaceholder(element = {}) {
         `;
     }).join('');
 
-    const flowSpeedControl = flowVariants.length ? (() => {
-        const sliderId = `flow-speed-slider-${++flowSpeedSliderId}`;
-        return `
-                <div class="flow-speed-control">
-                    <label for="${sliderId}">Animation speed <output class="flow-speed-value" for="${sliderId}">${startSpeed}×</output></label>
-                    <input class="flow-speed-slider" id="${sliderId}" type="range" min="0.25" max="1" step="0.25" value="${startSpeed}" aria-label="Animation speed">
-                </div>`;
-    })() : '';
+    const speedControl = flowVariants.length ? flowSpeedToggle(startSpeed) : '';
 
-    const infoPopupMarkup = element.src ? `
+    const infoPopupMarkup = element.src && element.infoPopup?.text ? `
             <details class="model-viewport-info-popup">
-                <summary aria-label="${element.infoPopup?.title || 'More information'}"></summary>
-                ${element.infoPopup?.text || flowSpeedControl ? `<div class="image-hotspot-popover">${element.infoPopup?.text ? `<p>${element.infoPopup.text}</p>` : ''}${flowSpeedControl}</div>` : ''}
+                <summary aria-label="${element.infoPopup.title || 'More information'}"></summary>
+                <div class="image-hotspot-popover"><p>${element.infoPopup.text}</p></div>
             </details>` : '';
 
     return `
@@ -336,7 +343,7 @@ export function renderModelPlaceholder(element = {}) {
             ${flowIllustration}
             ${infoPopupMarkup}
             ${hotspotMarkup}
-            ${flowControls || flowViewControl ? `<div class="flow-control-row">${flowControls}${flowViewControl}</div>` : ''}
+            ${flowControls || flowViewControl || speedControl ? `<div class="flow-control-row">${flowControls}${flowViewControl}${speedControl}</div>` : ''}
             ${element.note ? `<p class="symptom-note model-placeholder-note">${element.note}</p>` : ''}
         </figure>
     `;
