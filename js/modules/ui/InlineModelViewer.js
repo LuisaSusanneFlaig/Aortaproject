@@ -6,6 +6,7 @@ import { ModelLabels, parseModelLabels } from './ModelLabels.js';
 import { addBoundaryPlanes } from './boundaryPlanes.js';
 import { applyFlowColors, parseFlowRegion } from './flowColors.js';
 import { createFlowVisParticleModel, isFlowVisParticleGlb } from './flowvisParticles.js';
+import { joinCameraSync, resetCameraSync, syncCamera } from './cameraSync.js';
 
 // Keep 3D mesh materials aligned with the UI accent token (--color-accent).
 const MODEL_ACCENT = 0xb62413;
@@ -87,6 +88,8 @@ class InlineModelViewer {
         this.controls.dampingFactor = 0.08;
         this.controls.enablePan = false;
         this.controls.enableZoom = false;
+        // Comparison viewers turn together (js/modules/ui/cameraSync.js).
+        joinCameraSync(this, this.container.dataset.cameraSyncGroup);
 
         const labels = parseModelLabels(this.container);
         if (labels.length) {
@@ -509,6 +512,7 @@ class InlineModelViewer {
         this.controls.target.set(0, 0, 0);
         this.controls.update();
         this.applyScreenShift();
+        resetCameraSync(this);
     }
 
     // data-shift-x / data-shift-y move the model on screen, as fractions of
@@ -571,6 +575,7 @@ class InlineModelViewer {
             }
         }
         this.controls.update();
+        syncCamera(this);
         this.renderer.render(this.scene, this.camera);
         this.labels?.update(frameTime);
         this.animationFrame = requestAnimationFrame((nextFrameTime) => this.animate(nextFrameTime));

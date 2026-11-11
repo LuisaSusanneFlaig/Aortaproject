@@ -212,7 +212,16 @@ function setupLayer(layer, reduceMotion) {
         arrows.forEach((arrow) => placeHead(arrow, arrow.length));
         return null;
     }
-    return { arrows, round: schedule(arrows), startedAt: performance.now() };
+    return { arrows, round: schedule(arrows), time: 0, last: null };
+}
+
+// data-playback-speed on the layer (the "Speed adjustment" slider) slows the
+// whole sequence down, so the timing between the arrows stays the same.
+function advance(layer, sequence, now) {
+    const speed = Number(layer.dataset.playbackSpeed) || 1;
+    if (sequence.last !== null) sequence.time = (sequence.time + (now - sequence.last) * speed) % sequence.round;
+    sequence.last = now;
+    return sequence.time;
 }
 
 export function initFlowArrows(root = document) {
@@ -227,7 +236,7 @@ export function initFlowArrows(root = document) {
     const tick = (now) => {
         visible.forEach((layer) => {
             const sequence = sequences.get(layer);
-            const time = (now - sequence.startedAt) % sequence.round;
+            const time = advance(layer, sequence, now);
             sequence.arrows.forEach((arrow) => drawArrow(arrow, time));
         });
         frame = visible.size ? requestAnimationFrame(tick) : 0;
@@ -243,7 +252,7 @@ export function initFlowArrows(root = document) {
                     return;
                 }
                 // Coming into view starts a new round from the first arrow.
-                if (!visible.has(entry.target)) sequences.get(entry.target).startedAt = performance.now();
+                if (!visible.has(entry.target)) Object.assign(sequences.get(entry.target), { time: 0, last: null });
                 visible.add(entry.target);
             });
             start();
