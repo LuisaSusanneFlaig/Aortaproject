@@ -7,6 +7,7 @@ import { addBoundaryPlanes } from './boundaryPlanes.js';
 import { applyFlowColors, parseFlowRegion } from './flowColors.js';
 import { createFlowVisParticleModel, isFlowVisParticleGlb } from './flowvisParticles.js';
 import { createLineRevealPlayer } from './flowLineReveal.js';
+import { fetchModelBuffer } from '../core/fetchModel.js';
 import { joinCameraSync, resetCameraSync, syncCamera } from './cameraSync.js';
 
 // Keep 3D mesh materials aligned with the UI accent token (--color-accent).
@@ -142,9 +143,7 @@ class InlineModelViewer {
         this.framingScale = Number(this.container.dataset.framingScale) || null;
         this.animationFps = Math.max(1, Number(this.container.dataset.animationFps) || 30);
         this.animationSpeed = Math.max(0, Number(this.container.dataset.animationSpeed) || 1);
-        const response = await fetch(modelUrl);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const arrayBuffer = await response.arrayBuffer();
+        const arrayBuffer = await fetchModelBuffer(modelUrl);
         let gltf;
         if (isFlowVisParticleGlb(arrayBuffer)) {
             gltf = createFlowVisParticleModel(arrayBuffer);
