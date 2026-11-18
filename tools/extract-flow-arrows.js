@@ -12,6 +12,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 const MIN_SEGMENT = 1.5; // side pieces shorter than this are caps and joints
 const PAIR_TOLERANCE = 3.2; // the sides of a 2 px stroke lie about 2 px apart
 const CHAIN_TOLERANCE = 2;
+const DASH_GAP = 6; // gaps up to this size are bridged instead of making the arrow dashed
 
 const distance = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
 const average = (a, b) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
@@ -150,12 +151,50 @@ function toPathData(segments, bridgeGaps = true) {
     }).join(' ')}`;
 }
 
+// An arrowhead is a small chevron outline of nine pieces; the line itself is
+// split by Figma into many subpaths (its sides, caps and node markers).
+const HEAD_SIZE = 25;
+function isHead(subpath) {
+    if (subpath.length !== 9) return false;
+    const points = subpath.flatMap((segment) => [segment.p0, segment.p1]);
+    const xs = points.map((point) => point[0]);
+    const ys = points.map((point) => point[1]);
+    return Math.hypot(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys)) < HEAD_SIZE;
+}
+
+// One Figma path can hold several arrows (for example the arch branches).
+// Every line piece belongs to the arrow whose head tip lies closest to it.
+function splitArrows(subpaths) {
+    const heads = subpaths.filter(isHead);
+    const lines = subpaths.filter((subpath) => !isHead(subpath));
+    if (heads.length <= 1) return [{ sides: lines.flat(), tip: (heads[0] || subpaths.at(-1))[0].p0 }];
+    const arrows = heads.map((head) => ({ sides: [], tip: head[0].p0 }));
+    lines.forEach((line) => {
+        const points = line.flatMap((segment) => [segment.p0, segment.p1]);
+        const gap = (arrow) => Math.min(...points.map((point) => distance(point, arrow.tip)));
+        [...arrows].sort((a, b) => gap(a) - gap(b))[0].sides.push(...line);
+    });
+    return arrows.filter((arrow) => arrow.sides.length);
+}
+
+// "--slow=4,5" and "--above=4,5": arrow indexes (in output order) that move
+// at 75 % speed or lie above the overlay (see js/components/flowArrowLayer.js).
+const SLOW_SPEED = 0.75;
+// Long arrows would hit the 2 s limit of flowArrows.js and all move at the
+// same, capped pace; the raised limit keeps their speeds (and SLOW_SPEED) true.
+const MAX_TRAVEL = 12000;
+const indexOption = (args, name) => new Set((args.find((arg) => arg.startsWith(`--${name}=`)) || '')
+    .split('=')[1]?.split(',').filter(Boolean).map(Number) || []);
+
 async function main() {
-    const [input, output, exportName] = process.argv.slice(2);
+    const args = process.argv.slice(2);
+    const [input, output, exportName] = args.filter((arg) => !arg.startsWith('--'));
     if (!input || !output || !exportName) {
-        console.error('Usage: node tools/extract-flow-arrows.js <figma.svg> <out.js> <exportName>');
+        console.error('Usage: node tools/extract-flow-arrows.js <figma.svg> <out.js> <exportName> [--slow=i,j] [--above=i,j]');
         process.exit(1);
     }
+    const slow = indexOption(args, 'slow');
+    const above = indexOption(args, 'above');
     const svg = await readFile(input, 'utf8');
     // The arrows are placed over the drawing: the rect filled with the image
     // (it can sit inside the frame, for example to leave room for a shadow).
@@ -163,21 +202,29 @@ async function main() {
     const imageRect = svg.match(/<rect([^>]*)fill="url\(#pattern/)?.[1] || '';
     const rectValue = (name, fallback) => imageRect.match(new RegExp(`\\b${name}="([\\d.]+)"`))?.[1] || fallback;
     const viewBox = [rectValue('x', 0), rectValue('y', 0), rectValue('width', width), rectValue('height', height)].join(' ');
-    const arrows = [...svg.matchAll(/<path d="([^"]+)" fill="([^"]+)"/g)].map(([, d, fill]) => {
-        const subpaths = parsePath(d);
-        const head = subpaths.pop();
-        const sides = subpaths.flat().filter((segment) => distance(segment.p0, segment.p1) > MIN_SEGMENT);
-        const tip = head[0].p0;
-        const centreLine = chain(centreSegments(sides), tip);
-        const dashed = centreLine.some((segment) => segment.gapBefore);
-        return {
-            d: toPathData(centreLine),
-            dashes: dashed ? toPathData(centreLine, false) : null,
-            color: fill === 'white' ? '#ffffff' : fill.toLowerCase()
-        };
-    });
-    const lines = arrows.map(({ d, dashes, color }) => `        { color: '${color}', d: '${d}'${dashes ? `,\n          dashes: '${dashes}'` : ''} }`).join(',\n');
+    const arrows = [...svg.matchAll(/<path d="([^"]+)" fill="([^"]+)"/g)].flatMap(([, d, fill]) =>
+        splitArrows(parsePath(d)).map(({ sides, tip }) => {
+            const centreLine = chain(centreSegments(sides.filter((segment) => distance(segment.p0, segment.p1) > MIN_SEGMENT)), tip);
+            // Small gaps are pairing leftovers at sharp bends, not dashes; they are bridged.
+            const dashed = centreLine.some((segment, index) => segment.gapBefore
+                && index > 0 && distance(centreLine[index - 1].p1, segment.p0) > DASH_GAP);
+            return {
+                d: toPathData(centreLine),
+                dashes: dashed ? toPathData(centreLine, false) : null,
+                color: fill === 'white' ? '#ffffff' : fill.toLowerCase()
+            };
+        }));
+    const lines = arrows.map(({ d, dashes, color }, index) => {
+        const options = [
+            slow.has(index) ? `speed: ${SLOW_SPEED}` : '',
+            above.has(index) ? 'aboveOverlay: true' : '',
+            `maxTravel: ${MAX_TRAVEL}`
+        ].filter(Boolean).join(', ');
+        return `        { color: '${color}', ${options}, d: '${d}'${dashes ? `,\n          dashes: '${dashes}'` : ''} }`;
+    }).join(',\n');
+    const flags = args.filter((arg) => arg.startsWith('--')).join(' ');
     await writeFile(output, `// Generated by tools/extract-flow-arrows.js from a Figma export; do not edit by hand.
+// Options: ${flags || 'none'} (export name ${exportName}).
 // Centre lines of the hand-drawn arrows in the coordinates of the drawing.
 export const ${exportName} = {
     viewBox: '${viewBox}',

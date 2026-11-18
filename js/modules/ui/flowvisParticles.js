@@ -72,8 +72,11 @@ class FlowVisParticleAnimation {
     stopAllAction() {}
 
     showFrame(frame) {
-        if (frame === this.frame) return;
+        // userData.flowColor (set by flowColors.js) replaces the palette.
+        const override = this.points.userData.flowColor || null;
+        if (frame === this.frame && override === this.override) return;
         this.frame = frame;
+        this.override = override;
         const { position, color } = this.points.geometry.attributes;
         this.particles.positionsAt(frame, position.array);
         position.needsUpdate = true;
@@ -82,7 +85,8 @@ class FlowVisParticleAnimation {
         const colors = color.array;
         for (let point = 0; point < this.particles.pointCount; point += 1) {
             const offset = point * 4;
-            const paletteColor = indices ? this.palette[indices[point]] : this.palette[0];
+            const fromPalette = indices ? this.palette[indices[point]] : this.palette[0];
+            const paletteColor = fromPalette && override ? override : fromPalette;
             // Dead particles sit at their seed position; alpha 0 hides them.
             if (!paletteColor) {
                 colors[offset + 3] = 0;

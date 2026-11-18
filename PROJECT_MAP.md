@@ -57,7 +57,8 @@ npm run screenshots
 | Story images and CT slices | `assets/story_images/` |
 | Aorta surface models | `assets/models/` |
 | Flow visualization GLBs | `assets/models/flow/` |
-| FlowVisAnalyzer particle exports with per-frame colors | `assets/models/flow/dissection_particles_colored.glb`, read by `js/modules/ui/flowvisParticles.js` (loader in `vendor/flowvis/`). Do not run gltfpack on them: it drops the color table. |
+| FlowVisAnalyzer particle exports with per-frame colors | `assets/models/flow/TBAD_pulsed_particles_2cycles.glb` (Miriam), `Aneurism_pulsed_particles_2cycles.glb` (Alex) and `Healthy_pulsed_particles_2cycles.glb` (reference aorta, both stories), read by `js/modules/ui/flowvisParticles.js` (loader in `vendor/flowvis/`). Do not run gltfpack on them: it drops the color table. |
+| FlowVisAnalyzer compact pathline exports (grow/shrink by shader rule) | `assets/models/flow/compact lines test.glb` (Miriam), `Aneurism_pathlines_2cycles.glb` (Alex) and `Healthy_pathlines_2cycles.glb` (reference aorta, both stories), played by `js/modules/ui/flowLineReveal.js`; vendor README in `assets/models/flow/glb-line-reveal/`. `lineLoopSeconds` in a flow variant sets the cycle (2 s = in step with the reference aorta). In metres, so they need larger `framingScale` values (about 0.5–1) than the old exports. |
 | Third-party Three.js files | `vendor/three/` |
 
 ## Story structure
@@ -93,7 +94,7 @@ When adding a new element type, register it in `js/stories/storySchema.js`, rend
 
 ## Study versions of the flow visuals
 
-The menu dropdown "Visualization" (or `?view=illustration|lines|particles`) picks one version for every flow figure: hand-drawn illustrations, 3D pathlines or 3D particles. `js/modules/flowView.js` rewrites the story before rendering:
+The URL parameter `?view=illustration|lines|particles` (default `lines`; remembered in this browser, also for `ending.html`) picks one version for every flow figure: hand-drawn illustrations, 3D pathlines or 3D particles. `js/modules/flowView.js` rewrites the story before rendering:
 
 - A section with both `inlineModel` and `inlineIllustration` keeps only one of them.
 - A `modelPlaceholder` keeps only its `flowIllustration` or the `flowVariants` entry whose `view` matches.
@@ -106,6 +107,12 @@ How each version was made (from the CTA scan to the 3D model, then the simulatio
 Animated flow arrows of the illustration version: export the Figma frame (drawing plus arrows) as SVG and run `node tools/extract-flow-arrows.js <frame.svg> js/stories/<story>/flowArrows.js <exportName>`. Pass the result as `flowIllustration.arrows` (or `healthyArrows`) with the still drawing as `src`; `js/modules/ui/flowArrows.js` grows and reseeds the arrows over it in rounds and shows them still with reduced motion. When each arrow starts is set with an optional `timing` list next to the arrows (see `js/components/flowArrowLayer.js`; Alex's flow section has an example); without it, the arrows start one after another in the Figma layer order.
 
 Side-by-side sizes in the flow comparison: the 3D viewers scale every model to fill the view, so `framingScale` / `comparisonFramingScale` in `flowVariants` set how large each aorta appears; the drawings take `flowIllustration.scale` / `healthyScale` (below 1 shrinks one drawing). Keep the healthy and the affected aorta at a similar size when exports change.
+
+## SoSci study flow
+
+SoSci opens `index.html?token=…&view=…`; the participant picks the first story there. `js/studyFlow.js` passes `token` and `view` on to the story links and fills every `data-sosci-return` button ("Go to questionnaire" after each story, "Continue to the final questions" on `ending.html`) with `SOSCI_RETURN_URL?token=…&story=aneurysm|dissection` (no `story` on the ending). SoSci then links straight to the other story, and after both to `ending.html?token=…&view=…`. `SOSCI_RETURN_URL` is still empty, so the buttons stay empty until it is set.
+
+After each story the link also carries usage data from `js/modules/studyMetrics.js`: `story_total` (seconds the whole story page was viewed, tab in the foreground), `flow_read` and `flow_prog` (seconds the sections with `studyMetric` in the story data lay under the middle of the window while the tab was in the foreground) and `info` (`name:count,…` for every info window that was opened, name from its term or label). Also `flow_read_n` / `flow_prog_n` (how often each section was entered), `models_ok` (1 / 0 / na for the 3D views in those sections), `load_s` (their longest loading time), `reduced_motion` (1 / 0), `device` (mobile / tablet / desktop) and `vw` (window width). Counts and times survive a reload in the same tab. Full list in the header of `js/modules/studyMetrics.js`.
 
 ## Current data sources
 

@@ -37,6 +37,7 @@ const svgIconAssetMap = {
     calendar_month: 'calendar_month_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg',
     circle_circle: 'circle_circle_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg',
     compare: 'compare.svg',
+    directions_walk: 'directions_walk_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg',
     event_available: 'event_available.svg',
     expand: 'expand_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg',
     fitness_center: 'fitness_center_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg',

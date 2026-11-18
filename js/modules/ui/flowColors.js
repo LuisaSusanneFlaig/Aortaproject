@@ -115,6 +115,13 @@ export function parseFlowRegion(container) {
 // root: the fitted, positioned model (its wall box is the region's frame).
 export function applyFlowColors(root, mode, accent, region = null) {
     const objects = flowObjects(root);
+    // Particle exports with their own palette (flowvisParticles.js): in accent
+    // mode every living particle takes the accent instead of the palette.
+    if (mode !== 'lumen' && mode !== 'region') {
+        root.traverse((child) => {
+            if (child.isPoints && child.userData.hasExportColors) child.userData.flowColor = new THREE.Color(accent);
+        });
+    }
     if (mode === 'lumen') applyLumen(objects, accent);
     else if (mode === 'region' && region) applyRegion(objects, accent, region, wallBoxOf(root));
     else applyAccent(objects, accent);

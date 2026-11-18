@@ -54,49 +54,14 @@ body.ending-page {
     text-decoration: none;
 }
 
-.ending-reset {
-    padding: 12px 0;
-    border: 0;
-    background: transparent;
-    color: var(--color-text);
-    cursor: pointer;
-    font: inherit;
-    text-decoration: underline;
-    text-underline-offset: 4px;
-}
-
-.story-completion-cta {
+/* "Go to questionnaire" at the end of every story (scrollytelling.js). */
+.story-questionnaire-cta {
     box-sizing: border-box;
     width: min(680px, calc(100% - 40px));
     margin: clamp(56px, 8vh, 96px) auto 64px;
-    padding: 28px;
-    border: 1px solid var(--color-text);
-    border-radius: 0;
-    background: var(--color-bg);
-    color: var(--color-text);
 }
 
-.story-completion-kicker {
-    margin: 0 0 12px;
-    color: var(--color-accent);
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-}
-
-.story-completion-cta h2 {
-    margin: 0 0 14px;
-    color: var(--color-text);
-}
-
-.story-completion-cta p:not(.story-completion-kicker) {
-    max-width: 52ch;
-    margin: 0 0 24px;
-    line-height: 1.5;
-}
-
-.story-completion-link {
+.story-questionnaire-link {
     display: inline-flex;
     gap: 12px;
     align-items: center;
@@ -113,7 +78,7 @@ body.ending-page {
         padding-top: 90px;
     }
 
-    .story-completion-cta {
+    .story-questionnaire-cta {
         margin: 40px auto 64px;
     }
 }

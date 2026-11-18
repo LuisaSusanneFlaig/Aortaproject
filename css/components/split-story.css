@@ -107,7 +107,7 @@ body[data-story-version].is-completion-active .story-visual-column {
 }
 
 /* Give both final consultation images the same breathing room before the
-   standalone completion CTA. */
+   "Go to questionnaire" block at the end of the story. */
 body[data-story-version] :is(
     .alex-outlook-section,
     .miriam-consultation-section

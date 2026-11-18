@@ -98,6 +98,8 @@ export const aneurysmStory = {
         },
         {
             id: 'alex-how-to-read-blood-flow',
+            // Dwell time is sent to SoSci (js/modules/studyMetrics.js).
+            studyMetric: 'flow_read',
             title: 'How to Read Blood Flow',
             scrollMode: 'sticky',
             className: 'model-section alex-flow-reading-section',
@@ -108,23 +110,27 @@ export const aneurysmStory = {
                 labels: healthyIllustrationLabels
             },
             inlineModel: {
-                url: `${flowModelBase}healthy_lines_anim.glb`,
+                url: 'assets/models/flow/Healthy_pathlines_2cycles.glb',
                 label: 'Simulated blood flow through a reference aorta without dissection, shown as colored lines',
                 mode: 'flow',
                 legend: false,
                 rotationX: 0,
                 rotationY: -1.5708,
                 rotationZ: 0,
-                framingScale: 0.4,
+                // The new FlowVis exports are in metres; these framings show them
+                // at the size of the earlier exports.
+                framingScale: 1,
                 animationFps: 20,
                 animationSpeed: 1,
+                // Compact export (js/modules/ui/flowLineReveal.js), on the same 2 s cycle as the comparisons.
+                lineLoopSeconds: 2,
                 rotationHint: true,
                 labels: healthyModelLabels,
                 flowViews: {
                     particles: {
-                        url: `${flowModelBase}healthy_particle_anim.glb`,
+                        url: 'assets/models/flow/Healthy_pulsed_particles_2cycles.glb',
                         label: 'Simulated blood flow through a reference aorta without dissection, shown as moving particles',
-                        framingScale: 0.35,
+                        framingScale: 0.84,
                         animationSpeed: 0.5
                     }
                 }
@@ -143,10 +149,19 @@ export const aneurysmStory = {
                     }
                 },
                 {
+                    type: 'text',
+                    text: 'Flow also matters for blood clots. Doctors use Virchow\'s triad to describe three conditions that make a clot more likely: slow or disturbed blood flow, a damaged vessel wall, and blood that clots more easily than usual. In the orderly flow of this aorta, blood keeps moving, so clots rarely form. Where the flow slows down or swirls, one of the three conditions is met. Whether a clot actually forms depends on the other two as well.',
+                    infoPopup: {
+                        title: 'Virchow\'s triad',
+                        text: 'Virchow\'s triad names three conditions that favour a blood clot (thrombus): slow or disturbed blood flow, injury to the vessel wall, and blood that clots more easily than usual. Usually several of them act together. The triad carries the name of the pathologist Rudolf Virchow, although he did not set it out in this form himself.'
+                    }
+                },
+                {
                     type: 'reference',
                     text: [
                         'Bäumler K, Rolf-Pissarczyk M, Schussnig R, Fries TP, Mistelbauer G, Pfaller MR. 0246_H_AO_AOD (Version 1). Stanford Digital Repository. 2025. https://doi.org/10.25740/nj140cs3237. Pre-dissection aortic geometry, used here as the reference aorta.',
-                        'Wilson NM, et al. The Vascular Model Repository: A Public Resource of Medical Imaging Data and Blood Flow Simulation Results. Journal of Medical Devices. 2013;7(4):040923. https://doi.org/10.1115/1.4025983'
+                        'Wilson NM, et al. The Vascular Model Repository: A Public Resource of Medical Imaging Data and Blood Flow Simulation Results. Journal of Medical Devices. 2013;7(4):040923. https://doi.org/10.1115/1.4025983',
+                        'Bagot CN, Arya R. Virchow and his triad: a question of attribution. British Journal of Haematology. 2008;143(2):180–190. https://doi.org/10.1111/j.1365-2141.2008.07323.x'
                     ]
                 }
             ]
@@ -262,23 +277,24 @@ export const aneurysmStory = {
         },
         {
             id: 'alex-flow-overview',
+            studyMetric: 'flow_prog',
             title: 'Flow in Alex\'s Aorta',
             className: 'flow-research-section alex-flow-section',
             scrollMode: 'sticky',
             elements: [
                 {
                     type: 'text',
-                    text: 'In the aorta, shape and blood flow are tightly connected. Here, the simulated blood flow through Alex’s aorta appears next to the reference aorta from earlier. Watch for changes in speed and direction, especially where Alex\'s aorta widens or curves.',
+                    text: 'In the aorta, shape and blood flow are tightly connected. Here, the simulated blood flow through Alex’s aorta appears next to the reference aorta from earlier. Watch for changes in speed and direction, especially where Alex\'s aorta widens or curves. The flow was not measured: it comes from a computer simulation (CFD) based on Alex\'s CTA scan.',
                     // How the flow picture was made, per study version (js/modules/flowView.js).
                     infoPopup: {
                         title: 'simulated blood flow',
-                        text: 'This flow is calculated, not measured. It is not blood recorded in Alex\'s body and not a prediction of his individual outcome. Every simulation rests on assumptions; the vessel wall, for example, is usually treated as rigid.'
+                        text: 'This flow comes from a CFD simulation (computational fluid dynamics): a computer calculates it from the shape of Alex\'s aorta in the CTA scan. It is not measured flow, not blood recorded in Alex\'s body, and not a prediction of his individual outcome. Every simulation rests on assumptions; the vessel wall, for example, is usually treated as rigid.'
                     },
                     flowViews: {
                         particles: {
                             infoPopup: {
                                 title: 'simulated blood flow',
-                                text: 'This flow is calculated, not measured. It is not blood recorded in Alex\'s body and not a prediction of his individual outcome. Every simulation rests on assumptions; the vessel wall, for example, is usually treated as rigid.'
+                                text: 'This flow comes from a CFD simulation (computational fluid dynamics): a computer calculates it from the shape of Alex\'s aorta in the CTA scan. It is not measured flow, not blood recorded in Alex\'s body, and not a prediction of his individual outcome. Every simulation rests on assumptions; the vessel wall, for example, is usually treated as rigid.'
                             }
                         },
                         illustration: {
@@ -293,19 +309,23 @@ export const aneurysmStory = {
                 {
                     type: 'modelPlaceholder',
                     id: 'alex-flow-overview-model',
-                    src: `${flowModelBase}aneurysm_lines_anim.glb`,
+                    src: 'assets/models/flow/Aneurism_pathlines_2cycles.glb',
                     flowIllustration: {
                         // The arrows grow over the still drawing (js/modules/ui/flowArrows.js).
                         src: 'assets/story_images/alex_aneurysm_illustration.png',
-                        // One arrow runs from the heart through the swirl in the widened
-                        // section and down the body (red there, see flowArrows.js); each
-                        // branch arrow starts when its head passes the branch.
+                        // Arrow 0 runs from the heart along the outer wall and down the
+                        // body; arrows 1–2 pass through the widened section. Only arrow 2,
+                        // the swirl ("langsam_2" in Figma), moves 25 % slower (speed 0.75
+                        // in flowArrows.js). Arrows 1–2 and the branch arrows 3–5 start
+                        // when the head of arrow 0 passes their start.
                         arrows: {
                             ...alexFlowArrows,
                             // The drawing is shown smaller than the healthy one, so its arrows are thickened.
                             size: 2.1,
                             timing: [
                                 {},
+                                { after: 0, at: 'pass' },
+                                { after: 0, at: 'pass' },
                                 { after: 0, at: 'pass' },
                                 { after: 0, at: 'pass' },
                                 { after: 0, at: 'pass' }
@@ -324,14 +344,11 @@ export const aneurysmStory = {
                         healthyLabels: healthyIllustrationLabels
                     },
                     flowVariants: [
-                        { view: 'lines', label: 'Pathlines', src: `${flowModelBase}aneurysm_lines_anim.glb`, comparisonSrc: `${flowModelBase}healthy_lines_anim.glb`, framingScale: 0.29, comparisonFramingScale: 0.29, rotationY: 1.5708, comparisonRotationY: -1.5708, shiftX: 0, shiftY: -0.15, comparisonShiftX: 0, comparisonShiftY: 0, animationFps: 20, animationSpeed: 1 },
-                        { view: 'particles', label: 'Particle flow', src: `${flowModelBase}aneurysm_particles_anim.glb`, comparisonSrc: `${flowModelBase}healthy_particle_anim.glb`, framingScale: 0.37, comparisonFramingScale: 0.35, rotationY: 1.5708, comparisonRotationY: -1.5708, shiftX: 0, shiftY: -0.15, comparisonShiftX: 0, comparisonShiftY: 0, animationFps: 20, animationSpeed: 0.5 }
+                        { view: 'lines', label: 'Pathlines', src: 'assets/models/flow/Aneurism_pathlines_2cycles.glb', comparisonSrc: 'assets/models/flow/Healthy_pathlines_2cycles.glb', framingScale: 0.52, comparisonFramingScale: 0.75, rotationY: 1.5708, comparisonRotationY: -1.5708, shiftX: 0, shiftY: 0.02, comparisonShiftX: 0, comparisonShiftY: 0, animationFps: 20, animationSpeed: 1, lineLoopSeconds: 2 },
+                        { view: 'particles', label: 'Particle flow', src: 'assets/models/flow/Aneurism_pulsed_particles_2cycles.glb', comparisonSrc: 'assets/models/flow/Healthy_pulsed_particles_2cycles.glb', framingScale: 0.6, comparisonFramingScale: 0.84, rotationY: 1.5708, comparisonRotationY: -1.5708, shiftX: 0, shiftY: 0.06, comparisonShiftX: 0, comparisonShiftY: 0, animationFps: 20, animationSpeed: 0.5 }
                     ],
                     modelMode: 'flow',
-                    // Flow inside the widened section in red, the rest in white; the
-                    // center is the anchor of the "Widened section" label.
-                    flowColors: 'region',
-                    flowRegion: { center: [0.87, 0.657, 0.766], radius: 0.12 },
+                    // All flow in the accent red (default flowColors).
                     labels: alexFlowModelLabels,
                     healthyLabels: healthyModelLabels,
                     preload: true,
@@ -356,18 +373,18 @@ export const aneurysmStory = {
                 },
                 {
                     type: 'text',
-                    text: 'It starts with the CTA scan from the diagnosis chapter. From its slices, a 3D model of the inside of Alex\'s aorta was built. For the simulation, this space is divided into millions of tiny cells, the amount of blood that flows in and out is set, and a computer solves the equations of fluid motion in every cell over several heartbeats. The result is the speed and direction of the blood at every point and moment. Starting points are spread across the entrance of the aorta, and from each one this movement is followed step by step. The trail that a starting point leaves is a pathline: the route a tiny portion of blood would take.',
+                    text: 'It starts with the CTA scan from the diagnosis chapter. From its slices, a 3D model of the inside of Alex\'s aorta was built. For the CFD simulation (computational fluid dynamics), this space is divided into millions of tiny cells, the amount of blood that flows in and out is set, and a computer solves the equations of fluid motion in every cell over several heartbeats. The result is the speed and direction of the blood at every point and moment. Starting points are spread across the entrance of the aorta, and from each one this movement is followed step by step. The trail that a starting point leaves is a pathline: the route a tiny portion of blood would take.',
                     flowViews: {
-                        particles: { text: 'It starts with the CTA scan from the diagnosis chapter. From its slices, a 3D model of the inside of Alex\'s aorta was built. For the simulation, this space is divided into millions of tiny cells, the amount of blood that flows in and out is set, and a computer solves the equations of fluid motion in every cell over several heartbeats. The result is the speed and direction of the blood at every point and moment. Virtual particles are released at the entrance of the aorta and carried along by this movement, frame by frame.' },
+                        particles: { text: 'It starts with the CTA scan from the diagnosis chapter. From its slices, a 3D model of the inside of Alex\'s aorta was built. For the CFD simulation (computational fluid dynamics), this space is divided into millions of tiny cells, the amount of blood that flows in and out is set, and a computer solves the equations of fluid motion in every cell over several heartbeats. The result is the speed and direction of the blood at every point and moment. Virtual particles are released at the entrance of the aorta and carried along by this movement, frame by frame.' },
                         illustration: { text: 'It starts with the CTA scan from the diagnosis chapter. From its slices, a 3D model of Alex\'s aorta was built, and the outline of the aorta was traced by hand from this model and then simplified: the shape and the widened section are kept, fine details of the vessel wall are left out. The reference aorta was drawn in the same way from its 3D model.' }
                     }
                 },
                 {
                     type: 'text',
-                    text: 'In the animation, the lines grow as the heartbeat goes on. In Alex\'s aorta, lines inside the widened section are red and all others are white, so the flow in the aneurysm stands out; in the reference aorta, all lines are red. You can turn both models and slow the animation down. What you see stays a calculated picture, with the assumptions explained in the note on the simulated blood flow above.',
+                    text: 'In the animation, the lines grow as the heartbeat goes on. All lines are red, in Alex\'s aorta and in the reference aorta; watch how they bend and circle in the widened section. You can turn both models. What you see stays a calculated picture, with the assumptions explained in the note on the simulated blood flow above.',
                     flowViews: {
-                        particles: { text: 'Each dot is a marker, not a blood cell: where the dots crowd together, speed up or circle, the calculated flow does the same. In Alex\'s aorta, dots inside the widened section are red and all others are white, and a dot changes color as it enters or leaves that section; in the reference aorta, all dots are red. You can turn both models and slow the animation down. What you see stays a calculated picture, with the assumptions explained in the note on the simulated blood flow above.' },
-                        illustration: { text: 'The arrows were drawn by hand on top of the drawings to show the main direction of the blood: up from the heart, into the branches, around the arch and down through the body. In Alex\'s widened section, a red arrow loops to show a swirl. On the page, the arrows grow one after another from the heart downwards and then start again. Where they are placed, how long they are and how fast they move are design choices, not measurements.' }
+                        particles: { text: 'Each dot is a marker, not a blood cell: where the dots crowd together, speed up or circle, the calculated flow does the same. All dots are red, in Alex\'s aorta and in the reference aorta; watch how they slow down and circle in the widened section. You can turn both models. What you see stays a calculated picture, with the assumptions explained in the note on the simulated blood flow above.' },
+                        illustration: { text: 'The arrows were drawn by hand on top of the drawings to show the main direction of the blood: up from the heart, into the branches, around the arch and down through the body. In Alex\'s widened section, one arrow loops to show a swirl and moves more slowly than the others. On the page, the arrows grow one after another from the heart downwards and then start again. Where they are placed, how long they are and how fast they move are design choices, not measurements.' }
                     }
                 }
             ]
@@ -438,9 +455,10 @@ export const aneurysmStory = {
                             info: 'Medication may be used to manage blood pressure and reduce strain on the aorta.'
                         },
                         {
-                            eyebrow: 'In activity',
-                            title: 'Adapted exertion',
-                            info: 'Activity recommendations are individualized. Avoiding sudden, extreme exertion can help limit sharp blood-pressure rises, while the care team defines what is safe.'
+                            eyebrow: 'In everyday life',
+                            title: 'Movement',
+                            icon: 'directions_walk',
+                            info: 'Walking is encouraged: regular, relaxed walks keep Alex fit without straining the aorta. What Alex avoids is heavy lifting, pressing, and sudden all-out effort, because they make blood pressure rise sharply.'
                         },
                         {
                             eyebrow: 'Long term',
