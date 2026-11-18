@@ -148,7 +148,7 @@ function toDataAttribute(value) {
 
 // A model view switches the viewer to another GLB with its own framing and labels.
 function modelViewConfig(view) {
-    const keys = ['url', 'label', 'framingScale', 'rotationX', 'rotationY', 'rotationZ', 'animationFps', 'animationSpeed'];
+    const keys = ['url', 'label', 'framingScale', 'rotationX', 'rotationY', 'rotationZ', 'animationFps', 'animationSpeed', 'lineLoopSeconds'];
     const config = Object.fromEntries(keys.filter((key) => view[key] !== undefined).map((key) => [key, view[key]]));
     config.labels = Array.isArray(view.labels) ? view.labels : [];
     return config;
@@ -183,7 +183,7 @@ function renderInlineModel(model, illustration = null) {
     const rotationY = Number.isFinite(model.rotationY) ? ` data-rotation-y="${model.rotationY}"` : '';
     const rotationZ = Number.isFinite(model.rotationZ) ? ` data-rotation-z="${model.rotationZ}"` : '';
     const framingScale = Number.isFinite(model.framingScale) ? ` data-framing-scale="${model.framingScale}"` : '';
-    const animation = ['animationFps', 'animationSpeed']
+    const animation = ['animationFps', 'animationSpeed', 'lineLoopSeconds']
         .filter((key) => Number.isFinite(model[key]))
         .map((key) => ` data-${key.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}="${model[key]}"`)
         .join('');
@@ -261,7 +261,7 @@ function renderSections(sections = [], navItems = []) {
 
         return `
             ${chapter ? renderChapterOpener(chapter, section.id || `s${index + 1}`) : ''}
-            <section class="step${layoutClass}${customClass}${chapterClass}" id="${section.id || `s${index + 1}`}" data-section-index="${index}" data-scroll-mode="${scrollMode}">
+            <section class="step${layoutClass}${customClass}${chapterClass}" id="${section.id || `s${index + 1}`}" data-section-index="${index}" data-scroll-mode="${scrollMode}"${section.studyMetric ? ` data-study-metric="${section.studyMetric}"` : ''}>
                 <div class="text-box story-split-shell${presentationClass}" style="${customStyle}">
                     <aside class="story-visual-column" aria-label="Visual for ${section.title}">
                         <div class="story-visual-column-inner">
@@ -298,14 +298,12 @@ export function renderStoryPage(providedConfig = null, providedVersion = null) {
     const desktopNav = document.getElementById('nav-links');
     const mobileNav = document.querySelector('#nav-menu-mobile ul');
     const sectionIds = new Set(config.sections.map((section) => section.id).filter(Boolean));
-    const linksMarkup = [
-        ...config.nav.map((item) => {
-            const targetId = item.href?.startsWith('#') ? item.href.slice(1) : '';
-            const href = sectionIds.has(targetId) ? `#chapter-${targetId}` : item.href;
-            return `<li><a href="${href}" data-section-target="${targetId}">${item.label}</a></li>`;
-        }),
-        `<li><a href="index.html">Dashboard</a></li>`
-    ].join('');
+    // Chapter links only; no dashboard link, so participants stay in the study flow.
+    const linksMarkup = config.nav.map((item) => {
+        const targetId = item.href?.startsWith('#') ? item.href.slice(1) : '';
+        const href = sectionIds.has(targetId) ? `#chapter-${targetId}` : item.href;
+        return `<li><a href="${href}" data-section-target="${targetId}">${item.label}</a></li>`;
+    }).join('');
 
     if (desktopNav) desktopNav.innerHTML = linksMarkup;
     if (mobileNav) mobileNav.innerHTML = linksMarkup;

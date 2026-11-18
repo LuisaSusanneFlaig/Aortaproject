@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FlowVis line reveal viewer</title>
+<style>
+    html, body { margin: 0; height: 100%; background: #111; color: #ddd; font: 13px system-ui, sans-serif; }
+    #ui { position: absolute; top: 8px; left: 8px; right: 8px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+          background: rgba(0, 0, 0, 0.55); padding: 6px 10px; border-radius: 6px; }
+    #ui input[type=range] { width: 200px; }
+    #info { opacity: 0.8; }
+    canvas { display: block; }
+</style>
+<script type="importmap">
+{ "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<div id="filewarn" style="display:none; position:absolute; top:60px; left:8px; right:8px; padding:10px; background:#5a1d1d; border-radius:6px;">
+    This page was opened from disk (file://). Browsers block its scripts there, so nothing will load.
+    Open it through a web server instead, e.g. <code>http://localhost:8117/examples/glb-line-reveal/viewer.html</code>
+    or run <code>python -m http.server</code> in this folder and open <code>http://localhost:8000/viewer.html</code>.
+</div>
+<script>
+if (location.protocol === 'file:') document.getElementById('filewarn').style.display = 'block';
+// The viewer module (and three.js from cdn.jsdelivr.net) must load; say so when it did not.
+setTimeout(() => {
+    if (window.lineReveal) return;
+    const w = document.getElementById('filewarn');
+    w.style.display = 'block';
+    if (location.protocol !== 'file:') w.textContent = 'The viewer script did not start: three.js could not be loaded from cdn.jsdelivr.net, or flowvis-line-reveal.js is missing next to this page. See the browser console (F12) for the exact error.';
+}, 8000);
+</script>
+<div id="ui">
+    <input type="file" id="file" accept=".glb">
+    <button id="play" type="button">Pause</button>
+    <label>Cycle <input type="range" id="progress" min="0" max="2" step="0.001" value="0"></label>
+    <span id="info">Choose or drop a FlowVis compact .glb (or open viewer.html?src=file.glb over HTTP).</span>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { enableLineReveal } from './flowvis-line-reveal.js';
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(devicePixelRatio);
+renderer.setSize(innerWidth, innerHeight);
+document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x111111);
+scene.add(new THREE.HemisphereLight(0xffffff, 0x444444, 1.2));
+const sun = new THREE.DirectionalLight(0xffffff, 1.5);
+sun.position.set(1, 2, 3);
+scene.add(sun);
+const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.0001, 1000);
+const controls = new OrbitControls(camera, renderer.domElement);
+addEventListener('resize', () => {
+    camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight);
+});
+
+const info = document.getElementById('info');
+const playBtn = document.getElementById('play');
+const slider = document.getElementById('progress');
+let model = null, reveal = null, playing = true, startedAt = performance.now() / 1000, pausedAt = 0;
+
+function frame(object) {
+    const box = new THREE.Box3().setFromObject(object);
+    const size = box.getSize(new THREE.Vector3()).length(), center = box.getCenter(new THREE.Vector3());
+    controls.target.copy(center);
+    camera.near = size / 1000; camera.far = size * 10; camera.updateProjectionMatrix();
+    camera.position.copy(center).add(new THREE.Vector3(0, 0, size * 1.2));
+    controls.update();
+}
+
+async function load(buffer, name) {
+    info.textContent = `Loading ${name} (${(buffer.byteLength / 1e6).toFixed(0)} MB)…`;
+    const gltf = await new GLTFLoader().parseAsync(buffer, '');
+    if (model) scene.remove(model);
+    model = gltf.scene;
+    scene.add(model);
+    reveal = enableLineReveal(model);
+    frame(model);
+    startedAt = performance.now() / 1000;
+    const meta = reveal.meshes[0]?.userData.FLOWVIS_line_reveal;
+    info.textContent = reveal.meshes.length
+        ? `${name}: ${reveal.meshes.length} line set(s), loop ${meta.loopSeconds.toFixed(2)} s, stagger ${meta.stagger}`
+        : `${name}: no compact grow/shrink lines in this file (shown static).`;
+}
+
+// Errors show in the page, not only in the console.
+const fail = (err) => { console.error(err); info.textContent = `Could not load: ${err.message || err}`; info.style.color = '#f88'; };
+async function loadFile(f) {
+    info.style.color = '';
+    info.textContent = `Reading ${f.name}…`;
+    try { await load(await f.arrayBuffer(), f.name); } catch (err) { fail(err); }
+}
+document.getElementById('file').addEventListener('change', (e) => { if (e.target.files[0]) loadFile(e.target.files[0]); });
+addEventListener('dragover', (e) => e.preventDefault());
+addEventListener('drop', (e) => { e.preventDefault(); if (e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]); });
+const src = new URLSearchParams(location.search).get('src');
+if (src) fetch(src).then((r) => { if (!r.ok) throw new Error(`${src}: HTTP ${r.status}`); return r.arrayBuffer(); }).then((b) => load(b, src)).catch(fail);
+addEventListener('error', (e) => fail(e.error || e.message));
+addEventListener('unhandledrejection', (e) => fail(e.reason));
+
+playBtn.addEventListener('click', () => {
+    playing = !playing;
+    playBtn.textContent = playing ? 'Pause' : 'Play';
+    if (playing) startedAt = performance.now() / 1000 - pausedAt;
+});
+slider.addEventListener('input', () => {
+    playing = false; playBtn.textContent = 'Play';
+    const meta = reveal?.meshes[0]?.userData.FLOWVIS_line_reveal;
+    pausedAt = meta ? (Number(slider.value) / 2) * meta.loopSeconds : 0;
+});
+
+renderer.setAnimationLoop(() => {
+    const seconds = playing ? performance.now() / 1000 - startedAt : pausedAt;
+    if (playing) pausedAt = seconds;
+    if (reveal) {
+        reveal.update(seconds);
+        const meta = reveal.meshes[0]?.userData.FLOWVIS_line_reveal;
+        if (meta && document.activeElement !== slider) slider.value =String(((2 * seconds / meta.loopSeconds) % 2).toFixed(3));
+    }
+    controls.update();
+    renderer.render(scene, camera);
+});
+// For scripted checks: window.lineReveal.setSeconds(t) shows the cycle at t seconds.
+window.lineReveal = { setSeconds(t) { playing = false; pausedAt = t; playBtn.textContent = 'Play'; }, get reveal() { return reveal; }, renderer, scene, camera };
+</script>
+</body>
+</html>

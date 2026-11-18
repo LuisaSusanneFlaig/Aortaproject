@@ -136,6 +136,8 @@ export const dissectionStory = {
         },
         {
             id: 'how-to-read-blood-flow',
+            // Dwell time is sent to SoSci (js/modules/studyMetrics.js).
+            studyMetric: 'flow_read',
             title: 'How to Read Blood Flow',
             scrollMode: 'sticky',
             timelineLabel: 'Dissected aorta',
@@ -147,23 +149,27 @@ export const dissectionStory = {
                 labels: healthyIllustrationLabels
             },
             inlineModel: {
-                url: `${flowModelBase}healthy_lines_anim.glb`,
+                url: 'assets/models/flow/Healthy_pathlines_2cycles.glb',
                 label: 'Simulated blood flow through Miriam\'s aorta before the dissection, shown as colored lines',
                 mode: 'flow',
                 legend: false,
                 rotationX: 0,
                 rotationY: -1.5708,
                 rotationZ: 0,
-                framingScale: 0.4,
+                // The new FlowVis exports are in metres; these framings show them
+                // at the size of the earlier exports.
+                framingScale: 1,
                 animationFps: 20,
                 animationSpeed: 1,
+                // Compact export (js/modules/ui/flowLineReveal.js), on the same 2 s cycle as the comparisons.
+                lineLoopSeconds: 2,
                 rotationHint: true,
                 labels: healthyModelLabels,
                 flowViews: {
                     particles: {
-                        url: `${flowModelBase}healthy_particle_anim.glb`,
+                        url: 'assets/models/flow/Healthy_pulsed_particles_2cycles.glb',
                         label: 'Simulated blood flow through Miriam\'s aorta before the dissection, shown as moving particles',
-                        framingScale: 0.35,
+                        framingScale: 0.84,
                         animationSpeed: 0.5
                     }
                 }
@@ -183,10 +189,20 @@ export const dissectionStory = {
                     }
                 },
                 {
+                    type: 'text',
+                    text: 'Flow also matters for blood clots. Doctors use Virchow\'s triad to describe three conditions that make a clot more likely: slow or disturbed blood flow, a damaged vessel wall, and blood that clots more easily than usual. In the orderly flow of this aorta, blood keeps moving, so clots rarely form. After a dissection, two of the three can come together: blood can slow down and swirl in the false lumen, and the torn wall exposes layers that are normally hidden. The false lumen can then partly fill with clot. In type B dissections like Miriam\'s, a partly clotted false lumen has been linked to a higher risk later on, so doctors watch it closely.',
+                    infoPopup: {
+                        title: 'Virchow\'s triad',
+                        text: 'Virchow\'s triad names three conditions that favour a blood clot (thrombus): slow or disturbed blood flow, injury to the vessel wall, and blood that clots more easily than usual. Usually several of them act together. The triad carries the name of the pathologist Rudolf Virchow, although he did not set it out in this form himself.'
+                    }
+                },
+                {
                     type: 'reference',
                     text: [
                         'Bäumler K, Rolf-Pissarczyk M, Schussnig R, Fries TP, Mistelbauer G, Pfaller MR. 0246_H_AO_AOD (Version 1). Stanford Digital Repository. 2025. https://doi.org/10.25740/nj140cs3237. Pre-dissection aortic geometry of the same patient as Miriam\'s dissected aorta.',
-                        'Wilson NM, et al. The Vascular Model Repository: A Public Resource of Medical Imaging Data and Blood Flow Simulation Results. Journal of Medical Devices. 2013;7(4):040923. https://doi.org/10.1115/1.4025983'
+                        'Wilson NM, et al. The Vascular Model Repository: A Public Resource of Medical Imaging Data and Blood Flow Simulation Results. Journal of Medical Devices. 2013;7(4):040923. https://doi.org/10.1115/1.4025983',
+                        'Bagot CN, Arya R. Virchow and his triad: a question of attribution. British Journal of Haematology. 2008;143(2):180–190. https://doi.org/10.1111/j.1365-2141.2008.07323.x',
+                        'Tsai TT, Evangelista A, Nienaber CA, et al. Partial Thrombosis of the False Lumen in Patients with Acute Type B Aortic Dissection. New England Journal of Medicine. 2007;357(4):349–359. https://doi.org/10.1056/NEJMoa063232'
                     ]
                 }
             ]
@@ -215,10 +231,15 @@ export const dissectionStory = {
                     ]
                 },
                 {
+                    type: 'text',
+                    text: 'Not every dissection looks like this, though: the symptoms are often atypical. Some people mainly seem restless or agitated. Others show neurological signs such as confusion, fainting, weakness, or numbness, because the tear can reduce blood flow to the brain, the spinal cord, or a limb. Sometimes there is hardly any pain at all. Such presentations are easily mistaken for other illnesses, which is why a dissection can be missed at first.'
+                },
+                {
                     type: 'reference',
                     text: [
                         'Deutsche Gesellschaft für Gefäßchirurgie und Gefäßmedizin. S2k-Leitlinie Typ-B-Aortendissektion (section 5.1, table 4). AWMF-Register 004-034. 2022. https://register.awmf.org/assets/guidelines/004-034l_S2k_Typ_B_Aortendissektion_2022-05.pdf',
-                        'Pape LA, et al. Presentation, Diagnosis, and Outcomes of Acute Aortic Dissection: 17-Year Trends From the International Registry of Acute Aortic Dissection. Journal of the American College of Cardiology. 2015;66(4):350–358. https://doi.org/10.1016/j.jacc.2015.05.029'
+                        'Pape LA, et al. Presentation, Diagnosis, and Outcomes of Acute Aortic Dissection: 17-Year Trends From the International Registry of Acute Aortic Dissection. Journal of the American College of Cardiology. 2015;66(4):350–358. https://doi.org/10.1016/j.jacc.2015.05.029',
+                        'Park SW, Hutchison S, Mehta RH, et al. Association of Painless Acute Aortic Dissection With Increased Mortality. Mayo Clinic Proceedings. 2004;79(10):1252–1257. https://doi.org/10.4065/79.10.1252'
                     ]
                 }
             ]
@@ -236,7 +257,7 @@ export const dissectionStory = {
                     text: 'For Miriam, everything has to happen fast: a suspected dissection is an emergency. Before the scan, the team gathers quick clues at the bedside and from blood tests, including a test called D-dimer. These clues help judge how urgent the situation is and whether blood flow to the brain, kidneys, gut, or legs may be affected, but only imaging can confirm the diagnosis.',
                     infoPopup: {
                         title: 'D-dimer',
-                        text: 'D-dimer is a protein fragment released when a blood clot breaks down. In people with a low likelihood of dissection, a negative result can help rule it out. A positive result has many other causes and does not prove a tear, so the test is never used alone.'
+                        text: 'D-dimer is a protein fragment released when a blood clot breaks down. In people with a low likelihood of dissection, a negative result can help rule it out. But the test is non-specific: D-dimer is also raised by infection, cancer, sepsis, and many other conditions. A positive result therefore does not prove a tear, so the test is never used alone.'
                     }
                 },
                 {
@@ -283,6 +304,10 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
+                    text: 'At this point, nobody knows yet which type of dissection Miriam has, and a Type A dissection is a race against time. The classic estimate is that without surgery, about 1 to 2 in every 100 people with Type A die per hour in the first two days. That is why the first scan is usually a CT: it takes only minutes, is available around the clock, and shows the whole aorta and its branches. An MRI shows the aorta just as well, but it takes much longer, is not always available at night, and makes it harder to watch over and treat an unstable patient during the scan. It can be used later, when time is no longer critical.'
+                },
+                {
+                    type: 'text',
                     text: 'A CT angiogram (CTA) is a CT scan that shows the blood vessels. A contrast agent is injected into a vein in the arm while the scanner takes many thin X-ray images. The contrast makes blood inside the aorta visible. From these images, clinicians can follow the vessel through the chest and abdomen, identify the flap separating the two channels, measure the aorta, and check the branch vessels. The red marking was added during image editing to highlight Miriam\'s Type B dissection; it was not red in the original scan.'
                 },
                 {
@@ -304,11 +329,19 @@ export const dissectionStory = {
                             text: 'The highlighted widened region shows the altered aortic channel created by the dissection.'
                         }
                     ]
+                },
+                {
+                    type: 'reference',
+                    text: [
+                        'Harris KM, Nienaber CA, Peterson MD, et al. Early Mortality in Type A Acute Aortic Dissection: Insights From the International Registry of Acute Aortic Dissection. JAMA Cardiology. 2022;7(10):1009–1015. https://doi.org/10.1001/jamacardio.2022.2718',
+                        'Isselbacher EM, et al. 2022 ACC/AHA Guideline for the Diagnosis and Management of Aortic Disease. Circulation. 2022;146(24):e334–e482. https://doi.org/10.1161/CIR.0000000000001106'
+                    ]
                 }
             ]
         },
         {
             id: 's11',
+            studyMetric: 'flow_prog',
             title: 'What the Flow Reveals',
             scrollMode: 'sticky',
             timelineLabel: 'Flow simulation',
@@ -320,17 +353,17 @@ export const dissectionStory = {
             elements: [
                 {
                     type: 'text',
-                    text: 'Here, the simulated blood flow through both channels of Miriam\'s dissected aorta appears next to her aorta before the dissection, from earlier. Watch how the tear changes the route of the blood.',
+                    text: 'Here, the simulated blood flow through both channels of Miriam\'s dissected aorta appears next to her aorta before the dissection, from earlier. Watch how the tear changes the route of the blood. The flow was not measured: it comes from a computer simulation (CFD) based on Miriam\'s CTA scan.',
                     // How the flow picture was made, per study version (js/modules/flowView.js).
                     infoPopup: {
                         title: 'simulated blood flow',
-                        text: 'This flow is calculated, not measured. It is not blood recorded in Miriam\'s body and not a prediction of her individual outcome. Every simulation rests on assumptions; the vessel wall, for example, is usually treated as rigid.'
+                        text: 'This flow comes from a CFD simulation (computational fluid dynamics): a computer calculates it from the shape of Miriam\'s aorta in the CTA scan. It is not measured flow, not blood recorded in Miriam\'s body, and not a prediction of her individual outcome. Every simulation rests on assumptions; the vessel wall, for example, is usually treated as rigid.'
                     },
                     flowViews: {
                         particles: {
                             infoPopup: {
                                 title: 'simulated blood flow',
-                                text: 'This flow is calculated, not measured. It is not blood recorded in Miriam\'s body and not a prediction of her individual outcome. Every simulation rests on assumptions; the vessel wall, for example, is usually treated as rigid.'
+                                text: 'This flow comes from a CFD simulation (computational fluid dynamics): a computer calculates it from the shape of Miriam\'s aorta in the CTA scan. It is not measured flow, not blood recorded in Miriam\'s body, and not a prediction of her individual outcome. Every simulation rests on assumptions; the vessel wall, for example, is usually treated as rigid.'
                             }
                         },
                         illustration: {
@@ -348,12 +381,15 @@ export const dissectionStory = {
                     src: `${flowModelBase}dissection_lines_anim.glb`,
                     flowIllustration: {
                         // The arrows grow over the still drawing (js/modules/ui/flowArrows.js).
-                        // One arrow runs from the heart down the true channel; the branch
-                        // arrows and the false-channel arrow (red, see flowArrows.js)
-                        // start when its head passes their start.
+                        // Arrow 0 runs from the heart down the true channel; the branch
+                        // arrows 1–3 and the two false-channel arrows 4–5 start when its
+                        // head passes their start. The false-channel arrows move 25 %
+                        // slower (speed 0.75 in flowArrows.js, the arrows named "langsam"
+                        // in Figma) and lie above the see-through false channel.
                         src: 'assets/story_images/miriam_dissection_illustration.png',
                         arrows: {
                             ...miriamFlowArrows,
+                            overlay: { src: 'assets/story_images/miriam_false_lumen_overlay.png', rect: [311, 187.65, 231, 529.7], opacity: 0.6 },
                             // Matches the line width of the healthy drawing, which is shown shrunk.
                             size: 1.4,
                             timing: [
@@ -361,9 +397,8 @@ export const dissectionStory = {
                                 { after: 0, at: 'pass' },
                                 { after: 0, at: 'pass' },
                                 { after: 0, at: 'pass' },
-                                // The false channel is longer: its arrow moves faster so both
-                                // arrows reunite at the end of the flap at the same time.
-                                { after: 0, at: 'pass', meet: [329.5, 697.25] }
+                                { after: 0, at: 'pass' },
+                                { after: 0, at: 'pass' }
                             ]
                         },
                         healthySrc: healthyIllustrationSrc,
@@ -382,13 +417,14 @@ export const dissectionStory = {
                         healthyLabels: healthyIllustrationLabels
                     },
                     flowVariants: [
-                        { view: 'lines', label: 'Pathlines', src: `${flowModelBase}dissection_lines_anim.glb`, comparisonSrc: `${flowModelBase}healthy_lines_anim.glb`, framingScale: 0.37, comparisonFramingScale: 0.29, rotationY: -1.5708, comparisonRotationY: -1.5708, shiftX: 0, shiftY: -0.05, comparisonShiftX: 0, comparisonShiftY: 0, animationFps: 20, animationSpeed: 1 },
-                        { view: 'particles', label: 'Particle flow', src: 'assets/models/flow/dissection_particles_colored.glb', comparisonSrc: `${flowModelBase}healthy_particle_anim.glb`, framingScale: 0.85, comparisonFramingScale: 0.35, rotationY: -1.5708, comparisonRotationY: -1.5708, shiftX: 0, shiftY: 0.1, comparisonShiftX: 0, comparisonShiftY: 0, animationFps: 20, animationSpeed: 0.5 }
+                        // Compact grow/shrink export (js/modules/ui/flowLineReveal.js); lineLoopSeconds 2
+                        // keeps it in step with the 2 s cycle of the reference aorta (the file says 6.67 s).
+                        { view: 'lines', label: 'Pathlines', src: 'assets/models/flow/compact lines test.glb', comparisonSrc: 'assets/models/flow/Healthy_pathlines_2cycles.glb', framingScale: 0.85, comparisonFramingScale: 0.75, rotationY: -1.5708, comparisonRotationY: -1.5708, shiftX: 0, shiftY: 0.1, comparisonShiftX: 0, comparisonShiftY: 0, animationFps: 20, animationSpeed: 1, lineLoopSeconds: 2 },
+                        { view: 'particles', label: 'Particle flow', src: 'assets/models/flow/TBAD_pulsed_particles_2cycles.glb', comparisonSrc: 'assets/models/flow/Healthy_pulsed_particles_2cycles.glb', framingScale: 0.85, comparisonFramingScale: 0.84, rotationY: -1.5708, comparisonRotationY: -1.5708, shiftX: 0, shiftY: 0.1, comparisonShiftX: 0, comparisonShiftY: 0, animationFps: 20, animationSpeed: 0.5 }
                     ],
                     modelMode: 'flow',
-                    // The dissection exports mark the false lumen red and the true lumen white;
-                    // the "True lumen" and "False lumen" labels name them.
-                    flowColors: 'lumen',
+                    // All flow in the accent red (default flowColors); the "True lumen" and
+                    // "False lumen" labels name the two channels.
                     labels: miriamFlowModelLabels,
                     healthyLabels: healthyModelLabels,
                     preload: true,
@@ -415,18 +451,18 @@ export const dissectionStory = {
                 },
                 {
                     type: 'text',
-                    text: 'It starts with a CTA scan of Miriam\'s aorta: a follow-up scan, taken about six weeks after the dissection. From its slices, a 3D model of the inside of her aorta, with both channels, was built. For the simulation, this space is divided into millions of tiny cells, the amount of blood that flows in and out is set, and a computer solves the equations of fluid motion in every cell over several heartbeats. The result is the speed and direction of the blood at every point and moment. Starting points are spread across the entrance of the aorta, and from each one this movement is followed step by step. The trail that a starting point leaves is a pathline: the route a tiny portion of blood would take.',
+                    text: 'It starts with a CTA scan of Miriam\'s aorta: a follow-up scan, taken about six weeks after the dissection. From its slices, a 3D model of the inside of her aorta, with both channels, was built. For the CFD simulation (computational fluid dynamics), this space is divided into millions of tiny cells, the amount of blood that flows in and out is set, and a computer solves the equations of fluid motion in every cell over several heartbeats. The result is the speed and direction of the blood at every point and moment. Starting points are spread across the entrance of the aorta, and from each one this movement is followed step by step. The trail that a starting point leaves is a pathline: the route a tiny portion of blood would take.',
                     flowViews: {
-                        particles: { text: 'It starts with a CTA scan of Miriam\'s aorta: a follow-up scan, taken about six weeks after the dissection. From its slices, a 3D model of the inside of her aorta, with both channels, was built. For the simulation, this space is divided into millions of tiny cells, the amount of blood that flows in and out is set, and a computer solves the equations of fluid motion in every cell over several heartbeats. The result is the speed and direction of the blood at every point and moment. From these results, a flow-visualization program releases virtual particles at the entrance of the aorta and carries them along with this movement, frame by frame.' },
+                        particles: { text: 'It starts with a CTA scan of Miriam\'s aorta: a follow-up scan, taken about six weeks after the dissection. From its slices, a 3D model of the inside of her aorta, with both channels, was built. For the CFD simulation (computational fluid dynamics), this space is divided into millions of tiny cells, the amount of blood that flows in and out is set, and a computer solves the equations of fluid motion in every cell over several heartbeats. The result is the speed and direction of the blood at every point and moment. From these results, a flow-visualization program releases virtual particles at the entrance of the aorta and carries them along with this movement, frame by frame.' },
                         illustration: { text: 'It starts with a CTA scan of Miriam\'s aorta. From its slices, a 3D model of her aorta was built, and the outline, with the flap that divides it into two channels, was traced by hand from this model and then simplified: the shape and the two channels are kept, fine details of the vessel wall are left out. Her aorta before the dissection was drawn in the same way from its 3D model.' }
                     }
                 },
                 {
                     type: 'text',
-                    text: 'In the animation, the lines grow as the heartbeat goes on. In Miriam\'s aorta, lines in the false lumen are red and lines in the true lumen are white, so you can follow how the blood splits at the tear; in her aorta before the dissection, all lines are red. You can turn both models and slow the animation down. What you see stays a calculated picture, with the assumptions explained in the note on the simulated blood flow above.',
+                    text: 'In the animation, the lines grow as the heartbeat goes on. All lines are red, in Miriam\'s aorta and in her aorta before the dissection; the labels show where the true and the false lumen lie, so you can follow how the blood splits at the tear. You can turn both models. What you see stays a calculated picture, with the assumptions explained in the note on the simulated blood flow above.',
                     flowViews: {
-                        particles: { text: 'Each dot is a marker, not a blood cell: where the dots crowd together, speed up or circle, the calculated flow does the same. In Miriam\'s aorta, dots in the false lumen are red and dots in the true lumen are white, so you can follow how the blood splits at the tear; in her aorta before the dissection, all dots are red. You can turn both models and slow the animation down. What you see stays a calculated picture, with the assumptions explained in the note on the simulated blood flow above.' },
-                        illustration: { text: 'The arrows were drawn by hand on top of the drawings to show the main direction of the blood: up from the heart, into the branches, around the arch and down through the body. In Miriam\'s aorta, a white arrow follows the true channel. A second arrow turns red at the tear, swirls there and follows the false channel until both channels meet again further down. On the page, the arrows grow from the heart downwards and then start again. Where they are placed, how long they are and how fast they move are design choices, not measurements.' }
+                        particles: { text: 'Each dot is a marker, not a blood cell: where the dots crowd together, speed up or circle, the calculated flow does the same. All dots are red, in Miriam\'s aorta and in her aorta before the dissection; the labels show where the true and the false lumen lie, so you can follow how the blood splits at the tear. You can turn both models. What you see stays a calculated picture, with the assumptions explained in the note on the simulated blood flow above.' },
+                        illustration: { text: 'The arrows were drawn by hand on top of the drawings to show the main direction of the blood: up from the heart, into the branches, around the arch and down through the body. In Miriam\'s aorta, one arrow follows the true channel. Two slower arrows swirl below the tear and follow the false channel until both channels meet again further down. On the page, the arrows grow from the heart downwards and then start again. Where they are placed, how long they are and how fast they move are design choices, not measurements.' }
                     }
                 }
             ]
@@ -492,9 +528,9 @@ export const dissectionStory = {
                     type: 'preventionTimeline',
                     items: [
                         {
-                            eyebrow: 'Today',
-                            title: 'Blood pressure',
-                            info: 'Medicine keeps blood pressure and heart rate low every day, reducing the force of each heartbeat on the aorta.'
+                            eyebrow: 'Every day',
+                            title: 'Blood‑pressure control',
+                            info: 'The most important part of aftercare: Miriam takes medicine every day to keep her blood pressure and heart rate low, and has them checked regularly. This reduces the force of each heartbeat on her weakened aorta.'
                         },
                         {
                             eyebrow: 'After the acute phase',
@@ -503,13 +539,14 @@ export const dissectionStory = {
                         },
                         {
                             eyebrow: 'In everyday life',
-                            title: 'Dosed activity',
-                            info: 'Gentle, regular activity may be encouraged, while sudden maximal effort and heavy straining can cause sharp blood-pressure rises.'
+                            title: 'Movement',
+                            icon: 'directions_walk',
+                            info: 'Walking is encouraged: regular, relaxed walks keep Miriam fit without straining her aorta. What she avoids is heavy lifting, pressing, and sudden all-out effort, because they make blood pressure rise sharply.'
                         },
                         {
                             eyebrow: 'Long term',
-                            title: 'Regular imaging',
-                            info: 'After a dissection treated with medicine alone, guideline follow-up commonly includes imaging at about 1, 6, and 12 months, then yearly if stable. The schedule can change with findings.'
+                            title: 'Regular CT follow‑up',
+                            info: 'Follow-up CT scans check whether the aorta is widening or the false lumen is changing. After a dissection treated with medicine alone, they are commonly done at about 1, 6, and 12 months, then yearly if stable. The schedule can change with findings.'
                         },
                         {
                             eyebrow: 'In the family',

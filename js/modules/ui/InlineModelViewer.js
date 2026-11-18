@@ -6,6 +6,7 @@ import { ModelLabels, parseModelLabels } from './ModelLabels.js';
 import { addBoundaryPlanes } from './boundaryPlanes.js';
 import { applyFlowColors, parseFlowRegion } from './flowColors.js';
 import { createFlowVisParticleModel, isFlowVisParticleGlb } from './flowvisParticles.js';
+import { createLineRevealPlayer } from './flowLineReveal.js';
 import { joinCameraSync, resetCameraSync, syncCamera } from './cameraSync.js';
 
 // Keep 3D mesh materials aligned with the UI accent token (--color-accent).
@@ -65,6 +66,8 @@ class InlineModelViewer {
         this.hasStarted = true;
         const modelUrl = this.container.dataset.modelUrl;
         if (!modelUrl) return;
+        // Load times for the study data (js/modules/studyMetrics.js).
+        this.loadStartedAt = performance.now();
         const modelMode = this.container.dataset.modelMode || 'layers';
 
         this.scene = new THREE.Scene();
@@ -128,6 +131,7 @@ class InlineModelViewer {
             await this.loadModel(modelUrl);
         } catch (error) {
             this.container.classList.add('has-error');
+            this.loadFailed = true;
             console.error('[InlineModelViewer] Model could not be loaded', modelUrl, error);
         }
     }
@@ -193,9 +197,15 @@ class InlineModelViewer {
             this.instancedGroups = modelMode === 'flow'
                 ? this.collapseRepeatedMeshes(this.originalModel)
                 : [];
-            this.setupAnimation(gltf.animations || [], gltf.animation);
+            // Compact FlowVis line exports grow and shrink by a shader rule;
+            // patched after applyFlowColors, which replaces the line material.
+            const lineReveal = modelMode === 'flow'
+                ? createLineRevealPlayer(this.originalModel, { loopSeconds: Number(this.container.dataset.lineLoopSeconds) || null })
+                : null;
+            this.setupAnimation(gltf.animations || [], gltf.animation || lineReveal);
             this.labels?.attach(this.rotationPivot || this.model, this.camera);
             this.container.classList.add('is-loaded');
+            this.loadEndedAt ??= performance.now();
             this.container.dispatchEvent(new CustomEvent('inline-model-ready'));
             this.startAnimationLoop();
     }
@@ -321,13 +331,18 @@ class InlineModelViewer {
         });
     }
 
-    // flowVisAnimation: the mixer-like player of a FlowVis particle export.
+    // flowVisAnimation: the mixer-like player of a FlowVis particle or compact
+    // line export (flowvisParticles.js, flowLineReveal.js).
     setupAnimation(clips, flowVisAnimation = null) {
         if (!clips.length && !flowVisAnimation) return;
         this.mixer = flowVisAnimation || new THREE.AnimationMixer(this.originalModel);
         this.mixer.timeScale = this.animationSpeed;
         clips.forEach((clip) => this.mixer.clipAction(clip).play());
-        if (this.reducedMotion) this.mixer.setTime(0);
+        // Reduced motion: compact lines stay complete, the others on frame 0.
+        if (this.reducedMotion) {
+            if (this.mixer.showComplete) this.mixer.showComplete();
+            else this.mixer.setTime(0);
+        }
         this.syncInstancedMeshes();
     }
 

@@ -7,7 +7,9 @@ import { ChartManager } from './ui/ChartManager.js';
 import { ThemeManager } from './ui/ThemeManager.js';
 import { renderStoryPage, getStoryVersion } from './storyRenderer.js';
 import { storyVersions } from './storyContent.js';
-import { applyFlowView, getFlowView, initFlowViewSelect } from './flowView.js';
+import { applyFlowView, getFlowView } from './flowView.js';
+import { initSosciReturnLinks } from '../studyFlow.js';
+import { initStudyMetrics } from './studyMetrics.js';
 import { initInlineModelViewers } from './ui/InlineModelViewer.js';
 import { initImageLabels } from './ui/ModelLabels.js';
 import { initImageZoom } from './ui/imageZoom.js';
@@ -52,62 +54,49 @@ class ScrollytellingApp {
         this.lookCurve = new THREE.CatmullRomCurve3(Config.hotspots.map(h => h.target));
     }
 
-    get completionKey() {
-        return `aorta-project-${this.version}-completed`;
+    // Shown at the end of every story: back to the SoSci questionnaire.
+    // The URL (with the case token) is still to be added.
+    renderQuestionnairePrompt() {
+        if (document.querySelector('.story-questionnaire-cta')) return;
+        const prompt = document.createElement('section');
+        prompt.className = 'story-questionnaire-cta';
+        prompt.setAttribute('aria-label', 'Questionnaire');
+        prompt.innerHTML = `
+            <a class="story-questionnaire-link" href="" data-sosci-return><strong>Go to questionnaire</strong><span aria-hidden="true">&rarr;</span></a>
+        `;
+        this.placeAfterStory(prompt);
+        // Back to SoSci with the token and the story just seen (js/studyFlow.js).
+        initSosciReturnLinks(this.version, prompt, () => this.studyMetrics?.params() || {});
     }
 
-    hasCompletedBothStories() {
-        try {
-            return ['aneurysm', 'dissection'].every((version) => (
-                localStorage.getItem(`aorta-project-${version}-completed`) === 'true'
-            ));
-        } catch {
-            return false;
-        }
-    }
-
-    markStoryComplete() {
-        try {
-            localStorage.setItem(this.completionKey, 'true');
-        } catch {
-            return;
-        }
-
-        if (this.hasCompletedBothStories()) this.renderCompletionPrompt();
-    }
-
-    renderCompletionPrompt() {
-        if (document.querySelector('.story-completion-cta')) return;
+    // Keeps end-of-story blocks outside the complete scrollytelling layout so
+    // pin spacers and the last story step cannot absorb them. Each new block
+    // goes below the ones already placed.
+    placeAfterStory(block) {
         const story = document.getElementById('story');
         if (!story) return;
-
-        const prompt = document.createElement('section');
-        prompt.className = 'story-completion-cta';
-        prompt.setAttribute('aria-labelledby', 'story-completion-title');
-        prompt.innerHTML = `
-            <p class="story-completion-kicker">Both stories completed</p>
-            <h2 id="story-completion-title">See the full picture</h2>
-            <p>You have followed both an aortic aneurysm and an aortic dissection. Continue to the shared ending.</p>
-            <a class="story-completion-link" href="ending.html"><strong>Continue to ending</strong><span aria-hidden="true">&rarr;</span></a>
-        `;
-        // Keep the completion CTA outside the complete scrollytelling layout
-        // so pin spacers and the last story step cannot absorb it.
         const scrollyLayout = story.closest('.scrolly-layout');
         if (scrollyLayout?.parentElement) {
-            scrollyLayout.parentElement.insertBefore(prompt, scrollyLayout.nextSibling);
+            let anchor = scrollyLayout;
+            while (anchor.nextElementSibling?.matches('.story-questionnaire-cta')) anchor = anchor.nextElementSibling;
+            scrollyLayout.parentElement.insertBefore(block, anchor.nextSibling);
         } else {
-            (story.parentElement || story).appendChild(prompt);
+            (story.parentElement || story).appendChild(block);
         }
 
         // The story visual is fixed while the last step is active. Hide it
-        // once the standalone completion CTA enters the viewport, so the
-        // final image cannot visually carry into the CTA area.
-        if ('IntersectionObserver' in window) {
-            const completionObserver = new IntersectionObserver(([entry]) => {
-                document.body.classList.toggle('is-completion-active', entry.isIntersecting);
-            }, { threshold: 0.08 });
-            completionObserver.observe(prompt);
-        }
+        // while any end-of-story block is in the viewport, so the final image
+        // cannot visually carry into that area.
+        if (!('IntersectionObserver' in window)) return;
+        this.storyEndVisible ??= new Set();
+        this.storyEndObserver ??= new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) this.storyEndVisible.add(entry.target);
+                else this.storyEndVisible.delete(entry.target);
+            });
+            document.body.classList.toggle('is-completion-active', this.storyEndVisible.size > 0);
+        }, { threshold: 0.08 });
+        this.storyEndObserver.observe(block);
     }
 
     async init() {
@@ -595,7 +584,6 @@ class ScrollytellingApp {
             scrollyLayout.classList.toggle('has-2-cols', textBox?.classList.contains('cols-2'));
         }
 
-        if (sectionIndex === this.storySectionCount - 1) this.markStoryComplete();
     }
 
     updateNavLinks(sectionIndex) {
@@ -649,7 +637,6 @@ class ScrollytellingApp {
         const navToggle = document.getElementById('nav-toggle');
         const navMenu = document.getElementById('nav-menu-mobile');
         if (navToggle && navMenu) navToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
-        initFlowViewSelect(this.flowView);
         document.addEventListener('click', (event) => {
             const flowViewButton = event.target.closest('.flow-view-button');
             if (flowViewButton) {
@@ -686,27 +673,13 @@ class ScrollytellingApp {
                 const modelStages = [...(modelFigure?.querySelectorAll('[data-inline-model]') || [])];
                 if (!modelStages.length || modelStages.some((stage) => !stage.inlineModelViewer)) return;
                 const variantOptions = {};
-                ['framingScale', 'offsetX', 'offsetY', 'rotationX', 'rotationY', 'rotationZ', 'animationFps', 'animationSpeed'].forEach((key) => {
+                ['framingScale', 'offsetX', 'offsetY', 'rotationX', 'rotationY', 'rotationZ', 'animationFps', 'animationSpeed', 'lineLoopSeconds'].forEach((key) => {
                     const value = Number(flowButton.dataset[`flow${key[0].toUpperCase()}${key.slice(1)}`]);
                     if (Number.isFinite(value)) variantOptions[key] = value;
                 });
                 const comparisonScale = Number(flowButton.dataset.flowComparisonFramingScale);
                 const comparisonRotationY = Number(flowButton.dataset.flowComparisonRotationY);
                 const controls = flowButton.closest('.flow-variant-controls');
-                const speedSlider = modelFigure?.querySelector('.flow-speed-slider');
-                if (speedSlider) {
-                    if (speedSlider.dataset.userAdjusted === 'true') {
-                        variantOptions.animationSpeed = Number(speedSlider.value);
-                    } else {
-                        const variantSpeed = Number(flowButton.dataset.flowAnimationSpeed);
-                        if (Number.isFinite(variantSpeed)) {
-                            speedSlider.value = String(variantSpeed);
-                            variantOptions.animationSpeed = variantSpeed;
-                            const speedOutput = speedSlider.closest('.flow-speed-control')?.querySelector('.flow-speed-value');
-                            if (speedOutput) speedOutput.textContent = `${variantSpeed}×`;
-                        }
-                    }
-                }
                 const showInfoPopup = flowButton.dataset.flowInfo !== 'false';
                 modelFigure?.classList.toggle('flow-info-hidden', !showInfoPopup);
                 if (!showInfoPopup) modelFigure?.querySelector('.model-viewport-info-popup')?.removeAttribute('open');
@@ -786,36 +759,9 @@ class ScrollytellingApp {
             trigger.setAttribute('aria-expanded', String(!isOpen));
             popup.hidden = isOpen;
         });
-        document.addEventListener('input', (event) => {
-            const speedSlider = event.target.closest('.flow-speed-slider');
-            if (!speedSlider) return;
-            const speed = Number(speedSlider.value);
-            speedSlider.dataset.userAdjusted = 'true';
-            const speedOutput = speedSlider.closest('.flow-speed-control')?.querySelector('.flow-speed-value');
-            if (speedOutput) speedOutput.textContent = `${speed}×`;
-            // Healthy and affected viewers play in sync, so both follow the slider,
-            // and so do the arrows of the illustrations (js/modules/ui/flowArrows.js).
-            const figure = speedSlider.closest('.model-placeholder');
-            figure?.querySelectorAll('[data-inline-model]').forEach((modelStage) => {
-                modelStage.inlineModelViewer?.setAnimationSpeed(speed);
-            });
-            figure?.querySelectorAll('[data-flow-arrows]').forEach((layer) => {
-                layer.dataset.playbackSpeed = String(speed);
-            });
-        });
-        // An open "Speed adjustment" closes on a click elsewhere or on Escape.
-        const closeSpeedToggles = (keep) => document.querySelectorAll('.flow-speed-toggle[open]').forEach((toggle) => {
-            if (toggle !== keep) toggle.removeAttribute('open');
-        });
-        document.addEventListener('click', (event) => closeSpeedToggles(event.target.closest('.flow-speed-toggle')));
-        document.addEventListener('keydown', (event) => {
-            if (event.key !== 'Escape') return;
-            const open = document.querySelector('.flow-speed-toggle[open]');
-            if (!open) return;
-            open.removeAttribute('open');
-            open.querySelector('summary')?.focus();
-        });
-        if (this.hasCompletedBothStories()) this.renderCompletionPrompt();
+        // Dwell time on the blood-flow sections and opened info windows, for SoSci.
+        this.studyMetrics = initStudyMetrics(this.version);
+        this.renderQuestionnairePrompt();
     }
 
     async setSectionMesh(sectionIndex, url, label) {

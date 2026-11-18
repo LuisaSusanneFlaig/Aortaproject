@@ -8,7 +8,8 @@
 </head>
 <body class="ending-page">
     <nav class="navbar">
-        <a href="index.html" class="nav-logo">Aorta <span>Project</span></a>
+        <!-- No links to the dashboard: participants stay in the study flow. -->
+        <span class="nav-logo">Aorta <span>Project</span></span>
         <div class="navbar-right">
             <button class="theme-toggle" type="button" aria-label="Toggle color scheme">
                 <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -18,9 +19,6 @@
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
                 </svg>
             </button>
-            <ul class="nav-links">
-                <li><a href="index.html">Dashboard</a></li>
-            </ul>
         </div>
     </nav>
 
@@ -34,7 +32,7 @@
                         <h3>Alex</h3>
                         <p class="ending-outlook-condition">Aortic aneurysm</p>
                     </header>
-                    <p class="ending-outlook-flow"><strong>In the simulation</strong> Blood speeds up in Alex's widened aortic arch and can swirl into a vortex instead of flowing smoothly.</p>
+                    <p class="ending-outlook-flow" data-ending-flow="alex"></p>
                     <img class="ending-outlook-photo" src="assets/story_images/alex_doctor_talk_photoreal_v1.png" alt="Alex talks with a doctor about long-term aortic follow-up">
                 </article>
                 <article class="ending-outlook">
@@ -42,20 +40,22 @@
                         <h3>Miriam</h3>
                         <p class="ending-outlook-condition">Aortic dissection</p>
                     </header>
-                    <p class="ending-outlook-flow"><strong>In the simulation</strong> Blood in Miriam's dissected aorta no longer follows one route: it moves through both the true and the false lumen.</p>
+                    <p class="ending-outlook-flow" data-ending-flow="miriam"></p>
                     <img class="ending-outlook-photo" src="assets/story_images/miriam_consultation_photoreal_v1.png" alt="Miriam discusses long-term aortic follow-up with a physician">
                 </article>
             </div>
-            <p class="ending-outlook-summary">Neither simulation predicts how Alex's or Miriam's story will continue. What both show is the same link: when the shape of the aorta changes, the flow inside it changes too, and the wall is exposed to that flow with every heartbeat. Making this invisible flow visible helps explain why both of them need long-term follow-up.</p>
+            <p class="ending-outlook-summary" data-ending-summary></p>
         </section>
         <div class="ending-actions">
-            <a class="ending-action-primary" href="index.html#stories"><strong>Return to stories</strong><span aria-hidden="true">&rarr;</span></a>
-            <button class="ending-reset" type="button" id="reset-story-progress">Reset story progress</button>
+            <!-- Back to the SoSci questionnaire with the case token; the URL is still to be added. -->
+            <a class="ending-action-primary" href="" data-sosci-return><strong>Continue to the final questions</strong><span aria-hidden="true">&rarr;</span></a>
         </div>
     </main>
 
     <footer class="overview-footer"><span>Aorta Project</span></footer>
 
+    <!-- Outlook texts per flow version: js/stories/endingOutlooks.js -->
+    <script type="module" src="js/ending.js"></script>
     <script>
         const themeToggle = document.querySelector('.theme-toggle');
         const applyTheme = () => document.body.classList.toggle('light-mode', localStorage.getItem('theme') === 'light');
@@ -63,12 +63,6 @@
         themeToggle?.addEventListener('click', () => {
             localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'dark' : 'light');
             applyTheme();
-        });
-
-        document.getElementById('reset-story-progress')?.addEventListener('click', () => {
-            localStorage.removeItem('aorta-project-aneurysm-completed');
-            localStorage.removeItem('aorta-project-dissection-completed');
-            window.location.href = 'index.html';
         });
     </script>
 </body>

@@ -10,7 +10,6 @@ let diagnosticInfoId = 0;
 let decisionInfoId = 0;
 let preventionInfoId = 0;
 let imageHotspotId = 0;
-let flowSpeedSliderId = 0;
 
 const renderVisualIcon = (icon, className = 'story-inline-icon') => renderMaterialIcon(
     icon,
@@ -180,6 +179,7 @@ export function renderTreatmentBalance(element = {}) {
 }
 
 export function renderPreventionTimeline(element = {}) {
+    // Icons by position; an item can name its own with `icon`.
     const icons = ['blood_pressure', 'prescriptions', 'fitness_center', 'calendar_month', 'genetics'];
     const infoBoxes = [];
     return `
@@ -192,8 +192,8 @@ export function renderPreventionTimeline(element = {}) {
                     <span class="prevention-node" aria-hidden="true"></span>
                     <div class="prevention-copy">
                         ${item.info
-                            ? `<button class="prevention-info-trigger" type="button" aria-label="More information about ${item.title || 'this prevention step'}" aria-expanded="false" aria-controls="${infoId}"><span class="prevention-info-icon-wrap">${renderVisualIcon(icons[index] || 'check_circle', 'story-inline-icon prevention-info-icon')}<span class="prevention-info-badge" aria-hidden="true">+</span></span>${item.title || ''}</button>`
-                            : `<strong>${renderVisualIcon(icons[index] || 'check_circle')}${item.title || ''}</strong>`}
+                            ? `<button class="prevention-info-trigger" type="button" aria-label="More information about ${item.title || 'this prevention step'}" aria-expanded="false" aria-controls="${infoId}"><span class="prevention-info-icon-wrap">${renderVisualIcon(item.icon || icons[index] || 'check_circle', 'story-inline-icon prevention-info-icon')}<span class="prevention-info-badge" aria-hidden="true">+</span></span>${item.title || ''}</button>`
+                            : `<strong>${renderVisualIcon(item.icon || icons[index] || 'check_circle')}${item.title || ''}</strong>`}
                         ${item.text ? `<p>${item.text}</p>` : ''}
                     </div>
                 </li>
@@ -239,7 +239,7 @@ export function renderModelPlaceholder(element = {}) {
     const flowControls = flowVariants.length > 1 ? `
             <div class="flow-variant-controls" role="group" aria-label="Choose flow visualization">
                 ${flowVariants.filter((variant) => variant.comparisonSrc).map((variant, index) => `
-                    <button class="flow-variant-button${index === 0 ? ' active' : ''}" type="button" data-flow-url="${variant.src}" data-flow-comparison-url="${variant.comparisonSrc}" data-flow-info="${variant.showInfoPopup !== false}"${variantAttribute(variant, 'framingScale')}${variantAttribute(variant, 'comparisonFramingScale')}${variantAttribute(variant, 'offsetX')}${variantAttribute(variant, 'offsetY')}${variantAttribute(variant, 'rotationX')}${variantAttribute(variant, 'rotationY')}${variantAttribute(variant, 'comparisonRotationY')}${variantAttribute(variant, 'rotationZ')}${variantAttribute(variant, 'animationFps')}${variantAttribute(variant, 'animationSpeed')} aria-pressed="${index === 0}">${variant.label || ('View ' + (index + 1))}</button>
+                    <button class="flow-variant-button${index === 0 ? ' active' : ''}" type="button" data-flow-url="${variant.src}" data-flow-comparison-url="${variant.comparisonSrc}" data-flow-info="${variant.showInfoPopup !== false}"${variantAttribute(variant, 'framingScale')}${variantAttribute(variant, 'comparisonFramingScale')}${variantAttribute(variant, 'offsetX')}${variantAttribute(variant, 'offsetY')}${variantAttribute(variant, 'rotationX')}${variantAttribute(variant, 'rotationY')}${variantAttribute(variant, 'comparisonRotationY')}${variantAttribute(variant, 'rotationZ')}${variantAttribute(variant, 'animationFps')}${variantAttribute(variant, 'animationSpeed')}${variantAttribute(variant, 'lineLoopSeconds')} aria-pressed="${index === 0}">${variant.label || ('View ' + (index + 1))}</button>
                 `).join('')}
             </div>` : '';
     const comparisonVariant = flowVariants.find((variant) => variant.comparisonSrc);
@@ -254,10 +254,12 @@ export function renderModelPlaceholder(element = {}) {
     // shiftX / shiftY (affected) and comparisonShiftX / comparisonShiftY (healthy)
     // move a model on screen, as fractions of the viewer size (InlineModelViewer).
     const shiftAttributes = (x, y) => `${Number.isFinite(x) ? ` data-shift-x="${x}"` : ''}${Number.isFinite(y) ? ` data-shift-y="${y}"` : ''}`;
+    // Cycle length of compact line exports on both sides (js/modules/ui/flowLineReveal.js).
+    const lineLoopAttribute = Number.isFinite(comparisonVariant?.lineLoopSeconds) ? ` data-line-loop-seconds="${comparisonVariant.lineLoopSeconds}"` : '';
     const pairedFlowView = comparisonVariant ? `
             <div class="flow-comparison-viewers" aria-label="Affected and reference aorta flow comparison">
-                ${comparisonPanel('Reference aorta', comparisonVariant.comparisonSrc, ` data-framing-scale="${comparisonVariant.comparisonFramingScale || comparisonVariant.framingScale || 0.35}" data-rotation-y="${comparisonVariant.comparisonRotationY ?? comparisonVariant.rotationY ?? 0}"${shiftAttributes(comparisonVariant.comparisonShiftX, comparisonVariant.comparisonShiftY)}`, element.healthyLabels)}
-                ${comparisonPanel('Affected aorta', comparisonVariant.src, ` data-framing-scale="${comparisonVariant.framingScale || 0.35}"${Number.isFinite(comparisonVariant.rotationY) ? ` data-rotation-y="${comparisonVariant.rotationY}"` : ''}${shiftAttributes(comparisonVariant.shiftX, comparisonVariant.shiftY)}${affectedColors}`, element.labels)}
+                ${comparisonPanel('Reference aorta', comparisonVariant.comparisonSrc, ` data-framing-scale="${comparisonVariant.comparisonFramingScale || comparisonVariant.framingScale || 0.35}" data-rotation-y="${comparisonVariant.comparisonRotationY ?? comparisonVariant.rotationY ?? 0}"${shiftAttributes(comparisonVariant.comparisonShiftX, comparisonVariant.comparisonShiftY)}${lineLoopAttribute}`, element.healthyLabels)}
+                ${comparisonPanel('Affected aorta', comparisonVariant.src, ` data-framing-scale="${comparisonVariant.framingScale || 0.35}"${Number.isFinite(comparisonVariant.rotationY) ? ` data-rotation-y="${comparisonVariant.rotationY}"` : ''}${shiftAttributes(comparisonVariant.shiftX, comparisonVariant.shiftY)}${lineLoopAttribute}${affectedColors}`, element.labels)}
             </div>` : '';
     const illustration = element.flowIllustration;
     const illustrationMedia = (src, alt, imageFallback, videoFallback) => /.(png|jpe?g|webp|gif|svg)$/i.test(src)
@@ -280,19 +282,6 @@ export function renderModelPlaceholder(element = {}) {
                     : renderLabelledImage(illustrationMedia(illustration.src, illustration.alt, '', ''), [], undefined, renderFlowArrowLayer(illustration.arrows))}
                 ${illustration.caption ? `<figcaption>${illustration.caption}</figcaption>` : ''}
             </figure>` : '';
-    // "Speed adjustment" opens a slider for the 3D flow and the illustration arrows
-    // of this figure (js/modules/scrollytelling.js, js/modules/ui/flowArrows.js).
-    const flowSpeedToggle = (speed, arrowsOnly = false) => {
-        const sliderId = `flow-speed-slider-${++flowSpeedSliderId}`;
-        return `
-            <details class="flow-speed-toggle${arrowsOnly ? ' flow-speed-arrows-only' : ''}">
-                <summary class="flow-speed-button">Speed adjustment</summary>
-                <div class="flow-speed-control">
-                    <label for="${sliderId}">Animation speed <output class="flow-speed-value" for="${sliderId}">${speed}×</output></label>
-                    <input class="flow-speed-slider" id="${sliderId}" type="range" min="0.25" max="1" step="0.25" value="${speed}">
-                </div>
-            </details>`;
-    };
     const flowViewControl = element.flowIllustration ? `
             <div class="flow-view-controls" role="group" aria-label="Choose flow view">
                 <button class="flow-view-button active" type="button" data-flow-view="animation" aria-pressed="true">Flow animation</button>
@@ -304,7 +293,6 @@ export function renderModelPlaceholder(element = {}) {
         return `
         <figure class="model-placeholder show-flow-illustration" id="${element.id || ''}">
             ${flowIllustration}
-            ${illustration.arrows ? `<div class="flow-control-row">${flowSpeedToggle(1, true)}</div>` : ''}
             ${element.note ? `<p class="symptom-note model-placeholder-note">${element.note}</p>` : ''}
         </figure>`;
     }
@@ -324,8 +312,6 @@ export function renderModelPlaceholder(element = {}) {
         `;
     }).join('');
 
-    const speedControl = flowVariants.length ? flowSpeedToggle(startSpeed) : '';
-
     const infoPopupMarkup = element.src && element.infoPopup?.text ? `
             <details class="model-viewport-info-popup">
                 <summary aria-label="${element.infoPopup.title || 'More information'}"></summary>
@@ -343,7 +329,7 @@ export function renderModelPlaceholder(element = {}) {
             ${flowIllustration}
             ${infoPopupMarkup}
             ${hotspotMarkup}
-            ${flowControls || flowViewControl || speedControl ? `<div class="flow-control-row">${flowControls}${flowViewControl}${speedControl}</div>` : ''}
+            ${flowControls || flowViewControl ? `<div class="flow-control-row">${flowControls}${flowViewControl}</div>` : ''}
             ${element.note ? `<p class="symptom-note model-placeholder-note">${element.note}</p>` : ''}
         </figure>
     `;

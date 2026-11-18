@@ -19,13 +19,16 @@ export const healthyIllustrationLabels = [
 // Still drawing; the arrows grow over it (js/modules/ui/flowArrows.js).
 export const healthyIllustrationSrc = 'assets/story_images/healthy_aorta_illustration.png';
 
-// One arrow runs from the heart around the arch and down the body; each
-// branch arrow starts when its head passes the branch.
+// Arrows 0–2 run side by side from the heart around the arch and down the
+// body and start together; the branch arrows 3–5 start when the head of
+// arrow 0 passes their branch.
 export const healthyIllustrationArrows = {
     ...healthyFlowArrows,
     size: 1.6, // line width and arrowheads (1 = 2 px in drawing units)
     timing: [
         {},
+        { after: 0, at: 'pass' },
+        { after: 0, at: 'pass' },
         { after: 0, at: 'pass' },
         { after: 0, at: 'pass' },
         { after: 0, at: 'pass' }

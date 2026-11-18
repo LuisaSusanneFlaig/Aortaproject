@@ -1,11 +1,13 @@
 // Study versions of the flow visuals. Every flow figure shows either the
 // hand-drawn illustrations or one of the two 3D visualizations, without a
-// switch inside the figure. The menu dropdown sets ?view=; the last choice is
-// remembered in this browser, so it carries over to the other story.
+// switch inside the figure. The version is chosen with the URL:
+//   ?view=illustration | ?view=lines (default) | ?view=particles
+// The last choice is remembered in this browser, so it carries over to the
+// other story and the ending.
 export const flowViewOptions = [
-    { id: 'illustration', label: 'Illustrations' },
-    { id: 'lines', label: '3D pathlines' },
-    { id: 'particles', label: '3D particles' }
+    { id: 'illustration' },
+    { id: 'lines' },
+    { id: 'particles' }
 ];
 
 const defaultView = 'lines';
@@ -64,26 +66,4 @@ function applyToSection(section, view) {
 export function applyFlowView(story, view = defaultView) {
     const resolved = resolveOverrides(story, view);
     return { ...resolved, sections: resolved.sections.map((section) => applyToSection(section, view)) };
-}
-
-function renderFlowViewSelect(view) {
-    const options = flowViewOptions
-        .map((option) => `<option value="${option.id}"${option.id === view ? ' selected' : ''}>${option.label}</option>`)
-        .join('');
-    return `<label class="flow-view-select"><span>Visualization</span><select data-flow-view-select>${options}</select></label>`;
-}
-
-export function initFlowViewSelect(view) {
-    const markup = renderFlowViewSelect(view);
-    document.querySelector('.navbar-right')?.insertAdjacentHTML('afterbegin', markup);
-    document.getElementById('nav-menu-mobile')?.insertAdjacentHTML('beforeend', markup);
-    document.addEventListener('change', (event) => {
-        const select = event.target.closest('[data-flow-view-select]');
-        if (!select || !isFlowView(select.value)) return;
-        rememberFlowView(select.value);
-        const url = new URL(window.location.href);
-        url.searchParams.set('view', select.value);
-        url.hash = '';
-        window.location.assign(url);
-    });
 }

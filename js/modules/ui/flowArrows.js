@@ -215,11 +215,8 @@ function setupLayer(layer, reduceMotion) {
     return { arrows, round: schedule(arrows), time: 0, last: null };
 }
 
-// data-playback-speed on the layer (the "Speed adjustment" slider) slows the
-// whole sequence down, so the timing between the arrows stays the same.
 function advance(layer, sequence, now) {
-    const speed = Number(layer.dataset.playbackSpeed) || 1;
-    if (sequence.last !== null) sequence.time = (sequence.time + (now - sequence.last) * speed) % sequence.round;
+    if (sequence.last !== null) sequence.time = (sequence.time + (now - sequence.last)) % sequence.round;
     sequence.last = now;
     return sequence.time;
 }
