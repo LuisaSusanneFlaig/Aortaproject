@@ -1,3 +1,4 @@
+import { FLOW_LOOP_SECONDS, FLOW_SPEED, LOOP_SECONDS } from '../flowTiming.js';
 import { healthyIllustrationArrows, healthyIllustrationLabels, healthyIllustrationSrc, healthyModelLabels } from '../healthyReferenceLabels.js';
 import { alexFlowArrows } from './flowArrows.js';
 
@@ -117,21 +118,20 @@ export const aneurysmStory = {
                 rotationX: 0,
                 rotationY: -1.5708,
                 rotationZ: 0,
-                // The new FlowVis exports are in metres; these framings show them
-                // at the size of the earlier exports.
-                framingScale: 1,
+                // Pathlines and particles use the same framing and speed
+                // (js/stories/flowTiming.js).
+                framingScale: 0.92,
                 animationFps: 20,
-                animationSpeed: 1,
-                // Compact export (js/modules/ui/flowLineReveal.js), on the same 2 s cycle as the comparisons.
-                lineLoopSeconds: 2,
+                animationSpeed: FLOW_SPEED,
+                loopSeconds: LOOP_SECONDS,
                 rotationHint: true,
                 labels: healthyModelLabels,
                 flowViews: {
                     particles: {
                         url: 'assets/models/flow/Healthy_pulsed_particles_2cycles.glb',
                         label: 'Simulated blood flow through a reference aorta without dissection, shown as moving particles',
-                        framingScale: 0.84,
-                        animationSpeed: 0.5
+                        framingScale: 0.92,
+                        animationSpeed: FLOW_SPEED
                     }
                 }
             },
@@ -320,6 +320,7 @@ export const aneurysmStory = {
                         // when the head of arrow 0 passes their start.
                         arrows: {
                             ...alexFlowArrows,
+                            loopSeconds: FLOW_LOOP_SECONDS,
                             // The drawing is shown smaller than the healthy one, so its arrows are thickened.
                             size: 2.1,
                             timing: [
@@ -344,8 +345,8 @@ export const aneurysmStory = {
                         healthyLabels: healthyIllustrationLabels
                     },
                     flowVariants: [
-                        { view: 'lines', label: 'Pathlines', src: 'assets/models/flow/Aneurism_pathlines_2cycles.glb', comparisonSrc: 'assets/models/flow/Healthy_pathlines_2cycles.glb', framingScale: 0.52, comparisonFramingScale: 0.75, rotationY: 1.5708, comparisonRotationY: -1.5708, shiftX: 0, shiftY: 0.02, comparisonShiftX: 0, comparisonShiftY: 0, animationFps: 20, animationSpeed: 1, lineLoopSeconds: 2 },
-                        { view: 'particles', label: 'Particle flow', src: 'assets/models/flow/Aneurism_pulsed_particles_2cycles.glb', comparisonSrc: 'assets/models/flow/Healthy_pulsed_particles_2cycles.glb', framingScale: 0.6, comparisonFramingScale: 0.84, rotationY: 1.5708, comparisonRotationY: -1.5708, shiftX: 0, shiftY: 0.06, comparisonShiftX: 0, comparisonShiftY: 0, animationFps: 20, animationSpeed: 0.5 }
+                        { view: 'lines', label: 'Pathlines', src: 'assets/models/flow/Aneurism_pathlines_2cycles.glb', comparisonSrc: 'assets/models/flow/Healthy_pathlines_2cycles.glb', framingScale: 0.56, comparisonFramingScale: 0.8, rotationY: 1.5708, comparisonRotationY: -1.5708, shiftX: 0, shiftY: 0.04, comparisonShiftX: 0, comparisonShiftY: 0, animationFps: 20, animationSpeed: FLOW_SPEED, loopSeconds: LOOP_SECONDS },
+                        { view: 'particles', label: 'Particle flow', src: 'assets/models/flow/Aneurism_pulsed_particles_2cycles.glb', comparisonSrc: 'assets/models/flow/Healthy_pulsed_particles_2cycles.glb', framingScale: 0.56, comparisonFramingScale: 0.8, rotationY: 1.5708, comparisonRotationY: -1.5708, shiftX: 0, shiftY: 0.04, comparisonShiftX: 0, comparisonShiftY: 0, animationFps: 20, animationSpeed: FLOW_SPEED, loopSeconds: LOOP_SECONDS }
                     ],
                     modelMode: 'flow',
                     // All flow in the accent red (default flowColors).
@@ -357,9 +358,6 @@ export const aneurysmStory = {
                     alt: 'Animated pathlines representing simulated blood flow through Alex\'s Marfan-associated aneurysm model',
                     eyebrow: 'Patient-specific simulation',
                     title: 'Flow-Vis - Overall Flow',
-                    infoPopup: {
-                        title: 'Animation speed'
-                    },
                     rotationHint: true
                 },
                 {

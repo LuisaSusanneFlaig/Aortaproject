@@ -54,19 +54,28 @@ class ScrollytellingApp {
         this.lookCurve = new THREE.CatmullRomCurve3(Config.hotspots.map(h => h.target));
     }
 
-    // Shown at the end of every story: back to the SoSci questionnaire.
-    // The URL (with the case token) is still to be added.
+    // At the end of every story: back to the SoSci questionnaire. The button
+    // appears once every blood-flow section has been in view
+    // (js/modules/studyMetrics.js); until then a note says why it is missing.
     renderQuestionnairePrompt() {
         if (document.querySelector('.story-questionnaire-cta')) return;
         const prompt = document.createElement('section');
         prompt.className = 'story-questionnaire-cta';
         prompt.setAttribute('aria-label', 'Questionnaire');
+        prompt.setAttribute('aria-live', 'polite');
         prompt.innerHTML = `
-            <a class="story-questionnaire-link" href="" data-sosci-return><strong>Go to questionnaire</strong><span aria-hidden="true">&rarr;</span></a>
+            <p class="story-questionnaire-wait">The button to the questions appears here once you have read the blood-flow sections of the story.</p>
+            <a class="story-questionnaire-link" href="" data-sosci-return hidden><strong>Continue to the questions</strong><span aria-hidden="true">&rarr;</span></a>
         `;
         this.placeAfterStory(prompt);
         // Back to SoSci with the token and the story just seen (js/studyFlow.js).
         initSosciReturnLinks(this.version, prompt, () => this.studyMetrics?.params() || {});
+        const reveal = () => {
+            prompt.querySelector('.story-questionnaire-wait')?.remove();
+            prompt.querySelector('.story-questionnaire-link').hidden = false;
+        };
+        if (!this.studyMetrics || this.studyMetrics.flowSeen()) reveal();
+        else document.addEventListener('study-flow-seen', reveal, { once: true });
     }
 
     // Keeps end-of-story blocks outside the complete scrollytelling layout so
@@ -673,7 +682,7 @@ class ScrollytellingApp {
                 const modelStages = [...(modelFigure?.querySelectorAll('[data-inline-model]') || [])];
                 if (!modelStages.length || modelStages.some((stage) => !stage.inlineModelViewer)) return;
                 const variantOptions = {};
-                ['framingScale', 'offsetX', 'offsetY', 'rotationX', 'rotationY', 'rotationZ', 'animationFps', 'animationSpeed', 'lineLoopSeconds'].forEach((key) => {
+                ['framingScale', 'offsetX', 'offsetY', 'rotationX', 'rotationY', 'rotationZ', 'animationFps', 'animationSpeed', 'loopSeconds'].forEach((key) => {
                     const value = Number(flowButton.dataset[`flow${key[0].toUpperCase()}${key.slice(1)}`]);
                     if (Number.isFinite(value)) variantOptions[key] = value;
                 });

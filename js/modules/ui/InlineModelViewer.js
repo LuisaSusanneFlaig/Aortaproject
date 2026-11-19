@@ -8,6 +8,7 @@ import { applyFlowColors, parseFlowRegion } from './flowColors.js';
 import { createFlowVisParticleModel, isFlowVisParticleGlb } from './flowvisParticles.js';
 import { createLineRevealPlayer } from './flowLineReveal.js';
 import { fetchModelBuffer } from '../core/fetchModel.js';
+import { flowBudget } from '../../stories/flowBudget.js';
 import { joinCameraSync, resetCameraSync, syncCamera } from './cameraSync.js';
 
 // Keep 3D mesh materials aligned with the UI accent token (--color-accent).
@@ -94,6 +95,10 @@ class InlineModelViewer {
         this.controls.enableZoom = false;
         // Comparison viewers turn together (js/modules/ui/cameraSync.js).
         joinCameraSync(this, this.container.dataset.cameraSyncGroup);
+        // Drags by the reader, counted for the study (js/modules/studyMetrics.js).
+        ['start', 'end'].forEach((type) => this.controls.addEventListener(type, () => {
+            this.container.dispatchEvent(new CustomEvent(`model-drag-${type}`, { bubbles: true }));
+        }));
 
         const labels = parseModelLabels(this.container);
         if (labels.length) {
@@ -198,9 +203,15 @@ class InlineModelViewer {
                 : [];
             // Compact FlowVis line exports grow and shrink by a shader rule;
             // patched after applyFlowColors, which replaces the line material.
+            // data-loop-seconds: the shared round of every flow view (js/stories/flowTiming.js).
+            const loopSeconds = Number(this.container.dataset.loopSeconds) || null;
+            // Share of lines or particles shown, per file (js/stories/flowBudget.js).
+            const budget = modelMode === 'flow' ? flowBudget(modelUrl) : 1;
             const lineReveal = modelMode === 'flow'
-                ? createLineRevealPlayer(this.originalModel, { loopSeconds: Number(this.container.dataset.lineLoopSeconds) || null })
+                ? createLineRevealPlayer(this.originalModel, { loopSeconds, budget })
                 : null;
+            if (gltf.animation && 'loopSeconds' in gltf.animation) gltf.animation.loopSeconds = loopSeconds;
+            gltf.animation?.setBudget?.(budget);
             this.setupAnimation(gltf.animations || [], gltf.animation || lineReveal);
             this.labels?.attach(this.rotationPivot || this.model, this.camera);
             this.container.classList.add('is-loaded');

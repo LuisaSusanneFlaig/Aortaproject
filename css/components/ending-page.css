@@ -54,11 +54,22 @@ body.ending-page {
     text-decoration: none;
 }
 
-/* "Go to questionnaire" at the end of every story (scrollytelling.js). */
+/* "Continue to the questions" at the end of every story (scrollytelling.js). */
 .story-questionnaire-cta {
     box-sizing: border-box;
     width: min(680px, calc(100% - 40px));
     margin: clamp(56px, 8vh, 96px) auto 64px;
+}
+
+.story-questionnaire-wait {
+    margin: 0;
+    color: var(--color-text);
+    opacity: 0.7;
+    font-style: italic;
+}
+
+.story-questionnaire-link[hidden] {
+    display: none;
 }
 
 .story-questionnaire-link {

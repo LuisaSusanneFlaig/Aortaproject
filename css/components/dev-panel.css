@@ -1,0 +1,47 @@
+/* Developer panel (js/devPanel.js): only with ?dev and never in study mode. */
+.dev-panel {
+    position: fixed;
+    left: 12px;
+    bottom: 12px;
+    z-index: 10000;
+    max-width: calc(100vw - 24px);
+    box-sizing: border-box;
+    padding: 6px 10px;
+    border: 1px solid var(--color-accent);
+    background: var(--color-bg);
+    color: var(--color-text);
+    font: 12px/1.3 system-ui, sans-serif;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+.dev-panel summary {
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--color-accent);
+}
+
+.dev-panel-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-items: center;
+    margin-top: 6px;
+}
+
+.dev-panel-row > span {
+    width: 52px;
+    opacity: 0.7;
+}
+
+.dev-panel a {
+    padding: 3px 7px;
+    border: 1px solid currentColor;
+    color: inherit;
+    text-decoration: none;
+}
+
+.dev-panel a.is-active {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: #fff;
+}

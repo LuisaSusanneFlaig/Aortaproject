@@ -10,6 +10,8 @@
 // two channels reunite; after it, the arrow moves at the normal speed) }.
 // `arrow.maxTravel` (optional) raises the 2 s limit for one seed, so a long
 // arrow keeps the speed of the others.
+// `arrowSet.loopSeconds` (optional): length of one round in real seconds
+// (js/modules/ui/flowArrows.js).
 // `arrowSet.tint` (optional) { color, rects: [[x, y, width, height, rotate,
 // radius], ...] } draws the arrows in that colour inside the rectangles, e.g.
 // red in a widened section. The values are those of the Figma rectangles:
@@ -33,7 +35,8 @@ export function renderFlowArrowLayer(arrowSet) {
     // `size` scales line width and arrowheads, for drawings shown smaller than others.
     const size = Number.isFinite(arrowSet.size) ? ` style="--arrow-size: ${arrowSet.size}"` : '';
     const tint = arrowSet.tint ? ` data-tint-color="${arrowSet.tint.color}" data-tint-rects="${arrowSet.tint.rects.map((rect) => rect.join(' ')).join(';')}"` : '';
-    return `<svg class="flow-arrow-layer" viewBox="${arrowSet.viewBox}"${size}${tint} data-flow-arrows aria-hidden="true" focusable="false">${guides}${renderOverlay(arrowSet)}</svg>`;
+    const loop = Number.isFinite(arrowSet.loopSeconds) ? ` data-loop-seconds="${arrowSet.loopSeconds}"` : '';
+    return `<svg class="flow-arrow-layer" viewBox="${arrowSet.viewBox}"${size}${tint}${loop} data-flow-arrows aria-hidden="true" focusable="false">${guides}${renderOverlay(arrowSet)}</svg>`;
 }
 
 // `arrowSet.overlay` (optional) { src, rect: [x, y, width, height], opacity }:

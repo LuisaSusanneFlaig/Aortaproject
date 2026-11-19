@@ -2,8 +2,14 @@
 // hand-drawn illustrations or one of the two 3D visualizations, without a
 // switch inside the figure. The version is chosen with the URL:
 //   ?view=illustration | ?view=lines (default) | ?view=particles
-// The last choice is remembered in this browser, so it carries over to the
-// other story and the ending.
+// Outside the study the last choice is remembered in this browser, so it
+// carries over to the other story and the ending. In study mode (a SoSci case
+// token in the URL, ?token=…) only the condition code ?c= counts
+// (js/studyConditions.js): ?view= and a saved choice are ignored, so a link
+// with a missing or unknown code shows the default and the return link
+// reports what was shown (js/studyFlow.js).
+import { isStudyMode, studyCondition } from '../studyConditions.js';
+
 export const flowViewOptions = [
     { id: 'illustration' },
     { id: 'lines' },
@@ -19,6 +25,7 @@ function rememberFlowView(view) {
 }
 
 export function getFlowView() {
+    if (isStudyMode()) return studyCondition()?.view || defaultView;
     const requested = new URLSearchParams(window.location.search).get('view');
     if (isFlowView(requested)) {
         rememberFlowView(requested);

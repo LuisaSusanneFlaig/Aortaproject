@@ -9,6 +9,11 @@
 // done, or until its head passes the start of the waiting arrow (data-after,
 // data-at, data-delay, see flowArrowLayer.js); without that,
 // arrows start one after another. With reduced motion, the arrows stand still.
+//
+// data-loop-seconds on the layer (arrowSet.loopSeconds) fixes the length of
+// one round, the same for every drawing and the 3D views
+// (js/stories/flowTiming.js): a shorter round waits at its end, a longer one
+// plays faster as a whole, so the arrows keep their speeds relative to each other.
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const SPEED = 280; // drawing units per second; the drawings are about 850 units wide
@@ -212,11 +217,17 @@ function setupLayer(layer, reduceMotion) {
         arrows.forEach((arrow) => placeHead(arrow, arrow.length));
         return null;
     }
-    return { arrows, round: schedule(arrows), time: 0, last: null };
+    const natural = schedule(arrows);
+    const loop = Number(layer.dataset.loopSeconds) * 1000;
+    // `scale`: drawing ms per real ms; `round` in drawing ms.
+    const scale = loop > 0 ? Math.max(1, natural / loop) : 1;
+    const sequence = { arrows, natural, round: loop > 0 ? loop * scale : natural, scale, time: 0, last: null };
+    layer.flowArrowSequence = sequence;
+    return sequence;
 }
 
 function advance(layer, sequence, now) {
-    if (sequence.last !== null) sequence.time = (sequence.time + (now - sequence.last)) % sequence.round;
+    if (sequence.last !== null) sequence.time = (sequence.time + (now - sequence.last) * sequence.scale) % sequence.round;
     sequence.last = now;
     return sequence.time;
 }
