@@ -57,12 +57,42 @@ function patchMaterial(material, uniforms) {
     material.needsUpdate = true;
 }
 
+// Fixed pseudo-random order in which lines are left out by a visual budget.
+function lineRank(line) {
+    const x = Math.sin((line + 1) * 78.233) * 43758.5453;
+    return x - Math.floor(x);
+}
+
+// Visual budget (js/stories/flowBudget.js): keeps round(budget * lines) lines
+// by dropping the triangles of the others. Every line has its own _CURVE_FRAC,
+// and all vertices of a triangle belong to the same line.
+function thinLines(geometry, budget) {
+    const curveFrac = geometry.getAttribute('curveFrac');
+    const full = geometry.userData.fullIndex
+        ?? (geometry.index ? geometry.index.array : Uint32Array.from({ length: curveFrac.count }, (_, index) => index));
+    geometry.userData.fullIndex = full;
+    const lines = [...new Set(curveFrac.array)].sort((a, b) => a - b);
+    const keepCount = Math.max(1, Math.round(lines.length * budget));
+    const kept = new Set(lines
+        .map((value, line) => ({ value, rank: lineRank(line) }))
+        .sort((a, b) => a.rank - b.rank)
+        .slice(0, keepCount)
+        .map(({ value }) => value));
+    const index = [];
+    for (let triangle = 0; triangle < full.length; triangle += 3) {
+        if (kept.has(curveFrac.array[full[triangle]])) index.push(full[triangle], full[triangle + 1], full[triangle + 2]);
+    }
+    geometry.setIndex(index);
+    return keepCount;
+}
+
 /**
  * Patches every compact line mesh under `root`; null if there is none.
  * `loopSeconds` (optional) replaces the file's cycle length, e.g. to keep the
- * lines in step with an animated export next to them.
+ * lines in step with an animated export next to them. `budget` (0..1,
+ * js/stories/flowBudget.js) keeps only that share of the lines.
  */
-export function createLineRevealPlayer(root, { loopSeconds = null } = {}) {
+export function createLineRevealPlayer(root, { loopSeconds = null, budget = 1 } = {}) {
     const controllers = revealMeshes(root)
         .filter((mesh) => bindAttributes(mesh.geometry))
         .map((mesh) => {
@@ -73,7 +103,8 @@ export function createLineRevealPlayer(root, { loopSeconds = null } = {}) {
             };
             const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
             materials.forEach((material) => patchMaterial(material, uniforms));
-            return { cycle: loopSeconds > 0 ? loopSeconds : meta.loopSeconds, uniforms };
+            if (budget < 1) thinLines(mesh.geometry, budget);
+            return { cycle: loopSeconds > 0 ? loopSeconds : meta.loopSeconds, uniforms, geometry: mesh.geometry };
         });
     if (!controllers.length) return null;
 
@@ -96,6 +127,10 @@ export function createLineRevealPlayer(root, { loopSeconds = null } = {}) {
         // Reduced motion: every line drawn in full and kept still.
         showComplete() {
             controllers.forEach(({ uniforms }) => { uniforms.uRevealProgress.value = 1; });
+        },
+        // Share of the lines shown (0..1), as the `budget` option.
+        setBudget(nextBudget) {
+            controllers.forEach(({ geometry }) => thinLines(geometry, nextBudget > 0 ? Math.min(1, nextBudget) : 1));
         },
         stopAllAction() {}
     };

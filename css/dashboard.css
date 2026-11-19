@@ -210,3 +210,8 @@ body:not(.light-mode).dashboard-page .section-kicker { color: #fff; }
     font-size: 1.05rem;
     line-height: 1.65;
 }
+
+/* Study mode (?first=, js/studyFlow.js): the second story is locked on the dashboard. */
+.story-entry.is-locked img { filter: grayscale(1); opacity: 0.45; }
+.story-entry.is-locked h3, .story-entry.is-locked .story-entry-copy > p { opacity: 0.55; }
+.story-link-locked { margin-top: auto; padding-bottom: 7px; color: color-mix(in srgb, var(--color-text) 60%, transparent); font-weight: 500; }

@@ -148,7 +148,7 @@ function toDataAttribute(value) {
 
 // A model view switches the viewer to another GLB with its own framing and labels.
 function modelViewConfig(view) {
-    const keys = ['url', 'label', 'framingScale', 'rotationX', 'rotationY', 'rotationZ', 'animationFps', 'animationSpeed', 'lineLoopSeconds'];
+    const keys = ['url', 'label', 'framingScale', 'rotationX', 'rotationY', 'rotationZ', 'animationFps', 'animationSpeed', 'loopSeconds'];
     const config = Object.fromEntries(keys.filter((key) => view[key] !== undefined).map((key) => [key, view[key]]));
     config.labels = Array.isArray(view.labels) ? view.labels : [];
     return config;
@@ -183,7 +183,7 @@ function renderInlineModel(model, illustration = null) {
     const rotationY = Number.isFinite(model.rotationY) ? ` data-rotation-y="${model.rotationY}"` : '';
     const rotationZ = Number.isFinite(model.rotationZ) ? ` data-rotation-z="${model.rotationZ}"` : '';
     const framingScale = Number.isFinite(model.framingScale) ? ` data-framing-scale="${model.framingScale}"` : '';
-    const animation = ['animationFps', 'animationSpeed', 'lineLoopSeconds']
+    const animation = ['animationFps', 'animationSpeed', 'loopSeconds']
         .filter((key) => Number.isFinite(model[key]))
         .map((key) => ` data-${key.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}="${model[key]}"`)
         .join('');

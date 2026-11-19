@@ -43,12 +43,34 @@ function createSurface(surface) {
 // Mirrors the parts of THREE.AnimationMixer the viewer uses (timeScale,
 // update, setTime, stopAllAction), so speed, frame rate, sync groups and
 // reduced motion work as they do for regular glTF animations.
+// `loopSeconds` (simulated seconds, js/stories/flowTiming.js): when longer
+// than the export, the particles still in the aorta at its last frame
+// dissolve within DISSOLVE_SECONDS and the aorta stays empty until the round
+// ends, so every flow view repeats at the same pace.
+const DISSOLVE_SECONDS = 0.2; // simulated seconds (0.4 s on screen at speed 0.5)
+const DISSOLVE_STEPS = 8;
+
+// Fixed pseudo-random order in which the particles dissolve.
+function dissolveRank(point) {
+    const x = Math.sin(point * 12.9898) * 43758.5453;
+    return x - Math.floor(x);
+}
+
+// Fixed pseudo-random order in which particles are left out by a visual
+// budget (js/stories/flowBudget.js); independent of the dissolve order.
+function budgetRank(point) {
+    const x = Math.sin(point * 78.233 + 1.7) * 24634.6345;
+    return x - Math.floor(x);
+}
+
 class FlowVisParticleAnimation {
     constructor(particles, points) {
         this.particles = particles;
         this.points = points;
         this.time = 0;
         this.timeScale = 1;
+        this.loopSeconds = null;
+        this.budget = 1;
         this.frame = -1;
         // Palette in linear RGB, since the renderer treats vertex colors as linear.
         const palette = particles.palette || [255, 255, 255];
@@ -56,27 +78,58 @@ class FlowVisParticleAnimation {
         for (let index = 0; index < palette.length; index += 3) {
             this.palette.push(new THREE.Color().setRGB(palette[index] / 255, palette[index + 1] / 255, palette[index + 2] / 255, THREE.SRGBColorSpace));
         }
+        this.dissolve = 0;
         this.showFrame(0);
     }
 
     update(delta) {
         this.time += delta * this.timeScale;
-        this.showFrame(this.particles.frameAt(this.time));
+        this.showTime(this.time);
     }
 
     setTime(time) {
         this.time = time * this.timeScale;
-        this.showFrame(this.particles.frameAt(this.time));
+        this.showTime(this.time);
+    }
+
+    // Frame and dissolve step (0 = all particles shown, DISSOLVE_STEPS = none) at `time`.
+    showTime(time) {
+        const { duration, frameCount } = this.particles;
+        if (!(this.loopSeconds > duration)) {
+            this.showFrame(this.particles.frameAt(time));
+            return;
+        }
+        const t = time % this.loopSeconds;
+        if (t < duration) {
+            this.showFrame(this.particles.frameAt(t), 0);
+            return;
+        }
+        const step = Math.min(DISSOLVE_STEPS, Math.ceil((t - duration) / DISSOLVE_SECONDS * DISSOLVE_STEPS));
+        this.showFrame(frameCount - 1, step);
+    }
+
+    // Share of the particles shown (0..1); the rest stay hidden throughout.
+    setBudget(budget) {
+        this.budget = budget > 0 ? Math.min(1, budget) : 1;
+        this.frame = -1;
+        this.showTime(this.time);
     }
 
     stopAllAction() {}
 
-    showFrame(frame) {
+    showFrame(frame, dissolve = 0) {
         // userData.flowColor (set by flowColors.js) replaces the palette.
         const override = this.points.userData.flowColor || null;
-        if (frame === this.frame && override === this.override) return;
+        if (frame === this.frame && override === this.override && dissolve === this.dissolve) return;
+        this.points.visible = dissolve < DISSOLVE_STEPS;
+        if (!this.points.visible) {
+            this.dissolve = dissolve;
+            return;
+        }
         this.frame = frame;
         this.override = override;
+        this.dissolve = dissolve;
+        const hidden = dissolve / DISSOLVE_STEPS;
         const { position, color } = this.points.geometry.attributes;
         this.particles.positionsAt(frame, position.array);
         position.needsUpdate = true;
@@ -88,7 +141,7 @@ class FlowVisParticleAnimation {
             const fromPalette = indices ? this.palette[indices[point]] : this.palette[0];
             const paletteColor = fromPalette && override ? override : fromPalette;
             // Dead particles sit at their seed position; alpha 0 hides them.
-            if (!paletteColor) {
+            if (!paletteColor || (hidden && dissolveRank(point) < hidden) || budgetRank(point) >= this.budget) {
                 colors[offset + 3] = 0;
                 continue;
             }

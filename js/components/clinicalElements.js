@@ -239,7 +239,7 @@ export function renderModelPlaceholder(element = {}) {
     const flowControls = flowVariants.length > 1 ? `
             <div class="flow-variant-controls" role="group" aria-label="Choose flow visualization">
                 ${flowVariants.filter((variant) => variant.comparisonSrc).map((variant, index) => `
-                    <button class="flow-variant-button${index === 0 ? ' active' : ''}" type="button" data-flow-url="${variant.src}" data-flow-comparison-url="${variant.comparisonSrc}" data-flow-info="${variant.showInfoPopup !== false}"${variantAttribute(variant, 'framingScale')}${variantAttribute(variant, 'comparisonFramingScale')}${variantAttribute(variant, 'offsetX')}${variantAttribute(variant, 'offsetY')}${variantAttribute(variant, 'rotationX')}${variantAttribute(variant, 'rotationY')}${variantAttribute(variant, 'comparisonRotationY')}${variantAttribute(variant, 'rotationZ')}${variantAttribute(variant, 'animationFps')}${variantAttribute(variant, 'animationSpeed')}${variantAttribute(variant, 'lineLoopSeconds')} aria-pressed="${index === 0}">${variant.label || ('View ' + (index + 1))}</button>
+                    <button class="flow-variant-button${index === 0 ? ' active' : ''}" type="button" data-flow-url="${variant.src}" data-flow-comparison-url="${variant.comparisonSrc}" data-flow-info="${variant.showInfoPopup !== false}"${variantAttribute(variant, 'framingScale')}${variantAttribute(variant, 'comparisonFramingScale')}${variantAttribute(variant, 'offsetX')}${variantAttribute(variant, 'offsetY')}${variantAttribute(variant, 'rotationX')}${variantAttribute(variant, 'rotationY')}${variantAttribute(variant, 'comparisonRotationY')}${variantAttribute(variant, 'rotationZ')}${variantAttribute(variant, 'animationFps')}${variantAttribute(variant, 'animationSpeed')}${variantAttribute(variant, 'loopSeconds')} aria-pressed="${index === 0}">${variant.label || ('View ' + (index + 1))}</button>
                 `).join('')}
             </div>` : '';
     const comparisonVariant = flowVariants.find((variant) => variant.comparisonSrc);
@@ -255,7 +255,7 @@ export function renderModelPlaceholder(element = {}) {
     // move a model on screen, as fractions of the viewer size (InlineModelViewer).
     const shiftAttributes = (x, y) => `${Number.isFinite(x) ? ` data-shift-x="${x}"` : ''}${Number.isFinite(y) ? ` data-shift-y="${y}"` : ''}`;
     // Cycle length of compact line exports on both sides (js/modules/ui/flowLineReveal.js).
-    const lineLoopAttribute = Number.isFinite(comparisonVariant?.lineLoopSeconds) ? ` data-line-loop-seconds="${comparisonVariant.lineLoopSeconds}"` : '';
+    const lineLoopAttribute = Number.isFinite(comparisonVariant?.loopSeconds) ? ` data-loop-seconds="${comparisonVariant.loopSeconds}"` : '';
     const pairedFlowView = comparisonVariant ? `
             <div class="flow-comparison-viewers" aria-label="Affected and reference aorta flow comparison">
                 ${comparisonPanel('Reference aorta', comparisonVariant.comparisonSrc, ` data-framing-scale="${comparisonVariant.comparisonFramingScale || comparisonVariant.framingScale || 0.35}" data-rotation-y="${comparisonVariant.comparisonRotationY ?? comparisonVariant.rotationY ?? 0}"${shiftAttributes(comparisonVariant.comparisonShiftX, comparisonVariant.comparisonShiftY)}${lineLoopAttribute}`, element.healthyLabels)}

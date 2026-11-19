@@ -1,3 +1,4 @@
+import { FLOW_LOOP_SECONDS, FLOW_SPEED, LOOP_SECONDS } from '../flowTiming.js';
 import { healthyIllustrationArrows, healthyIllustrationLabels, healthyIllustrationSrc, healthyModelLabels } from '../healthyReferenceLabels.js';
 import { miriamFlowArrows } from './flowArrows.js';
 
@@ -156,21 +157,20 @@ export const dissectionStory = {
                 rotationX: 0,
                 rotationY: -1.5708,
                 rotationZ: 0,
-                // The new FlowVis exports are in metres; these framings show them
-                // at the size of the earlier exports.
-                framingScale: 1,
+                // Pathlines and particles use the same framing and speed
+                // (js/stories/flowTiming.js).
+                framingScale: 0.92,
                 animationFps: 20,
-                animationSpeed: 1,
-                // Compact export (js/modules/ui/flowLineReveal.js), on the same 2 s cycle as the comparisons.
-                lineLoopSeconds: 2,
+                animationSpeed: FLOW_SPEED,
+                loopSeconds: LOOP_SECONDS,
                 rotationHint: true,
                 labels: healthyModelLabels,
                 flowViews: {
                     particles: {
                         url: 'assets/models/flow/Healthy_pulsed_particles_2cycles.glb',
                         label: 'Simulated blood flow through Miriam\'s aorta before the dissection, shown as moving particles',
-                        framingScale: 0.84,
-                        animationSpeed: 0.5
+                        framingScale: 0.92,
+                        animationSpeed: FLOW_SPEED
                     }
                 }
             },
@@ -389,6 +389,7 @@ export const dissectionStory = {
                         src: 'assets/story_images/miriam_dissection_illustration.png',
                         arrows: {
                             ...miriamFlowArrows,
+                            loopSeconds: FLOW_LOOP_SECONDS,
                             overlay: { src: 'assets/story_images/miriam_false_lumen_overlay.png', rect: [311, 187.65, 231, 529.7], opacity: 0.6 },
                             // Matches the line width of the healthy drawing, which is shown shrunk.
                             size: 1.4,
@@ -417,10 +418,10 @@ export const dissectionStory = {
                         healthyLabels: healthyIllustrationLabels
                     },
                     flowVariants: [
-                        // Compact grow/shrink export (js/modules/ui/flowLineReveal.js); lineLoopSeconds 2
-                        // keeps it in step with the 2 s cycle of the reference aorta (the file says 6.67 s).
-                        { view: 'lines', label: 'Pathlines', src: 'assets/models/flow/compact lines test.glb', comparisonSrc: 'assets/models/flow/Healthy_pathlines_2cycles.glb', framingScale: 0.85, comparisonFramingScale: 0.75, rotationY: -1.5708, comparisonRotationY: -1.5708, shiftX: 0, shiftY: 0.1, comparisonShiftX: 0, comparisonShiftY: 0, animationFps: 20, animationSpeed: 1, lineLoopSeconds: 2 },
-                        { view: 'particles', label: 'Particle flow', src: 'assets/models/flow/TBAD_pulsed_particles_2cycles.glb', comparisonSrc: 'assets/models/flow/Healthy_pulsed_particles_2cycles.glb', framingScale: 0.85, comparisonFramingScale: 0.84, rotationY: -1.5708, comparisonRotationY: -1.5708, shiftX: 0, shiftY: 0.1, comparisonShiftX: 0, comparisonShiftY: 0, animationFps: 20, animationSpeed: 0.5 }
+                        // Pathlines (compact grow/shrink export, js/modules/ui/flowLineReveal.js) and
+                        // particles share framing, shift and speed, so switching keeps the aorta in place.
+                        { view: 'lines', label: 'Pathlines', src: 'assets/models/flow/TBAD_pathlines_2cycles.glb', comparisonSrc: 'assets/models/flow/Healthy_pathlines_2cycles.glb', framingScale: 0.85, comparisonFramingScale: 0.8, rotationY: -1.5708, comparisonRotationY: -1.5708, shiftX: 0, shiftY: 0.1, comparisonShiftX: 0, comparisonShiftY: 0, animationFps: 20, animationSpeed: FLOW_SPEED, loopSeconds: LOOP_SECONDS },
+                        { view: 'particles', label: 'Particle flow', src: 'assets/models/flow/TBAD_pulsed_particles_2cycles.glb', comparisonSrc: 'assets/models/flow/Healthy_pulsed_particles_2cycles.glb', framingScale: 0.85, comparisonFramingScale: 0.8, rotationY: -1.5708, comparisonRotationY: -1.5708, shiftX: 0, shiftY: 0.1, comparisonShiftX: 0, comparisonShiftY: 0, animationFps: 20, animationSpeed: FLOW_SPEED, loopSeconds: LOOP_SECONDS }
                     ],
                     modelMode: 'flow',
                     // All flow in the accent red (default flowColors); the "True lumen" and
@@ -435,10 +436,7 @@ export const dissectionStory = {
                     rotationHint: true,
                     alt: 'Animated particle paths representing flow through the aortic model',
                     eyebrow: '+1.5 months',
-                    title: 'Flow-Vis - Subacute Phase',
-                    infoPopup: {
-                        title: 'Animation speed'
-                    }
+                    title: 'Flow-Vis - Subacute Phase'
                 },
                 {
                     type: 'text',

@@ -1,4 +1,5 @@
 import { healthyFlowArrows } from './healthyFlowArrows.js';
+import { FLOW_LOOP_SECONDS } from './flowTiming.js';
 
 // Labels and drawing of the reference aorta, shared by both stories. It is the
 // pre-dissection geometry of dataset 0246_H_AO_AOD: Miriam's own aorta before
@@ -24,6 +25,7 @@ export const healthyIllustrationSrc = 'assets/story_images/healthy_aorta_illustr
 // arrow 0 passes their branch.
 export const healthyIllustrationArrows = {
     ...healthyFlowArrows,
+    loopSeconds: FLOW_LOOP_SECONDS, // same round as every flow view (flowTiming.js)
     size: 1.6, // line width and arrowheads (1 = 2 px in drawing units)
     timing: [
         {},

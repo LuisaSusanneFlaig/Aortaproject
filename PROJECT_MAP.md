@@ -30,6 +30,8 @@ npm run screenshots
 | Alex aneurysm story text/order | `js/stories/aneurysm/story.js` |
 | Miriam dissection story text/order | `js/stories/dissection/story.js` |
 | Visual styling values | `css/tokens.css` |
+| Flow timing (one loop length and speed for arrows, pathlines and particles) | `js/stories/flowTiming.js` |
+| Visual budget of the 3D flow exports (share of pathlines / particles shown per file, matched screen coverage; `?budget=full` shows all) | `js/stories/flowBudget.js`, measured with `node tools/measure-flow-coverage.mjs` (dev server running; `verify` checks the current values) |
 | Final visual overrides | `css/global.css`, `css/components/flat-*.css` |
 | Split story layout | `css/components/split-story.css` |
 | Chapter openers | `js/components/chapterOpener.js`, `css/components/chapter-opener.css` |
@@ -58,7 +60,7 @@ npm run screenshots
 | Aorta surface models | `assets/models/` |
 | Flow visualization GLBs | `assets/models/flow/` |
 | FlowVisAnalyzer particle exports with per-frame colors | `assets/models/flow/TBAD_pulsed_particles_2cycles.glb` (Miriam), `Aneurism_pulsed_particles_2cycles.glb` (Alex) and `Healthy_pulsed_particles_2cycles.glb` (reference aorta, both stories), read by `js/modules/ui/flowvisParticles.js` (loader in `vendor/flowvis/`). Do not run gltfpack on them: it drops the color table. |
-| FlowVisAnalyzer compact pathline exports (grow/shrink by shader rule) | `assets/models/flow/compact lines test.glb` (Miriam), `Aneurism_pathlines_2cycles.glb` (Alex) and `Healthy_pathlines_2cycles.glb` (reference aorta, both stories), played by `js/modules/ui/flowLineReveal.js`; vendor README in `assets/models/flow/glb-line-reveal/`. `lineLoopSeconds` in a flow variant sets the cycle (2 s = in step with the reference aorta). In metres, so they need larger `framingScale` values (about 0.5–1) than the old exports. |
+| FlowVisAnalyzer compact pathline exports (grow/shrink by shader rule) | `TBAD_pathlines_2cycles.glb` (Miriam), `Aneurism_pathlines_2cycles.glb` (Alex) and `Healthy_pathlines_2cycles.glb` (reference aorta, both stories), played by `js/modules/ui/flowLineReveal.js`; vendor README in `assets/models/flow/glb-line-reveal/`. `loopSeconds` in a flow variant sets the cycle (2 s = in step with the reference aorta). In metres, so they need larger `framingScale` values (about 0.5–1) than the old exports. |
 | Third-party Three.js files | `vendor/three/` |
 
 ## Story structure
@@ -94,7 +96,7 @@ When adding a new element type, register it in `js/stories/storySchema.js`, rend
 
 ## Study versions of the flow visuals
 
-The URL parameter `?view=illustration|lines|particles` (default `lines`; remembered in this browser, also for `ending.html`) picks one version for every flow figure: hand-drawn illustrations, 3D pathlines or 3D particles. `js/modules/flowView.js` rewrites the story before rendering:
+The URL parameter `?view=illustration|lines|particles` (default `lines`; outside the study remembered in this browser, also for `ending.html`; with a SoSci `?token=` only the URL counts) picks one version for every flow figure: hand-drawn illustrations, 3D pathlines or 3D particles. `js/modules/flowView.js` rewrites the story before rendering:
 
 - A section with both `inlineModel` and `inlineIllustration` keeps only one of them.
 - A `modelPlaceholder` keeps only its `flowIllustration` or the `flowVariants` entry whose `view` matches.
@@ -110,9 +112,13 @@ Side-by-side sizes in the flow comparison: the 3D viewers scale every model to f
 
 ## SoSci study flow
 
-SoSci opens `index.html?token=…&view=…`; the participant picks the first story there. `js/studyFlow.js` passes `token` and `view` on to the story links and fills every `data-sosci-return` button ("Go to questionnaire" after each story, "Continue to the final questions" on `ending.html`) with `SOSCI_RETURN_URL?token=…&story=aneurysm|dissection` (no `story` on the ending). SoSci then links straight to the other story, and after both to `ending.html?token=…&view=…`. `SOSCI_RETURN_URL` is still empty, so the buttons stay empty until it is set.
+SoSci randomizes view and story order and links straight to each story with an opaque condition code, `story.html?token=…&c=<code>` (`js/studyConditions.js` has the six codes, one per story and view; the same table belongs in SoSci). Neither the story nor the view can be read or switched in a participant's URL, there is no dashboard and no free story choice, and the story pages have no dashboard link. With a `token` (study mode) only `c` counts; `?view=` and a version saved in the browser are ignored. After the story-1 block SoSci links to the second story, after the story-2 block to `ending.html?token=…&c=<code of story 2>`. Every `data-sosci-return` button leads to `SOSCI_RETURN_URL?i=<token>&shown=<code of the story and view actually rendered>` plus the usage data after a story, or `step=ending` on `ending.html` (SoSci resumes the interview with `?i=` and picks the block from `shown`). `SOSCI_RETURN_URL` is a placeholder until the SoSci questionnaire exists.
 
-After each story the link also carries usage data from `js/modules/studyMetrics.js`: `story_total` (seconds the whole story page was viewed, tab in the foreground), `flow_read` and `flow_prog` (seconds the sections with `studyMetric` in the story data lay under the middle of the window while the tab was in the foreground) and `info` (`name:count,…` for every info window that was opened, name from its term or label). Also `flow_read_n` / `flow_prog_n` (how often each section was entered), `models_ok` (1 / 0 / na for the 3D views in those sections), `load_s` (their longest loading time), `reduced_motion` (1 / 0), `device` (mobile / tablet / desktop) and `vw` (window width). Counts and times survive a reload in the same tab. Full list in the header of `js/modules/studyMetrics.js`.
+Developer mode (`js/devPanel.js`, `css/components/dev-panel.css`): add `?dev` to a story page or the ending (remembered in this browser, `?dev=0` closes it). A panel switches story, view (drawings / pathlines / particles) and density (matched / full), and "Participant view" opens the same story and view as a participant link. Never shown with a `token`. Without a token the readable pages `scrollytelling-<story>.html?view=…` keep working.
+
+Fallback only: `index.html?…&first=aneurysm|dissection` opens the dashboard with just the `first` story available and the other greyed out (without `first` both are open).
+
+The "Continue to the questions" button at the end of a story appears once every blood-flow section (`studyMetric`) has been in view; until then a note explains why it is missing. After each story the link also carries usage data from `js/modules/studyMetrics.js`: `story_total` (seconds the whole story page was viewed, tab in the foreground), `flow_read` and `flow_prog` (seconds the sections with `studyMetric` in the story data lay under the middle of the window while the tab was in the foreground) and `info` (`name:count,…` for every info window that was opened, name from its term or label). Also `flow_read_n` / `flow_prog_n` (how often each section was entered), `sec_s` / `sec_n` (seconds and entries for every story section, comma-separated in story order), `max_sec` (furthest section reached, 1-based) and `completed` (1 = last section reached), `drags` / `drag_s` (how often the 3D views were turned and the seconds spent dragging), `models_ok` (1 / 0 / na for the 3D views in those sections), `load_s` (their longest loading time), `reduced_motion` (1 / 0), `device` (mobile / tablet / desktop) and `vw` (window width). Counts and times survive a reload in the same tab. Full list in the header of `js/modules/studyMetrics.js`.
 
 ## Current data sources
 

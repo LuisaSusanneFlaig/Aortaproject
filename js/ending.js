@@ -1,11 +1,12 @@
 // Fills the outlooks of ending.html with the text for the flow version the
-// reader saw: ?view=illustration, lines or particles (js/modules/flowView.js).
+// reader saw: the condition code ?c= in the study, else ?view= (js/modules/flowView.js).
 import { getFlowView } from './modules/flowView.js';
 import { endingOutlooks } from './stories/endingOutlooks.js';
 import { initSosciReturnLinks } from './studyFlow.js';
+import './devPanel.js';
 
 // "Continue to the final questions": back to SoSci with the token.
-initSosciReturnLinks();
+initSosciReturnLinks(null, document, () => ({ step: 'ending' }));
 
 const copy = endingOutlooks[getFlowView() === 'illustration' ? 'illustration' : 'simulation'];
 
