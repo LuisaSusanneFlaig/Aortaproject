@@ -8,7 +8,7 @@ import { ThemeManager } from './ui/ThemeManager.js';
 import { renderStoryPage, getStoryVersion } from './storyRenderer.js';
 import { storyVersions } from './storyContent.js';
 import { applyFlowView, getFlowView } from './flowView.js';
-import { initSosciReturnLinks } from '../studyFlow.js';
+import { initSosciReturnLinks, sosciReturnUrl } from '../studyFlow.js';
 import { initStudyMetrics } from './studyMetrics.js';
 import { initInlineModelViewers } from './ui/InlineModelViewer.js';
 import { initImageLabels } from './ui/ModelLabels.js';
@@ -69,7 +69,7 @@ class ScrollytellingApp {
         `;
         this.placeAfterStory(prompt);
         // Back to SoSci with the token and the story just seen (js/studyFlow.js).
-        initSosciReturnLinks(this.version, prompt, () => this.studyMetrics?.params() || {});
+        initSosciReturnLinks(prompt, () => sosciReturnUrl(this.version, this.studyMetrics?.params() || {}));
         const reveal = () => {
             prompt.querySelector('.story-questionnaire-wait')?.remove();
             prompt.querySelector('.story-questionnaire-link').hidden = false;
