@@ -26,9 +26,10 @@
 //   next   code of the other story in the same view: SoSci links to it
 //          unchanged, so the view cannot change between story 1 and story 2
 //          (the ending accepts any code of the view)
-// Usage data after a story: js/modules/studyMetrics.js. None of the
-// parameter names is reserved by SoSci (q, i, r, s, ref, rnd, pretest,
-// password). The button at the end of a story appears once every blood-flow
+// Usage data after a story: js/modules/studyMetrics.js. No parameter name
+// may be one SoSci uses itself (q, i, r, s, act, ref, rnd, pretest,
+// password, info: ?info= opens SoSci's project info page instead of the
+// questionnaire, so the info-window counts are called `popups`). The button at the end of a story appears once every blood-flow
 // section has been in view (js/modules/scrollytelling.js).
 //
 // Testing without SoSci's randomizer: open index.html?token=test (any token

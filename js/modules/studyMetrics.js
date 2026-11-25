@@ -18,7 +18,7 @@
 //   completed             1 = the last section was reached, 0 = not
 //   drags, drag_s         how often the 3D views were turned by dragging,
 //                         and the seconds spent dragging (all views together)
-//   info                  how often each info window was opened, as
+//   popups                how often each info window was opened, as
 //                         "name:count,name:count" (only opened windows)
 //   models_ok             1 = every 3D view in the blood-flow sections has
 //                         loaded, 0 = at least one failed or is still
@@ -203,7 +203,7 @@ export function initStudyMetrics(story, root = document) {
             params.completed = steps.length && data.maxSection >= steps.length ? '1' : '0';
             params.drags = String(data.drags);
             params.drag_s = String(Math.round(data.dragMs / 1000));
-            params.info = Object.entries(data.opens).map(([name, count]) => `${name}:${count}`).join(',');
+            params.popups = Object.entries(data.opens).map(([name, count]) => `${name}:${count}`).join(',');
             Object.assign(params, modelParams(sections));
             params.reduced_motion = reducedMotion ? '1' : '0';
             params.device = deviceType(width);
