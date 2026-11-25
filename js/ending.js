@@ -2,11 +2,12 @@
 // reader saw: the condition code ?c= in the study, else ?view= (js/modules/flowView.js).
 import { getFlowView } from './modules/flowView.js';
 import { endingOutlooks } from './stories/endingOutlooks.js';
-import { initSosciReturnLinks } from './studyFlow.js';
+import { initSosciReturnLinks, sosciFinalUrl } from './studyFlow.js';
 import './devPanel.js';
 
-// "Continue to the final questions": back to SoSci with the token.
-initSosciReturnLinks(null, document, () => ({ step: 'ending' }));
+// "Continue to the final questions": the final SoSci questionnaire (qnr4).
+// The ending has no lock: SoSci links to it after the second story block.
+initSosciReturnLinks(document, sosciFinalUrl);
 
 const copy = endingOutlooks[getFlowView() === 'illustration' ? 'illustration' : 'simulation'];
 

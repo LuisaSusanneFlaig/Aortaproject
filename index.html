@@ -78,7 +78,7 @@
         }
         import { ThemeManager } from './js/modules/ui/ThemeManager.js';
         import { initStoryLinks } from './js/studyFlow.js';
-        // Story links keep ?token and ?view from SoSci; ?first= locks the other story (js/studyFlow.js).
+        // Study mode (?token, ?c): only the code's story can be started, the other is greyed out (js/studyFlow.js).
         initStoryLinks();
         new ThemeManager();
         const navToggle = document.getElementById('nav-toggle');

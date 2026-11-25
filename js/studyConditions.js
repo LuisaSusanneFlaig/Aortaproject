@@ -1,10 +1,11 @@
 // Study conditions behind opaque codes, so participants cannot read or switch
 // the story or the flow version in a URL.
 //
-// SoSci links to story.html?token=<caseToken()>&c=<code> for each story and to
-// ending.html?token=…&c=<code of the second story> for the ending. The same
-// table belongs in the SoSci questionnaire (to build the links and to decode
-// the `shown` value the return links send back, js/studyFlow.js).
+// SoSci's base questionnaire links to the dashboard,
+// index.html?token=<caseToken()>&order=O&c=<code of story 1>, where only that
+// story can be started (js/studyFlow.js); every later page gets its code from the `next` value the app
+// sends back (js/studyFlow.js), so SoSci needs this table only for the first
+// link and to decode `shown` in the data.
 //
 // Study mode = a SoSci case token in the URL. There, only `c` decides; ?view=
 // and a version saved in the browser are ignored (js/modules/flowView.js).
@@ -45,6 +46,37 @@ export function conditionCode(story, view) {
     if (!story && STUDY_CODES[current]?.view === view) return current;
     return Object.keys(STUDY_CODES).find((code) => STUDY_CODES[code].view === view
         && (!story || STUDY_CODES[code].story === story)) || '';
+}
+
+// Test runs without SoSci's randomizer: a token that starts with "test"
+// (e.g. ?token=test1) and comes without a valid code gets a random view and,
+// unless ?order= is given, a random story order, like SoSci's draw in base.
+// The draw is written into the URL (c and order), so the rest of the flow and
+// the return links behave as for a participant. Opening the start link again
+// draws again. Real case tokens always come with a code, so they never draw.
+const TEST_TOKEN = /^test/i;
+const STORY_FOR_ORDER = { 1: 'aneurysm', 2: 'dissection' };
+
+export function isTestToken() {
+    return TEST_TOKEN.test(params().get('token') || '');
+}
+
+export function drawTestCondition() {
+    if (!isTestToken() || studyCondition()) return;
+    const url = new URL(window.location.href);
+    const pick = (list) => list[Math.floor(Math.random() * list.length)];
+    const order = STORY_FOR_ORDER[url.searchParams.get('order')] ? url.searchParams.get('order') : pick(['1', '2']);
+    const view = pick(['illustration', 'lines', 'particles']);
+    const code = Object.keys(STUDY_CODES).find((key) => STUDY_CODES[key].story === STORY_FOR_ORDER[order]
+        && STUDY_CODES[key].view === view);
+    url.searchParams.set('order', order);
+    url.searchParams.set('c', code);
+    window.history.replaceState(null, '', url);
+}
+
+// Story that comes first for ?order= (1 = Alex, 2 = Miriam), or null.
+export function firstStory() {
+    return STORY_FOR_ORDER[params().get('order')] || null;
 }
 
 // story.html carries no story: take it from the code before the page renders.

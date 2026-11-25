@@ -1,4 +1,4 @@
-// Usage data for the study, sent back to SoSci with the "Go to questionnaire"
+// Usage data for the study, sent back to SoSci with the "Continue to the questions"
 // button (js/studyFlow.js):
 //   story_total           seconds the whole story page was viewed (tab in
 //                         the foreground), from opening it to the button
@@ -29,8 +29,8 @@
 //                         flow animations and arrows stand still
 //   device, vw            mobile / tablet / desktop and the window width in
 //                         CSS pixels when the story was opened
-// The return link also carries `shown`, the code of the story and view
-// that were rendered (js/studyFlow.js).
+// The return link also carries token, order, `shown` (code of the story and
+// view that were rendered) and `next` (js/studyFlow.js).
 // flowSeen(): true once every blood-flow section has been entered; the
 // questionnaire button waits for it (also fires 'study-flow-seen' on document).
 // Counts and times survive a reload in the same tab (sessionStorage); the

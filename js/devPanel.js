@@ -51,7 +51,7 @@ function renderPanel() {
         ? `<div class="dev-panel-row"><span>Density</span>${button(pageLink(page, { budget: null }), 'Matched', !fullDensity)}${button(pageLink(page, { budget: 'full' }), 'Full', fullDensity)}</div>`
         : '';
     const code = conditionCode(story, view);
-    const participant = story && code ? `story.html?token=dev-preview&c=${code}` : `ending.html?token=dev-preview&c=${code}`;
+    const participant = story && code ? `story.html?token=dev-preview&order=1&c=${code}` : `ending.html?token=dev-preview&order=1&c=${code}`;
 
     const panel = document.createElement('details');
     panel.className = 'dev-panel';
