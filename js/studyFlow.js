@@ -43,9 +43,12 @@ const SOSCI_FINAL = 'qnr4';
 
 // Pretest links of the questionnaires (SoSci: "Pretest", valid until
 // 09.12.2026; renew them there and paste the new codes here). They replace
-// ?q=… while the questionnaires are not yet active. Pretest mode is on with
-// ?mode=pretest (append it in base's redirect while testing) or a test token
-// (?token=test…), and stays on for the rest of the run in this browser tab.
+// ?q=…, which SoSci only accepts once the questionnaires are active.
+// SOSCI_LIVE = false: every link goes to the pretest links.
+// SOSCI_LIVE = true (set it when the study starts): links use ?q=…; only
+// ?mode=pretest or a test token (?token=test…) still use the pretest links,
+// for the rest of the run in that browser tab.
+export const SOSCI_LIVE = false;
 const SOSCI_PRETEST = {
     base: 'JmfDFpCrfIYF5zgKjwkoAY2L',
     qnr2: 'uMghchXSVYiRL9HE5MdBIQyU',
@@ -76,6 +79,7 @@ export function withStudyParams(href) {
 }
 
 export function isPretest() {
+    if (!SOSCI_LIVE) return true;
     const on = currentParams().get('mode') === 'pretest' || isTestToken();
     try {
         if (on) sessionStorage.setItem(PRETEST_KEY, '1');
