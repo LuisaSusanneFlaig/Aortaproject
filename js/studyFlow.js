@@ -34,17 +34,30 @@
 // Testing without SoSci's randomizer: open index.html?token=test (any token
 // starting with "test"); the app draws view and order (js/studyConditions.js).
 import { getFlowView } from './modules/flowView.js';
-import { conditionCode, drawTestCondition, firstStory, isStudyMode, studyCondition } from './studyConditions.js';
+import { conditionCode, drawTestCondition, firstStory, isStudyMode, isTestToken, studyCondition } from './studyConditions.js';
 
 export const SOSCI_BASE = 'https://befragungen.ovgu.de/TheAortaProject/';
 // Questionnaire after each story; qnr4 after the ending.
 const SOSCI_QUESTIONNAIRES = { aneurysm: 'qnr2', dissection: 'qnr3' };
 const SOSCI_FINAL = 'qnr4';
 
+// Pretest links of the questionnaires (SoSci: "Pretest", valid until
+// 09.12.2026; renew them there and paste the new codes here). They replace
+// ?q=… while the questionnaires are not yet active. Pretest mode is on with
+// ?mode=pretest (append it in base's redirect while testing) or a test token
+// (?token=test…), and stays on for the rest of the run in this browser tab.
+const SOSCI_PRETEST = {
+    base: 'JmfDFpCrfIYF5zgKjwkoAY2L',
+    qnr2: 'uMghchXSVYiRL9HE5MdBIQyU',
+    qnr3: 'qd3wNFBcxjWDEbPGnQLT1o1r',
+    qnr4: 'Vd3UHw9MFyHSWAU6BLS25aUf'
+};
+const PRETEST_KEY = 'aorta-pretest';
+
 // Parameters every app page passes on to the next app page.
-const CARRIED_PARAMS = ['token', 'order', 'c', 'view'];
+const CARRIED_PARAMS = ['token', 'order', 'c', 'view', 'mode'];
 // Parameters every link back to SoSci carries from the current URL.
-const SOSCI_PARAMS = ['token', 'order'];
+const SOSCI_PARAMS = ['token', 'order', 'mode'];
 const STORY_IDS = ['aneurysm', 'dissection'];
 
 function currentParams() {
@@ -62,9 +75,20 @@ export function withStudyParams(href) {
     return `${url.pathname.split('/').pop()}${url.search}${url.hash}`;
 }
 
+export function isPretest() {
+    const on = currentParams().get('mode') === 'pretest' || isTestToken();
+    try {
+        if (on) sessionStorage.setItem(PRETEST_KEY, '1');
+        return on || sessionStorage.getItem(PRETEST_KEY) === '1';
+    } catch {
+        return on;
+    }
+}
+
 function sosciUrl(questionnaire, values) {
     const url = new URL(SOSCI_BASE);
-    url.searchParams.set('q', questionnaire);
+    if (isPretest()) url.searchParams.set('act', SOSCI_PRETEST[questionnaire]);
+    else url.searchParams.set('q', questionnaire);
     const params = currentParams();
     SOSCI_PARAMS.forEach((name) => {
         const value = params.get(name);
