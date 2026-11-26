@@ -9,6 +9,7 @@ import { renderStoryPage, getStoryVersion } from './storyRenderer.js';
 import { storyVersions } from './storyContent.js';
 import { applyFlowView, getFlowView } from './flowView.js';
 import { initSosciReturnLinks, sosciReturnUrl } from '../studyFlow.js';
+import { isStudyMode } from '../studyConditions.js';
 import { initStudyMetrics } from './studyMetrics.js';
 import { initInlineModelViewers } from './ui/InlineModelViewer.js';
 import { initImageLabels } from './ui/ModelLabels.js';
@@ -58,7 +59,8 @@ class ScrollytellingApp {
     // appears once every blood-flow section has been in view
     // (js/modules/studyMetrics.js); until then a note says why it is missing.
     renderQuestionnairePrompt() {
-        if (document.querySelector('.story-questionnaire-cta')) return;
+        // Only in the study (a SoSci token, pipeline on: js/studyConditions.js).
+        if (!isStudyMode() || document.querySelector('.story-questionnaire-cta')) return;
         const prompt = document.createElement('section');
         prompt.className = 'story-questionnaire-cta';
         prompt.setAttribute('aria-label', 'Questionnaire');

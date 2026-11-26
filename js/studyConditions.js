@@ -29,8 +29,25 @@ function params() {
     return new URLSearchParams(window.location.search);
 }
 
+// The developer panel (js/devPanel.js) can switch the study pipeline off in
+// this browser: the token is then ignored, so the site behaves like the
+// public version (both stories open, free view choice via ?view=, no
+// questionnaire buttons, no locks).
+const PIPELINE_KEY = 'aorta-pipeline';
+
+export function pipelineOn() {
+    try { return localStorage.getItem(PIPELINE_KEY) !== 'off'; } catch { return true; }
+}
+
+export function setPipeline(on) {
+    try {
+        if (on) localStorage.removeItem(PIPELINE_KEY);
+        else localStorage.setItem(PIPELINE_KEY, 'off');
+    } catch { /* storage blocked: the pipeline stays on */ }
+}
+
 export function isStudyMode() {
-    return params().has('token');
+    return params().has('token') && pipelineOn();
 }
 
 // { story, view } of ?c=, or null when the code is missing or unknown.
@@ -62,7 +79,7 @@ export function isTestToken() {
 }
 
 export function drawTestCondition() {
-    if (!isTestToken() || studyCondition()) return;
+    if (!isStudyMode() || !isTestToken() || studyCondition()) return;
     const url = new URL(window.location.href);
     const pick = (list) => list[Math.floor(Math.random() * list.length)];
     const order = STORY_FOR_ORDER[url.searchParams.get('order')] ? url.searchParams.get('order') : pick(['1', '2']);
